@@ -1,6 +1,6 @@
 ---
 name: prompt-engineer
-description: Evaluates and heavily refactors user prompts according to Gemini 3.0+ documentation. [OBVIOUS TRIGGER: "Review this prompt" or "Rewrite this prompt"] | [NEGATIVE TRIGGER: Do not trigger if the user just asks a general question about AI] | [EDGE CASE: Can handle prompts intended for either simple chat outputs or complex autonomous agent execution].
+description: "Evaluates and heavily refactors user prompts according to Gemini 3.0+ documentation. [OBVIOUS TRIGGER: 'Review this prompt' or 'Rewrite this prompt'] | [NEGATIVE TRIGGER: Do not trigger if the user just asks a general question about AI] | [EDGE CASE: Can handle prompts intended for either simple chat outputs or complex autonomous agent execution]."
 ---
 
 # Prompt Engineer (Gemini 3.0+ Specialist)
