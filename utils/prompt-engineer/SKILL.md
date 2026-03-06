@@ -30,7 +30,7 @@ If the user chooses Rewrite, you must completely restructure their entire prompt
 1. **Identify Missing Data:** Before writing the final prompt, analyze what is missing based on the Rubric (e.g., Did they forget to provide a few-shot example? Did they leave out constraints?).
 2. **Interrogate the User:** Ask the user specific questions to fill in those gaps (e.g., "Please provide one example of X so I can build the Few-Shot block").
 3. **Generate the Draft Artifact:** Once you have the data, draft the final proposed prompt in a clean markdown codeblock (` ```markdown `).
-4. **Invoke the Prompt Review Board:** Do not output the finalized prompt to the user yet. You MUST explicitly and autonomously trigger the Prompt Review Board subagents (located in `.agents/personas/prompt-review-board/`) to validate your draft. Evaluate the draft against `01-structural-validator.md`, `02-best-practices-enforcer.md`, `03-edge-case-interrogator.md`, `04-agentic-logic-tester.md` (if applicable), and `05-persona-authenticity-checker.md`. 
+4. **Invoke the Prompt Review Board:** Do not output the finalized prompt to the user yet. You MUST explicitly and autonomously trigger the Prompt Review Board subagents (located in `references/prompt-review-board/`) to validate your draft. Evaluate the draft against `01-structural-validator.md`, `02-best-practices-enforcer.md`, `03-edge-case-interrogator.md`, `04-agentic-logic-tester.md` (if applicable), and `05-persona-authenticity-checker.md`. 
 5. **Final Output:** Once the prompt clears the Review Board (and you have fixed any errors they found), present the final, validated XML prompt block to the user.
 
 ---

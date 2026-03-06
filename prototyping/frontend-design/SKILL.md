@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Create flawless, Apple-beating production-grade frontend interfaces using strictly Google technologies and frameworks. Features a 3-phase rapid prototyping approach with a built-in Multi-Agent Design Council critique loop for 10x iteration.
+description: Create flawless, production-grade frontend interfaces using strictly Google technologies and frameworks. Features a 3-phase rapid prototyping approach with a built-in Multi-Agent Design Council critique loop for 10x iteration.
 ---
 
 # Frontend Design & Rapid Prototyping
@@ -17,7 +17,7 @@ Before setting up a complex build system, you must prove the concept visually wi
 2. Focus intensely on layout, aesthetics, typography, and micro-interactions. The bar is "better than what an Apple designer can design". It must be visually breathtaking.
 
 ### Phase 2: The 7-Member Design Council Critique
-Before presenting the Phase 1 prototype to the user, you must summon the full Design Council to ruthlessly critique the code based on the persona files defined in `.agents/personas/design-council/`:
+Before presenting the Phase 1 prototype to the user, you must summon the full Design Council to ruthlessly critique the code based on the persona files defined in `references/design-council/`:
 1. **The Interaction Architect (UX Designer):** Critique user flow and accessibility.
 2. **The Visual Mastery Expert (UI Designer):** Critique typography scale, core colors, and spatial harmony.
 3. **The Narrative Strategist (UX Writer):** Critique copy hierarchy and conciseness.
@@ -58,7 +58,7 @@ We must adhere strictly to Google's visual identity to ensure it looks and feels
 - **Motion**: Keep animations helpful and purposeful, not purely decorative. Use them to show how the product works or make the UI feel immediately responsive.
 - **Imagery**: Keep it real. Avoid AI-generated slop, stock photography stereotypes, or abstract 3D shapes. Cast real people and show the product in action.
 
-### The "Apple-Beating" Anti-Slop Rule
+### The Anti-Slop Rule
 NEVER use generic AI-generated aesthetics like predictable SaaS dashboard layouts or overused gradients. However, DO NOT overcompensate with "maximalist chaos." 
 
 Your goal is **uncompromising aesthetic supremacy**. Your differentiation comes from executing the **Google Design Language** with absolute restraint, precision, and structural simplicity. The UX/UI must be flawless, picture-perfect, and out-compete top-tier consumer technology design (e.g., Apple). Elegance comes from executing the "helpful and optimistic" vision remarkably well. Show what can truly be accomplished through relentless polish and world-class fit and finish.

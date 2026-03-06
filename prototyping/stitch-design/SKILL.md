@@ -18,7 +18,7 @@ Instead of manually writing HTML/CSS/JS, you will use the Stitch MCP server to i
 3. Use the `mcp_StitchMCP_generate_screen_from_text` tool, providing the `projectId` and your crafted `prompt`. Wait for this process to complete (it may take a few minutes).
 
 ### Phase 2: The 7-Member Design Council Critique
-Before presenting the generated Phase 1 prototype as "final", you must conceptually summon the full Design Council to ruthlessly critique the generated output defined in `.agents/personas/design-council/`:
+Before presenting the generated Phase 1 prototype as "final", you must conceptually summon the full Design Council to ruthlessly critique the generated output defined in `references/design-council/`:
 1. **The Interaction Architect (UX Designer):** Critique user flow and accessibility.
 2. **The Visual Mastery Expert (UI Designer):** Critique typography scale, core colors, and spatial harmony.
 3. **The Narrative Strategist (UX Writer):** Critique copy hierarchy and conciseness.
@@ -58,5 +58,5 @@ Instruct the Stitch model to adhere strictly to Google's visual identity:
 - **Typography**: Strictly request appropriate, highly legible sans-serif fonts (e.g., standard Google Fonts like *Roboto*, *Inter*, or *Open Sans* for clean utility, or *Outfit* for slightly more character). Pair them cleanly.
 - **Imagery**: Instruct the model to avoid AI-generated slop, stock photography stereotypes, or abstract 3D shapes.
 
-### The "Apple-Beating" Anti-Slop Rule
+### The Anti-Slop Rule
 In your prompts to Stitch, explicitly forbid generic SaaS dashboard layouts or overused gradients. Your goal is **uncompromising aesthetic supremacy**. Your differentiation comes from executing the **Google Design Language** with absolute restraint, precision, and structural simplicity. The UX/UI must be flawless, picture-perfect, and out-compete top-tier consumer technology design (e.g., Apple). Elegance comes from executing the "helpful and optimistic" vision remarkably well.

@@ -5,7 +5,7 @@ description: Guides the creation and initialization of new agent skills. Trigger
 
 # Skill Creator (Gemini 3.1 Pro Pipeline)
 
-This skill guides the process of creating highly effective, reusable agent skills specifically optimized for the **Gemini 3.1 Pro** engine within the **Google/echo** ecosystem. A skill is a self-contained directory that teaches the agent how to handle specific, repeatable workflows by combining instructions, scripts, and reference files.
+This skill guides the process of creating highly effective, reusable agent skills specifically optimized for the **Gemini 3.1 Pro** ecosystem. A skill is a self-contained directory that teaches the agent how to handle specific, repeatable workflows by combining instructions, scripts, and reference files.
 
 ## Mandatory Architectural Standards
 When creating a new skill, you MUST adhere to the following framework defined in our `agentskills-specification.md`:
@@ -33,7 +33,7 @@ Analyze the user's requirements against the `agentskills-specification.md` (loca
 -   **References (`references/`):** Is there domain knowledge or templates needed that should be loaded on-demand rather than polluting the core `SKILL.md`?
 
 ### Step 3: Initialize the Directory
-Once the user approves the plan, establish the skill directory. Use your file system tools to create the new skill directory inside one of the core domains (e.g., `doc-authoring`, `strategy`, `admin`, `utils`, `chief-of-staff`). 
+Once the user approves the plan, establish the skill directory.
 Ensure it has the following structure:
 - `[skill-name]/SKILL.md`
 - `[skill-name]/scripts/` (optional)
