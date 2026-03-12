@@ -97,31 +97,28 @@ Scale readiness: CAC < 12-month revenue? CAC:LTV = 1:3 to 1:5? LTV > CAC × 3? P
 
 **Market Saturation & TAM Analysis:** TAM, current penetration %, saturation date, scaling implications.
 
----
+### Growth Portfolio Management (H1/H2/H3 Allocation)
 
-## Phase 4: Three-Perspective Stress Test
-
-Run Devil's Advocate (base-case failure?), Domain Expert (patterns in this quadrant?), and Implementation Realist (can we staff this?) perspectives.
-
-**Output:** 3-perspective scorecard with confidence levels.
-
----
-
-## Phase 5: Portfolio Management (H1/H2/H3 Allocation)
-
-See [Growth Portfolio Management](references/growth-portfolio.md) for:
-
-**Three Horizons:** H1 (Core, 50-60% capital) | H2 (Emerging, 30-40%) | H3 (Exploration, 5-10%)
-
-**Stage-Gate Process:** Discovery → Concept → MVP → Pilot → Scale with capital authorization, deliverables, criteria, and kill conditions.
-
-**Portfolio Scorecard:** Capital allocation vs. target, H2 revenue from 3 years ago, H3 kill rate, reallocation speed.
+See [Growth Portfolio Management](references/growth-portfolio.md) for detailed allocation:
+- **Three Horizons:** H1 (Core, 50-60% capital) | H2 (Emerging, 30-40%) | H3 (Exploration, 5-10%)
+- **Stage-Gate Process:** Discovery → Concept → MVP → Pilot → Scale with capital authorization, deliverables, criteria, and kill conditions.
+- **Portfolio Scorecard:** Capital allocation vs. target, H2 revenue from 3 years ago, H3 kill rate, reallocation speed.
 
 ---
 
-## Phase 6: Confidence-Driven Escalation
+## Mixture of Experts (Integrated Stress Test)
 
-If crux confidence < 70%, auto-escalate. Can't proceed Diagnostic → Decision Framing with > 50% LOW findings. Can't proceed Decision → Execution with > 40% LOW on selected quadrant.
+Run Devil's Advocate (base-case failure?), Domain Expert (patterns in this quadrant?), and Implementation Realist (can we staff this?) perspectives to pressure-test the growth strategy.
+
+**Output:** 3-perspective scorecard with confidence levels to be attached to the execution plan.
+
+---
+
+## Escalation Protocol & Quality Standards
+
+If crux confidence < 70%, auto-escalate.
+- Cannot proceed Diagnostic → Decision Framing with > 50% LOW findings.
+- Cannot proceed Decision → Execution with > 40% LOW on selected quadrant.
 
 Escalate to: Strategy Partner (market size/intensity), Financial Strategy (unit econ/capital), Product & Innovation (PMF), GTM Strategy (sales motion), People & Talent (org capacity).
 

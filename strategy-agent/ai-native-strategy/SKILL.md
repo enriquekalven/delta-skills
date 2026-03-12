@@ -172,19 +172,50 @@ When AI recommendations conflict with Technology & Digital (e.g., "Buy off-the-s
 
 ---
 
-## Structured Output
+## Structured Output & ATLAS Pipeline
 
-Every engagement produces integrated output:
+This skill produces two outputs:
 
-**AI Strategy Context Package:**
-- **Domain:** AI-native business model, competitive positioning, execution roadmap
-- **AI Play Classification:** AI-Enhanced / AI-Native / Hybrid (with justification)
-- **Key Findings:** Opportunity ROI [Confidence], Competitive position [Confidence], Build vs. Buy recommendation [Confidence], Governance risk [Confidence], Talent availability [Confidence]
-- **Recommendations:** Opportunity prioritization, Build vs. Buy vs. Partner decision, Governance gates required, Talent strategy (build vs. hire vs. partner)
-- **Critical Assumptions:** LLM vendor roadmap (model availability, pricing), Market defensibility window (how long before commoditization?), Talent availability (agentic engineer scarcity), Regulatory stability (EU AI Act implementation timeline)
-- **Open Questions:** What's our actual defensibility vs. OpenAI/Google releasing equivalent capability? Can we hire agentic engineers in required timeline? Is governance risk contained?
-- **Cross-Skill Requests:** Product & Innovation for business model validation, Technology & Digital for architecture feasibility, People & Talent for hiring/comp strategy, Financial Strategy for ROI modeling
-- **Handoff Ready:** YES/NO
+**Part 1: Narrative Analysis**
+Full AI opportunity diagnosis, decision framing, and execution roadmap.
+
+**Part 2: Structured Output Block**
+Structured data for ATLAS pipeline:
+
+```json
+{
+  "skill_name": "ai-native-strategy",
+  "engagement_id": "[SHARED]",
+  "timestamp": "[ISO 8601]",
+  "schema_version": "1.0",
+  "confidence": { "overall": "[H/M/L]", "basis": "[Explanation]" },
+  "key_findings": [
+    { "finding": "[Opportunity/Positioning]", "evidence": "[Data]", "confidence": "[H/M/L]", "quantified_metric": "[Value]" }
+  ],
+  "recommendations": [
+    { "action": "[AI Initiative]", "rationale": "[Why]", "expected_outcome": "[Impact]", "timeline": "[Timeframe]", "owner": "[Role]", "confidence": "[H/M/L]" }
+  ],
+  "risk_flags": [
+    { "risk": "[Description]", "probability": "[H/M/L]", "impact": "[H/M/L]", "mitigation": "[Action]", "trigger": "[Event]" }
+  ],
+  "kill_conditions": [
+    { "condition": "[Invalidating condition]", "threshold": "[Measurable]", "action_if_triggered": "[Response]" }
+  ],
+  "assumptions": [
+    { "assumption": "[Statement]", "impact_if_wrong": "[MATERIAL/MODERATE/LOW]", "validation_method": "[Test]" }
+  ],
+  "data_points": [
+    { "metric": "[Name]", "value": "[Number]", "unit": "[Currency/percent/count]", "source": "[Origin]", "confidence": "[H/M/L]" }
+  ],
+  "dependencies_consumed": ["[Upstream skills]"],
+  "dependencies_produced": ["[Downstream skills]"],
+  "conflicts_detected": [
+    { "conflicting_skill": "[Name]", "this_position": "[Our position]", "their_position": "[Theirs]", "resolution_needed": true }
+  ]
+}
+```
+
+Cross-skill data contracts, context flow, and conflict resolution are managed by the strategy-partner-orchestrator skill.
 
 ---
 
