@@ -1,0 +1,136 @@
+{
+  "_meta": {
+    "description": "Centralized LLM pricing, capabilities, and unit economics data. All narrative references in this skill should derive calculations from this config rather than hardcoding values. Update this file when model pricing changes — the analysis files remain stable.",
+    "last_updated": "2026-03-10",
+    "update_frequency": "quarterly or on major pricing changes",
+    "currency": "USD",
+    "token_unit": "per 1M tokens",
+    "notes": "Prices reflect publicly listed API rates. Self-hosted costs (Llama, Qwen, DeepSeek) are estimated hosting costs, not API fees."
+  },
+
+  "models": {
+    "gpt-5.2": {
+      "provider": "OpenAI",
+      "input_cost": 1.75,
+      "output_cost": 14.00,
+      "context_window": "200K",
+      "reasoning_quality": "Excellent",
+      "instruction_following": "Good",
+      "multimodal": ["image", "video"],
+      "latency_ms": "100-300",
+      "safety_rating": "Medium",
+      "availability": "Stable",
+      "lock_in_risk": "HIGH",
+      "production_maturity": "HIGH",
+      "open_source": false
+    },
+    "claude-opus-4.6": {
+      "provider": "Anthropic",
+      "input_cost": 5.00,
+      "output_cost": 25.00,
+      "context_window": "200K",
+      "reasoning_quality": "Excellent",
+      "instruction_following": "Excellent",
+      "multimodal": ["image"],
+      "latency_ms": "100-300",
+      "safety_rating": "High",
+      "availability": "Stable",
+      "lock_in_risk": "MEDIUM",
+      "production_maturity": "HIGH",
+      "open_source": false
+    },
+    "gemini-3": {
+      "provider": "Google",
+      "input_cost": 2.50,
+      "output_cost": 10.00,
+      "context_window": "1M",
+      "reasoning_quality": "Good",
+      "instruction_following": "Good",
+      "multimodal": ["image", "video", "audio"],
+      "latency_ms": "50-200",
+      "safety_rating": "Medium",
+      "availability": "Stable",
+      "lock_in_risk": "MEDIUM",
+      "production_maturity": "HIGH",
+      "open_source": false
+    },
+    "llama-4-scout": {
+      "provider": "Meta (open-source)",
+      "input_cost": 0.40,
+      "output_cost": 0.40,
+      "context_window": "10M",
+      "reasoning_quality": "Emerging",
+      "instruction_following": "Good",
+      "multimodal": ["text"],
+      "latency_ms": "varies (self-hosted)",
+      "safety_rating": "Varies",
+      "availability": "Open-source",
+      "lock_in_risk": "NONE",
+      "production_maturity": "MEDIUM",
+      "open_source": true
+    },
+    "deepseek-r1": {
+      "provider": "DeepSeek",
+      "input_cost": 0.50,
+      "output_cost": 2.00,
+      "context_window": "128K",
+      "reasoning_quality": "Strong",
+      "instruction_following": "Good",
+      "multimodal": ["text"],
+      "latency_ms": "100-300",
+      "safety_rating": "Medium",
+      "availability": "Stable",
+      "lock_in_risk": "MEDIUM",
+      "production_maturity": "MEDIUM",
+      "open_source": true
+    },
+    "qwen-3": {
+      "provider": "Alibaba",
+      "input_cost": 0.30,
+      "output_cost": 1.50,
+      "context_window": "128K",
+      "reasoning_quality": "Emerging",
+      "instruction_following": "Good",
+      "multimodal": ["text"],
+      "latency_ms": "100-200",
+      "safety_rating": "Medium",
+      "availability": "Stable",
+      "lock_in_risk": "NONE",
+      "production_maturity": "MEDIUM",
+      "open_source": true
+    }
+  },
+
+  "benchmarks": {
+    "workload_basis": "1M tokens/month",
+    "input_output_ratio": "80/20",
+    "notes": "Monthly cost examples assume 1M token workload with 80% input / 20% output split unless otherwise stated."
+  },
+
+  "blended_cost_strategies": {
+    "model_downsampling": {
+      "description": "Use cheaper models for simple tasks, expensive models for complex reasoning",
+      "example_split": {
+        "simple_pct": 70,
+        "simple_model": "llama-4-scout",
+        "complex_pct": 30,
+        "complex_model": "claude-opus-4.6"
+      },
+      "notes": "Blended cost derived from split percentages × respective input costs. Savings vs. all-premium typically 50-70%."
+    }
+  },
+
+  "margin_thresholds": {
+    "healthy_saas": "70%+",
+    "breakeven_warning": "Below 50%",
+    "notes": "Premium models (Claude, GPT-5.2) require $100K+ annual revenue per customer to maintain healthy margins at 1M tokens/month. Open-source models maintain 90%+ margins at any scale."
+  },
+
+  "framework_ecosystem": {
+    "langraph": { "provider": "LangChain", "github_stars": "35K", "maturity": "HIGH" },
+    "crewai": { "provider": "CrewAI", "github_stars": "25K", "maturity": "MEDIUM" },
+    "claude-agent-sdk": { "provider": "Anthropic", "github_stars": "12K", "maturity": "HIGH" },
+    "openai-agents-sdk": { "provider": "OpenAI", "github_stars": "18K", "maturity": "HIGH" },
+    "google-adk": { "provider": "Google", "github_stars": "8K", "maturity": "MEDIUM" }
+  }
+}

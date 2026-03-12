@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ATLAS — Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=optional" rel="stylesheet">
+<style>
+:root {
+  /* Spacing — 8px unit */
+  --u: 8px;
+  --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s5: 40px;
+  --s6: 48px; --s8: 64px; --s10: 80px; --s12: 96px; --s16: 128px;
+
+  /* Type scale — 1.25 ratio */
+  --t-xs: 11px; --t-sm: 12px; --t-md: 14px; --t-base: 15px;
+  --t-lg: 17px; --t-xl: 21px; --t-2xl: 26px; --t-3xl: 32px;
+  --t-4xl: 40px; --t-5xl: 50px; --t-hero: clamp(48px, 7vw, 64px);
+
+  /* Colors */
+  --white: #ffffff; --bg: #fbfbfd; --bg-alt: #f5f5f7;
+  --text-1: #1d1d1f; --text-2: #424245; --text-3: #86868b; --text-4: #aeaeb2;
+  --border: #d2d2d7; --border-light: #e8e8ed;
+  --blue: #0071e3; --blue-hover: #0077ed; --blue-light: #e8f2ff; --blue-subtle: rgba(0,113,227,0.04);
+  --green: #1b7f42; --green-bg: #f0f6f3;
+  --amber: #a05000; --amber-bg: #faf6f1;
+  --red: #bf3333; --red-bg: #fdf5f5;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 0.15s; --dur-base: 0.25s; --dur-reveal: 0.5s;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --max-w: 1080px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { font-family: var(--font); background: var(--white); color: var(--text-1); overflow-x: hidden; }
+
+/* Accessibility */
+a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
+  outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px;
+}
+.skip-link {
+  position: absolute; top: -60px; left: var(--s3); background: var(--blue); color: #fff;
+  padding: var(--s2) var(--s3); border-radius: 8px; font-size: var(--t-md); font-weight: 600;
+  text-decoration: none; z-index: 200; transition: top var(--dur-base);
+}
+.skip-link:focus { top: var(--s2); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important; scroll-behavior: auto !important;
+  }
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 100; height: 48px;
+  display: flex; align-items: center;
+  padding: 0 var(--s5); padding-left: max(var(--s5), env(safe-area-inset-left));
+  padding-right: max(var(--s5), env(safe-area-inset-right));
+  background: rgba(255,255,255,0.92); border-bottom: 1px solid var(--border-light);
+  backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+.nav-inner {
+  width: 100%;
+  display: flex; align-items: center;
+}
+.nav-mark {
+  font-size: var(--t-sm); font-weight: 700; letter-spacing: 0.06em;
+  color: var(--text-1); text-transform: uppercase;
+}
+.nav-links { display: flex; gap: var(--s4); list-style: none; align-items: center; margin-left: auto; }
+.nav-links a {
+  font-size: var(--t-sm); font-weight: 500; color: var(--text-3);
+  text-decoration: none; transition: color var(--dur-fast); position: relative;
+  padding: 4px 0;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; width: 0; height: 1.5px;
+  background: var(--blue); transition: width var(--dur-base) var(--ease-out);
+}
+.nav-links a:hover { color: var(--text-1); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: var(--text-1); font-weight: 600; }
+.nav-cta {
+  font-size: var(--t-sm); font-weight: 600; color: var(--blue);
+  text-decoration: none; padding: 6px 14px; border-radius: 8px;
+  border: 1px solid var(--blue); transition: all var(--dur-base);
+}
+.nav-cta:hover { background: var(--blue); color: #fff; }
+
+/* ── HERO ── */
+.hero {
+  padding: 160px var(--s3) var(--s16);
+  text-align: center; max-width: 880px; margin: 0 auto;
+  min-height: 85vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.hero-eyebrow {
+  font-size: var(--t-xs); font-weight: 700; color: var(--blue);
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--s4);
+}
+.hero h1 {
+  font-size: clamp(52px, 8vw, 76px); font-weight: 800; letter-spacing: -0.04em;
+  line-height: 1.02; color: var(--text-1); margin-bottom: var(--s6);
+}
+.hero-deck {
+  font-size: clamp(var(--t-lg), 2.4vw, 21px); font-weight: 400;
+  color: var(--text-2); line-height: 1.7; max-width: 580px;
+  margin: 0 auto var(--s8); letter-spacing: -0.01em;
+}
+.hero-cta { display: flex; gap: var(--s2); justify-content: center; flex-wrap: wrap; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 11px 22px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  text-decoration: none; transition: all var(--dur-base) var(--ease-in-out);
+  cursor: pointer; border: none;
+}
+.btn:active { transform: scale(0.97); }
+.btn-fill { background: var(--blue); color: #fff; }
+.btn-fill:hover { background: var(--blue-hover); box-shadow: var(--shadow-md); }
+.btn-outline { background: transparent; color: var(--text-1); border: 1px solid var(--border); }
+.btn-outline:hover { background: var(--bg-alt); border-color: var(--border); }
+
+/* ── METRICS ── */
+.metrics-band { background: var(--bg-alt); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+.metrics {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  max-width: var(--max-w); margin: 0 auto; padding: var(--s8) var(--s3);
+}
+.metric { text-align: center; padding: var(--s3); }
+.metric:not(:last-child) { border-right: 1px solid var(--border); }
+.metric-val { font-size: 48px; font-weight: 800; letter-spacing: -0.03em; color: var(--text-1); line-height: 1; }
+.metric-unit { font-size: var(--t-sm); font-weight: 500; color: var(--text-3); margin-top: 10px; letter-spacing: 0; }
+
+/* ── SECTIONS ── */
+.sec { padding: var(--s12) var(--s3); max-width: var(--max-w); margin: 0 auto; }
+.sec-alt { background: var(--bg-alt); }
+.sec-label {
+  font-size: var(--t-xs); font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-4); margin-bottom: var(--s2);
+}
+.sec-title {
+  font-size: clamp(var(--t-3xl), 4.5vw, var(--t-4xl)); font-weight: 800;
+  letter-spacing: -0.035em; line-height: 1.12; margin-bottom: var(--s4);
+  max-width: 560px;
+}
+.sec-sub { font-size: var(--t-lg); color: var(--text-2); max-width: 540px; line-height: 1.65; margin-bottom: var(--s8); }
+
+/* ── SVG ICONS ── */
+.icon { width: 18px; height: 18px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.icon-sm { width: 16px; height: 16px; }
+
+/* ── CONFIDENCE ── */
+.trust-intro { text-align: center; max-width: 640px; margin: 0 auto var(--s10); }
+.trust-intro h2 {
+  font-size: clamp(var(--t-3xl), 4.5vw, var(--t-5xl)); font-weight: 800;
+  letter-spacing: -0.04em; line-height: 1.08; margin-bottom: var(--s4);
+}
+.trust-intro p { font-size: var(--t-lg); color: var(--text-2); line-height: 1.7; }
+.trust-visual {
+  max-width: 720px; margin: 0 auto var(--s10);
+  border: 1px solid var(--border-light); border-radius: 16px; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.trust-hdr {
+  padding: 16px 24px; background: var(--white);
+  font-size: var(--t-xs); font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-4); border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: center; gap: 8px;
+}
+.trust-hdr-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.trust-row {
+  display: grid; grid-template-columns: 56px 1fr 100px; align-items: center;
+  gap: var(--s3); padding: 18px 24px; border-bottom: 1px solid var(--border-light);
+  background: var(--white); transition: background var(--dur-fast);
+}
+.trust-row:last-child { border-bottom: none; }
+.trust-row:hover { background: var(--bg); }
+.badge {
+  padding: 5px 10px; border-radius: 6px; font-size: var(--t-xs); font-weight: 700;
+  letter-spacing: 0.03em; text-align: center; min-width: 50px;
+}
+.badge-h { background: var(--green-bg); color: var(--green); }
+.badge-m { background: var(--amber-bg); color: var(--amber); }
+.badge-l { background: var(--red-bg); color: var(--red); }
+.trust-claim { color: var(--text-2); line-height: 1.5; font-size: var(--t-md); }
+.trust-bar { width: 100%; height: 5px; background: var(--border-light); border-radius: 3px; overflow: hidden; }
+.trust-fill { height: 100%; border-radius: 3px; width: 0; transition: width 1.2s var(--ease-out); }
+.trust-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border-light); border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden; max-width: 720px; margin: 0 auto; }
+.trust-pillar { background: var(--white); padding: var(--s5) var(--s4); text-align: center; }
+.trust-pillar-icon { margin-bottom: var(--s2); color: var(--blue); }
+.trust-pillar h4 { font-size: var(--t-md); font-weight: 700; margin-bottom: 6px; }
+.trust-pillar p { font-size: 13px; color: var(--text-3); line-height: 1.55; }
+
+/* ── ARCHITECTURE ── */
+.arch-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.arch {
+  display: grid; gap: 1px; background: var(--border-light);
+  border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden; min-width: 720px;
+}
+.arch-tier {
+  background: var(--bg-alt); padding: 10px 20px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-4); grid-column: 1 / -1;
+}
+.arch-row { display: grid; gap: 1px; background: var(--border-light); }
+.arch-row.r1 { grid-template-columns: 1fr; }
+.arch-row.r4 { grid-template-columns: repeat(4, 1fr); }
+.arch-row.r5 { grid-template-columns: repeat(5, 1fr); }
+.arch-cell {
+  background: var(--white); padding: 16px; cursor: pointer;
+  transition: all var(--dur-base) var(--ease-in-out); border: none;
+  text-align: left; font-family: inherit;
+}
+.arch-cell:hover { background: var(--bg-alt); }
+.arch-cell.accent { background: var(--blue-light); }
+.arch-cell.accent:hover { background: #dbeeff; }
+.cell-name { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 3px; }
+.cell-desc { font-size: var(--t-xs); color: var(--text-3); line-height: 1.5; }
+
+/* ── PROCESS ── */
+.process-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--border-light); border: 1px solid var(--border-light);
+  border-radius: 12px; overflow: hidden;
+}
+.process-step { background: var(--white); padding: var(--s6) var(--s4); }
+.step-num {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--text-4); text-transform: uppercase; margin-bottom: var(--s3);
+}
+.step-icon { margin-bottom: var(--s2); color: var(--blue); }
+.step-title { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: var(--s2); }
+.step-body { font-size: var(--t-md); color: var(--text-2); line-height: 1.65; max-width: 65ch; }
+
+/* ── CREDENTIALS ── */
+.cred-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
+.cred-card {
+  border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;
+  transition: all var(--dur-base) var(--ease-in-out); background: var(--white);
+}
+.cred-card:hover { border-color: var(--blue); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.cred-body { padding: var(--s5) var(--s4); }
+.cred-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-4); margin-bottom: var(--s2);
+}
+.cred-title { font-size: var(--t-xl); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; color: var(--text-1); }
+.cred-desc { font-size: var(--t-md); color: var(--text-2); line-height: 1.65; margin-bottom: var(--s4); }
+.cred-metrics { display: flex; gap: var(--s4); margin-bottom: var(--s4); }
+.cred-stat { text-align: center; }
+.cred-stat-val { font-size: var(--t-2xl); font-weight: 800; letter-spacing: -0.02em; color: var(--text-1); }
+.cred-stat-label { font-size: var(--t-xs); color: var(--text-3); margin-top: 2px; }
+.cred-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--s3); }
+.cred-tag {
+  padding: 4px 10px; border-radius: 6px; font-size: var(--t-xs); font-weight: 500;
+  background: var(--bg-alt); color: var(--text-3); border: 1px solid var(--border-light);
+}
+.cred-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--blue); text-decoration: none;
+  transition: gap var(--dur-base) var(--ease-out);
+}
+.cred-link:hover { gap: 10px; }
+@media (max-width: 900px) { .cred-grid { grid-template-columns: 1fr; } }
+
+/* ── EXPLORER ── */
+.explorer-layout { display: grid; grid-template-columns: 220px 1fr; gap: var(--s6); }
+.explorer-nav {
+  align-self: start; position: sticky; top: 72px;
+  border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;
+}
+.exp-group-label {
+  padding: 10px 16px 6px; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4); background: var(--bg-alt);
+  border-bottom: 1px solid var(--border-light);
+}
+.exp-tab {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 16px; cursor: pointer; font-size: 13px; font-weight: 500;
+  color: var(--text-2); border-left: 3px solid transparent;
+  transition: all var(--dur-fast); user-select: none; background: var(--white);
+  border-bottom: 1px solid var(--border-light);
+}
+.exp-tab:last-child { border-bottom: none; }
+.exp-tab:hover { background: var(--bg-alt); color: var(--text-1); }
+.exp-tab.on { background: var(--blue-light); color: var(--blue); border-left-color: var(--blue); font-weight: 600; }
+.exp-tab .icon { transition: transform var(--dur-base) var(--ease-out); }
+.exp-tab:hover .icon { transform: scale(1.15); }
+
+.exp-panel { display: none; animation: fadeUp 0.4s var(--ease-out); }
+.exp-panel.on { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.panel-hd { margin-bottom: var(--s4); }
+.panel-hd h3 { font-size: var(--t-2xl); font-weight: 700; letter-spacing: -0.025em; margin-bottom: 10px; }
+.panel-hd p { font-size: var(--t-base); color: var(--text-2); line-height: 1.65; max-width: 560px; }
+.cap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cap-card {
+  border: 1px solid var(--border-light); border-radius: 12px; padding: 20px;
+  transition: all var(--dur-base) var(--ease-in-out);
+}
+.cap-card:hover { border-color: var(--blue); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.cap-card h4 { font-size: var(--t-md); font-weight: 600; margin-bottom: 6px; }
+.cap-card p { font-size: 13px; color: var(--text-3); line-height: 1.55; max-width: 65ch; }
+.panel-refs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--s3); }
+.ref-tag {
+  padding: 5px 12px; border-radius: 6px; font-size: var(--t-xs); font-weight: 500;
+  background: var(--bg-alt); color: var(--text-3); border: 1px solid var(--border-light);
+}
+
+/* ── DIFFERENTIATORS ── */
+.diff-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border-light); border: 1px solid var(--border-light);
+  border-radius: 12px; overflow: hidden;
+}
+.diff-card { background: var(--white); padding: var(--s5) var(--s4); }
+.diff-num { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--text-4); margin-bottom: var(--s2); }
+.diff-card h4 { font-size: var(--t-lg); font-weight: 700; letter-spacing: -0.015em; margin-bottom: 10px; }
+.diff-card p { font-size: var(--t-md); color: var(--text-2); line-height: 1.65; max-width: 65ch; }
+
+/* ── FOOTER ── */
+footer {
+  padding: var(--s8) var(--s3); text-align: center;
+  border-top: 1px solid var(--border-light);
+}
+.ft-mark { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; color: var(--text-1); text-transform: uppercase; margin-bottom: var(--s1); }
+footer p { font-size: var(--t-sm); color: var(--text-3); line-height: 1.6; }
+.ft-cta { margin-top: var(--s4); }
+
+/* ── SCROLL REVEAL ── */
+.rv { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out); }
+.rv.vis { opacity: 1; transform: translateY(0); }
+.rv-d1 { transition-delay: 0.12s; } .rv-d2 { transition-delay: 0.24s; }
+.rv-d3 { transition-delay: 0.36s; } .rv-d4 { transition-delay: 0.48s; }
+
+/* ── BACK TO TOP ── */
+.btt {
+  position: fixed; bottom: var(--s4); right: var(--s4); width: 44px; height: 44px;
+  border-radius: 50%; background: var(--white); color: var(--text-2);
+  border: 1px solid var(--border-light); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: all var(--dur-base) var(--ease-out);
+  box-shadow: var(--shadow-sm); z-index: 50;
+}
+.btt.show { opacity: 1; pointer-events: auto; }
+.btt:hover { background: var(--bg-alt); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .explorer-layout { grid-template-columns: 1fr; }
+  .explorer-nav { position: static; display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
+  .exp-group-label { display: none; }
+  .exp-tab { flex: 0 0 auto; min-width: 130px; border-left: none !important; border-bottom: 3px solid transparent; white-space: nowrap; justify-content: center; font-size: var(--t-sm); padding: 12px var(--s2); }
+  .exp-tab.on { border-bottom-color: var(--blue); border-left-color: transparent !important; background: var(--white); }
+  .trust-pillars { grid-template-columns: 1fr; }
+  .diff-grid { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: 1fr 1fr; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .metric:nth-child(2) { border-right: none; }
+  .metric:nth-child(3), .metric:nth-child(4) { border-top: 1px solid var(--border-light); }
+}
+@media (max-width: 600px) {
+  nav { padding: 0 var(--s2); }
+  .nav-links { gap: var(--s2); }
+  .nav-cta { display: none; }
+  .process-grid { grid-template-columns: 1fr; }
+  .cap-grid { grid-template-columns: 1fr; }
+  .sec { padding: var(--s8) var(--s2); }
+  .hero { padding: 112px var(--s2) var(--s8); }
+  .hero h1 { font-size: clamp(36px, 9vw, 52px); }
+}
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-mark">ATLAS <span style="font-weight:400;color:var(--text-3);letter-spacing:0.04em">— Strategy</span></div>
+    <ul class="nav-links">
+      <li><a href="#trust">Trust</a></li>
+      <li><a href="#arch">Architecture</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#credentials">Case Studies</a></li>
+      <li><a href="#explore">Capabilities</a></li>
+      <li><a href="#diff">Why ATLAS</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div id="main" role="main">
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <p class="hero-eyebrow rv">ATLAS — Strategy</p>
+  <h1 class="rv rv-d1">Strategic decisions.<br>Backed by evidence.<br>In hours, not weeks.</h1>
+  <p class="hero-deck rv rv-d2">Every finding confidence-scored. Every assumption tracked. Every data gap surfaced. From first question to boardroom-ready deliverable — with the rigor of a top-tier firm and zero tolerance for guesswork.</p>
+  <div class="hero-cta rv rv-d3">
+    <a href="#explore" class="btn btn-fill">Explore capabilities</a>
+    <a href="#arch" class="btn btn-outline">View architecture</a>
+  </div>
+</div>
+
+<!-- ══ METRICS ══ -->
+<div class="metrics-band">
+  <div class="metrics rv">
+    <div class="metric">
+      <div class="metric-val" data-count="17">0</div>
+      <div class="metric-unit">Specialist agents</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" data-count="80" data-suffix="+">0</div>
+      <div class="metric-unit">Reference frameworks</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" data-count="11">0</div>
+      <div class="metric-unit">Quality gates</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" data-count="3">0</div>
+      <div class="metric-unit">Evidence tiers</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TRUST / CONFIDENCE ══ -->
+<div id="trust" style="padding:var(--s16) var(--s3);">
+  <div class="trust-intro rv">
+    <p class="sec-label">Evidence engine</p>
+    <h2>Every claim scored.<br>Every gap surfaced.</h2>
+    <p>You see exactly what ATLAS knows, what it infers, and what still needs validation. When confidence drops below 70%, the system pauses and asks for more data.</p>
+  </div>
+  <div class="trust-visual rv rv-d1">
+    <div class="trust-hdr"><div class="trust-hdr-dot"></div> Live confidence assessment</div>
+    <div class="trust-row"><span class="badge badge-h">HIGH</span><span class="trust-claim">Market growing at 23% CAGR — three independent sources</span><div class="trust-bar"><div class="trust-fill" style="--w:92%;background:var(--green)"></div></div></div>
+    <div class="trust-row"><span class="badge badge-h">HIGH</span><span class="trust-claim">Top three competitors pursuing enterprise segment</span><div class="trust-bar"><div class="trust-fill" style="--w:85%;background:var(--green)"></div></div></div>
+    <div class="trust-row"><span class="badge badge-m">MED</span><span class="trust-claim">Switching costs create 18-month retention moat</span><div class="trust-bar"><div class="trust-fill" style="--w:62%;background:var(--amber)"></div></div></div>
+    <div class="trust-row"><span class="badge badge-m">MED</span><span class="trust-claim">Pricing power exists at enterprise tier</span><div class="trust-bar"><div class="trust-fill" style="--w:55%;background:var(--amber)"></div></div></div>
+    <div class="trust-row"><span class="badge badge-l">LOW</span><span class="trust-claim">Regulatory shift favors incumbents — needs validation</span><div class="trust-bar"><div class="trust-fill" style="--w:28%;background:var(--red)"></div></div></div>
+  </div>
+  <div class="trust-pillars rv rv-d2">
+    <div class="trust-pillar">
+      <div class="trust-pillar-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h4>Evidence hierarchy</h4>
+      <p>Five tiers from primary data to educated guess. Each level labeled and weighted.</p>
+    </div>
+    <div class="trust-pillar">
+      <div class="trust-pillar-icon"><svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <h4>Bayesian updating</h4>
+      <p>Confidence shifts as new evidence arrives. Prior + data = updated posterior.</p>
+    </div>
+    <div class="trust-pillar">
+      <div class="trust-pillar-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+      <h4>Auto-escalation</h4>
+      <p>Below 70% confidence? Pauses. More than 30% LOW? Flagged automatically.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ARCHITECTURE ══ -->
+<div class="sec-alt" id="arch">
+  <div class="sec">
+    <p class="sec-label rv">System architecture</p>
+    <h2 class="sec-title rv">Layered by design. Integrated by default.</h2>
+    <p class="sec-sub rv">Each agent operates autonomously. Structured data contracts and context versioning connect them into a single coherent system.</p>
+    <div class="arch-wrap rv">
+      <div class="arch">
+        <div class="arch-tier">Orchestration</div>
+        <div class="arch-row r1">
+          <button class="arch-cell accent" onclick="goTab('orch')"><div class="cell-name">Strategy Partner Orchestrator</div><div class="cell-desc">Diagnoses, selects agents, sequences multi-agent engagements</div></button>
+        </div>
+        <div class="arch-tier">Core strategy</div>
+        <div class="arch-row r4">
+          <button class="arch-cell" onclick="goTab('rumelt')"><div class="cell-name">Rumelt Forge</div><div class="cell-desc">Crux identification + Kernel</div></button>
+          <button class="arch-cell" onclick="goTab('mkt')"><div class="cell-name">Market Intel</div><div class="cell-desc">Signal collection + validation</div></button>
+          <button class="arch-cell" onclick="goTab('hyp')"><div class="cell-name">Hypothesis Testing</div><div class="cell-desc">Bayesian experiment engine</div></button>
+          <button class="arch-cell" onclick="goTab('exec')"><div class="cell-name">Execution Monitor</div><div class="cell-desc">KPI cascade + correction</div></button>
+        </div>
+        <div class="arch-tier">Operational strategy</div>
+        <div class="arch-row r5">
+          <button class="arch-cell" onclick="goTab('growth')"><div class="cell-name">Growth</div><div class="cell-desc">Constraint diagnosis + engines</div></button>
+          <button class="arch-cell" onclick="goTab('gtm')"><div class="cell-name">GTM</div><div class="cell-desc">Pricing + ICP + launch</div></button>
+          <button class="arch-cell" onclick="goTab('fin')"><div class="cell-name">Financial</div><div class="cell-desc">P&L + scenarios + modeling</div></button>
+          <button class="arch-cell" onclick="goTab('ma')"><div class="cell-name">M&A</div><div class="cell-desc">Deal thesis + integration</div></button>
+          <button class="arch-cell" onclick="goTab('ai')"><div class="cell-name">AI-Native</div><div class="cell-desc">AI strategy + governance</div></button>
+        </div>
+        <div class="arch-tier">Organization &amp; delivery</div>
+        <div class="arch-row r5">
+          <button class="arch-cell" onclick="goTab('ops')"><div class="cell-name">Operating Model</div><div class="cell-desc">Org design + capability</div></button>
+          <button class="arch-cell" onclick="goTab('people')"><div class="cell-name">People &amp; Talent</div><div class="cell-desc">Workforce + culture</div></button>
+          <button class="arch-cell" onclick="goTab('tech')"><div class="cell-name">Technology</div><div class="cell-desc">CTO advisory</div></button>
+          <button class="arch-cell" onclick="goTab('change')"><div class="cell-name">Change Mgmt</div><div class="cell-desc">Adoption + stakeholders</div></button>
+          <button class="arch-cell accent" onclick="goTab('atlas')"><div class="cell-name">ATLAS Reports</div><div class="cell-desc">Output pipeline</div></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROCESS ══ -->
+<div class="sec" id="process">
+  <p class="sec-label rv">Methodology</p>
+  <h2 class="sec-title rv">Four phases. One coherent output.</h2>
+  <p class="sec-sub rv">Every engagement follows the same disciplined arc — diagnosis, crux identification, operationalization, boardroom delivery.</p>
+  <div class="process-grid rv">
+    <div class="process-step">
+      <div class="step-num">Phase 01</div>
+      <div class="step-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></div>
+      <div class="step-title">Diagnose</div>
+      <div class="step-body">The Orchestrator scopes the problem, builds a MECE issue tree, tags confidence on every finding, and selects specialist agents.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">Phase 02</div>
+      <div class="step-icon"><svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="step-title">Forge</div>
+      <div class="step-body">Rumelt Strategy Forge identifies the Crux — the single pivotal challenge — then constructs the Kernel: Diagnosis, Guiding Policy, Coherent Actions.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">Phase 03</div>
+      <div class="step-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+      <div class="step-title">Operationalize</div>
+      <div class="step-body">Specialist agents activate in sequence — Growth, GTM, Financial, People, Technology — each receiving structured context from the prior phase.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">Phase 04</div>
+      <div class="step-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="step-title">Deliver</div>
+      <div class="step-body">ATLAS synthesizes every output into one boardroom-ready report. Dual expert panels critique before the final deliverable ships.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CREDENTIALS ══ -->
+<div class="sec-alt" id="credentials">
+  <div class="sec">
+    <p class="sec-label rv">Case studies</p>
+    <h2 class="sec-title rv">Validated against real-world strategy engagements.</h2>
+    <p class="sec-sub rv">Each case study was independently benchmarked against deliverables from leading strategy firms on the same brief.</p>
+    <div class="cred-grid rv">
+      <div class="cred-card">
+        <div class="cred-body">
+          <div class="cred-eyebrow">Pharmaceuticals · M&amp;A</div>
+          <div class="cred-title">GlobaPharm × BioFuture Acquisition</div>
+          <div class="cred-desc">Full M&amp;A evaluation of a $1B biologicals startup by a $10B traditional pharma company — deal thesis, synergy modeling, integration planning, and real-time market intelligence.</div>
+          <div class="cred-metrics">
+            <div class="cred-stat"><div class="cred-stat-val">$1B</div><div class="cred-stat-label">Deal value</div></div>
+            <div class="cred-stat"><div class="cred-stat-val">7–10%</div><div class="cred-stat-label">Biologics CAGR</div></div>
+            <div class="cred-stat"><div class="cred-stat-val">$1.2B</div><div class="cred-stat-label">Drug value if marketed</div></div>
+          </div>
+          <div class="cred-tags">
+            <span class="cred-tag">M&amp;A Strategy</span>
+            <span class="cred-tag">Synergy Modeling</span>
+            <span class="cred-tag">Due Diligence</span>
+            <span class="cred-tag">Integration Plan</span>
+          </div>
+          <a href="0-case%20validation/1-pharma/globapharm-atlas-report.html" class="cred-link">View full ATLAS report <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+      <div class="cred-card">
+        <div class="cred-body">
+          <div class="cred-eyebrow">Beauty &amp; Luxury · Digital Transformation</div>
+          <div class="cred-title">Beautify Virtual Advisor Strategy</div>
+          <div class="cred-desc">Workforce transformation strategy shifting beauty consultants to virtual social media advisors — covering customer experience, financial viability, and AI augmentation.</div>
+          <div class="cred-metrics">
+            <div class="cred-stat"><div class="cred-stat-val">€1.3B</div><div class="cred-stat-label">Revenue</div></div>
+            <div class="cred-stat"><div class="cred-stat-val">€130M</div><div class="cred-stat-label">Incremental revenue</div></div>
+            <div class="cred-stat"><div class="cred-stat-val">Year 2</div><div class="cred-stat-label">Break-even</div></div>
+          </div>
+          <div class="cred-tags">
+            <span class="cred-tag">Digital Transformation</span>
+            <span class="cred-tag">Workforce Strategy</span>
+            <span class="cred-tag">AI Augmentation</span>
+            <span class="cred-tag">P&amp;L Modeling</span>
+          </div>
+          <a href="0-case%20validation/2-beauty/beautify-atlas-report.html" class="cred-link">View full ATLAS report <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EXPLORER ══ -->
+<div class="sec" id="explore">
+    <p class="sec-label rv">Capabilities</p>
+    <h2 class="sec-title rv">Seventeen agents. One strategic mind.</h2>
+    <p class="sec-sub rv">Select any agent to see its frameworks, deliverables, and integration points.</p>
+    <div class="explorer-layout rv">
+      <div class="explorer-nav" id="expNav">
+        <div class="exp-group-label">Orchestration</div>
+        <div class="exp-tab on" data-p="orch"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg> Orchestrator</div>
+
+        <div class="exp-group-label">Core Strategy</div>
+        <div class="exp-tab" data-p="rumelt"><svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Rumelt Forge</div>
+        <div class="exp-tab" data-p="mkt"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg> Market Intel</div>
+        <div class="exp-tab" data-p="hyp"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Hypothesis</div>
+        <div class="exp-tab" data-p="exec"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Execution</div>
+
+        <div class="exp-group-label">Operational</div>
+        <div class="exp-tab" data-p="growth"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> Growth</div>
+        <div class="exp-tab" data-p="gtm"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Go-to-Market</div>
+        <div class="exp-tab" data-p="fin"><svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Financial</div>
+        <div class="exp-tab" data-p="ma"><svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> M&amp;A</div>
+        <div class="exp-tab" data-p="ai"><svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg> AI-Native</div>
+
+        <div class="exp-group-label">Delivery</div>
+        <div class="exp-tab" data-p="atlas"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> ATLAS Reports</div>
+
+        <div class="exp-group-label" style="display:none">Extra</div>
+        <div class="exp-tab" data-p="ops" style="display:none"></div>
+        <div class="exp-tab" data-p="people" style="display:none"></div>
+        <div class="exp-tab" data-p="tech" style="display:none"></div>
+        <div class="exp-tab" data-p="change" style="display:none"></div>
+      </div>
+
+      <div id="expContent">
+
+        <div class="exp-panel on" id="p-orch">
+          <div class="panel-hd"><h3>Strategy Partner Orchestrator</h3><p>The system's entry point. A senior strategy partner who diagnoses what's actually happening before recommending what to do about it. 20+ year methodology from leading strategy firms.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>Confidence-driven diagnosis</h4><p>Every claim tagged HIGH, MEDIUM, or LOW. Auto-escalates when confidence drops below 70%.</p></div>
+            <div class="cap-card"><h4>MECE issue decomposition</h4><p>Systematic problem breakdown — collectively exhaustive, mutually exclusive. Nothing missed, nothing double-counted.</p></div>
+            <div class="cap-card"><h4>Three-perspective stress test</h4><p>Devil's Advocate, Domain Expert, and Implementation Realist pressure-test every finding before it ships.</p></div>
+            <div class="cap-card"><h4>Multi-agent routing</h4><p>Automatically selects and sequences specialist agents based on problem diagnosis and required depth.</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">17 reference frameworks</span><span class="ref-tag">Hypothesis register</span><span class="ref-tag">Structured JSON</span></div>
+        </div>
+
+        <div class="exp-panel" id="p-rumelt">
+          <div class="panel-hd"><h3>Rumelt Strategy Forge</h3><p>Transforms diagnostic intelligence into coherent strategy using Richard Rumelt's kernel framework. Every strategy has one clear response to the most critical challenge — everything else is aspiration.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>Crux identification</h4><p>Surfaces the single pivotal challenge. Must be addressable, pivotal, singular, and specific.</p></div>
+            <div class="cap-card"><h4>Kernel construction</h4><p>Diagnosis + Guiding Policy + 3–5 Coherent Actions, validated for internal consistency.</p></div>
+            <div class="cap-card"><h4>Bad strategy detector</h4><p>Catches fluff, goal-setting masquerading as strategy, and failure to confront the problem.</p></div>
+            <div class="cap-card"><h4>Sources of power</h4><p>Identifies which competitive advantages the strategy exploits and whether they're defensible.</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">Coherence test</span><span class="ref-tag">Good Strategy / Bad Strategy</span><span class="ref-tag">Scenario stress testing</span></div>
+        </div>
+
+        <div class="exp-panel" id="p-mkt">
+          <div class="panel-hd"><h3>Market Intelligence</h3><p>Competitive threat scoring, not just market reports. Systematic signal collection, bias-validated intelligence, and formats strategists can act on immediately.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>Signal collection engine</h4><p>70+ search queries across six categories with competitive monitoring cadence.</p></div>
+            <div class="cap-card"><h4>Source validation</h4><p>Four-tier reliability framework. Tier 1 (95% reliable) through Tier 4 (20%). Every source graded.</p></div>
+            <div class="cap-card"><h4>Competitor playbooks</h4><p>Quarterly profiles covering position, product, GTM, financial health, and threat level.</p></div>
+            <div class="cap-card"><h4>Executive intelligence briefs</h4><p>One-page summaries with confidence-rated claims, action triggers, and staleness detection.</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">Signal vs. noise</span><span class="ref-tag">Bias detection</span><span class="ref-tag">Staleness triggers</span></div>
+        </div>
+
+        <div class="exp-panel" id="p-hyp">
+          <div class="panel-hd"><h3>Hypothesis Testing</h3><p>Kill bad ideas before they cost millions. A Bayesian experiment engine that surfaces your riskiest assumptions, tests them cheaply, and makes kill-or-continue decisions with discipline.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>Hypothesis extraction</h4><p>Three layers — Strategic, Operational, Tactical — scored by Risk × Impact / Cost of Learning.</p></div>
+            <div class="cap-card"><h4>Experiment design</h4><p>MVP/MLP protocols with population, sample size, timeline, cost, and success criteria.</p></div>
+            <div class="cap-card"><h4>Bayesian updating</h4><p>Prior → Evidence → Posterior. Quantified confidence movement with evidence weight classification.</p></div>
+            <div class="cap-card"><h4>Decision framework</h4><p>≥80% continue. 60–80% conditional. 40–60% pivot. Below 40% kill. Every outcome advances learning.</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">Evidence hierarchy</span><span class="ref-tag">Fail cheap, fail fast</span><span class="ref-tag">12-month test roadmap</span></div>
+        </div>
+
+        <div class="exp-panel" id="p-exec">
+          <div class="panel-hd"><h3>Execution Monitor</h3><p>Strategy as a live hypothesis, not a static plan. KPI cascades, assumption registers, execution risk tracking, and automated course-correction triggers.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>KPI cascade</h4><p>Annual targets → quarterly milestones → monthly metrics → weekly leading indicators with traffic-light thresholds.</p></div>
+            <div class="cap-card"><h4>Assumption register</h4><p>8–15 material assumptions tracked with invalidation triggers and validation checkpoints.</p></div>
+            <div class="cap-card"><h4>Execution risk taxonomy</h4><p>Ten risk categories monitored with early-warning indicators and probability trending.</p></div>
+            <div class="cap-card"><h4>Course correction</h4><p>Root cause diagnosis → impact assessment → persist / adjust / pivot / kill decision paths.</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">Rolling 12-week trends</span><span class="ref-tag">Scenario triggers</span><span class="ref-tag">Post-mortems</span></div>
+        </div>
+
+        <div class="exp-panel" id="p-growth">
+          <div class="panel-hd"><h3>Growth Strategy</h3><p>Find your binding constraint, not generic growth vectors. Constraint-first diagnosis, growth engine design, unit economics validation, and three-horizon portfolio management.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>Constraint diagnosis</h4><p>Identifies the binding growth constraint: awareness, demand, conversion, retention, or expansion.</p></div>
+            <div class="cap-card"><h4>Growth engine design</h4><p>Loop metrics, cycle times, viral coefficients, and retention cohort modeling.</p></div>
+            <div class="cap-card"><h4>Unit economics</h4><p>CAC, LTV, contribution margin, and payback period — validated before any scaling decision.</p></div>
+            <div class="cap-card"><h4>H1 / H2 / H3 portfolio</h4><p>Stage-gated horizon allocation with explicit kill triggers and escalation criteria.</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">Ansoff matrix</span><span class="ref-tag">Network effects</span><span class="ref-tag">TAM analysis</span></div>
+        </div>
+
+        <div class="exp-panel" id="p-gtm">
+          <div class="panel-hd"><h3>Go-to-Market Strategy</h3><p>Integrated GTM systems where pricing, sales motion, and distribution reinforce each other. Requires confirmed product-market fit before activation.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>PMF validation gate</h4><p>Sean Ellis test, organic growth rate, churn, and customer feedback — all must pass before GTM spend.</p></div>
+            <div class="cap-card"><h4>Pricing and packaging</h4><p>Value-based pricing, elasticity modeling, competitive positioning, and packaging architecture.</p></div>
+            <div class="cap-card"><h4>ICP segmentation</h4><p>Four-dimension framework with firmographic, behavioral, and intent signals.</p></div>
+            <div class="cap-card"><h4>90-day launch roadmap</h4><p>Milestones, owners, success metrics — reviewed by a five-person quality panel.</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">PLG vs. SLG</span><span class="ref-tag">Channel strategy</span><span class="ref-tag">CAC payback</span></div>
+        </div>
+
+        <div class="exp-panel" id="p-fin">
+          <div class="panel-hd"><h3>Financial Strategy</h3><p>CFO-grade financial architecture. Numbers over narratives. Cash is king. Unit economics obsession. Scenario discipline.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>Financial diagnostics</h4><p>P&L, cash flow, and balance sheet health with margin lever identification.</p></div>
+            <div class="cap-card"><h4>Business case builder</h4><p>NPV, IRR, payback analysis with sensitivity testing on key assumptions.</p></div>
+            <div class="cap-card"><h4>Scenario modeling</h4><p>Base, bull, and bear projections with clearly stated assumptions and confidence tags.</p></div>
+            <div class="cap-card"><h4>Investor narratives</h4><p>Connecting strategic choices to financial performance for board and investor audiences.</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">Unit economics</span><span class="ref-tag">Cost transformation</span><span class="ref-tag">Capital allocation</span></div>
+        </div>
+
+        <div class="exp-panel" id="p-ma">
+          <div class="panel-hd"><h3>M&A &amp; Corporate Development</h3><p>Thesis first — no target without coherent strategic logic. Synergies are liabilities until proven. Integration is won or lost pre-close.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>Acquisition thesis</h4><p>One-paragraph thesis with M&A type classification and value creation model validated against strategy kernel.</p></div>
+            <div class="cap-card"><h4>Target screening</h4><p>Landscape mapping, strategic fit filtering, and longlist-to-shortlist funnel with scoring rubric.</p></div>
+            <div class="cap-card"><h4>Synergy modeling</h4><p>Revenue, cost, and capability synergies with probability weighting and integration cost estimation.</p></div>
+            <div class="cap-card"><h4>100-day integration plan</h4><p>Post-merger roadmap with KPIs, failure mode mitigation, and cultural integration playbook.</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">Due diligence</span><span class="ref-tag">Deal structuring</span><span class="ref-tag">PMI</span></div>
+        </div>
+
+        <div class="exp-panel" id="p-ai">
+          <div class="panel-hd"><h3>AI-Native Strategy</h3><p>Chief AI Officer advisor calibrated for 2026. Build-vs-buy, agentic architecture, LLM selection, regulatory compliance, and AI talent strategy.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>AI opportunity diagnosis</h4><p>Classify the play: AI-Enhanced vs. AI-Native vs. Hybrid. Assess defensibility across data, model, distribution moats.</p></div>
+            <div class="cap-card"><h4>Agentic architecture</h4><p>Multi-agent orchestration patterns, LLM selection matrix across six providers, and cost modeling.</p></div>
+            <div class="cap-card"><h4>Governance and compliance</h4><p>EU AI Act timeline, sector regulation mapping, data privacy frameworks, and risk classification.</p></div>
+            <div class="cap-card"><h4>Model economics</h4><p>Centralized pricing config across providers. Unit economics impact modeling. Blended cost strategies.</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">Build vs. buy vs. partner</span><span class="ref-tag">LLM selection matrix</span><span class="ref-tag">EU AI Act</span></div>
+        </div>
+
+        <div class="exp-panel" id="p-atlas">
+          <div class="panel-hd"><h3>ATLAS Report Pipeline</h3><p>The output engine. Transforms raw analysis into a single, self-contained deliverable through a three-stage pipeline: Generate, Critique, Elevate.</p></div>
+          <div class="cap-grid">
+            <div class="cap-card"><h4>Design system</h4><p>Purpose-built typography, color palette, spacing scale, and component library — all rendered inline.</p></div>
+            <div class="cap-card"><h4>Dual expert panels</h4><p>Design Panel and Strategy Panel deliver specific, actionable improvements before final output.</p></div>
+            <div class="cap-card"><h4>Skill integration map</h4><p>Eight-section report structure mapped to specific agents with conflict detection and resolution.</p></div>
+            <div class="cap-card"><h4>Quality standard</h4><p>Target: a Fortune 500 CEO says "This is the best strategic analysis I've ever seen presented."</p></div>
+          </div>
+          <div class="panel-refs"><span class="ref-tag">Generate → Critique → Elevate</span><span class="ref-tag">Self-contained HTML</span><span class="ref-tag">Context versioning</span></div>
+        </div>
+
+        <!-- Hidden panels for arch-cell clicks -->
+        <div class="exp-panel" id="p-ops"><div class="panel-hd"><h3>Operating Model</h3><p>Organization design, capability mapping, and operating model transformation. Connects structure to strategy.</p></div></div>
+        <div class="exp-panel" id="p-people"><div class="panel-hd"><h3>People &amp; Talent</h3><p>CHRO advisory for workforce planning, talent acquisition, culture design, and organizational health.</p></div></div>
+        <div class="exp-panel" id="p-tech"><div class="panel-hd"><h3>Technology Strategy</h3><p>CTO advisory for technology roadmap, build-vs-buy decisions, platform architecture, and technical debt management.</p></div></div>
+        <div class="exp-panel" id="p-change"><div class="panel-hd"><h3>Change Management</h3><p>Stakeholder alignment, communication planning, adoption tracking, and resistance management for strategic transformations.</p></div></div>
+
+      </div>
+    </div>
+</div>
+
+<!-- ══ DIFFERENTIATORS ══ -->
+<div class="sec-alt" id="diff">
+<div class="sec">
+  <p class="sec-label rv">Why ATLAS</p>
+  <h2 class="sec-title rv">What separates this from everything else.</h2>
+  <div style="height:var(--s6)"></div>
+  <div class="diff-grid rv">
+    <div class="diff-card"><div class="diff-num">01</div><h4>Ends strategy rework cycles</h4><p>From question to boardroom-ready ATLAS report in hours. Dual expert panel critique ensures quality ships on the first pass, not the fourth.</p></div>
+    <div class="diff-card"><div class="diff-num">02</div><h4>Confidence on every claim</h4><p>Every finding tagged. Every assumption tracked. Every data gap surfaced. You know exactly what's solid, what's inferred, and what needs validation.</p></div>
+    <div class="diff-card"><div class="diff-num">03</div><h4>Growth informs pricing. Pricing informs financials.</h4><p>Seventeen agents connected through data contracts. Every recommendation reinforces the others. No contradictions. Conflict detection at every handoff.</p></div>
+    <div class="diff-card"><div class="diff-num">04</div><h4>The crux, not the wish list</h4><p>Rumelt kernel framework. One pivotal challenge. One coherent response. Crux identification, coherence testing, and sources-of-power analysis — the same rigor taught at the world's leading business schools.</p></div>
+    <div class="diff-card"><div class="diff-num">05</div><h4>Hypothesis-driven decisions</h4><p>Built-in Bayesian experiment engine. Surface your riskiest assumptions. Test them cheaply. Kill bad ideas early. Update confidence with evidence, not opinion.</p></div>
+    <div class="diff-card"><div class="diff-num">06</div><h4>80+ reference frameworks</h4><p>Ansoff, Porter, Rumelt, 7-S, Bayesian testing, and dozens more — operationalized and sequenced, not just listed in a slide deck.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="ft-mark">ATLAS — Strategy</div>
+  <p>Strategic Intelligence Platform</p>
+  <p style="margin-top:4px;">17 agents · 80+ frameworks · Evidence-graded intelligence</p>
+  <div class="ft-cta">
+    <a href="#explore" class="btn btn-fill" style="font-size:12px;padding:9px 18px;">Explore capabilities</a>
+  </div>
+</footer>
+
+</div><!-- /main -->
+
+<button class="btt" id="btt" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+// ── Tab System ──
+const tabs = [...document.querySelectorAll('.exp-tab')];
+const panels = [...document.querySelectorAll('.exp-panel')];
+
+function goTab(id) {
+  tabs.forEach(t => t.classList.remove('on'));
+  panels.forEach(p => p.classList.remove('on'));
+  const tab = tabs.find(t => t.dataset.p === id);
+  const panel = panels.find(p => p.id === 'p-' + id);
+  if (tab) { tab.classList.add('on'); tab.style.display = 'flex'; }
+  if (panel) panel.classList.add('on');
+  const el = document.getElementById('explore');
+  if (el && !isInView(el)) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function isInView(el) { const r = el.getBoundingClientRect(); return r.top < window.innerHeight && r.bottom > 0; }
+
+tabs.forEach(t => { if (t.dataset.p) t.addEventListener('click', () => goTab(t.dataset.p)); });
+
+// ── Scroll Reveal ──
+const rvObs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); rvObs.unobserve(e.target); } });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
+
+// ── Smooth Scroll Links ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    const t = document.querySelector(this.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// ── Active Nav Link ──
+const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+const sectionIds = [...navLinks].map(a => a.getAttribute('href').slice(1));
+const secObs = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.nav-links a[href="#' + e.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-48px 0px -50% 0px' });
+sectionIds.forEach(id => { const el = document.getElementById(id); if (el) secObs.observe(el); });
+
+// ── Back to Top ──
+const btt = document.getElementById('btt');
+window.addEventListener('scroll', () => { btt.classList.toggle('show', window.scrollY > 600); }, { passive: true });
+btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// ── Metric Count-Up ──
+const metricObs = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const final = parseInt(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    let current = 0;
+    const step = Math.max(1, Math.ceil(final / 30));
+    const iv = setInterval(() => {
+      current = Math.min(current + step, final);
+      el.textContent = current + suffix;
+      if (current >= final) clearInterval(iv);
+    }, 25);
+    metricObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.metric-val').forEach(m => metricObs.observe(m));
+
+// ── Confidence Bar Animation ──
+const barObs = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.trust-fill').forEach(bar => {
+      bar.style.width = bar.style.getPropertyValue('--w');
+    });
+    barObs.unobserve(e.target);
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.trust-visual').forEach(v => barObs.observe(v));
+</script>
+</body>
+</html>
