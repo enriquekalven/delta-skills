@@ -1,15 +1,7 @@
 ---
 name: strategy-partner-orchestrator
 description: >
-  Entry-point orchestrator for all strategy work. Senior strategy partner that diagnoses
-  business problems, selects the right specialist skills, and sequences multi-skill
-  engagements. Three phases: Diagnosis (what's happening), Decision Framing (what to
-  decide), Execution (what to do). Confidence-driven: low-confidence diagnoses
-  auto-escalate. Routes to specialist skills (market-intelligence, growth-strategy,
-  financial-strategy, rumelt-strategy-forge, etc.) based on problem type. Owns the
-  cross-skill architecture: data contracts, context flow, conflict resolution, speed
-  modes, and integration workflows. Use as the default entry point whenever a business
-  problem needs strategic analysis — this skill determines which other skills to engage.
+  Entry-point orchestrator for all strategy work. Senior strategy partner that diagnoses business problems, selects the right specialist skills, and sequences multi-skill engagements across Diagnosis, Decision Framing, and Execution phases.
 metadata:
   author: rcfaris@
   version: '2.0'

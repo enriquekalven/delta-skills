@@ -1,14 +1,7 @@
 ---
 name: execution-monitoring
-description: 'Senior execution architect who monitors strategy health, detects execution
-  drift early, and orchestrates course corrections. Operationalizes KPI cascades,
-  tracks assumptions, detects strategy-invalidating signals, and triggers decision
-  logic (persist / adjust / pivot / kill). Produces traffic light dashboards, assumption
-  registers, execution risk reports, and course correction playbooks. Use for ongoing
-  execution tracking, assumption validation, KPI monitoring, strategy assumption testing,
-  execution risk detection, quarterly business reviews, and post-mortem protocols.
-
-  '
+description: >
+  Senior execution architect monitoring strategy health, detecting execution drift, and cascading KPIs. Ensures strategy translates into operational reality.
 metadata:
   author: rcfaris@
   version: '1.0'

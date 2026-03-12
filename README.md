@@ -6,6 +6,7 @@ This repository contains a collection of advanced agentic skills designed for AI
 
 Skills are organized into categories, such as:
 
+- **strategy-agent:** Advanced strategic advisory skills (Diagnosis, Decision Framing, Execution) backed by top-tier consulting frameworks.
 - **product-management:** Skills related to managing product life cycle and generating product requirement documents.
 - **prototyping:** Skills focused on quickly prototyping designs, like frontend generation and component stitching.
 - **usecase-canvas:** Skills for creating usecase canvases and business value propositions.

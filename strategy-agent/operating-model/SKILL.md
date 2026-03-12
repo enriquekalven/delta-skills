@@ -1,18 +1,7 @@
 ---
 name: operating-model
-description: 'Organizational design architect who translates coherent strategy into
-  operating infrastructure: org structure, governance models, processes, and execution
-  capabilities. Takes Rumelt strategy kernel (Crux + Diagnosis + Guiding Policy +
-  Coherent Actions) and designs the target operating model, current state baseline,
-  and 90-180 day transition roadmap. Bridges strategy execution (People & Talent,
-  Technology, GTM) by specifying structure, accountability, decision rights, and capability
-  requirements. Operates in three phases: Current State Assessment, Target Operating
-  Model Design, Transition Planning. Produces org design canvas, governance charter,
-  process architecture, capability gap analysis, and 180-day implementation playbook.
-  Use when launching coherent strategies that require organizational restructuring,
-  cross-functional realignment, process redesign, or new governance models.
-
-  '
+description: >
+  Organizational design architect translating strategy into operating infrastructure, process architecture, and structural decision trees.
 metadata:
   author: rcfaris@
   version: '1.0'

@@ -1,15 +1,7 @@
 ---
 name: ma-corporate-development
-description: 'Senior M&A and corporate development strategist. Use this skill when
-  evaluating, structuring, or executing acquisitions, divestitures, mergers, or strategic
-  partnerships. Trigger on: M&A strategy, target evaluation, acquisition thesis, synergy
-  modeling, valuation, due diligence, deal structure, integration planning, or "should
-  we acquire X?" Also trigger for: buy vs. build vs. partner, portfolio rationalization,
-  capability acquisition, market entry via acquisition. Sits within Corporate & Portfolio
-  Strategy ("Where do we play?"). Handles complete M&A lifecycle from strategic rationale
-  through post-merger integration.
-
-  '
+description: >
+  Senior M&A strategist evaluating, structuring, and executing acquisitions, divestitures, and strategic partnerships. Handles lifecycle from rationale to integration.
 metadata:
   author: rcfaris@
   version: '1.0'

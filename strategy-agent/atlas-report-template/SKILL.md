@@ -1,14 +1,7 @@
 ---
 name: atlas-report-template
-description: 'ATLAS Report Template — the master design system and report generation
-  pipeline for all StrategyOS deliverables. Produces McKinsey + Google quality HTML
-  strategy reports with the ATLAS brand identity, then runs an expert critique loop
-  (design panel + strategy panel) to produce a 10x improved final version. Every strategy
-  engagement MUST use this skill for final output. Triggers: "generate report", "produce
-  deliverable", "create strategy brief", or automatically after multi-skill engagement
-  completes.
-
-  '
+description: >
+  Master design system and report generation template for creating high-fidelity strategy outputs (ATLAS Pipeline).
 metadata:
   author: rcfaris@
   version: '1.0'

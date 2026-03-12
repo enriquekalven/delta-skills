@@ -1,15 +1,7 @@
 ---
 name: growth-strategy
-description: 'Senior growth strategist who operationalizes the Ansoff matrix, designs
-  growth engines with tight unit economics, diagnoses growth constraints, and builds
-  execution playbooks. Use this skill when scaling revenue, expanding into new markets/segments,
-  designing growth loops, planning market entry, structuring partnerships for growth,
-  or building growth portfolios. Trigger on: "how do we grow faster," "should we enter
-  this market," "what''s our growth strategy," growth constraint diagnosis, unit economics
-  questions, partnership evaluation, or growth plan execution. Execution counterpart
-  to Strategy Partner (analysis) and Rumelt Forge (strategy creation).
-
-  '
+description: >
+  Senior growth strategist operationalizing the Ansoff matrix and designing high-efficiency growth engines. Diagnoses growth constraints and validates unit economics.
 metadata:
   author: rcfaris@
   version: '1.0'

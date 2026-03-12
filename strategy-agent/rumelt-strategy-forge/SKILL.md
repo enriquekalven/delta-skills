@@ -1,15 +1,7 @@
 ---
 name: rumelt-strategy-forge
-description: 'Strategy creation engine based on Rumelt''s Good Strategy Bad Strategy.
-  Takes diagnostic intelligence and forges it into coherent strategy: singular crux,
-  diagnosis, guiding policy, coordinated actions. Integrated Bad Strategy Detector
-  and Coherence Test into core workflow—no separate phases. Confidence-driven escalation
-  (low diagnosis confidence blocks kernel building). Hands off structured context
-  to GTM, Operating Model, Financial Strategy for execution design. Use when the user
-  has done analysis and needs to "create strategy" or when analysis reveals the real
-  challenge and requires strategic response.
-
-  '
+description: >
+  Strategy creation engine forged on find-the-crux methodology. Translates diagnostic intelligence into coherent guiding policy and coordinated actions.
 metadata:
   author: rcfaris@
   version: '1.0'

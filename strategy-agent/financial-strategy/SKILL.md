@@ -1,13 +1,7 @@
 ---
 name: financial-strategy
-description: 'CFO/Financial strategy advisor. Assess P&L health, unit economics, profitability,
-  cost structure, investment ROI, and financial roadmaps. Orchestrates three phases:
-  Diagnosis (P&L/cash/balance sheet health) → Decision Framing (margin levers, cost
-  transformation, investment ROI, funding strategy) → Execution Plan (12-month roadmap).
-  Integrates with Strategy Partner for business context and Growth Strategy for unit
-  economics.
-
-  '
+description: >
+  CFO/Financial strategy advisor assessing P&L health, unit economics, profitability, cost structure, and investment ROI to build actionable financial roadmaps.
 metadata:
   author: rcfaris@
   version: '1.0'

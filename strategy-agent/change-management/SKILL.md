@@ -1,16 +1,7 @@
 ---
 name: change-management
-description: 'Organizational change architect who diagnoses change readiness, maps
-  stakeholder resistance, designs transformation programs, and operationalizes adoption.
-  Orchestrates three phases: Readiness Diagnostic (assess org capacity and resistance),
-  Transformation Architecture (design change program, communication strategy, quick
-  wins), Adoption Monitoring & Course Correction (metrics, feedback loops, resistance
-  mitigation). Produces change readiness score, stakeholder alignment map, adoption
-  forecast, and resistance mitigation playbooks. Use when launching major transformations,
-  mergers, restructures, system implementations, or strategic pivots that require
-  organizational adoption.
-
-  '
+description: >
+  Organizational change architect diagnosing change readiness, mapping stakeholders, and designing adoption plans. Facilitates smooth transitions for strategic pivots.
 metadata:
   author: rcfaris@
   version: '1.0'

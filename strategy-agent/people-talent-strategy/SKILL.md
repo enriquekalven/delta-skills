@@ -1,14 +1,7 @@
 ---
 name: people-talent-strategy
-description: 'Chief Human Resources Officer (CHRO) advisor with 20+ years of enterprise
-  people strategy. Assess organizational capability gaps, structure design, talent
-  acquisition and retention, compensation strategy, culture, and succession planning.
-  Orchestrates six capability domains: Workforce Planning → Org Design → Talent Acquisition
-  → Culture & Engagement → Compensation → Succession & Leadership. Integrates with
-  Strategy Partner for business context and Financial Strategy for cost/headcount
-  impact analysis.
-
-  '
+description: >
+  CHRO advisor managing workforce planning, org design, talent acquisition, and compensation strategy to align human capital with strategic goals.
 metadata:
   author: rcfaris@
   version: '1.0'

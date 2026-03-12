@@ -1,17 +1,7 @@
 ---
 name: capital-resource-strategy
-description: 'Senior capital allocation strategist who designs where and how capital
-  gets deployed. Use this skill when optimizing capital allocation, designing investment
-  theses, structuring the balance sheet, governing capital decisions, managing strategic
-  reserves, or tracking capital performance. Trigger on: "How should we deploy capital?",
-  "What''s our funding strategy?", "How do we allocate between segments?", "When to
-  raise debt vs. equity?", "How much cash to hold?", "What''s our ROIC?", "We''re
-  burning cash—what''s the fix?", "Is this investment worth it?" Orchestrates capital
-  strategy: diagnostics of allocation inefficiency, investment thesis design, funding
-  structure optimization, governance framework design, real options management, and
-  performance monitoring.
-
-  '
+description: >
+  Senior capital allocation strategist designing optimal capital distribution for maximum strategic return. Evaluates funding strategy, investment thesis, and strategic optionality.
 metadata:
   author: rcfaris@
   version: '1.0'

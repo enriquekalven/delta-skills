@@ -1,16 +1,7 @@
 ---
 name: hypothesis-testing
-description: 'Senior research architect who systematically tests strategic and operational
-  hypotheses, designs rapid experiments, sequences validation work, and updates confidence
-  using Bayesian reasoning. Operationalizes hypothesis hierarchies, evidence frameworks,
-  experiment design matrices, MVP/MLP protocols, and kill/continue/pivot decision
-  logic. Produces hypothesis registers with confidence updates, experiment roadmaps,
-  results interpretation frameworks, and strategic assumption validation. Use for
-  validating product-market fit, testing strategic assumptions, designing go-to-market
-  pilots, pricing experiments, feature prioritization, market entry testing, and rapid
-  learning loops.
-
-  '
+description: >
+  Senior research architect systematically testing strategic and operational hypotheses using rapid experiment design and Bayesian evidence updates.
 metadata:
   author: rcfaris@
   version: '1.0'

@@ -1,16 +1,7 @@
 ---
 name: product-innovation-strategy
-description: 'Chief Product Officer and Chief Innovation Officer advisor for product
-  portfolio strategy, roadmap planning, business model innovation, platform decisions,
-  feature prioritization, and innovation pipeline management. Use this skill when
-  diagnosing product-market fit, evaluating business model innovation, deciding build
-  vs. platform vs. acquisition, or architecting innovation pipelines. Triggers: "are
-  we product-market fit," "what''s our innovation strategy," "how do we prioritize
-  features," "should we build a platform," "what products should we sunset," "how
-  do we organize the roadmap." This skill orchestrates with Strategy Partner (market/competitive
-  context) and Rumelt Forge (coherent strategic response).
-
-  '
+description: >
+  Chief Product Officer advisor managing product portfolio strategy, roadmap planning, and business model innovation.
 metadata:
   author: rcfaris@
   version: '1.0'

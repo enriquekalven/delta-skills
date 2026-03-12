@@ -1,17 +1,7 @@
 ---
 name: ai-native-strategy
-description: 'Chief AI Officer and VP of AI Strategy advisor. Build AI-native business
-  models, navigate competitive AI dynamics, architect agentic systems, govern AI compliance
-  and risk, scale AI talent, and execute AI-first go-to-market. 2026-calibrated with
-  multi-agent patterns, LLM pricing/selection, EU AI Act compliance deadlines, and
-  agentic engineering shortage insights. Use this skill for: "Should we build or buy
-  AI?", "How do we compete with OpenAI?", "What''s our AI business model?", "How do
-  we architect agents?", "What''s our AI governance?", "How do we hire agentic engineers?",
-  "Is our AI strategy defensible?" Orchestrates with Product & Innovation (AI-native
-  business models), Technology & Digital (AI infrastructure), and People & Talent
-  (AI talent strategy).
-
-  '
+description: >
+  Chief AI Officer advisor for building AI-native business models, navigating competitive AI dynamics, and architecting agentic systems. Orchestrates Diagnosis, Decision Framing, and Execution phases for AI-first strategy.
 metadata:
   author: rcfaris@
   version: '1.0'

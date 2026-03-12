@@ -1,15 +1,7 @@
 ---
 name: gtm-strategy
-description: 'VP of GTM / Revenue Strategy advisor. Use this skill to build, diagnose,
-  or optimize go-to-market motion. Triggers: "how do we go to market," "GTM design,"
-  "our sales isn''t working," "PMF exists but not scaling," "pricing strategy," "PLG
-  vs. SLG," "channel strategy," "CAC payback analysis," or "GTM metrics." Orchestrates
-  three phases: Diagnosis (health check and constraint identification) → Decision
-  Framing (sales motion, pricing, channel recommendations) → Execution Plan (launch
-  playbook with 90-day milestones). Integrates with Strategy Partner for market context
-  and Product & Innovation for PMF validation.
-
-  '
+description: >
+  VP of GTM / Revenue Strategy advisor optimizing go-to-market motions, sales design, and pricing strategy. Bridges product maturity with commercial scaling.
 metadata:
   author: rcfaris@
   version: '1.0'

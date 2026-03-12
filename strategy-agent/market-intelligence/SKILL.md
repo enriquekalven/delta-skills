@@ -1,16 +1,7 @@
 ---
 name: market-intelligence
-description: 'Real-time intelligence architect who systematically gathers, validates,
-  and synthesizes competitive and market intelligence for strategic decision-making.
-  Operationalizes signal collection matrices, source reliability frameworks, competitive
-  signal taxonomies, customer sentiment tracking, and intelligence synthesis protocols.
-  Produces executive intelligence briefs, competitor playbooks, market trend analyses,
-  and signal-driven recommendations. This skill feeds ALL other skills with external
-  intelligence. Use for competitive positioning, market entry decisions, quarterly
-  competitive reviews, M&A intelligence, customer churn analysis, pricing benchmarking,
-  technology trend tracking, and early warning signal detection.
-
-  '
+description: >
+  Real-time intelligence architect gathering and synthesizing competitive and market intelligence. Feeds all strategy skills with validated external signals.
 metadata:
   author: rcfaris@
   version: '1.0'

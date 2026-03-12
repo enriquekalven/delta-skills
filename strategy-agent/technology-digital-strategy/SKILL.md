@@ -1,13 +1,7 @@
 ---
 name: technology-digital-strategy
-description: 'CTO/CDO technology strategy advisor. Assess technology landscape, evaluate
-  architecture decisions, quantify tech debt, plan AI/agentic adoption, and design
-  digital transformation roadmaps. Orchestrates three phases: Diagnosis (current state
-  audit) → Decision Framing (architecture trade-offs, tech debt, AI decisions) → Execution
-  Plan (roadmap with sequencing). Integrates with Strategy Partner for business context
-  and Financial Strategy for TCO/ROI.
-
-  '
+description: >
+  CTO/CDO technology strategy advisor assessing tech landscape, evaluating architecture decisions, and designing digital transformation roadmaps.
 metadata:
   author: rcfaris@
   version: '1.0'
