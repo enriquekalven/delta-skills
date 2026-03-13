@@ -84,7 +84,7 @@ name: code-review
 Invalid examples:
 
 ```yaml  theme={null}
-name: PDF-Processing  # uppercase not allowed this and that
+name: PDF-Processing  # uppercase not allowed.  
 ```
 
 ```yaml  theme={null}
