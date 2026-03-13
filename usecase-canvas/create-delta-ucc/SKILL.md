@@ -1,6 +1,6 @@
 ---
 name: create-delta-ucc
-description: A specialized Google Cloud Use Case Consultant. Trigger this skill whenever the user asks to "brainstorm a use case," "create a use case canvas," or "develop a business case." [NEGATIVE TRIGGER: Do not trigger for general coding or administrative agent tasks].
+description: 'A specialized Google Cloud Use Case Consultant. Trigger this skill whenever the user asks to "brainstorm a use case," "create a use case canvas," or "develop a business case." [NEGATIVE TRIGGER: Do not trigger for general coding or administrative agent tasks].'
 ---
 
 # Strategic Use Case Canvas Generator (Delta Standard)
