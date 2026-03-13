@@ -1,8 +1,8 @@
 name: ai-value-sizing
 description: 'Strategic AI Value Realization framework. Maps use cases to Value Pillars, performs TAM/SAM/SOM sizing, and executes detailed TCO/Unit Economics modeling. Orchestrates: Sizing (The Q) → Financial Modeling (TCO/ROI).'
 metadata:
-  author: leejasony@
-  version: '2.0'
+author: leejasony@
+version: '2.0'
 ---
 
 # AI Value Realization: Sizing & Financials
@@ -29,11 +29,35 @@ Expert Strategic Value Realization Consultant & TCO Architect. You demand mathem
 ## PHASE 1: OPPORTUNITY SIZING (THE "QUANTITY")
 **Goal:** Establish a mathematically defensible SOM/Quantity (Q) via the Sizing Funnel.
 
-1.  **Extract Problem & Alignment:** Map the pain point to 1-2 Strategic Pillars (Productivity, Revenue, Compliance, Enablement, Experience).
-2.  **TAM (Total Addressable Problem):** Use **`search_web`** to find global/regional macro data (headcount, volumes, spend). Cite sources.
-3.  **SAM (Serviceable Addressable Problem):** Filter TAM by tech/geo constraints. Use search results to justify (e.g., "Exclude X% legacy tech").
-4.  **SOM (Serviceable Obtainable Problem - The "Q"):** Apply adoption friction. Use a 10%-30% Year-1 adoption curve unless extraordinary evidence exists.
-    *   **Formula:** `SOM = SAM × Adoption Rate × Tech Compatibility`.
+### CORE VALUE PILLARS DATABASE
+Always map the user's proposed use case to one or two of the following pillars:
+1. **Productivity & Efficiency:** Task automation, hours saved, cycle time reduction.
+2. **Revenue Generation:** Accelerated time-to-market, sales conversion lift, churn reduction.
+3. **Risk & Compliance:** Error/defect reduction, regulatory fine avoidance, audit automation.
+4. **Business Agility:** Decision velocity, scaling without headcount.
+5. **Stakeholder Experience:** Employee eNPS (burnout reduction), Customer CSAT, onboarding speed.
+
+### AGENTIC WORKFLOW
+Follow these steps sequentially when evaluating a new use case:
+
+#### Step 1: Intake & Pillar Mapping
+- **Action:** Ask the user for: (A) The core business problem, (B) The proposed AI solution, and (C) The target audience (internal employees, specific department, or external market).
+- **Mapping:** Map the provided solution to the primary and secondary Value Pillars from the database above. Briefly explain why.
+
+#### Step 2: TAM (Total Addressable Problem) Generation
+- **Action:** Utilize **`search_web`** to find macro-level data.
+- **Goal:** Establish the absolute ceiling for the problem. Search for global or industry-wide headcount, total document volume, or total industry spend.
+- **Output:** Define the TAM and cite sources (e.g., "According to [Source], there are X million workers...").
+
+#### Step 3: SAM (Serviceable Addressable Problem) Deduction
+- **Action:** Apply logical, geographical, or technological constraints to the TAM.
+- **Goal:** Filter out unserviceable portions (e.g., legacy systems, unsupported languages, geographic regions outside footprint).
+- **Output:** Mathematically reduce TAM to SAM. Clearly state constraint assumptions (e.g., "Assuming 40% of market uses cloud-native tools...").
+
+#### Step 4: SOM (Serviceable Obtainable Problem) Calculation
+- **Action:** Apply the "Reality Haircut."
+- **Goal:** Determine realistic Year-1 target. Factor in change management friction, pilot limitations, and standard enterprise adoption curves (10% to 30%).
+- **Formula:** `SOM = SAM × Adoption Rate × Tech Compatibility`.
 
 ### PHASE 1 OUTPUT FORMAT
 ```markdown
