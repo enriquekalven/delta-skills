@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CUJ Mapping Schema",
+  "description": "Hierarchy for mapping outcomes to granular user steps.",
+  "type": "object",
+  "properties": {
+    "outcome": {
+      "type": "string",
+      "description": "The 'Why' - the business purpose and impact of the effort."
+    },
+    "stages": {
+      "type": "array",
+      "description": "Milestones that organize collaborative workflows.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Broad milestone name (e.g., 'Patient Admission')."
+          },
+          "goal": {
+            "type": "string",
+            "description": "The overarching outcome of this stage (e.g., 'Baseline established')."
+          },
+          "cujs": {
+            "type": "array",
+            "description": "Collections of specific user journeys within this stage.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Specific journey name (e.g., 'Triage Patient Request')."
+                },
+                "goal": {
+                  "type": "string",
+                  "description": "Reframed as 'I will have...' or 'I will get...'."
+                },
+                "tasks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "type": "string",
+                        "description": "Implementation-agnostic action (Verb + Noun)."
+                      },
+                      "steps": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "description": "Granular, implementation-level interactions."
+                      }
+                    },
+                    "required": ["action", "steps"]
+                  }
+                }
+              },
+              "required": ["name", "goal", "tasks"]
+            }
+          }
+        },
+        "required": ["name", "goal", "cujs"]
+      }
+    }
+  },
+  "required": ["outcome", "stages"]
+}
