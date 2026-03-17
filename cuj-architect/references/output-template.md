@@ -1,16 +1,27 @@
-# CUJ Context Template
+# AI-Enhanced CUJ Context Template
 
-For each Critical User Journey, use the following Markdown structure to provide context and persona details.
+For each Critical User Journey, use the following Markdown structure to provide high-level context, persona details, and AI strategy alignment.
 
-1. **Header**: [A concise, action-oriented title for the journey (e.g., "Fantasy Sports Draft Day Setup")]
-2. **Subheader**: [A one-sentence summary of the context or specific scenario]
-3. **Bio**: [A detailed persona description including age, occupation, tech-savviness, and their relationship with Company's products]
-4. **Goals**: [The specific, tangible outcomes (reframed as 'I will have...' or 'I will get...') the user is trying to achieve in this session]
-5. **Motivations**: [The underlying "why" driving the user (emotional or functional drivers)]
-6. **Challenges**: [The friction points, obstacles, or frustrations the user currently faces or might face]
-7. **Expectations**: [The ideal experience the user anticipates (speed, ease of use, personalization, etc.)]
+## 1. STRATEGIC CONTEXT
+- **Outcome**: [Business-level impact - The 'Why']
+- **Stages**: [Collaborative milestones/break-points]
+- **Operating Level**: [Outcome | Stage | CUJ | Task | CUI] (Determined by Top-Down or Bottom-Up analysis)
+
+## 2. PERSONA (The 'Who')
+- **Bio**: [Detailed profile: Age, Occupation, Tech-savviness, relationship with Company's products]
+- **Expectations**: [The ideal experience anticipated - Speed, Ease, Personalization]
+
+## 3. JOURNEY DETAILS (The 'How')
+- **CUJ Header**: [Concise, action-oriented title]
+- **Reframed Goal**: [As a result of completing these tasks, I will have/get X]
+- **Motivations**: [Functional or emotional drivers]
+- **Challenges**: [Friction points, obstacles, or frustrations mentioned in source docs]
+
+## 4. AI VALUE PROPOSITION (Linguistic Formulation)
+- **Core Feature**: AI [Removes / Replaces / Augments / Adds to] [Items at operating level minus 1] by [What the AI solution gives the user].
+- **Integration**: AI [Integrates with] [Tool, process, etc.] to [Items at operating level minus 1].
 
 ---
 
-> [!TIP]
-> Use **Gemini 3 Pro** to infer deep motivations and latent challenges from the research text. Ground every detail in the provided documents.
+> [!CAUTION]
+> Avoid the "Bolt-on" fallacy. Ensure every AI touchpoint is grounded in the user's intent and measurable progress.

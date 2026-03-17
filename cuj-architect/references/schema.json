@@ -1,12 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "CUJ Mapping Schema",
-  "description": "Hierarchy for mapping outcomes to granular user steps.",
+  "title": "AI-Enhanced CUJ Mapping Schema",
+  "description": "Exhaustive hierarchy for mapping outcomes to granular user steps and AI touchpoints.",
   "type": "object",
   "properties": {
     "outcome": {
       "type": "string",
-      "description": "The 'Why' - the business purpose and impact of the effort."
+      "description": "Business-level impact. Answers 'Why are we doing this?' and identifies who gains value."
     },
     "stages": {
       "type": "array",
@@ -16,15 +16,15 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Broad milestone name (e.g., 'Patient Admission')."
+            "description": "Broad milestone name (e.g., 'Triage', 'Investigate')."
           },
           "goal": {
             "type": "string",
-            "description": "The overarching outcome of this stage (e.g., 'Baseline established')."
+            "description": "The overarching outcome of this stage (e.g., 'Incidents mitigated')."
           },
           "cujs": {
             "type": "array",
-            "description": "Collections of specific user journeys within this stage.",
+            "description": "Specific journeys bridging impact and implementation.",
             "items": {
               "type": "object",
               "properties": {
@@ -34,21 +34,45 @@
                 },
                 "goal": {
                   "type": "string",
-                  "description": "Reframed as 'I will have...' or 'I will get...'."
+                  "description": "Reframed as 'As a result of... I will get/have [X]'."
                 },
                 "tasks": {
                   "type": "array",
+                  "description": "Implementation-independent actions.",
                   "items": {
                     "type": "object",
                     "properties": {
                       "action": {
                         "type": "string",
-                        "description": "Implementation-agnostic action (Verb + Noun)."
+                        "description": "Verb + Noun (e.g., 'Acknowledge alert')."
                       },
                       "steps": {
                         "type": "array",
-                        "items": { "type": "string" },
-                        "description": "Granular, implementation-level interactions."
+                        "description": "Critical User Interactions (CUIs).",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "interaction": {
+                              "type": "string",
+                              "description": "Interaction the user/AI takes (e.g., 'Select routing category')."
+                            },
+                            "intent": {
+                              "type": "string",
+                              "description": "Category: Answer, Retrieve, Route, Execute, etc."
+                            },
+                            "ai_effect": {
+                              "type": "string",
+                              "enum": ["Remove", "Replace", "Augment", "Add to", "Integrate with", "None"],
+                              "description": "How AI modifies this step."
+                            },
+                            "quality_metrics": {
+                              "type": "array",
+                              "items": { "type": "string" },
+                              "description": "Intent-based variants (e.g., 'Factuality', 'Contextual relevance')."
+                            }
+                          },
+                          "required": ["interaction", "intent", "ai_effect"]
+                        }
                       }
                     },
                     "required": ["action", "steps"]
