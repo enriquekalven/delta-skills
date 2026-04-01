@@ -1,6 +1,6 @@
 ---
 name: workshop-intake
-description: 'Conduct an effective workshop intake call. Gather the initial information required to begin planning a workshop. This includes strategic goals, problem statements, desired outcomes, stakeholders, logistics (duration, location, number of attendees, hybrid vs. in-person).'
+description: 'Guides the agent in conducting a workshop intake call. Triggers when the user asks to start a workshop intake, plan a discovery call, or gather requirements for a workshop. Edge cases: If the user provides partial information, continue to ask about missing fields. Negative Trigger: Do NOT trigger this skill just because the user mentions "workshop" in passing.'
 metadata:
 author: heyderek@
 version: '1.0'
@@ -8,9 +8,19 @@ version: '1.0'
 
 # Workshop Discovery & Planning
 
-This skill guides the user through initial information gathering to begin to plan a workshop. This includes strategic goals, problem statements, desired outcomes, stakeholders, logistics (duration, location, number of attendees, hybrid vs. in-person).
+This skill guides the agent through the initial information gathering required to plan a workshop. It ensures all strategic, logistical, and technical requirements are captured.
 
-This skill will start with open-ended questions and then ask them one by one, waiting for responses. The intent of this skill is to guide the user through all important questions which they should ask during workshop planning, NOT to try and answer the questions for them.
+## Step-by-Step Instructions
+1. **Initiate Discovery:** Start by asking open-ended questions about the workshop's purpose and background. See the "The 'Why' (Context)" section below.
+2. **Gather Details:** Methodically go through the checklist sections below (Sponsorship, Outcomes, Logistics, etc.). Ask questions one by one and wait for the user's response. Do not overwhelm the user with all questions at once.
+3. **Handle Edge Cases:** If the user doesn't know an answer, mark it as "TBD" and move to the next question. Do not get stuck.
+4. **Finalize and Save:** Once all sections are addressed, summarize the findings and save them to a file named `[Customer Name]-workshop-intake.md` in the current directory.
+
+## Guidelines
+* **Mandatory**: You MUST ask about executive sponsorship and success metrics.
+* **Mandatory**: You MUST save the final output to a file in the workspace.
+* **Prohibited**: You MUST NOT answer the questions for the user; your job is to guide the intake.
+* **Prohibited**: Do not overwhelm the user with multiple questions at once.
 
 ## Context & Desired Outcome
 
