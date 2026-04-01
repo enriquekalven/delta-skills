@@ -1,5 +1,5 @@
 ---
-name: workshop-planning
+name: workshop-intake
 description: 'Conduct an effective workshop intake call. Gather the initial information required to begin planning a workshop. This includes strategic goals, problem statements, desired outcomes, stakeholders, logistics (duration, location, number of attendees, hybrid vs. in-person).'
 metadata:
 author: heyderek@
