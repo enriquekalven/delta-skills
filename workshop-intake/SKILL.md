@@ -8,15 +8,19 @@ version: '1.0'
 
 # Workshop Discovery & Planning
 
-This skill guides the initial information gathering to begin to plan a workshop. This includes strategic goals, problem statements, desired outcomes, stakeholders, logistics (duration, location, number of attendees, hybrid vs. in-person).
+This skill guides the user through initial information gathering to begin to plan a workshop. This includes strategic goals, problem statements, desired outcomes, stakeholders, logistics (duration, location, number of attendees, hybrid vs. in-person).
+
+This skill will start with open-ended questions and then ask them one by one, waiting for responses. The intent of this skill is to guide the user through all important questions which they should ask during workshop planning, NOT to try and answer the questions for them.
 
 ## Context & Desired Outcome
 
-### Project Sponsorship
-1. Executive Sponsor: [Name,Title,Contact]
-2. Primary Point of Contact: [Name,Title,Contact]
-3. Who are the people involved on the customer side and what are their roles?
-4. Who are the people involved on the Google side and what are their roles?
+### Customer & Project Sponsorship
+1. Customer Name
+2. Important Customer Context
+3. Executive Sponsor: [Name,Title]
+4. Primary Point of Contact: [Name,Title]
+5. Who are the people involved on the customer side and what are their roles?
+6. Who are the people involved on the Google side and what are their roles?
 
 ### The "Why" (Context)
 1. Background: Why do we want to hold a workshop with this customer? [Freeform text - Describe the context and reason for this workshop]
