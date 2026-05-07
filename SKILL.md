@@ -14,27 +14,7 @@ Welcome to the **Delta Skills Ecosystem**. This repository contains a catalog of
 
 ---
 
-## 1. Value Realization & Business Case Sizing
-Grounded metrics, financial sizing, and ROI validation models to prove the business case for AI initiatives.
-
-*   **[ai-value-sizing](ai_value_sizing/SKILL.md)**
-    *   *Role:* Expert Strategic Value Realization Consultant & TCO Architect.
-    *   *Trigger:* When analyzing the financial potential of an idea, running market sizing, or drafting an investment-ready ROI/TCO business case.
-    *   *Key Deliverable:* Sizing Funnel (TAM/SAM/SOM), 3-Year ROI/NPV scenarios.
-
----
-
-## 2. Business Process Redesign (BPR)
-Operations and workflow engineering to redesign traditional manual processes around collaborative human-agent models.
-
-*   **[business-process-redesign](business-process-redesign/SKILL.md)**
-    *   *Role:* Elite Business Process Architect and Operations Engineer.
-    *   *Trigger:* When mapping current ("As-Is") workflows, evaluating manual bottlenecks, and drafting optimized ("To-Be") agentic processes.
-    *   *Key Deliverable:* As-Is findings report, To-Be process design specs, Human-Agent interaction matrices.
-
----
-
-## 3. Enterprise Strategy & Corporate Advisory
+## 1. Enterprise Strategy & Corporate Advisory
 High-fidelity consulting frameworks to align executive vision, analyze competitor moves, and architect enterprise operating models.
 
 *   **[strategy-partner-orchestrator](strategy-agent/strategy-partner-orchestrator/SKILL.md)**
@@ -53,6 +33,26 @@ High-fidelity consulting frameworks to align executive vision, analyze competito
     *   *Role:* Strategic Planner & Synthesizer.
     *   *Trigger:* When building a structured "Strategy House" and "Opportunity Matrix" starting from 10-Ks and earnings calls.
     *   *Key Deliverable:* Vision, Pillars, Prioritized Use Cases, and OKRs/KPIs maps.
+
+---
+
+## 2. Business Process Redesign (BPR)
+Operations and workflow engineering to redesign traditional manual processes around collaborative human-agent models.
+
+*   **[business-process-redesign](business-process-redesign/SKILL.md)**
+    *   *Role:* Elite Business Process Architect and Operations Engineer.
+    *   *Trigger:* When mapping current ("As-Is") workflows, evaluating manual bottlenecks, and drafting optimized ("To-Be") agentic processes.
+    *   *Key Deliverable:* As-Is findings report, To-Be process design specs, Human-Agent interaction matrices.
+
+---
+
+## 3. Value Realization & Business Case Sizing
+Grounded metrics, financial sizing, and ROI validation models to prove the business case for AI initiatives.
+
+*   **[ai-value-sizing](ai_value_sizing/SKILL.md)**
+    *   *Role:* Expert Strategic Value Realization Consultant & TCO Architect.
+    *   *Trigger:* When analyzing the financial potential of an idea, running market sizing, or drafting an investment-ready ROI/TCO business case.
+    *   *Key Deliverable:* Sizing Funnel (TAM/SAM/SOM), 3-Year ROI/NPV scenarios.
 
 ---
 
