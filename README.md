@@ -6,12 +6,12 @@ This repository contains a collection of advanced agentic skills designed for AI
 
 Skills are organized into categories, such as:
 
-- **value-agent:** Strategic AI Value Realization framework. Maps use cases to Value Pillars, performs TAM/SAM/SOM sizing, and executes detailed TCO/Unit Economics modeling.
-- **business-process-redesign:** Expert Business Process Architect and Process Engineer. Maps, evaluates, and fundamentally redesigns workflows around collaborative human-agent models.
 - **strategy-agent:** Advanced strategic advisory skills (Diagnosis, Decision Framing, Execution) backed by top-tier consulting frameworks.
+- **business-process-redesign:** Expert Business Process Architect and Process Engineer. Maps, evaluates, and fundamentally redesigns workflows around collaborative human-agent models.
+- **value-agent:** Strategic AI Value Realization framework. Maps use cases to Value Pillars, performs TAM/SAM/SOM sizing, and executes detailed TCO/Unit Economics modeling.
+- **usecase-canvas:** Skills for creating usecase canvases and business value propositions.
 - **product-management:** Skills related to managing product life cycle and generating product requirement documents.
 - **prototyping:** Skills focused on quickly prototyping designs, like frontend generation and component stitching.
-- **usecase-canvas:** Skills for creating usecase canvases and business value propositions.
 - **utils:** Foundational agent tools and workflows, like prompt engineering, skill creation, and specifications.
 
 ## Usage
