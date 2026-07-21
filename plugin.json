@@ -1,0 +1,16 @@
+{
+  "name": "delta-skills",
+  "version": "1.0.0",
+  "description": "Google Cloud Delta Squad Meta-Skills: 7-Phase E2E Delivery Workflow and 12-Week TDL Operational Field Playbook.",
+  "author": {
+    "name": "Enrique Chan",
+    "url": "https://github.com/enriquekalven"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/enriquekalven/delta-skills.git"
+  },
+  "keywords": ["google-cloud", "delta-squad", "tdl", "meta-skills", "agile", "adk"],
+  "license": "Apache-2.0",
+  "disabled": false
+}
