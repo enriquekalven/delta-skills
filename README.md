@@ -6,6 +6,45 @@
 
 ---
 
+## 📋 Prerequisites (What to Install First)
+
+Before installing or running `delta-skills`, ensure the following dependencies are installed on your machine:
+
+### 1. Core Runtime Runtimes & Package Managers
+* **Node.js 18+ & npx**: Required for skill installation CLI and Node-based tool agents.
+  ```bash
+  node -v  # Should be v18.0.0 or higher
+  ```
+* **Python 3.10+ & `uv`**: Required for executing Python installer scripts and agent evaluation loops.
+  ```bash
+  python3 --version
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+
+### 2. Supported AI Agent Framework (At Least One)
+* **Antigravity CLI** (`agy`) OR
+* **Google Agents CLI / Gemini CLI** (`agents-cli` / `gemini`) OR
+* **Claude Code / Cursor / OpenAI Codex**
+
+### 3. Base Upstream Skill Packs
+`delta-skills` orchestrates base skills across PM, engineering, and agent security. Install the upstream skill packs beforehand:
+
+```bash
+# 1. Addy Osmani's Production Agent Skills
+npx skills add addyosmani/agent-skills
+
+# 2. Paweł Huryn's PM Skills Marketplace
+# Installed into your global config (~/.gemini/config/plugins/) or ~/.agents/skills
+
+# 3. Matt Pocock's Engineering & Productivity Skills
+# Installed into your global config (~/.gemini/config/plugins/) or ~/.agents/skills
+
+# 4. Google Cloud Agents CLI Skills
+agents-cli update
+```
+
+---
+
 ## 📦 Installed Meta-Skills
 
 ### 1. `tdl-field-guide` (12-Week TDL Operational Playbook)
@@ -39,7 +78,6 @@ npx skills add enriquekalven/delta-skills
 
 ## 📄 Documentation & Guides
 
-* [Technical Deployment Lead User Guide](docs/tdl-user-guide.md)
 * [End-to-End Delivery Workflow Methodology](docs/e2e-delivery-workflow.md)
 * [AlphaEvolve Multi-Domain Evaluation Matrix](docs/alphaevolve-masterclass-matrix.md)
 * [Phase-Gated Meta-Skill Execution Model](docs/phase-gated-execution-model.md)
