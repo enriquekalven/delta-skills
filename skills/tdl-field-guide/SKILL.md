@@ -6,29 +6,33 @@ description: >
   Triggers on: "tdl field guide", "tdl playbook", "run tdl engagement", "delta squad execution", "tdl user guide", "lead delta engagement".
 ---
 
-# Technical Deployment Lead (TDL) Field Execution Playbook (Complete Spectrum Meta-Orchestrator)
+# Technical Deployment Lead (TDL) Field Execution Playbook
 
-You operate as a **Google Cloud Technical Deployment Lead (TDL)** leading a 12-week Delta /Forward Squad engagement.
+Operational execution playbook for Technical Deployment Leads (TDLs) managing 12-week Google Cloud enterprise engagements.
 
 ---
 
-## 🛡️ Architecture & Capability Resolution Matrix
+## Dynamic Capability Resolution Matrix
 
 ```
-[Inspect STATE.md] ──→ [Resolve Phase Capability Slots (Tier 1 Core + Tier 2 Extended)] ──→ ✋ STOP for Gate Review
+[Inspect STATE.md] --> [Run Skill Stocktake] --> [Resolve Phase Capability Slots] --> [Execute Gate Verification]
 ```
 
-### Dynamic Capability Resolution Table (Tier 1 + Tier 2 Skills):
+### Capability Slot Mapping (Tier 1 & Tier 2)
 
-| Phase | Capability Slot | Primary Tool (Tier 1) | Extended / Secondary Tools (Tier 2) |
+| Phase | Capability Slot | Primary Tool (Tier 1) | Extended Tools (Tier 2) |
 |---|---|---|---|
+| **Phase 1** | `#CAPABILITY: Skill-Stocktake` | `skill-stocktake` | `using-agent-skills` |
+| **Phase 1** | `#CAPABILITY: Codebase-Onboarding` | `codebase-onboarding-and-mapping` | `codebase-design` |
+| **Phase 1** | `#CAPABILITY: Repo-Conventions` | `ecc-repo-conventions` | `git-workflow-and-versioning` |
 | **Phase 1** | `#CAPABILITY: Customer-Intake` | `workshop-intake` | `interview-me` |
 | **Phase 1** | `#CAPABILITY: Scope-Mapping` | `opportunity-solution-tree` | `user-stories`, `job-stories` |
 | **Phase 1** | `#CAPABILITY: PRD-Creation` | `create-prd` | `spec-driven-development` |
-| **Phase 2** | `#CAPABILITY: Architecture-Grilling` | `grill-with-docs` | `google-agents-cli-adk-code`, `google-agents-cli-scaffold` |
+| **Phase 2** | `#CAPABILITY: GCP-Architecture-Advisor`| `gcp-agent-architecture-advisor` | `grill-with-docs`, `google-agents-cli-scaffold` |
 | **Phase 2** | `#CAPABILITY: Tech-Design-Document` | `documentation-and-adrs` | `spec-driven-development` |
 | **Phase 2** | `#CAPABILITY: API-Design` | `api-and-interface-design` | `domain-modeling`, `codebase-design` |
 | **Phase 2** | `#CAPABILITY: InfoSec-Threat-Modeling`| `threat-model-analyst` | `google-cloud-waf-security`, `agent-governance`, `security-and-hardening` |
+| **Phase 3** | `#CAPABILITY: Fleet-Management` | `agentic-engineering` | `context-engineering` |
 | **Phase 3** | `#CAPABILITY: Task-Breakdown` | `planning-and-task-breakdown` | `to-tickets`, `feature-tracking` |
 | **Phase 3** | `#CAPABILITY: TDD-Build` | `test-driven-development` | `implement`, `source-driven-development`, `ast-resilient-remediation` |
 | **Phase 3** | `#CAPABILITY: Intent-Audit` | `intended-vs-implemented` | `sql-queries` (pipeline validation) |
@@ -40,7 +44,7 @@ You operate as a **Google Cloud Technical Deployment Lead (TDL)** leading a 12-w
 
 ---
 
-## 🏛️ Squad Matrix & Governance Rules
+## Squad Matrix & Governance Rules
 
 ```mermaid
 graph TD
@@ -51,30 +55,30 @@ graph TD
     C --> F["06: Agentic Transformation Lead (ATL - Change & Scaling)"]
 ```
 
-### Core TDL Governance Rules:
-* **12-Week Capped MoU Window**: Non-negotiable release gate.
-* **Strict '1-In, 1-Out' Scope Governance**: Mid-flight feature requests swap equivalent RICE-scored items.
-* **Synthetic Baseline Protocol**: Execute a 50-sample retrospective SME audit in Week 2 producing `baseline_kpis.json`.
-* **Environment Segregation Policy**: Internal PoCs use Argolis with scrubbed data (`dummy-dataset`); production runs strictly in Client VPC.
+### Core Governance Rules
+* **12-Week Capped Window**: Fixed milestone target window.
+* **1-in, 1-out Scope Governance**: Mid-flight feature requests swap equivalent RICE-scored items.
+* **Synthetic Baseline Protocol**: Execute 50-sample retrospective SME audit in Phase 1 producing `baseline_kpis.json`.
+* **Environment Segregation**: Staging PoCs run with sanitized dummy data (`dummy-dataset`); production deploys in client VPC.
 
 ---
 
-## 🗓️ Phase-Gated Execution Playbook
+## Execution Lifecycle
 
 ### Phase 1: Discover & Define (Weeks 0-2 | TDL-Led)
-* **Actions**: Run `#CAPABILITY: Customer-Intake` (`workshop-intake` / `interview-me`), `#CAPABILITY: Scope-Mapping` (`opportunity-solution-tree` / `user-stories`), and `#CAPABILITY: PRD-Creation` (`create-prd`). Audit 50 SME samples for `baseline_kpis.json`.
-* **✋ Phase 1 Gate**: Present `PRD.md` and `baseline_kpis.json`. **STOP and await explicit user sign-off** before updating `STATE.md` to Phase 2.
+* **Actions**: Run `#CAPABILITY: Skill-Stocktake`, `#CAPABILITY: Codebase-Onboarding` (`docs/ONBOARDING.md`), `#CAPABILITY: Repo-Conventions`, `#CAPABILITY: Scope-Mapping`, and `#CAPABILITY: PRD-Creation`. Audit 50 SME samples for `baseline_kpis.json`.
+* **Gate Check**: Present `docs/ONBOARDING.md`, `PRD.md`, and `baseline_kpis.json`. Await user sign-off before updating `STATE.md` to Phase 2.
 
 ### Phase 2: Prototype & Validate (Weeks 3-6 | TDL + FDE)
-* **Actions**: Run `#CAPABILITY: Architecture-Grilling` (`grill-with-docs` -> ADRs & `CONTEXT.md`), `#CAPABILITY: Tech-Design-Document` (`documentation-and-adrs` -> `docs/TDD.md`), `#CAPABILITY: API-Design` (`api-and-interface-design`), and `#CAPABILITY: InfoSec-Threat-Modeling` (`threat-model-analyst` / `google-cloud-waf-security` / `agent-governance`).
-* **ADK Agent Setup**: Invoke `google-agents-cli-scaffold` and `google-agents-cli-adk-code` for ADK Python state and callbacks.
-* **✋ Phase 2 Gate**: Present TDD design (`docs/TDD.md`) and InfoSec matrix. **STOP and await InfoSec/SME sign-off** before updating `STATE.md` to Phase 3.
+* **Actions**: Run `#CAPABILITY: GCP-Architecture-Advisor` (`gcp-agent-architecture-advisor` -> `docs/ARCHITECTURE_RECOMMENDATION.md`), `#CAPABILITY: Tech-Design-Document` (`docs/TDD.md`), `#CAPABILITY: API-Design`, and `#CAPABILITY: InfoSec-Threat-Modeling`.
+* **ADK Agent Setup**: Invoke `google-agents-cli-scaffold` and `google-agents-cli-adk-code`.
+* **Gate Check**: Present Architecture Recommendation (`docs/ARCHITECTURE_RECOMMENDATION.md`) and InfoSec matrix. Await sign-off before updating `STATE.md` to Phase 3.
 
 ### Phase 3: Production Build (Weeks 6-10 | FDE-Led)
-* **Actions**: Run `#CAPABILITY: Task-Breakdown` (`planning-and-task-breakdown` / `feature-tracking`), drive `#CAPABILITY: TDD-Build` (`test-driven-development`), run `#CAPABILITY: Intent-Audit` (`intended-vs-implemented`), and execute `#CAPABILITY: Code-Review` (`code-review-and-quality` / `pso-code-quality-reviewer`).
-* **🔄 Regression Loop**: If a fundamental architectural flaw is discovered, write `ACTION: ROLLBACK_TO_PHASE_2` in `STATE.md` and re-evaluate Phase 2 ADRs.
-* **✋ Phase 3 Gate**: Verify 100% test pass rate & intent gap clearance. **STOP and await code completion approval** before updating `STATE.md` to Phase 4.
+* **Actions**: Configure `#CAPABILITY: Fleet-Management` (`agentic-engineering`), run `#CAPABILITY: Task-Breakdown`, drive `#CAPABILITY: TDD-Build`, run `#CAPABILITY: Intent-Audit`, and execute `#CAPABILITY: Code-Review`.
+* **Regression Loop**: If architectural flaws are discovered, write `ACTION: ROLLBACK_TO_PHASE_2` in `STATE.md`.
+* **Gate Check**: Verify 100% test pass rate and intent gap clearance. Await sign-off before updating `STATE.md` to Phase 4.
 
 ### Phase 4: Harden & Launch (Weeks 11-12 | Full Squad)
-* **Actions**: Run `#CAPABILITY: Agent-Evaluation` (`google-agents-cli-eval`), run `#CAPABILITY: ROI-Sizing` (`ai-value-sizing` / `cohort-analysis`), deploy via `#CAPABILITY: Release-Deployment` (`shipping-and-launch` / `google-agents-cli-deploy` / `google-agents-cli-publish`), configure `#CAPABILITY: Observability` (`google-agents-cli-observability`), and compile `#CAPABILITY: Handoff-Artifacts` (`shipping-artifacts` / `release-notes` / `retro`).
-* **✋ Phase 4 Gate**: Present live ROI Dashboard, Gemini Enterprise status, and handoff packet for final customer sign-off.
+* **Actions**: Run `#CAPABILITY: Agent-Evaluation`, `#CAPABILITY: ROI-Sizing`, deploy via `#CAPABILITY: Release-Deployment`, configure observability, and compile `#CAPABILITY: Handoff-Artifacts`.
+* **Gate Check**: Present ROI dashboard, service status, and handoff documentation packet.

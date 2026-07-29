@@ -1,43 +1,41 @@
-# Delta Skills Hub (`delta-skills`)
+# Delta Skills (`delta-skills`)
 
-> **Google Cloud Delta Squad Meta-Skills & Field Execution Hub**
+> Field execution playbooks and orchestrator skills for Google Cloud Technical Deployment Leads (TDLs), Forward Deployed Engineers (FDEs), and Agentic Transformation Leads (ATLs).
 
-`delta-skills` packages the official Meta-Skills for Google Cloud Delta Squads, empowering Technical Deployment Leads (TDLs), Forward Deployed Engineers (FDEs), and Agentic Transformation Leads (ATLs) to architect, deploy, and prove the business value of mission-critical AI solutions.
+`delta-skills` packages meta-skills for customer engagement orchestration, technical discovery, baseline KPI auditing, GCP AI Agent architecture evaluation, repository governance, and phase-gated software engineering lifecycles.
 
 ---
 
-## 📋 Prerequisites (What to Install First)
+## Prerequisites
 
-Before installing or running `delta-skills`, ensure the following dependencies are installed on your machine:
-
-### 1. Core Runtime Runtimes & Package Managers
-* **Node.js 18+ & npx**: Required for skill installation CLI and Node-based tool agents.
+### 1. Runtimes & Package Managers
+* **Node.js 18+ & `npx`**:
   ```bash
-  node -v  # Should be v18.0.0 or higher
+  node -v
   ```
-* **Python 3.10+ & `uv`**: Required for executing Python installer scripts and agent evaluation loops.
+* **Python 3.10+ & `uv`**:
   ```bash
   python3 --version
   curl -LsSf https://astral.sh/uv/install.sh | sh
   ```
 
 ### 2. Supported AI Agent Framework (At Least One)
-* **Antigravity CLI** (`agy`) OR
-* **Google Agents CLI / Gemini CLI** (`agents-cli` / `gemini`) OR
-* **Claude Code / Cursor / OpenAI Codex**
+* **Antigravity CLI** (`agy`)
+* **Google Agents CLI / Gemini CLI** (`agents-cli` / `gemini`)
+* **Claude Code / Cursor / Codex**
 
-### 3. Base Upstream Skill Packs
-`delta-skills` orchestrates base skills across PM, engineering, and agent security. Install the upstream skill packs beforehand:
+### 3. Upstream Skill Dependencies
+Install upstream dependencies if using skill-based orchestration:
 
 ```bash
-# 1. Addy Osmani's Production Agent Skills
+# 1. Production Agent Skills (Addy Osmani)
 npx skills add addyosmani/agent-skills
 
-# 2. Paweł Huryn's PM Skills Marketplace
-# Installed into your global config (~/.gemini/config/plugins/) or ~/.agents/skills
+# 2. PM Skills
+# Installed into ~/.gemini/config/plugins/ or ~/.agents/skills
 
-# 3. Matt Pocock's Engineering & Productivity Skills
-# Installed into your global config (~/.gemini/config/plugins/) or ~/.agents/skills
+# 3. Engineering Skills (Matt Pocock)
+# Installed into ~/.gemini/config/plugins/ or ~/.agents/skills
 
 # 4. Google Cloud Agents CLI Skills
 agents-cli update
@@ -45,21 +43,27 @@ agents-cli update
 
 ---
 
-## 📦 Installed Meta-Skills
+## Skills Included
 
-### 1. `tdl-field-guide` (12-Week TDL Operational Playbook)
-* **Trigger Phrases**: `"tdl field guide"`, `"tdl playbook"`, `"run tdl engagement"`, `"delta squad execution"`
-* **Description**: Orchestrates 12-week enterprise engagements across the 4 field phases (Discover/Define ➔ Prototype/Validate ➔ Production Build ➔ Harden/Launch), enforcing the 6-role squad matrix, 1-in-1-out scope control, synthetic baseline capture, and the 14-skill streamlined stack.
+### Meta-Orchestrators & Field Playbooks
+1. **`tdl-field-guide`**: Operational execution playbook for 12-week enterprise engagements across 4 phases (Discover/Define ➔ Prototype/Validate ➔ Production Build ➔ Harden/Launch).
+2. **`e2e-delivery-workflow`**: Phase-gated software delivery workflow guiding projects step-by-step through a 7-phase SDLC.
 
-### 2. `e2e-delivery-workflow` (7-Phase SDLC Methodology)
-* **Trigger Phrases**: `"e2e workflow"`, `"deliver project end to end"`, `"e2e delivery"`, `"run full delivery workflow"`
-* **Description**: Master software engineering methodology orchestrator guiding projects step-by-step through the 7-phase delivery lifecycle.
+### Architecture & Discovery Skills
+3. **`gcp-agent-architecture-advisor`**: Ingests PRD & intake notes to recommend a Google Cloud AI Agent architecture across 3 tiers (No-Code, Low-Code, High-Code ADK) with product release maturity flags (GA vs Preview).
+4. **`synthetic-baseline-protocol`**: Pre-deployment quantitative baseline protocol for auditing historical SME records and outputting `baseline_kpis.json`.
+5. **`codebase-onboarding-and-mapping`**: Analyzes client repositories to map components, entry points, and dependencies into `docs/ONBOARDING.md`.
+
+### Operations, Governance, & Auditing Skills
+6. **`ecc-repo-conventions`**: Enforces standardized repository structure, file naming conventions, `STATE.md`, and environment hygiene.
+7. **`agentic-engineering`**: Governs subagent task decomposition, multi-model cost routing, and subagent fleet management.
+8. **`skill-stocktake`**: Audits workspace capability slots (`#CAPABILITY: Slot-Name`) to verify tool readiness prior to executing project phases.
 
 ---
 
-## ⚡ Quick Start & Installation
+## Installation
 
-### Antigravity CLI (Native Plugin)
+### Antigravity CLI
 ```bash
 agy plugin install https://github.com/enriquekalven/delta-skills.git
 ```
@@ -69,20 +73,21 @@ agy plugin install https://github.com/enriquekalven/delta-skills.git
 gemini skills install https://github.com/enriquekalven/delta-skills.git --path skills
 ```
 
-### Open Skills Standard (Claude Code, Cursor, Codex)
+### Open Skills Standard
 ```bash
 npx skills add enriquekalven/delta-skills
 ```
 
 ---
 
-## 📄 Documentation & Guides
+## Documentation
 
-* [End-to-End Delivery Workflow Methodology](docs/e2e-delivery-workflow.md)
-* [AlphaEvolve Multi-Domain Evaluation Matrix](docs/alphaevolve-masterclass-matrix.md)
-* [Phase-Gated Meta-Skill Execution Model](docs/phase-gated-execution-model.md)
+* [Technical Deployment Lead (TDL) Field Execution User Guide](docs/tdl-user-guide.md)
+* [End-to-End Delivery Workflow Guide](docs/e2e-delivery-workflow.md)
+* [Phase-Gated Execution Model](docs/phase-gated-execution-model.md)
+* [AlphaEvolve Skill Evaluation Matrix](docs/alphaevolve-masterclass-matrix.md)
 
 ---
 
-## 📜 License
+## License
 Licensed under the [Apache-2.0 License](LICENSE).

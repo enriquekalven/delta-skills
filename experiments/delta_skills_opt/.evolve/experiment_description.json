@@ -1,0 +1,14 @@
+{
+  "name": "delta-skills-meta-orchestrator-opt",
+  "description": "Hill-climb capability slot resolution, phase gate verification, and baseline protocol calculation for Delta Skills meta-orchestrators.",
+  "language": "python",
+  "initial_program_path": "initial_program.py",
+  "evaluator_path": "evaluator.py",
+  "problem_description_path": "problem_description.md",
+  "metrics": [
+    {
+      "name": "composite_score",
+      "goal": "MAXIMIZE"
+    }
+  ]
+}

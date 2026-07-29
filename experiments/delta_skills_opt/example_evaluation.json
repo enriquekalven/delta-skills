@@ -1,0 +1,9 @@
+{
+  "score": 104.98,
+  "insights": [
+    {
+      "label": "Performance Breakdown",
+      "text": "CapAccuracy: 100.0%, GateAccuracy: 100.0%, FinAccuracy: 100.0%, ExecTime: 0.40ms"
+    }
+  ]
+}

@@ -1,83 +1,72 @@
-# Phase-Gated Meta-Skill Execution Model
+# Phase-Gated Execution Model
 
-You have made a fundamental architectural insight: **A complex software project or 12-week client engagement CANNOT (and SHOULD NOT) execute in a single un-gated agent turn.** 
+Complex software projects and enterprise engagements require state-gated execution rather than un-gated single-turn execution.
 
-Trying to run a project from initial discovery through production launch in one pass violates security governance, blows context limits, and bypasses essential human/SME verification sign-offs.
+Running a multi-phase project from initial discovery through production deployment in a single pass risks scope drift, context exhaustion, and missed human verification gates.
 
 ---
 
-## 🛑 Why One-Shot Execution Fails
+## Un-Gated vs Phase-Gated Execution
 
+### Un-Gated Single-Turn Execution (Anti-Pattern)
 ```
-❌ UN-GATED "ONE-SHOT" EXECUTION (Anti-Pattern)
-[User Input] ──→ [Agent runs Scoping, PRD, Architecture, TDD, Security, Launch in 1 turn] ──→ 💥 Disaster
+[User Input] --> [Agent runs Scoping, PRD, Arch, Build, Security, Launch in 1 turn] --> Failure
                  • No human sign-off on PRD scope
-                 • No InfoSec board review before coding
-                 • Hallucinated assumptions compound across phases
-                 • Context window exhaustion & loss of precision
+                 • No InfoSec review prior to build phase
+                 • Unverified assumptions compound across phases
+                 • Context window exhaustion and quality loss
 ```
 
----
-
-## 🟢 The Solution: State-Machine Meta-Skills with Phase Gates
-
-Instead of a "one-shot batch script," a Meta-Skill (`e2e-delivery-workflow` or `tdl-field-guide`) operates as an **Iterative State Machine**. 
-
-It uses a lightweight tracking file (`STATE.md` or `.agents/state.json` in the workspace root) to checkpoint progress, enforce explicit human gates, and allow step-by-step iterations:
-
+### Phase-Gated Execution Pattern
 ```
-✅ PHASE-GATED ITERATIVE EXECUTION (State Machine Pattern)
-
 [Invoke Meta-Skill] 
-       │
-       ▼
-┌──────────────┐      Gate 1 Check      ┌─────────────────────────────────┐
-│ TDL Phase 1  │ ─── (Human Sign-off) ──▶│ "PRD & baseline_kpis APPROVED?" │
-└──────────────┘                         └────────────────┬────────────────┘
-                                                          │ YES
-                                                          ▼
-                                                ┌──────────────────┐
-                                                │   TDL Phase 2    │
-                                                └──────────────────┘
+       |
+       v
+┌──────────────┐      Gate Check       ┌─────────────────────────────────┐
+│ TDL Phase 1  │ ---> (Human Review) -->│ "PRD & baseline_kpis APPROVED?" │
+└──────────────┘                        └────────────────┬────────────────┘
+                                                         │ YES
+                                                         v
+                                               ┌──────────────────┐
+                                               │   TDL Phase 2    │
+                                               └──────────────────┘
 ```
 
 ---
 
-## 🔄 How a Phase-Gated Meta-Skill Operates in Practice
+## State Machine Execution Flow
 
-### Step 1: State Inspection
-When you type `tdl-field-guide`, the meta-skill inspects the repository's `STATE.md` file:
+### 1. State Inspection
+When invoked, the meta-skill reads `STATE.md` in the workspace root:
 ```markdown
 # Current Engagement State
-- Engagement: Customer X Multimodal Concierge
+- Engagement: Customer Real Estate Concierge
 - Current Phase: Phase 1 (Discover & Define)
 - Status: PRD Drafted. Pending Synthetic Baseline Audit.
 ```
 
-### Step 2: Single-Phase Execution
-The agent executes **only** the active tasks for Phase 1 (running `workshop-intake`, capturing `baseline_kpis.json`, and writing `create-prd`).
+### 2. Single-Phase Execution
+The agent executes only active tasks mapped to the current phase (e.g. running intake, capturing `baseline_kpis.json`, and writing `create-prd`).
 
-### Step 3: Hard Stop & Gate Evaluation
-The agent **stops execution** and presents a clear Gate Review to the TDL / User:
+### 3. Execution Stop & Gate Evaluation
+The agent stops execution and presents a gate review:
 
-> ✋ **PHASE 1 GATE CHECK**
+> **PHASE 1 GATE CHECK**
 > * PRD generated: `docs/PRD.md`
 > * Baseline captured: `baseline_kpis.json` (50 samples audited)
 > 
-> **Action Required**: Please review `docs/PRD.md` with the client SME. 
+> **Action Required**: Please review `docs/PRD.md`.
 > * Reply **"Approved"** to advance `STATE.md` to Phase 2 (Architecture & InfoSec).
 > * Or reply with feedback to iterate on Phase 1 requirements.
 
-### Step 4: Resumable Transition
-When you reply *"Approved"*, the agent updates `STATE.md` to `Phase 2: Prototype & Validate` and transitions its context to architecture grilling (`grill-with-docs`) and threat modeling (`threat-model-analyst`).
+### 4. Resumable State Transition
+When the user approves, the agent updates `STATE.md` to `Phase 2: Prototype & Validate` and advances context to architecture grilling (`grill-with-docs`) and threat modeling (`threat-model-analyst`).
 
 ---
 
-## 🎯 Summary Conclusion
+## Operational Benefits
 
-Packaging everything under a Meta-Skill does **NOT** mean running it in one shot. 
-
-A Meta-Skill acts as the **Governor & Memory**:
-1. It knows the **Master Blueprint** (the 4 TDL phases or 7 E2E phases).
-2. It knows **Where You Are** (`STATE.md`).
-3. It enforces **Human-in-the-Loop Gates** before allowing the project to advance.
+Packaging tasks under a meta-skill provides structured governance:
+1. Maintains a deterministic execution pipeline.
+2. Tracks progress via persistent state (`STATE.md`).
+3. Enforces human-in-the-loop verification gates prior to advancing project state.
