@@ -31,23 +31,25 @@ graph TD
 
 The TDL playbook dynamically resolves runtime capabilities across 4 phases:
 
-| Phase | Capability Slot | Primary Skill | Output Artifact |
-|---|---|---|---|
-| **Phase 1** | `#CAPABILITY: Skill-Stocktake` | `skill-stocktake` | `docs/SKILL_STOCKTAKE.md` |
-| **Phase 1** | `#CAPABILITY: Codebase-Onboarding` | `codebase-onboarding-and-mapping` | `docs/ONBOARDING.md` |
-| **Phase 1** | `#CAPABILITY: Repo-Conventions` | `ecc-repo-conventions` | Standard layout & `STATE.md` |
-| **Phase 1** | `#CAPABILITY: PRD-Creation` | `create-prd` | `docs/PRD.md` |
-| **Phase 1** | `#CAPABILITY: Baseline-Audit` | `synthetic-baseline-protocol` | `docs/baseline_kpis.json` |
-| **Phase 2** | `#CAPABILITY: GCP-Architecture-Advisor`| `gcp-agent-architecture-advisor` | `docs/ARCHITECTURE_RECOMMENDATION.md` |
-| **Phase 2** | `#CAPABILITY: Tech-Design-Document` | `documentation-and-adrs` | `docs/TDD.md` |
-| **Phase 2** | `#CAPABILITY: InfoSec-Threat-Modeling`| `threat-model-analyst` | `docs/THREAT_MATRIX.md` |
-| **Phase 3** | `#CAPABILITY: Fleet-Management` | `agentic-engineering` | Subagent model routing |
-| **Phase 3** | `#CAPABILITY: Task-Breakdown` | `planning-and-task-breakdown` | RICE backlog |
-| **Phase 3** | `#CAPABILITY: TDD-Build` | `test-driven-development` | Passing unit tests |
-| **Phase 3** | `#CAPABILITY: Intent-Audit` | `intended-vs-implemented` | Intent gap audit report |
-| **Phase 4** | `#CAPABILITY: Agent-Evaluation` | `google-agents-cli-eval` | Eval regression suite |
-| **Phase 4** | `#CAPABILITY: Release-Deployment` | `shipping-and-launch` | Cloud Run / GKE deploy |
-| **Phase 4** | `#CAPABILITY: Handoff-Artifacts` | `shipping-artifacts` | `shipping-artifacts` packet |
+| Phase | Capability Slot | Primary Skill | Extended / Secondary Skill | Output Artifact |
+|---|---|---|---|---|
+| **Phase 1** | `#CAPABILITY: Skill-Stocktake` | `skill-stocktake` | `using-agent-skills` | `docs/SKILL_STOCKTAKE.md` |
+| **Phase 1** | `#CAPABILITY: Codebase-Onboarding` | `codebase-onboarding-and-mapping` | `graphify` (AST Knowledge Graph) | `docs/ONBOARDING.md` |
+| **Phase 1** | `#CAPABILITY: Repo-Conventions` | `ecc-repo-conventions` | `git-workflow-and-versioning` | Standard layout & `STATE.md` |
+| **Phase 1** | `#CAPABILITY: PRD-Creation` | `create-prd` | `spec-driven-development` | `docs/PRD.md` |
+| **Phase 1** | `#CAPABILITY: Baseline-Audit` | `synthetic-baseline-protocol` | `ai-value-sizing` | `docs/baseline_kpis.json` |
+| **Phase 2** | `#CAPABILITY: GCP-Architecture-Advisor`| `gcp-agent-architecture-advisor` | `grill-with-docs` | `docs/ARCHITECTURE_RECOMMENDATION.md` |
+| **Phase 2** | `#CAPABILITY: Executive-Persona-Review`| `gstack` (Eng Manager & Doc Personas) | `strategy-red-team` | Pre-gate audit report |
+| **Phase 2** | `#CAPABILITY: Tech-Design-Document` | `documentation-and-adrs` | `spec-driven-development` | `docs/TDD.md` |
+| **Phase 2** | `#CAPABILITY: InfoSec-Threat-Modeling`| `threat-model-analyst` | `security-and-hardening` | `docs/THREAT_MATRIX.md` |
+| **Phase 3** | `#CAPABILITY: Fleet-Management` | `agentic-engineering` | `caveman` (Token compression) | Subagent model routing |
+| **Phase 3** | `#CAPABILITY: Task-Breakdown` | `planning-and-task-breakdown` | `to-tickets` | RICE backlog |
+| **Phase 3** | `#CAPABILITY: TDD-Build` | `test-driven-development` | `superpowers` (TDD framework) | Passing unit tests |
+| **Phase 3** | `#CAPABILITY: Pragmatic-Code-Simplification`| `ponytail` | `code-simplification` | Clean deep interfaces |
+| **Phase 3** | `#CAPABILITY: Intent-Audit` | `intended-vs-implemented` | `sql-queries` | Intent gap audit report |
+| **Phase 4** | `#CAPABILITY: Agent-Evaluation` | `google-agents-cli-eval` | `eval-quality-gate` | Eval regression suite |
+| **Phase 4** | `#CAPABILITY: Release-Deployment` | `shipping-and-launch` | `google-agents-cli-deploy` | Cloud Run / GKE deploy |
+| **Phase 4** | `#CAPABILITY: Handoff-Artifacts` | `shipping-artifacts` | `release-notes` | `shipping-artifacts` packet |
 
 ---
 
@@ -56,7 +58,7 @@ The TDL playbook dynamically resolves runtime capabilities across 4 phases:
 ### Phase 1: Discover & Define (Weeks 0-2)
 1. **Initialize State**: Verify `STATE.md` is initialized to `Phase 1: Discover & Define`.
 2. **Run Skill Stocktake**: Execute `skill-stocktake` to verify all required capability slots are active.
-3. **Onboard Codebase**: Execute `codebase-onboarding-and-mapping` to ingest existing client repositories into `docs/ONBOARDING.md`.
+3. **Onboard Codebase**: Execute `codebase-onboarding-and-mapping` and `graphify` to map AST dependencies, DB schema edges, and routes into `docs/ONBOARDING.md`.
 4. **Audit Baseline KPIs**: Conduct a 50-sample SME audit using `synthetic-baseline-protocol` to generate `baseline_kpis.json`.
 5. **Draft PRD**: Execute `create-prd` to lock in Goals, Non-Goals, and value metrics.
 6. **Phase 1 Gate Check**: Present `PRD.md` and `baseline_kpis.json` for sponsor sign-off.
@@ -64,16 +66,18 @@ The TDL playbook dynamically resolves runtime capabilities across 4 phases:
 ### Phase 2: Prototype & Validate (Weeks 3-6)
 1. **Architect GCP Solution**: Execute `gcp-agent-architecture-advisor` to compare No-Code, Low-Code, and High-Code ADK tiers and output `docs/ARCHITECTURE_RECOMMENDATION.md`.
 2. **Design Interfaces**: Execute `api-and-interface-design` to lock in module seams.
-3. **Model InfoSec Threats**: Run `threat-model-analyst` to compile the STRIDE threat matrix.
-4. **Scaffold ADK Agent**: Run `google-agents-cli-scaffold` and `google-agents-cli-adk-code`.
-5. **Phase 2 Gate Check**: Present Architecture Recommendation and InfoSec matrix for InfoSec board approval.
+3. **Run Executive Persona Review**: Run `gstack` personas (Eng Manager & Doc Engineer) to audit technical trade-offs prior to presenting gate review.
+4. **Model InfoSec Threats**: Run `threat-model-analyst` to compile the STRIDE threat matrix.
+5. **Scaffold ADK Agent**: Run `google-agents-cli-scaffold` and `google-agents-cli-adk-code`.
+6. **Phase 2 Gate Check**: Present Architecture Recommendation and InfoSec matrix for InfoSec board approval.
 
 ### Phase 3: Production Build (Weeks 6-10)
-1. **Configure Subagent Fleet**: Execute `agentic-engineering` to set up model routing rules (Flash for search, Pro/Opus for design).
-2. **Drive TDD Iteration**: Execute `test-driven-development` to build core features test-first.
-3. **Audit Intent vs Code**: Execute `intended-vs-implemented` to detect architectural drift.
-4. **Handle Regression Rollbacks**: If architectural defects are uncovered, update `STATE.md` to `ACTION: ROLLBACK_TO_PHASE_2`.
-5. **Phase 3 Gate Check**: Verify 100% test pass rate and zero intent gaps.
+1. **Configure Subagent Fleet**: Execute `agentic-engineering` and `caveman` token compression rules for model routing.
+2. **Drive TDD Iteration**: Execute `test-driven-development` and `superpowers` to build core features test-first.
+3. **Simplify Implementation**: Run `ponytail` and `code-simplification` to eliminate unnecessary abstractions and boilerplate.
+4. **Audit Intent vs Code**: Execute `intended-vs-implemented` to detect architectural drift.
+5. **Handle Regression Rollbacks**: If architectural defects are uncovered, update `STATE.md` to `ACTION: ROLLBACK_TO_PHASE_2`.
+6. **Phase 3 Gate Check**: Verify 100% test pass rate and zero intent gaps.
 
 ### Phase 4: Harden & Launch (Weeks 11-12)
 1. **Execute Agent Evaluation**: Run `google-agents-cli-eval` regression suites.

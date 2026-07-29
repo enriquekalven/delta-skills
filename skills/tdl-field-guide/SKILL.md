@@ -23,20 +23,22 @@ Operational execution playbook for Technical Deployment Leads (TDLs) managing 12
 | Phase | Capability Slot | Primary Tool (Tier 1) | Extended Tools (Tier 2) |
 |---|---|---|---|
 | **Phase 1** | `#CAPABILITY: Skill-Stocktake` | `skill-stocktake` | `using-agent-skills` |
-| **Phase 1** | `#CAPABILITY: Codebase-Onboarding` | `codebase-onboarding-and-mapping` | `codebase-design` |
+| **Phase 1** | `#CAPABILITY: Codebase-Onboarding` | `codebase-onboarding-and-mapping` | `graphify` (AST Knowledge Graph) |
 | **Phase 1** | `#CAPABILITY: Repo-Conventions` | `ecc-repo-conventions` | `git-workflow-and-versioning` |
 | **Phase 1** | `#CAPABILITY: Customer-Intake` | `workshop-intake` | `interview-me` |
 | **Phase 1** | `#CAPABILITY: Scope-Mapping` | `opportunity-solution-tree` | `user-stories`, `job-stories` |
 | **Phase 1** | `#CAPABILITY: PRD-Creation` | `create-prd` | `spec-driven-development` |
 | **Phase 2** | `#CAPABILITY: GCP-Architecture-Advisor`| `gcp-agent-architecture-advisor` | `grill-with-docs`, `google-agents-cli-scaffold` |
+| **Phase 2** | `#CAPABILITY: Executive-Persona-Review`| `gstack` | `strategy-red-team` |
 | **Phase 2** | `#CAPABILITY: Tech-Design-Document` | `documentation-and-adrs` | `spec-driven-development` |
 | **Phase 2** | `#CAPABILITY: API-Design` | `api-and-interface-design` | `domain-modeling`, `codebase-design` |
 | **Phase 2** | `#CAPABILITY: InfoSec-Threat-Modeling`| `threat-model-analyst` | `google-cloud-waf-security`, `agent-governance`, `security-and-hardening` |
-| **Phase 3** | `#CAPABILITY: Fleet-Management` | `agentic-engineering` | `context-engineering` |
+| **Phase 3** | `#CAPABILITY: Fleet-Management` | `agentic-engineering` | `caveman` |
 | **Phase 3** | `#CAPABILITY: Task-Breakdown` | `planning-and-task-breakdown` | `to-tickets`, `feature-tracking` |
-| **Phase 3** | `#CAPABILITY: TDD-Build` | `test-driven-development` | `implement`, `source-driven-development`, `ast-resilient-remediation` |
+| **Phase 3** | `#CAPABILITY: TDD-Build` | `test-driven-development` | `superpowers`, `implement`, `source-driven-development` |
+| **Phase 3** | `#CAPABILITY: Code-Simplification` | `ponytail` | `code-simplification` |
 | **Phase 3** | `#CAPABILITY: Intent-Audit` | `intended-vs-implemented` | `sql-queries` (pipeline validation) |
-| **Phase 3** | `#CAPABILITY: Code-Review` | `code-review-and-quality` | `pso-code-quality-reviewer`, `code-simplification` |
+| **Phase 3** | `#CAPABILITY: Code-Review` | `code-review-and-quality` | `pso-code-quality-reviewer` |
 | **Phase 4** | `#CAPABILITY: Agent-Evaluation` | `google-agents-cli-eval` | `eval-quality-gate` |
 | **Phase 4** | `#CAPABILITY: ROI-Sizing` | `ai-value-sizing` | `cohort-analysis`, `ab-test-analysis` |
 | **Phase 4** | `#CAPABILITY: Release-Deployment` | `shipping-and-launch` | `google-agents-cli-deploy`, `google-agents-cli-publish`, `google-agents-cli-observability` |
@@ -66,16 +68,16 @@ graph TD
 ## Execution Lifecycle
 
 ### Phase 1: Discover & Define (Weeks 0-2 | TDL-Led)
-* **Actions**: Run `#CAPABILITY: Skill-Stocktake`, `#CAPABILITY: Codebase-Onboarding` (`docs/ONBOARDING.md`), `#CAPABILITY: Repo-Conventions`, `#CAPABILITY: Scope-Mapping`, and `#CAPABILITY: PRD-Creation`. Audit 50 SME samples for `baseline_kpis.json`.
+* **Actions**: Run `#CAPABILITY: Skill-Stocktake`, `#CAPABILITY: Codebase-Onboarding` (`codebase-onboarding-and-mapping` + `graphify` ➔ `docs/ONBOARDING.md`), `#CAPABILITY: Repo-Conventions`, `#CAPABILITY: Scope-Mapping`, and `#CAPABILITY: PRD-Creation`. Audit 50 SME samples for `baseline_kpis.json`.
 * **Gate Check**: Present `docs/ONBOARDING.md`, `PRD.md`, and `baseline_kpis.json`. Await user sign-off before updating `STATE.md` to Phase 2.
 
 ### Phase 2: Prototype & Validate (Weeks 3-6 | TDL + FDE)
-* **Actions**: Run `#CAPABILITY: GCP-Architecture-Advisor` (`gcp-agent-architecture-advisor` -> `docs/ARCHITECTURE_RECOMMENDATION.md`), `#CAPABILITY: Tech-Design-Document` (`docs/TDD.md`), `#CAPABILITY: API-Design`, and `#CAPABILITY: InfoSec-Threat-Modeling`.
+* **Actions**: Run `#CAPABILITY: GCP-Architecture-Advisor` (`gcp-agent-architecture-advisor` -> `docs/ARCHITECTURE_RECOMMENDATION.md`), `#CAPABILITY: Executive-Persona-Review` (`gstack`), `#CAPABILITY: Tech-Design-Document` (`docs/TDD.md`), `#CAPABILITY: API-Design`, and `#CAPABILITY: InfoSec-Threat-Modeling`.
 * **ADK Agent Setup**: Invoke `google-agents-cli-scaffold` and `google-agents-cli-adk-code`.
 * **Gate Check**: Present Architecture Recommendation (`docs/ARCHITECTURE_RECOMMENDATION.md`) and InfoSec matrix. Await sign-off before updating `STATE.md` to Phase 3.
 
 ### Phase 3: Production Build (Weeks 6-10 | FDE-Led)
-* **Actions**: Configure `#CAPABILITY: Fleet-Management` (`agentic-engineering`), run `#CAPABILITY: Task-Breakdown`, drive `#CAPABILITY: TDD-Build`, run `#CAPABILITY: Intent-Audit`, and execute `#CAPABILITY: Code-Review`.
+* **Actions**: Configure `#CAPABILITY: Fleet-Management` (`agentic-engineering` + `caveman`), run `#CAPABILITY: Task-Breakdown`, drive `#CAPABILITY: TDD-Build` (`superpowers`), apply `#CAPABILITY: Code-Simplification` (`ponytail`), run `#CAPABILITY: Intent-Audit`, and execute `#CAPABILITY: Code-Review`.
 * **Regression Loop**: If architectural flaws are discovered, write `ACTION: ROLLBACK_TO_PHASE_2` in `STATE.md`.
 * **Gate Check**: Verify 100% test pass rate and intent gap clearance. Await sign-off before updating `STATE.md` to Phase 4.
 
