@@ -36,18 +36,23 @@ The TDL playbook dynamically resolves runtime capabilities across 4 phases:
 | **Phase 1** | `#CAPABILITY: Skill-Stocktake` | `skill-stocktake` | `using-agent-skills` | `docs/SKILL_STOCKTAKE.md` |
 | **Phase 1** | `#CAPABILITY: Codebase-Onboarding` | `codebase-onboarding-and-mapping` | `graphify` (AST Knowledge Graph) | `docs/ONBOARDING.md` |
 | **Phase 1** | `#CAPABILITY: Repo-Conventions` | `ecc-repo-conventions` | `git-workflow-and-versioning` | Standard layout & `STATE.md` |
+| **Phase 1** | `#CAPABILITY: Customer-Intake` | `workshop-intake` | `interview-me` | Intake notes & scope |
+| **Phase 1** | `#CAPABILITY: Scope-Mapping` | `opportunity-solution-tree` | `user-stories`, `job-stories` | Opportunity solution tree |
 | **Phase 1** | `#CAPABILITY: PRD-Creation` | `create-prd` | `spec-driven-development` | `docs/PRD.md` |
 | **Phase 1** | `#CAPABILITY: Baseline-Audit` | `synthetic-baseline-protocol` | `ai-value-sizing` | `docs/baseline_kpis.json` |
 | **Phase 2** | `#CAPABILITY: GCP-Architecture-Advisor`| `gcp-agent-architecture-advisor` | `grill-with-docs` | `docs/ARCHITECTURE_RECOMMENDATION.md` |
 | **Phase 2** | `#CAPABILITY: Executive-Persona-Review`| `gstack` (Eng Manager & Doc Personas) | `strategy-red-team` | Pre-gate audit report |
 | **Phase 2** | `#CAPABILITY: Tech-Design-Document` | `documentation-and-adrs` | `spec-driven-development` | `docs/TDD.md` |
+| **Phase 2** | `#CAPABILITY: API-Design` | `api-and-interface-design` | `domain-modeling`, `codebase-design` | API contract & module seams |
 | **Phase 2** | `#CAPABILITY: InfoSec-Threat-Modeling`| `threat-model-analyst` | `security-and-hardening` | `docs/THREAT_MATRIX.md` |
 | **Phase 3** | `#CAPABILITY: Fleet-Management` | `agentic-engineering` | `caveman` (Token compression) | Subagent model routing |
 | **Phase 3** | `#CAPABILITY: Task-Breakdown` | `planning-and-task-breakdown` | `to-tickets` | RICE backlog |
 | **Phase 3** | `#CAPABILITY: TDD-Build` | `test-driven-development` | `superpowers` (TDD framework) | Passing unit tests |
-| **Phase 3** | `#CAPABILITY: Pragmatic-Code-Simplification`| `ponytail` | `code-simplification` | Clean deep interfaces |
+| **Phase 3** | `#CAPABILITY: Code-Simplification` | `ponytail` | `code-simplification` | Clean deep interfaces |
 | **Phase 3** | `#CAPABILITY: Intent-Audit` | `intended-vs-implemented` | `sql-queries` | Intent gap audit report |
+| **Phase 3** | `#CAPABILITY: Code-Review` | `code-review-and-quality` | `pso-code-quality-reviewer` | Code review sign-off |
 | **Phase 4** | `#CAPABILITY: Agent-Evaluation` | `google-agents-cli-eval` | `eval-quality-gate` | Eval regression suite |
+| **Phase 4** | `#CAPABILITY: ROI-Sizing` | `ai-value-sizing` | `cohort-analysis`, `ab-test-analysis` | ROI dashboard report |
 | **Phase 4** | `#CAPABILITY: Release-Deployment` | `shipping-and-launch` | `google-agents-cli-deploy` | Cloud Run / GKE deploy |
 | **Phase 4** | `#CAPABILITY: Handoff-Artifacts` | `shipping-artifacts` | `release-notes` | `shipping-artifacts` packet |
 

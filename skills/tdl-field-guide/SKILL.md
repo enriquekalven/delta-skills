@@ -28,6 +28,7 @@ Operational execution playbook for Technical Deployment Leads (TDLs) managing 12
 | **Phase 1** | `#CAPABILITY: Customer-Intake` | `workshop-intake` | `interview-me` |
 | **Phase 1** | `#CAPABILITY: Scope-Mapping` | `opportunity-solution-tree` | `user-stories`, `job-stories` |
 | **Phase 1** | `#CAPABILITY: PRD-Creation` | `create-prd` | `spec-driven-development` |
+| **Phase 1** | `#CAPABILITY: Baseline-Audit` | `synthetic-baseline-protocol` | `ai-value-sizing` |
 | **Phase 2** | `#CAPABILITY: GCP-Architecture-Advisor`| `gcp-agent-architecture-advisor` | `grill-with-docs`, `google-agents-cli-scaffold` |
 | **Phase 2** | `#CAPABILITY: Executive-Persona-Review`| `gstack` | `strategy-red-team` |
 | **Phase 2** | `#CAPABILITY: Tech-Design-Document` | `documentation-and-adrs` | `spec-driven-development` |
@@ -68,7 +69,7 @@ graph TD
 ## Execution Lifecycle
 
 ### Phase 1: Discover & Define (Weeks 0-2 | TDL-Led)
-* **Actions**: Run `#CAPABILITY: Skill-Stocktake`, `#CAPABILITY: Codebase-Onboarding` (`codebase-onboarding-and-mapping` + `graphify` ➔ `docs/ONBOARDING.md`), `#CAPABILITY: Repo-Conventions`, `#CAPABILITY: Scope-Mapping`, and `#CAPABILITY: PRD-Creation`. Audit 50 SME samples for `baseline_kpis.json`.
+* **Actions**: Run `#CAPABILITY: Skill-Stocktake`, `#CAPABILITY: Codebase-Onboarding` (`codebase-onboarding-and-mapping` + `graphify` ➔ `docs/ONBOARDING.md`), `#CAPABILITY: Repo-Conventions`, `#CAPABILITY: Customer-Intake`, `#CAPABILITY: Scope-Mapping`, `#CAPABILITY: PRD-Creation`, and `#CAPABILITY: Baseline-Audit` (`synthetic-baseline-protocol` ➔ `baseline_kpis.json`).
 * **Gate Check**: Present `docs/ONBOARDING.md`, `PRD.md`, and `baseline_kpis.json`. Await user sign-off before updating `STATE.md` to Phase 2.
 
 ### Phase 2: Prototype & Validate (Weeks 3-6 | TDL + FDE)
