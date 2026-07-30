@@ -1,6 +1,6 @@
-# Jetski Multi-Model Skills Guide: Opus 5 & Fable 5 Integration
+# Using Claude Models in Antigravity / Jetski
 
-This guide provides step-by-step setup instructions and usage patterns for team members to enable **Opus 5** and **Claude Fable 5** multi-model peer review and code generation inside Jetski.
+This guide provides step-by-step setup instructions and usage patterns for team members to enable **Opus 5** and **Claude Fable 5** multi-model peer review and code generation inside Antigravity / Jetski.
 
 ---
 
