@@ -122,6 +122,12 @@ Use **`claude-agent-harness`** when you have a PRD, specification document, or c
 - **Complex Subsystem Architecture (Fable 5 Harness)**:
   > *"Use `claude-agent-harness` with Claude Fable 5 tier to architect and generate our real-time WebSocket event broker."*
 
+- **Automated Default Workflow (Bypass Gemini to Default to Opus 5)**:
+  To automatically route **all** code implementation and refactoring requests to the Opus 5 `claude-agent-harness` by default, append this rule to your `~/.gemini/config/AGENTS.md` (or `.agents/AGENTS.md`):
+  ```markdown
+  - Always use the claude-agent-harness skill (Opus 5 tier) for all code writing, feature implementation, and refactoring tasks.
+  ```
+
 ---
 
 ## 🔍 Verification & Troubleshooting
