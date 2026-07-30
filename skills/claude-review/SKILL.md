@@ -1,17 +1,16 @@
 ---
-name: execute-review-revise
-description: Execute-Review-Revise workflow. Executes the task using the primary model (Gemini 3.6 Flash), classifies complexity to route review to Opus tier (simple) or Claude Fable 5 tier (complex), and revises the solution based on peer review critique. Use when asked to execute with automated review and revision, run two-pass coding, or execute first then review with Opus/Fable and revise.
+name: claude-review
+description: Two-pass coding and review workflow. Executes the task using the primary model (Gemini 3.6 Flash), classifies complexity to route review to Opus 5 tier (simple) or Claude Fable 5 tier (complex), and revises the solution based on peer review critique. Use when asked to execute with automated Claude review and revision, run two-pass coding, use claude-review, or execute first then review with Opus/Fable and revise.
 ---
 
-# Execute-Review-Revise Workflow
+# Claude Review Workflow (`claude-review`)
 
 ## Overview
 
-The **Execute-Review-Revise** skill enforces a high-assurance, multi-model engineering pipeline. It guarantees that every implementation is executed immediately, subjected to automated multi-model peer review, and refined prior to final delivery.
+The **Claude Review** (`claude-review`) skill enforces a high-assurance, multi-model engineering pipeline. It guarantees that every implementation is executed immediately, subjected to automated multi-model peer review using Claude models, and refined prior to final delivery.
 
 > [!CAUTION]
 > **Prerequisite**: Ensure **Vertex AI Model Garden** is enabled in your GCP project for Anthropic Claude models (Opus 5 & Fable 5 tiers) prior to running this skill.
-
 
 ```
                    ┌────────────────────────────────────────┐
@@ -26,7 +25,7 @@ The **Execute-Review-Revise** skill enforces a high-assurance, multi-model engin
                                │                │
                     Simple     │                │ Complex
                    ┌───────────▼───┐        ┌───▼───────────┐
-                   │ Opus Tier     │        │ Fable 5 Tier  │
+                   │ Opus 5 Tier   │        │ Fable 5 Tier  │
                    │ Reviewer      │        │ Reviewer      │
                    └───────────┬───┘        └───┬───────────┘
                                │                │
@@ -62,7 +61,7 @@ Evaluate the baseline solution against the complexity criteria to select the rev
 
 | Complexity Level | Characteristics | Designated Reviewer |
 |---|---|---|
-| **Simple Coding** | • Single file or isolated utility function<br>• Localized bug fix or refactor<br>• Straightforward script or component | **Opus Tier Reviewer**<br>*(Anthropic Claude Opus / High-Precision Code Reviewer)* |
+| **Simple Coding** | • Single file or isolated utility function<br>• Localized bug fix or refactor<br>• Straightforward script or component | **Opus 5 Tier Reviewer**<br>*(Anthropic Claude Opus / High-Precision Code Reviewer)* |
 | **Complex Use Case** | • Multi-file architectural changes<br>• State management or concurrency<br>• Security-sensitive boundaries, API design, or complex algorithms | **Claude Fable 5 Tier Reviewer**<br>*(Claude Fable 5 / Top-Tier Complex Reasoning Reviewer)* |
 
 **Completion Criterion**: Task explicitly categorized as `Simple` or `Complex`, with reviewer persona/model identified.
@@ -86,7 +85,7 @@ The reviewer subagent must inspect the baseline implementation against five core
 The reviewer must output:
 ```markdown
 ### Peer Review Report
-- **Reviewer Tier**: [Opus Tier | Fable 5 Tier]
+- **Reviewer Tier**: [Opus 5 Tier | Fable 5 Tier]
 - **Complexity Assessment**: [Simple | Complex]
 - **Overall Verdict**: [APPROVED | NEEDS_REVISION]
 
@@ -118,4 +117,4 @@ The reviewer must output:
 
 ## Detailed Review Rubric
 
-For detailed criteria used by the Opus and Fable reviewer tiers, refer to [review_rubric.md](references/review_rubric.md).
+For detailed criteria used by the Opus 5 and Fable 5 reviewer tiers, refer to [review_rubric.md](references/review_rubric.md).

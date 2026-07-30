@@ -8,7 +8,7 @@ This guide provides step-by-step setup instructions and usage patterns for team 
 
 | Skill | Purpose | Key Models Used |
 |---|---|---|
-| [`execute-review-revise`](../skills/execute-review-revise/SKILL.md) | **Two-Pass Execution & Review Loop**: Generates baseline implementation immediately with Gemini 3.6 Flash, triages complexity, reviews with Opus 5 (simple) or Fable 5 (complex), and applies revisions. | Gemini 3.6 Flash (Primary)<br>Opus 5 Tier (Simple Reviewer)<br>Claude Fable 5 Tier (Complex Reviewer) |
+| [`claude-review`](../skills/claude-review/SKILL.md) | **Two-Pass Execution & Review Loop**: Generates baseline implementation immediately with Gemini 3.6 Flash, triages complexity, reviews with Opus 5 (simple) or Fable 5 (complex), and applies revisions. | Gemini 3.6 Flash (Primary)<br>Opus 5 Tier (Simple Reviewer)<br>Claude Fable 5 Tier (Complex Reviewer) |
 | [`claude-agent-harness`](../skills/claude-agent-harness/SKILL.md) | **Direct High-Tier Delegation**: Translates specs, PRDs, or natural language prompts directly into production code files via Opus 5 or Fable 5 agent harnesses. | Opus 5 Tier (Precision Code Gen)<br>Claude Fable 5 Tier (System Architecture) |
 
 > [!IMPORTANT]
@@ -17,14 +17,13 @@ This guide provides step-by-step setup instructions and usage patterns for team 
 > 
 > For standard coding, utility functions, or classification/summarization tasks, always stick with **Gemini 3.6 Flash** or the **Opus 5 Tier** to optimize speed and compute efficiency.
 
-
 ---
 
 ## 📋 Prerequisites
 
 > [!CAUTION]
 > **Mandatory Setup Requirement**:
-> Before using `execute-review-revise` or `claude-agent-harness`, your Google Cloud Project must have **Vertex AI Model Garden** enabled with access to Anthropic Claude model endpoints (Opus 5 & Fable 5 tiers).
+> Before using `claude-review` or `claude-agent-harness`, your Google Cloud Project must have **Vertex AI Model Garden** enabled with access to Anthropic Claude model endpoints (Opus 5 & Fable 5 tiers).
 > 
 > **Setup Steps**:
 > 1. Open **Google Cloud Console** → **Vertex AI** → **Model Garden**.
@@ -59,7 +58,7 @@ To make these skills available across **all** your local projects and repositori
    ```
 2. Copy the skills into your global config:
    ```bash
-   cp -r skills/execute-review-revise ~/.gemini/config/skills/
+   cp -r skills/claude-review ~/.gemini/config/skills/
    cp -r skills/claude-agent-harness ~/.gemini/config/skills/
    ```
 
@@ -67,7 +66,7 @@ To make these skills available across **all** your local projects and repositori
 
 ## 💡 Use Case 1: Enable Opus 5 / Fable 5 as a Reviewer of Gemini Code
 
-Use **`execute-review-revise`** when you want Gemini 3.6 Flash to rapidly build the baseline, followed by automated review and polish by an Opus 5 or Fable 5 reviewer.
+Use **`claude-review`** when you want Gemini 3.6 Flash to rapidly build the baseline, followed by automated review and polish by an Opus 5 or Fable 5 reviewer.
 
 ```
                     ┌────────────────────────┐
@@ -95,15 +94,15 @@ Use **`execute-review-revise`** when you want Gemini 3.6 Flash to rapidly build 
 ### Example Prompts:
 
 - **Simple Coding Task (Triggers Opus 5 Reviewer)**:
-  > *"Use `execute-review-revise` to write a Python async rate-limiting class."*
+  > *"Use `claude-review` to write a Python async rate-limiting class."*
 
 - **Complex System Task (Triggers Fable 5 Reviewer)**:
-  > *"Apply `execute-review-revise` to refactor our OAuth2 token refresh architecture and state machine across multiple services."*
+  > *"Apply `claude-review` to refactor our OAuth2 token refresh architecture and state machine across multiple services."*
 
 - **Automated Default Workflow (Optional)**:
   To enforce this two-pass workflow on **all** coding prompts automatically, append the following line to your `~/.gemini/config/AGENTS.md` (or `.agents/AGENTS.md`):
   ```markdown
-  - Always use the execute-review-revise skill when asked to write or modify code.
+  - Always use the claude-review skill when asked to write or modify code.
   ```
 
 ---
@@ -128,6 +127,6 @@ Use **`claude-agent-harness`** when you have a PRD, specification document, or c
 ## 🔍 Verification & Troubleshooting
 
 - **Check Active Skills**:
-  Ask Jetski: *"List available skills"* or check your context to confirm `execute-review-revise` and `claude-agent-harness` are recognized.
+  Ask Jetski: *"List available skills"* or check your context to confirm `claude-review` and `claude-agent-harness` are recognized.
 - **Inspect Review Output**:
-  During Phase 3 of `execute-review-revise`, Jetski will render a **Peer Review Report** showing the verdict (`APPROVED` or `NEEDS_REVISION`) and specific findings before applying changes.
+  During Phase 3 of `claude-review`, Jetski will render a **Peer Review Report** showing the verdict (`APPROVED` or `NEEDS_REVISION`) and specific findings before applying changes.
