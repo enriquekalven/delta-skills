@@ -62,7 +62,13 @@ Categorize the implementation task to select the agent harness model tier:
 | **Opus 5 Tier Harness** | • Single/multi-component implementation<br>• REST/GraphQL endpoints & database models<br>• Refactoring existing modules<br>• Utility libraries, hooks, & unit tests | High precision, strict adherence to type systems, optimal for targeted clean implementation. |
 | **Claude Fable 5 Tier Harness** | • Full feature subsystems & multi-file architecture<br>• Concurrent/distributed state machines<br>• Security-critical auth/crypto logic<br>• Algorithmic optimization & novel system designs | Frontier complex reasoning, deep architectural foresight, multi-step problem solving. |
 
+> [!IMPORTANT]
+> **Tier Overkill Warning**:
+> Claude Fable 5 is reserved for frontier system architecture and complex multi-module reasoning. Using Fable 5 for simple classification, basic refactoring, or text summarization is **complete overkill — it's like lighting a cigarette with a flamethrower!**
+> Always select **Opus 5** or **Gemini 3.6 Flash** for routine coding, utility functions, or classification tasks.
+
 **Completion Criterion**: Designated model tier (Opus 5 or Fable 5) selected with clear justification.
+
 
 ---
 

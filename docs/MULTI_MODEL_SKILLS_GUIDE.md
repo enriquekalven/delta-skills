@@ -11,6 +11,13 @@ This guide provides step-by-step setup instructions and usage patterns for team 
 | [`execute-review-revise`](../skills/execute-review-revise/SKILL.md) | **Two-Pass Execution & Review Loop**: Generates baseline implementation immediately with Gemini 3.6 Flash, triages complexity, reviews with Opus 5 (simple) or Fable 5 (complex), and applies revisions. | Gemini 3.6 Flash (Primary)<br>Opus 5 Tier (Simple Reviewer)<br>Claude Fable 5 Tier (Complex Reviewer) |
 | [`claude-agent-harness`](../skills/claude-agent-harness/SKILL.md) | **Direct High-Tier Delegation**: Translates specs, PRDs, or natural language prompts directly into production code files via Opus 5 or Fable 5 agent harnesses. | Opus 5 Tier (Precision Code Gen)<br>Claude Fable 5 Tier (System Architecture) |
 
+> [!IMPORTANT]
+> **Model Routing & Efficiency Note**:
+> Claude Fable 5 is designed for frontier reasoning, complex multi-module architecture, distributed concurrency, and security-critical systems. Using Fable 5 for simple classification, basic bug fixes, or text summarization is **complete overkill — it's like lighting a cigarette with a flamethrower!**
+> 
+> For standard coding, utility functions, or classification/summarization tasks, always stick with **Gemini 3.6 Flash** or the **Opus 5 Tier** to optimize speed and compute efficiency.
+
+
 ---
 
 ## 🚀 Installation & Setup Options
