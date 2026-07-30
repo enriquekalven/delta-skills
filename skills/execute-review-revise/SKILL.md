@@ -9,6 +9,10 @@ description: Execute-Review-Revise workflow. Executes the task using the primary
 
 The **Execute-Review-Revise** skill enforces a high-assurance, multi-model engineering pipeline. It guarantees that every implementation is executed immediately, subjected to automated multi-model peer review, and refined prior to final delivery.
 
+> [!CAUTION]
+> **Prerequisite**: Ensure **Vertex AI Model Garden** is enabled in your GCP project for Anthropic Claude models (Opus 5 & Fable 5 tiers) prior to running this skill.
+
+
 ```
                    ┌────────────────────────────────────────┐
                    │  Phase 1: Baseline Execution          │

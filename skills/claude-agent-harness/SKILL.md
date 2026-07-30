@@ -9,6 +9,10 @@ description: Delegated code generation harness that routes specification docs, s
 
 The **Claude Agent Harness** skill routes complex software engineering tasks to high-capability Claude reasoning tiers (**Opus 5** and **Claude Fable 5**) through an agent subagent harness. It translates specifications, design documents, or natural language requests into production-grade, fully verified code written directly to the workspace.
 
+> [!CAUTION]
+> **Prerequisite**: Ensure **Vertex AI Model Garden** is enabled in your GCP project for Anthropic Claude models (Opus 5 & Fable 5 tiers) prior to running this skill.
+
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ 1. Spec & Input Parsing (Doc / Markdown Spec / Prompt)      │

@@ -20,6 +20,20 @@ This guide provides step-by-step setup instructions and usage patterns for team 
 
 ---
 
+## 📋 Prerequisites
+
+> [!CAUTION]
+> **Mandatory Setup Requirement**:
+> Before using `execute-review-revise` or `claude-agent-harness`, your Google Cloud Project must have **Vertex AI Model Garden** enabled with access to Anthropic Claude model endpoints (Opus 5 & Fable 5 tiers).
+> 
+> **Setup Steps**:
+> 1. Open **Google Cloud Console** → **Vertex AI** → **Model Garden**.
+> 2. Search for **Claude** (Anthropic model cards).
+> 3. Click **Enable / Request Access** for your target GCP project.
+> 4. Verify your identity/service account has `roles/aiplatform.user` IAM permissions.
+
+---
+
 ## 🚀 Installation & Setup Options
 
 Teammates can enable these skills in Jetski using either **Workspace Level** setup or **Global System-Wide** setup.
