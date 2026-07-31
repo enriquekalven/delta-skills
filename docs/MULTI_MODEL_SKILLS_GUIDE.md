@@ -1,41 +1,68 @@
-# Using Claude Models in Antigravity / Jetski
+# Using Claude Models in Antigravity
 
-This guide provides step-by-step setup instructions and usage patterns for team members to enable **Opus 5** and **Claude Fable 5** multi-model peer review and code generation inside Antigravity / Jetski.
-
----
-
-## 🌟 Overview of the New Skills
-
-| Skill | Purpose | Key Models Used |
-|---|---|---|
-| [`claude-review`](../skills/claude-review/SKILL.md) | **Two-Pass Execution & Review Loop**: Generates baseline implementation immediately with Gemini 3.6 Flash, triages complexity, reviews with Opus 5 (simple) or Fable 5 (complex), and applies revisions. | Gemini 3.6 Flash (Primary)<br>Opus 5 Tier (Simple Reviewer)<br>Claude Fable 5 Tier (Complex Reviewer) |
-| [`claude-agent-harness`](../skills/claude-agent-harness/SKILL.md) | **Direct High-Tier Delegation**: Translates specs, PRDs, or natural language prompts directly into production code files via Opus 5 or Fable 5 agent harnesses. | Opus 5 Tier (Precision Code Gen)<br>Claude Fable 5 Tier (System Architecture) |
-
-> [!IMPORTANT]
-> **Model Routing & Efficiency Note**:
-> Claude Fable 5 is designed for frontier reasoning, complex multi-module architecture, distributed concurrency, and security-critical systems. Using Fable 5 for simple classification, basic bug fixes, or text summarization is **complete overkill — it's like lighting a cigarette with a flamethrower!**
-> 
-> For standard coding, utility functions, or classification/summarization tasks, always stick with **Gemini 3.6 Flash** or the **Opus 5 Tier** to optimize speed and compute efficiency.
+This guide provides step-by-step setup instructions and usage patterns for team members to enable **Opus 5** (Zero Data Retention) multi-model peer review and code generation inside Antigravity.
 
 ---
 
-## 📋 Prerequisites
+## 🌟 Overview of the Skills
+
+| Skill | Purpose | Key Models Used | Compliance Status |
+|---|---|---|---|
+| [`claude-review`](../skills/claude-review/SKILL.md) | **Two-Pass Execution & Review Loop**: Generates baseline implementation immediately with Gemini 3.6 Flash, reviews with Opus 5 via Model Garden API, and applies revisions. | Gemini 3.6 Flash (Primary)<br>Opus 5 Tier (ZDR Reviewer) | **ZDR Compliant** |
+| [`claude-agent-harness`](../skills/claude-agent-harness/SKILL.md) | **Direct High-Tier Delegation**: Translates specs, PRDs, or natural language prompts directly into production code files via Model Garden API script. | Opus 5 Tier (ZDR Code Gen) | **ZDR Compliant** |
 
 > [!CAUTION]
-> **Mandatory Setup Requirement**:
-> Before using `claude-review` or `claude-agent-harness`, your Google Cloud Project must have **Vertex AI Model Garden** enabled with access to Anthropic Claude model endpoints (Opus 5 & Fable 5 tiers).
-> 
-> **Setup Steps**:
-> 1. Open **Google Cloud Console** → **Vertex AI** → **Model Garden**.
-> 2. Search for **Claude** (Anthropic model cards).
-> 3. Click **Enable / Request Access** for your target GCP project.
-> 4. Verify your identity/service account has `roles/aiplatform.user` IAM permissions.
+> **Security Policy & Data Retention Requirement**:
+> Only Zero Data Retention (ZDR) models (e.g. **Opus 5**) are authorized. Fable 5 has a **30-day data retention policy** on Anthropic servers and is **STRICTLY PROHIBITED** under corporate Google accounts and customer data.
+
+---
+
+## 📋 Prerequisites & Technical Architecture
+
+### 1. Enable Vertex AI Model Garden Access
+Before using `claude-review` or `claude-agent-harness`, your Google Cloud Project must have **Vertex AI Model Garden** enabled with access to Anthropic Claude model endpoints:
+
+1. Open **Google Cloud Console** → **Vertex AI** → **Model Garden**.
+2. Search for **Claude** (Anthropic model cards).
+3. Click **Enable / Request Access** for your target GCP project.
+4. Verify your account has `roles/aiplatform.user` IAM permissions.
+
+### 2. Local Environment & Authentication Setup
+
+Run the following commands in your shell:
+
+```bash
+# 1. Install the Anthropic Vertex AI Python client
+pip install anthropic[vertex]
+
+# 2. Authenticate Application Default Credentials
+gcloud auth application-default login
+
+# 3. Export your Google Cloud Project ID
+export GOOGLE_CLOUD_PROJECT="your-gcp-project-id"
+export CLOUD_ML_REGION="us-central1"
+```
+
+### 3. How Skills Execute Model Garden API Calls
+Unlike basic prompt roleplaying, these skills execute an explicit Python helper script (`scripts/call_opus_model_garden.py`) via `run_command`:
+
+```python
+from anthropic import AnthropicVertex
+
+# Connects via Application Default Credentials to Vertex AI Model Garden
+client = AnthropicVertex(region="us-central1", project_id=os.environ["GOOGLE_CLOUD_PROJECT"])
+message = client.messages.create(
+    model="claude-3-5-opus@20241022",
+    max_tokens=4096,
+    messages=[{"role": "user", "content": prompt}]
+)
+```
 
 ---
 
 ## 🚀 Installation & Setup Options
 
-Teammates can enable these skills in Jetski using either **Workspace Level** setup or **Global System-Wide** setup.
+Teammates can enable these skills in Antigravity using either **Workspace Level** setup or **Global System-Wide** setup.
 
 ### Option A: Workspace Setup (Recommended for Project Repos)
 
@@ -44,7 +71,7 @@ Teammates can enable these skills in Jetski using either **Workspace Level** set
    git clone git@github.com:enriquekalven/delta-skills.git
    cd delta-skills
    ```
-2. Jetski automatically discovers skills located in `skills/` inside active workspace projects.
+2. Antigravity automatically discovers skills located in `skills/` inside active workspace projects.
 
 ---
 
@@ -64,63 +91,29 @@ To make these skills available across **all** your local projects and repositori
 
 ---
 
-## 💡 Use Case 1: Enable Opus 5 / Fable 5 as a Reviewer of Gemini Code
+## 💡 Use Case 1: Enable Opus 5 as a Reviewer of Gemini Code
 
-Use **`claude-review`** when you want Gemini 3.6 Flash to rapidly build the baseline, followed by automated review and polish by an Opus 5 or Fable 5 reviewer.
-
-```
-                    ┌────────────────────────┐
-                    │  1. Primary Build      │
-                    │  (Gemini 3.6 Flash)    │
-                    └───────────┬────────────┘
-                                │
-                                ▼
-                    ┌────────────────────────┐
-                    │  2. Complexity Triage  │
-                    └─────┬────────────┬─────┘
-            Simple        │            │       Complex
-            ┌─────────────▼──┐      ┌──▼─────────────┐
-            │ Opus 5 Reviewer│      │Fable 5 Reviewer│
-            └─────────────┬──┘      └──┬─────────────┘
-                          └──────┬─────┘
-                                 │
-                                 ▼
-                    ┌────────────────────────┐
-                    │  3. Refine & Polish    │
-                    │  (Gemini 3.6 Flash)    │
-                    └────────────────────────┘
-```
+Use **`claude-review`** when you want Gemini 3.6 Flash to rapidly build the baseline, followed by automated review and polish by Opus 5 via Vertex AI API.
 
 ### Example Prompts:
-
-- **Simple Coding Task (Triggers Opus 5 Reviewer)**:
+- **Simple Coding Task**:
   > *"Use `claude-review` to write a Python async rate-limiting class."*
 
-- **Complex System Task (Triggers Fable 5 Reviewer)**:
+- **Complex System Task**:
   > *"Apply `claude-review` to refactor our OAuth2 token refresh architecture and state machine across multiple services."*
-
-- **Automated Default Workflow (Optional)**:
-  To enforce this two-pass workflow on **all** coding prompts automatically, append the following line to your `~/.gemini/config/AGENTS.md` (or `.agents/AGENTS.md`):
-  ```markdown
-  - Always use the claude-review skill when asked to write or modify code.
-  ```
 
 ---
 
-## ⚡ Use Case 2: Jump Directly to Opus 5 or Fable 5 for Coding
+## ⚡ Use Case 2: Jump Directly to Opus 5 for Coding
 
-Use **`claude-agent-harness`** when you have a PRD, specification document, or complex prompt and want Opus 5 or Fable 5 to directly generate the production implementation.
+Use **`claude-agent-harness`** when you have a PRD, specification document, or complex prompt and want Opus 5 to directly generate the production implementation via Model Garden API.
 
 ### Example Prompts:
-
 - **From a Spec / PRD Document**:
   > *"Use `claude-agent-harness` to implement the specification in [PRD.md](file:///path/to/docs/PRD.md)."*
 
 - **Precision Code Generation (Opus 5 Harness)**:
   > *"Delegate implementation of this TypeScript REST endpoint to the Opus 5 `claude-agent-harness`."*
-
-- **Complex Subsystem Architecture (Fable 5 Harness)**:
-  > *"Use `claude-agent-harness` with Claude Fable 5 tier to architect and generate our real-time WebSocket event broker."*
 
 - **Automated Default Workflow (Bypass Gemini to Default to Opus 5)**:
   To automatically route **all** code implementation and refactoring requests to the Opus 5 `claude-agent-harness` by default, append this rule to your `~/.gemini/config/AGENTS.md` (or `.agents/AGENTS.md`):
@@ -133,6 +126,6 @@ Use **`claude-agent-harness`** when you have a PRD, specification document, or c
 ## 🔍 Verification & Troubleshooting
 
 - **Check Active Skills**:
-  Ask Jetski: *"List available skills"* or check your context to confirm `claude-review` and `claude-agent-harness` are recognized.
-- **Inspect Review Output**:
-  During Phase 3 of `claude-review`, Jetski will render a **Peer Review Report** showing the verdict (`APPROVED` or `NEEDS_REVISION`) and specific findings before applying changes.
+  Ask Antigravity: *"List available skills"* or check your context to confirm `claude-review` and `claude-agent-harness` are recognized.
+- **Verify API Calls**:
+  Inspect the terminal execution log when `scripts/call_opus_model_garden.py` runs to verify live communication with `claude-3-5-opus@20241022` on Vertex AI.

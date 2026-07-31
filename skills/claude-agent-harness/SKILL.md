@@ -1,17 +1,17 @@
 ---
 name: claude-agent-harness
-description: Delegated code generation harness that routes specification docs, specs, or natural language prompts to Opus 5 or Claude Fable 5 reasoning tiers via agent subagent harness. Use when asked to generate code using Opus 5 or Fable 5 agent harness, build from a spec or doc using Claude models, or delegate full implementation to Claude subagents.
+description: Delegated code generation harness that routes specification docs, specs, or natural language prompts to Zero Data Retention (ZDR) Opus 5 via Vertex AI Model Garden. Use when asked to generate code using Opus 5 agent harness, build from a spec or doc using Claude models, or delegate full implementation to Opus 5 subagent harness.
 ---
 
-# Claude Agent Harness (Opus 5 / Fable 5 Code Generator)
+# Claude Agent Harness (Opus 5 Code Generator)
 
 ## Overview
 
-The **Claude Agent Harness** skill routes complex software engineering tasks to high-capability Claude reasoning tiers (**Opus 5** and **Claude Fable 5**) through an agent subagent harness. It translates specifications, design documents, or natural language requests into production-grade, fully verified code written directly to the workspace.
+The **Claude Agent Harness** skill routes complex software engineering tasks to the high-capability, Zero Data Retention (ZDR) compliant **Opus 5** model on Vertex AI Model Garden via a dedicated execution script. It translates specifications, design documents, or natural language requests into production-grade, fully verified code written directly to the workspace.
 
 > [!CAUTION]
-> **Prerequisite**: Ensure **Vertex AI Model Garden** is enabled in your GCP project for Anthropic Claude models (Opus 5 & Fable 5 tiers) prior to running this skill.
-
+> **Compliance & Data Retention Requirement**:
+> Only Zero Data Retention (ZDR) models (e.g. **Opus 5**) are authorized. Fable 5 has a **30-day data retention policy** and is **STRICTLY PROHIBITED** under corporate Google accounts and customer data. Ensure **Vertex AI Model Garden** is enabled in your GCP project for Opus 5 prior to running this skill.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -20,21 +20,12 @@ The **Claude Agent Harness** skill routes complex software engineering tasks to 
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 2. Harness Model Tier Triage                                │
-├──────────────────────────────┬──────────────────────────────┤
-│ Standard / Precision Module  │ Complex / System Architecture│
-│         ▼                    │         ▼                    │
-│   Opus 5 Tier Harness        │   Claude Fable 5 Tier Harness│
-└──────────────┬───────────────┴──────────────┬───────────────┘
-               │                              │
-               ▼                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│ 3. Agent Harness Execution (Subagent Fleet Dispatch)        │
+│ 2. Model Garden API Execution (scripts/call_opus_model_garden.py)│
 └──────────────────────────────┬──────────────────────────────┘
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 4. Workspace File Generation & Automated Verification       │
+│ 3. Workspace File Generation & Automated Verification       │
 └──────────────────────────────┘
 ```
 
@@ -57,44 +48,26 @@ The **Claude Agent Harness** skill routes complex software engineering tasks to 
 
 ---
 
-### Phase 2: Harness Model Tier Selection
+### Phase 2: Model Selection & Compliance Gate
 
-Categorize the implementation task to select the agent harness model tier:
-
-| Tier | Applicable Scope | Reasoning Characteristics |
+| Tier | Applicable Scope | Compliance Status |
 |---|---|---|
-| **Opus 5 Tier Harness** | • Single/multi-component implementation<br>• REST/GraphQL endpoints & database models<br>• Refactoring existing modules<br>• Utility libraries, hooks, & unit tests | High precision, strict adherence to type systems, optimal for targeted clean implementation. |
-| **Claude Fable 5 Tier Harness** | • Full feature subsystems & multi-file architecture<br>• Concurrent/distributed state machines<br>• Security-critical auth/crypto logic<br>• Algorithmic optimization & novel system designs | Frontier complex reasoning, deep architectural foresight, multi-step problem solving. |
+| **Opus 5 Tier Harness** | • Full feature implementation & multi-component code<br>• REST/GraphQL endpoints & database models<br>• Refactoring existing modules<br>• Utility libraries & unit tests | **AUTHORIZED** (Zero Data Retention) |
+| **Non-ZDR Models (Fable 5)** | N/A | **PROHIBITED** (30-day data retention violation) |
 
-> [!IMPORTANT]
-> **Tier Overkill Warning**:
-> Claude Fable 5 is reserved for frontier system architecture and complex multi-module reasoning. Using Fable 5 for simple classification, basic refactoring, or text summarization is **complete overkill — it's like lighting a cigarette with a flamethrower!**
-> Always select **Opus 5** or **Gemini 3.6 Flash** for routine coding, utility functions, or classification tasks.
-
-**Completion Criterion**: Designated model tier (Opus 5 or Fable 5) selected with clear justification.
-
+**Completion Criterion**: Selected ZDR-compliant Opus 5 model tier.
 
 ---
 
-### Phase 3: Agent Harness Dispatch & Execution
+### Phase 3: Model Garden API Execution
 
-Invoke a subagent via the agent harness with a structured prompt containing the exact spec and code generation guidelines.
+Execute the real Model Garden Anthropic Vertex AI script via `run_command` to query Opus 5:
 
-#### Harness Prompt Structure
-```markdown
-[HARNESS ROLE]: Senior Staff Engineer (Tier: Opus 5 / Fable 5)
-[TASK]: Implement the specification provided below into production-grade workspace files.
-
-[SPECIFICATION & CONSTRAINTS]:
-- Objective: <Extracted Requirements>
-- Target Files: <File Paths>
-- Tech Stack & Conventions: <Workspace Patterns>
-- Quality Rules: No placeholders, complete error handling, strict type safety.
-
-[ACTION]: Generate complete source code files in the workspace.
+```bash
+python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py "Implement the specification: <spec_summary>"
 ```
 
-**Completion Criterion**: Subagent launched and harness execution initialized.
+The script connects via `AnthropicVertex` SDK using your Application Default Credentials (`GOOGLE_CLOUD_PROJECT`) and returns the generated code.
 
 ---
 
@@ -113,7 +86,7 @@ Invoke a subagent via the agent harness with a structured prompt containing the 
 ### Phase 5: Implementation Delivery Report
 
 Present a concise delivery report to the user including:
-- **Harness Tier Used**: Opus 5 Tier or Claude Fable 5 Tier
+- **Harness Model Used**: Opus 5 Tier (Model Garden ZDR Endpoint `claude-3-5-opus@20241022`)
 - **Generated / Modified Files**: Clickable links to workspace files
 - **Key Architectural Highlights**: Core patterns and implementation decisions
 - **Verification Results**: Status of syntax/type checks and unit test validation
