@@ -10,9 +10,15 @@ import sys
 
 def call_opus(prompt: str) -> str:
     """Calls Vertex AI Model Garden Anthropic Opus 5 ZDR endpoint."""
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("GCP_PROJECT") or "project-maui"
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("GCP_PROJECT")
     region = os.environ.get("CLOUD_ML_REGION", "global")
     model_name = os.environ.get("CLAUDE_MODEL_NAME", "claude-opus-5")
+
+    if not project_id:
+        raise ValueError(
+            "GOOGLE_CLOUD_PROJECT environment variable is not set. "
+            "Please run: export GOOGLE_CLOUD_PROJECT='your-project-id'"
+        )
 
     try:
         from anthropic import AnthropicVertex

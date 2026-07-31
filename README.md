@@ -2,7 +2,7 @@
 
 > Field execution playbooks and orchestrator skills for Google Cloud Technical Deployment Leads (TDLs), Forward Deployed Engineers (FDEs), and Agentic Transformation Leads (ATLs).
 
-`delta-skills` packages meta-skills for customer engagement orchestration, technical discovery, baseline KPI auditing, GCP AI Agent architecture evaluation, repository governance, and phase-gated software engineering lifecycles.
+`delta-skills` packages meta-skills for customer engagement orchestration, technical discovery, baseline KPI auditing, GCP AI Agent architecture evaluation, repository governance, multi-model Claude integration, and phase-gated software engineering lifecycles.
 
 ---
 
@@ -54,10 +54,14 @@ agents-cli update
 4. **`synthetic-baseline-protocol`**: Pre-deployment quantitative baseline protocol for auditing historical SME records and outputting `baseline_kpis.json`.
 5. **`codebase-onboarding-and-mapping`**: Analyzes client repositories to map components, entry points, and dependencies into `docs/ONBOARDING.md`.
 
+### Multi-Model & Claude Integration Skills (ZDR Compliant)
+6. **`claude-review`**: Two-pass coding and review workflow. Baseline execution via Gemini 3.6 Flash followed by peer review via Vertex AI Model Garden Opus 5 ZDR endpoint.
+7. **`claude-agent-harness`**: Delegated spec-to-code generation routing PRDs and specs directly to Model Garden Opus 5 ZDR endpoint.
+
 ### Operations, Governance, & Auditing Skills
-6. **`ecc-repo-conventions`**: Enforces standardized repository structure, file naming conventions, `STATE.md`, and environment hygiene.
-7. **`agentic-engineering`**: Governs subagent task decomposition, multi-model cost routing, and subagent fleet management.
-8. **`skill-stocktake`**: Audits workspace capability slots (`#CAPABILITY: Slot-Name`) to verify tool readiness prior to executing project phases.
+8. **`ecc-repo-conventions`**: Enforces standardized repository structure, file naming conventions, `STATE.md`, and environment hygiene.
+9. **`agentic-engineering`**: Governs subagent task decomposition, multi-model cost routing, and subagent fleet management.
+10. **`skill-stocktake`**: Audits workspace capability slots (`#CAPABILITY: Slot-Name`) to verify tool readiness prior to executing project phases.
 
 ---
 
@@ -82,9 +86,9 @@ npx skills add enriquekalven/delta-skills
 
 ## Documentation
 
+* [Using Claude Models in Antigravity Guide](docs/MULTI_MODEL_SKILLS_GUIDE.md)
 * [Technical Deployment Lead (TDL) Field Execution User Guide](docs/tdl-user-guide.md)
 * [End-to-End Delivery Workflow Guide](docs/e2e-delivery-workflow.md)
-* [Phase-Gated Execution Model](docs/phase-gated-execution-model.md)
 * [AlphaEvolve Skill Evaluation Matrix](docs/alphaevolve-masterclass-matrix.md)
 
 ---
