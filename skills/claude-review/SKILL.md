@@ -64,11 +64,32 @@ Route the baseline solution to the Zero Data Retention (ZDR) compliant Opus 5 re
 
 ### Phase 3: Multi-Model Peer Review (Model Garden API Execution)
 
-To obtain the live peer review critique from Opus 5 on Vertex AI Model Garden, execute the helper script via `run_command`:
+To obtain the live peer review critique from Opus 5 on Vertex AI Model Garden, execute the helper script via `run_command` passing the **full target source code** embedded in the prompt or piped via stdin:
 
 ```bash
-python3 skills/claude-review/scripts/call_opus_model_garden.py "Please review the baseline implementation in <target_file> against logic bugs, edge cases, thread safety, and code simplicity."
+python3 -c "
+import subprocess
+with open('<target_file>', 'r') as f:
+    code_content = f.read()
+
+prompt = f'''Please review the following baseline implementation against logic bugs, edge cases, thread safety, security, and code simplicity.
+
+--- CODE UNDER REVIEW (<target_file>) ---
+{code_content}'''
+
+res = subprocess.run(
+    ['python3', 'skills/claude-review/scripts/call_opus_model_garden.py', prompt],
+    capture_output=True, text=True
+)
+print(res.stdout)
+"
 ```
+
+> [!IMPORTANT]
+> **API Enforcement & Fail-Closed Posture**:
+> 1. You **MUST** execute the live Model Garden helper script (`scripts/call_opus_model_garden.py`). In-context roleplay simulation of the Opus reviewer is **STRICTLY PROHIBITED**.
+> 2. If the API invocation fails due to authentication or endpoint error, the review posture is **FAIL-CLOSED** (mark as `NEEDS_REVISION` and demand re-authentication via `gcloud auth application-default login`).
+> 3. The Model Garden endpoint identifier is `claude-opus-5` in region `us-central1`.
 
 #### Reviewer Prompt Directive
 The Opus 5 Model Garden API response will inspect the baseline implementation against five core axes:
@@ -83,7 +104,7 @@ The Opus 5 Model Garden API response will inspect the baseline implementation ag
 The reviewer must output:
 ```markdown
 ### Peer Review Report
-- **Reviewer Tier**: Opus 5 Tier (ZDR Compliant)
+- **Reviewer Tier**: Opus 5 Tier (ZDR Compliant - `claude-opus-5`)
 - **Overall Verdict**: [APPROVED | NEEDS_REVISION]
 
 #### Key Findings & Critique:
@@ -94,7 +115,7 @@ The reviewer must output:
 - Specific code blocks or architectural changes recommended.
 ```
 
-**Completion Criterion**: Review report produced with actionable findings or explicit approval.
+**Completion Criterion**: Live Model Garden API review report produced with actionable findings or explicit approval.
 
 ---
 

@@ -31,19 +31,27 @@ def call_opus(prompt: str) -> str:
     # Initialize Anthropic Client via Vertex AI Application Default Credentials
     client = AnthropicVertex(region=region, project_id=project_id)
 
-    # Call Model Garden ZDR Opus 5 endpoint
-    message = client.messages.create(
-        model=model_name,
-        max_tokens=4096,
-        messages=[{"role": "user", "content": prompt}],
-    )
-
-    # Extract text from content blocks (handling thinking blocks if present)
-    text_blocks = [block.text for block in message.content if getattr(block, "type", "") == "text"]
-    if text_blocks:
-        return "\n".join(text_blocks)
-
-    return str(message.content)
+    # Call Model Garden ZDR Opus 5 endpoint with exponential backoff retry loop
+    max_retries = 3
+    for attempt in range(1, max_retries + 1):
+        try:
+            message = client.messages.create(
+                model=model_name,
+                max_tokens=4096,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            # Extract text from content blocks (handling thinking blocks if present)
+            text_blocks = [block.text for block in message.content if getattr(block, "type", "") == "text"]
+            if text_blocks:
+                return "\n".join(text_blocks)
+            return str(message.content)
+        except Exception as e:
+            if attempt == max_retries:
+                raise e
+            import time
+            wait_time = 2 ** attempt
+            print(f"⚠️ Model Garden API call failed (attempt {attempt}/{max_retries}): {e}. Retrying in {wait_time}s...", file=sys.stderr)
+            time.sleep(wait_time)
 
 
 if __name__ == "__main__":

@@ -52,7 +52,7 @@ from anthropic import AnthropicVertex
 # Connects via Application Default Credentials to Vertex AI Model Garden
 client = AnthropicVertex(region="us-central1", project_id=os.environ["GOOGLE_CLOUD_PROJECT"])
 message = client.messages.create(
-    model="claude-3-5-opus@20241022",
+    model="claude-opus-5",
     max_tokens=4096,
     messages=[{"role": "user", "content": prompt}]
 )
@@ -128,4 +128,4 @@ Use **`claude-agent-harness`** when you have a PRD, specification document, or c
 - **Check Active Skills**:
   Ask Antigravity: *"List available skills"* or check your context to confirm `claude-review` and `claude-agent-harness` are recognized.
 - **Verify API Calls**:
-  Inspect the terminal execution log when `scripts/call_opus_model_garden.py` runs to verify live communication with `claude-3-5-opus@20241022` on Vertex AI.
+  Inspect the terminal execution log when `scripts/call_opus_model_garden.py` runs to verify live communication with `claude-opus-5` on Vertex AI.

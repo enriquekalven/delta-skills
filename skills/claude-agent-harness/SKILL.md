@@ -61,13 +61,32 @@ The **Claude Agent Harness** skill routes complex software engineering tasks to 
 
 ### Phase 3: Model Garden API Execution
 
-Execute the real Model Garden Anthropic Vertex AI script via `run_command` to query Opus 5:
+Execute the real Model Garden Anthropic Vertex AI script via `run_command` to query Opus 5 (`claude-opus-5` in region `us-central1`), embedding the parsed specification or piping via stdin:
 
 ```bash
-python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py "Implement the specification: <spec_summary>"
+python3 -c "
+import subprocess
+with open('<spec_file>', 'r') as f:
+    spec_content = f.read()
+
+prompt = f'''Please generate complete, production-ready implementation code for the following specification.
+
+--- SPECIFICATION DOCUMENT (<spec_file>) ---
+{spec_content}'''
+
+res = subprocess.run(
+    ['python3', 'skills/claude-review/scripts/call_opus_model_garden.py', prompt],
+    capture_output=True, text=True
+)
+print(res.stdout)
+"
 ```
 
-The script connects via `AnthropicVertex` SDK using your Application Default Credentials (`GOOGLE_CLOUD_PROJECT`) and returns the generated code.
+> [!IMPORTANT]
+> **API Enforcement & Fail-Closed Posture**:
+> 1. You **MUST** execute the live Model Garden helper script (`skills/claude-review/scripts/call_opus_model_garden.py`). Simulated in-context generation is **STRICTLY PROHIBITED**.
+> 2. If the API script returns an error or authentication failure, execution is **FAIL-CLOSED** (halt code generation and request re-authentication via `gcloud auth application-default login`).
+> 3. The script connects via `AnthropicVertex` SDK using Application Default Credentials (`GOOGLE_CLOUD_PROJECT`) to the ZDR `claude-opus-5` endpoint.
 
 ---
 
@@ -86,7 +105,7 @@ The script connects via `AnthropicVertex` SDK using your Application Default Cre
 ### Phase 5: Implementation Delivery Report
 
 Present a concise delivery report to the user including:
-- **Harness Model Used**: Opus 5 Tier (Model Garden ZDR Endpoint `claude-3-5-opus@20241022`)
+- **Harness Model Used**: Opus 5 Tier (Model Garden ZDR Endpoint `claude-opus-5`)
 - **Generated / Modified Files**: Clickable links to workspace files
 - **Key Architectural Highlights**: Core patterns and implementation decisions
 - **Verification Results**: Status of syntax/type checks and unit test validation
