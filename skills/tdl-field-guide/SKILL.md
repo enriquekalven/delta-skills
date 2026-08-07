@@ -2,7 +2,7 @@
 name: tdl-field-guide
 description: >
   Operational field execution meta-skill for Google Cloud Technical Deployment Leads (TDLs).
-  Governs the 12-week Delta engagement lifecycle, 6-role squad matrix, 1-in-1-out scope control, dynamic capability slots (Tier 1 & Tier 2), and rollback loops.
+  Governs the 12-week Delta engagement lifecycle, lean 2-role squad matrix, 1-in-1-out scope control, programmatic gate verification (scripts/verify_phase_gate.py), and production code templates.
   Triggers on: "tdl field guide", "tdl playbook", "run tdl engagement", "delta squad execution", "tdl user guide", "lead delta engagement".
 ---
 
@@ -12,10 +12,10 @@ Operational execution playbook for Technical Deployment Leads (TDLs) managing 12
 
 ---
 
-## Dynamic Capability Resolution Matrix
+## 1. Dynamic Capability Resolution Matrix
 
 ```
-[Inspect STATE.md] --> [Run Skill Stocktake] --> [Resolve Phase Capability Slots] --> [Execute Gate Verification]
+[Inspect STATE.md] --> [Run verify_phase_gate.py] --> [Resolve Phase Capability Slots] --> [Execute Gate Verification]
 ```
 
 ### Capability Slot Mapping (Tier 1 & Tier 2)
@@ -47,41 +47,69 @@ Operational execution playbook for Technical Deployment Leads (TDLs) managing 12
 
 ---
 
-## Squad Matrix & Governance Rules
+## 2. Lean 2-Role Squad Matrix & Governance Rules
 
 ```mermaid
-graph TD
-    A["01: 10X Lead (Originate)"] --> B["02: AI Activation Lead (Govern)"]
-    B --> C["03: TDL (Architect & Spec)"]
-    C --> D["04: Forward-Deployed Engineer - FDE (Build & Harden)"]
-    D --> E["05: Platform Engineer (Productize)"]
-    C --> F["06: Agentic Transformation Lead (ATL - Change & Scaling)"]
+graph LR
+    A["Architect & Specifier (TDL Persona)"] <--> B["Builder & Hardener (FDE Persona)"]
 ```
 
-### Core Governance Rules
+### 2-Role Responsibilities:
+1. **Architect & Specifier (TDL Persona)**: Owns discovery, PRD creation, GCP 3-tier architecture advisory, InfoSec threat modeling, state tracking (`STATE.md`), and programmatic phase gate enforcement.
+2. **Builder & Hardener (FDE Persona)**: Owns task breakdown, TDD red-green-refactor build loops, AST refactoring, intent gap audits, secret scanning, and CI/CD deployment.
+
+### Core Governance Rules:
 * **12-Week Capped Window**: Fixed milestone target window.
 * **1-in, 1-out Scope Governance**: Mid-flight feature requests swap equivalent RICE-scored items.
 * **Synthetic Baseline Protocol**: Execute 50-sample retrospective SME audit in Phase 1 producing `baseline_kpis.json`.
-* **Environment Segregation**: Staging PoCs run with sanitized dummy data (`dummy-dataset`); production deploys in client VPC.
+* **Programmatic Gate Enforcement**: Must run `python3 scripts/verify_phase_gate.py --phase N` before advancing state in `STATE.md`.
 
 ---
 
-## Execution Lifecycle
+## 3. Production Code Templates & Boilerplate
 
-### Phase 1: Discover & Define (Weeks 0-2 | TDL-Led)
-* **Actions**: Run `#CAPABILITY: Skill-Stocktake`, `#CAPABILITY: Codebase-Onboarding` (`codebase-onboarding-and-mapping` + `graphify` ➔ `docs/ONBOARDING.md`), `#CAPABILITY: Repo-Conventions`, `#CAPABILITY: Customer-Intake`, `#CAPABILITY: Scope-Mapping`, `#CAPABILITY: PRD-Creation`, and `#CAPABILITY: Baseline-Audit` (`synthetic-baseline-protocol` ➔ `baseline_kpis.json`).
-* **Gate Check**: Present `docs/ONBOARDING.md`, `PRD.md`, and `baseline_kpis.json`. Await user sign-off before updating `STATE.md` to Phase 2.
+This skill includes production-ready code templates inside `templates/` for rapid execution during Phase 3 TDD:
+
+| Template Path | Purpose & Features |
+|---|---|
+| `templates/fastapi_main.py` | Production FastAPI application with lifespan context, health checks (`/healthz`, `/readyz`), CORS middleware, and GCP Secret Manager. |
+| `templates/pydantic_v2_schemas.py` | Pydantic v2 `BaseModel` schemas with `ConfigDict(extra="forbid")`, OpenAPI examples, and custom validators. |
+| `templates/pytest_fixtures.py` | PyTest fixtures providing `httpx.AsyncClient` ASGI transport, mock secret clients, and environment variable overrides. |
+
+---
+
+## 4. Execution Lifecycle & Programmatic Gate Checks
+
+### Phase 1: Discover & Define (Weeks 0-2 | TDL Persona)
+* **Actions**: Run `#CAPABILITY: Skill-Stocktake`, `#CAPABILITY: Codebase-Onboarding` (`codebase-onboarding-and-mapping` ➔ `docs/ONBOARDING.md`), `#CAPABILITY: PRD-Creation` (`PRD.md`), and `#CAPABILITY: Baseline-Audit` (`synthetic-baseline-protocol` ➔ `baseline_kpis.json`).
+* **Automated Gate Check**:
+  ```bash
+  python3 scripts/verify_phase_gate.py --phase 1
+  ```
+* **Exit Condition**: `verify_phase_gate.py` passes (verifying `docs/ONBOARDING.md`, `PRD.md`, `baseline_kpis.json`, and zero exposed secrets) before updating `STATE.md` to Phase 2.
 
 ### Phase 2: Prototype & Validate (Weeks 3-6 | TDL + FDE)
-* **Actions**: Run `#CAPABILITY: GCP-Architecture-Advisor` (`gcp-agent-architecture-advisor` -> `docs/ARCHITECTURE_RECOMMENDATION.md`), `#CAPABILITY: Executive-Persona-Review` (`gstack`), `#CAPABILITY: Tech-Design-Document` (`docs/TDD.md`), `#CAPABILITY: API-Design`, and `#CAPABILITY: InfoSec-Threat-Modeling`.
+* **Actions**: Run `#CAPABILITY: GCP-Architecture-Advisor` (`gcp-agent-architecture-advisor` -> `docs/ARCHITECTURE_RECOMMENDATION.md`), `#CAPABILITY: Tech-Design-Document` (`docs/TDD.md`), and `#CAPABILITY: InfoSec-Threat-Modeling`.
 * **ADK Agent Setup**: Invoke `google-agents-cli-scaffold` and `google-agents-cli-adk-code`.
-* **Gate Check**: Present Architecture Recommendation (`docs/ARCHITECTURE_RECOMMENDATION.md`) and InfoSec matrix. Await sign-off before updating `STATE.md` to Phase 3.
+* **Automated Gate Check**:
+  ```bash
+  python3 scripts/verify_phase_gate.py --phase 2
+  ```
+* **Exit Condition**: `verify_phase_gate.py` passes (verifying `docs/ARCHITECTURE_RECOMMENDATION.md` and `docs/TDD.md`) before updating `STATE.md` to Phase 3.
 
-### Phase 3: Production Build (Weeks 6-10 | FDE-Led)
-* **Actions**: Configure `#CAPABILITY: Fleet-Management` (`agentic-engineering` + `caveman`), run `#CAPABILITY: Task-Breakdown`, drive `#CAPABILITY: TDD-Build` (`superpowers`), apply `#CAPABILITY: Code-Simplification` (`ponytail`), run `#CAPABILITY: Intent-Audit`, and execute `#CAPABILITY: Code-Review`.
+### Phase 3: Production Build (Weeks 6-10 | FDE Persona)
+* **Actions**: Configure `#CAPABILITY: Fleet-Management` (`agentic-engineering`), run `#CAPABILITY: Task-Breakdown`, drive `#CAPABILITY: TDD-Build` using templates in `templates/`, and execute `#CAPABILITY: Code-Review`.
 * **Regression Loop**: If architectural flaws are discovered, write `ACTION: ROLLBACK_TO_PHASE_2` in `STATE.md`.
-* **Gate Check**: Verify 100% test pass rate and intent gap clearance. Await sign-off before updating `STATE.md` to Phase 4.
+* **Automated Gate Check**:
+  ```bash
+  python3 scripts/verify_phase_gate.py --phase 3
+  ```
+* **Exit Condition**: `verify_phase_gate.py` passes (verifying 100% pytest pass rate and zero secret exposures) before updating `STATE.md` to Phase 4.
 
 ### Phase 4: Harden & Launch (Weeks 11-12 | Full Squad)
-* **Actions**: Run `#CAPABILITY: Agent-Evaluation`, `#CAPABILITY: ROI-Sizing`, deploy via `#CAPABILITY: Release-Deployment`, configure observability, and compile `#CAPABILITY: Handoff-Artifacts`.
-* **Gate Check**: Present ROI dashboard, service status, and handoff documentation packet.
+* **Actions**: Run `#CAPABILITY: Agent-Evaluation`, deploy via `#CAPABILITY: Release-Deployment`, configure observability, and compile `#CAPABILITY: Handoff-Artifacts`.
+* **Automated Gate Check**:
+  ```bash
+  python3 scripts/verify_phase_gate.py --phase 4
+  ```
+* **Exit Condition**: `verify_phase_gate.py` passes (verifying `docs/HANDOFF_PACKET.md` and post-eval ROI calculations in `baseline_kpis.json`).

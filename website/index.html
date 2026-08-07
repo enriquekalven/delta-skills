@@ -179,9 +179,10 @@
               <span class="ml-2 text-xs font-mono text-slate-400">Live Skill Artifact Sandbox</span>
             </div>
             <div class="flex space-x-1 text-xs font-mono">
-              <button id="tab-arch" onclick="showArtifact('arch')" class="artifact-tab px-3 py-1 rounded-t transition">gcp-advisor</button>
-              <button id="tab-kpis" onclick="showArtifact('kpis')" class="artifact-tab px-3 py-1 rounded-t transition">baseline_kpis</button>
-              <button id="tab-review" onclick="showArtifact('review')" class="artifact-tab px-3 py-1 rounded-t transition">opus5-review</button>
+              <button id="tab-arch" onclick="showArtifact('arch')" class="artifact-tab px-2.5 py-1 rounded-t transition">gcp-advisor</button>
+              <button id="tab-gate" onclick="showArtifact('gate')" class="artifact-tab px-2.5 py-1 rounded-t transition">gate-verifier</button>
+              <button id="tab-kpis" onclick="showArtifact('kpis')" class="artifact-tab px-2.5 py-1 rounded-t transition">baseline_kpis</button>
+              <button id="tab-review" onclick="showArtifact('review')" class="artifact-tab px-2.5 py-1 rounded-t transition">opus5-review</button>
             </div>
           </div>
 
@@ -202,7 +203,19 @@
               <div class="text-slate-300">• Strict VPC Service Controls & CMEK encryption</div>
             </div>
 
-            <!-- Tab 2: Baseline KPIs -->
+            <!-- Tab 2: Programmatic Gate Verifier -->
+            <div id="artifact-gate" class="artifact-content hidden">
+              <div class="text-amber-400 mb-2">$ python3 scripts/verify_phase_gate.py --phase 1</div>
+              <div class="text-slate-400 mb-3">============================================================</div>
+              <div class="text-slate-300">✓ Found ./docs/ONBOARDING.md (1420 bytes)</div>
+              <div class="text-slate-300">✓ Found ./PRD.md (3890 bytes)</div>
+              <div class="text-slate-300">✓ Found ./baseline_kpis.json (980 bytes)</div>
+              <div class="text-emerald-400">✓ Secret scan passed (no hardcoded API keys/credentials).</div>
+              <div class="text-slate-400 my-2">============================================================</div>
+              <div class="text-emerald-400 font-bold">✨ PHASE 1 GATE VERIFICATION PASSED. Approved to advance STATE.md.</div>
+            </div>
+
+            <!-- Tab 3: Baseline KPIs -->
             <div id="artifact-kpis" class="artifact-content hidden">
               <div class="text-emerald-400 mb-2"># 50-Sample SME Ticket Audit Baseline</div>
               <div class="text-slate-400">Target File: <span class="text-white">docs/spec/baseline_kpis.json</span></div>
@@ -222,7 +235,7 @@
 }</pre>
             </div>
 
-            <!-- Tab 3: Opus 5 Review -->
+            <!-- Tab 4: Opus 5 Review -->
             <div id="artifact-review" class="artifact-content hidden">
               <div class="text-indigo-400 mb-2"># Vertex AI Model Garden Opus 5 ZDR Peer Review</div>
               <div class="text-slate-400">Target File: <span class="text-white">docs/spec/implementation/code-review-report.md</span></div>
