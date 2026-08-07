@@ -1,7 +1,7 @@
 {
   "name": "delta-skills",
-  "version": "1.0.0",
-  "description": "Google Cloud Delta Squad Meta-Skills: 7-Phase E2E Delivery Workflow and 12-Week TDL Operational Field Playbook.",
+  "version": "1.1.0",
+  "description": "Google Cloud Delta Squad Meta-Skills & BMAD Method Enterprise Module: 7-Phase E2E Delivery Workflow, GCP Architecture Advisor, ZDR Multi-Model Routing, and TDL Field Playbook.",
   "author": {
     "name": "Enrique Chan",
     "url": "https://github.com/enriquekalven"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/enriquekalven/delta-skills.git"
   },
-  "keywords": ["google-cloud", "delta-squad", "tdl", "meta-skills", "agile", "adk"],
+  "keywords": ["google-cloud", "delta-squad", "tdl", "meta-skills", "agile", "adk", "bmad-method", "bmad-module", "vertex-ai"],
   "license": "Apache-2.0",
   "disabled": false
 }

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delta TDL User Guide — Enterprise Google Cloud AI Field Execution & Agentic Engineering Suite</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              cyan: '#06b6d4',
+              emerald: '#10b981',
+              dark: '#0b0f19',
+              card: '#161e2e',
+              border: '#1f293d'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0b0f19; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
+    .glow-cyan { text-shadow: 0 0 20px rgba(6, 182, 212, 0.5); }
+    .glow-indigo { text-shadow: 0 0 20px rgba(99, 102, 241, 0.5); }
+    .gradient-border { border: 1px solid transparent; background: linear-gradient(#161e2e, #161e2e) padding-box, linear-gradient(135deg, #06b6d4, #6366f1) border-box; }
+    .gradient-text { background: linear-gradient(135deg, #38bdf8, #818cf8, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- Navigation -->
+  <nav class="sticky top-0 z-50 backdrop-blur-md bg-brand-dark/80 border-b border-brand-border px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-cyan-500/20">
+          Δ
+        </div>
+        <div>
+          <span class="font-extrabold text-xl tracking-tight text-white">Delta TDL <span class="text-cyan-400">User Guide</span></span>
+          <span class="ml-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">v1.1.0</span>
+        </div>
+      </div>
+      <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-300">
+        <a href="#overview" class="hover:text-cyan-400 transition">Overview</a>
+        <a href="#tdl-guide" class="hover:text-cyan-400 transition">12-Week TDL Guide</a>
+        <a href="#e2e-workflow" class="hover:text-cyan-400 transition">E2E SDLC</a>
+        <a href="#gcp-architecture" class="hover:text-cyan-400 transition">GCP Architecture Advisor</a>
+        <a href="#bmad-sdd" class="hover:text-cyan-400 transition">BMAD Marriage & SDD</a>
+        <a href="#skills-catalog" class="hover:text-cyan-400 transition">Skills Directory</a>
+      </div>
+      <div class="flex items-center space-x-3">
+        <a href="#install" class="px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 rounded-lg shadow-lg shadow-cyan-500/20 transition transform hover:-translate-y-0.5">
+          <i class="fa-solid fa-download mr-2"></i>Install Plugin
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="overview" class="relative py-20 px-6 overflow-hidden">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-6">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span>Google Cloud Delta Squad Enterprise Field Suite</span>
+        </div>
+        <h1 class="text-4xl lg:text-6xl font-black text-white tracking-tight leading-none mb-6">
+          Architect & Deploy <br>
+          <span class="gradient-text">Google Cloud AI Agents</span> <br>
+          At Enterprise Scale
+        </h1>
+        <p class="text-lg text-gray-400 mb-8 leading-relaxed">
+          The official field execution playbooks, GCP agent architecture advisory engines, multi-model ZDR cost routing, and 12-week Technical Deployment Lead (TDL) meta-skills. Fully integrated with <strong class="text-white">BMAD Method</strong>, <strong class="text-white">Antigravity CLI</strong>, and <strong class="text-white">Google Agents CLI</strong>.
+        </p>
+
+        <!-- Command Copier Pill -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-3 flex items-center justify-between mb-8 max-w-lg">
+          <code class="text-sm font-mono text-cyan-300">npx bmad-method install --custom .../delta-skills</code>
+          <button onclick="navigator.clipboard.writeText('npx bmad-method install --custom https://github.com/enriquekalven/delta-skills'); alert('Command copied to clipboard!')" class="ml-3 px-3 py-1.5 bg-brand-border hover:bg-gray-700 text-xs font-medium text-gray-200 rounded-lg transition flex items-center">
+            <i class="fa-regular fa-copy mr-1.5"></i> Copy
+          </button>
+        </div>
+
+        <div class="flex flex-wrap gap-4">
+          <a href="#bmad-sdd" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-cyan-500/25 transition">
+            Explore BMAD SDD Marriage <i class="fa-solid fa-arrow-right ml-2"></i>
+          </a>
+          <a href="#tdl-guide" class="px-6 py-3 bg-brand-card hover:bg-brand-border border border-brand-border text-gray-200 font-semibold text-sm rounded-xl transition">
+            View 12-Week TDL Playbook
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Banner Image / Visual -->
+      <div class="relative">
+        <div class="absolute -inset-1 rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-600 opacity-30 blur-xl"></div>
+        <div class="relative rounded-2xl overflow-hidden border border-brand-border shadow-2xl bg-brand-card">
+          <img src="https://raw.githubusercontent.com/enriquekalven/delta-skills/main/docs/images/hero_banner.jpg" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80'" alt="Delta Skills Hero Architecture" class="w-full h-auto object-cover">
+          <div class="p-4 bg-brand-card/90 border-t border-brand-border flex items-center justify-between text-xs text-gray-400">
+            <span class="flex items-center"><i class="fa-solid fa-shield-halved text-emerald-400 mr-2"></i> Vertex AI ZDR Compliant</span>
+            <span class="flex items-center"><i class="fa-solid fa-cubes text-cyan-400 mr-2"></i> 11 Production Skills</span>
+            <span class="flex items-center"><i class="fa-solid fa-code-branch text-indigo-400 mr-2"></i> Open Skills Standard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Pillars -->
+  <section class="py-16 px-6 bg-brand-card/50 border-y border-brand-border">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl font-extrabold text-white mb-4">Engineered for Google Cloud Field Excellence</h2>
+        <p class="text-gray-400">Everything enterprise deployment teams need to evaluate, audit, build, and launch AI agents on GCP.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Pillar 1 -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-8 hover:border-cyan-500/50 transition">
+          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-2xl font-bold mb-6">
+            <i class="fa-solid fa-sitemap"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">12-Week TDL Field Playbook</h3>
+          <p class="text-gray-400 text-sm leading-relaxed mb-4">
+            Structured customer engagement lifecycle across 4 phases with 6-role squad matrix (TDL, FDE, ATL, SME) and strict 1-in-1-out scope governance.
+          </p>
+          <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-chevron-right text-xs mr-1"></i> Skill: tdl-field-guide</span>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-8 hover:border-indigo-500/50 transition">
+          <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-2xl font-bold mb-6">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">GCP Agent Architecture Advisor</h3>
+          <p class="text-gray-400 text-sm leading-relaxed mb-4">
+            Ingests PRDs and intake notes to evaluate No-Code (Gemini Enterprise), Low-Code (Vertex Agent Engine), and High-Code (ADK Python/Cloud Run) tiers.
+          </p>
+          <span class="text-xs font-semibold text-indigo-400 flex items-center"><i class="fa-solid fa-chevron-right text-xs mr-1"></i> Skill: gcp-agent-architecture-advisor</span>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-8 hover:border-emerald-500/50 transition">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-2xl font-bold mb-6">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">SME Baseline ROI Audit</h3>
+          <p class="text-gray-400 text-sm leading-relaxed mb-4">
+            Pre-deployment 50-sample retrospective SME ticket audit producing <code class="text-emerald-300">baseline_kpis.json</code> for measuring unit cost & error rate ROI.
+          </p>
+          <span class="text-xs font-semibold text-emerald-400 flex items-center"><i class="fa-solid fa-chevron-right text-xs mr-1"></i> Skill: synthetic-baseline-protocol</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BMAD Method Marriage & 8-Step SDD Daisy-Chain -->
+  <section id="bmad-sdd" class="py-20 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-2 block">Special Integration</span>
+          <h2 class="text-3xl font-extrabold text-white">BMAD Method Marriage & 8-Step SDD Daisy-Chain</h2>
+        </div>
+        <div class="mt-4 md:mt-0">
+          <span class="px-3 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-lg text-xs font-mono">
+            Bridge: skills/delta-bmad-workflow/SKILL.md
+          </span>
+        </div>
+      </div>
+
+      <!-- SDD Pipeline Visualization -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
+
+        <!-- Step 1 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 relative">
+          <div class="text-xs font-bold text-cyan-400 mb-1">STEP 01: ONBOARDING</div>
+          <div class="text-sm font-bold text-white mb-2">Tech Stack Guardrails</div>
+          <p class="text-xs text-gray-400 mb-3"><code class="text-gray-300">/bmad-generate-project-context</code></p>
+          <div class="text-xs text-emerald-400 font-mono bg-emerald-500/10 p-2 rounded border border-emerald-500/20">
+            📄 docs/spec/project-context.md
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 relative">
+          <div class="text-xs font-bold text-cyan-400 mb-1">STEP 02: ANALYSIS</div>
+          <div class="text-sm font-bold text-white mb-2">Brainstorm & SME Audit</div>
+          <p class="text-xs text-gray-400 mb-3"><code class="text-gray-300">/bmad-brainstorming</code></p>
+          <div class="text-xs text-emerald-400 font-mono bg-emerald-500/10 p-2 rounded border border-emerald-500/20">
+            📄 docs/spec/plans/brainstorming/
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 relative">
+          <div class="text-xs font-bold text-cyan-400 mb-1">STEP 03: PLANNING</div>
+          <div class="text-sm font-bold text-white mb-2">PRD & GCP Architecture</div>
+          <p class="text-xs text-gray-400 mb-3"><code class="text-gray-300">/bmad-prd</code> + GCP Advisor</p>
+          <div class="text-xs text-emerald-400 font-mono bg-emerald-500/10 p-2 rounded border border-emerald-500/20">
+            📄 docs/spec/plans/prd/prd.md
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 relative">
+          <div class="text-xs font-bold text-cyan-400 mb-1">STEP 04: SOLUTIONING</div>
+          <div class="text-sm font-bold text-white mb-2">Epics & Stories Breakdown</div>
+          <p class="text-xs text-gray-400 mb-3"><code class="text-gray-300">/bmad-create-epics-and-stories</code></p>
+          <div class="text-xs text-emerald-400 font-mono bg-emerald-500/10 p-2 rounded border border-emerald-500/20">
+            📄 docs/spec/plans/epics-and-stories.md
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 relative">
+          <div class="text-xs font-bold text-indigo-400 mb-1">STEP 05: BACKLOG</div>
+          <div class="text-sm font-bold text-white mb-2">Sprint Backlog Sequencing</div>
+          <p class="text-xs text-gray-400 mb-3"><code class="text-gray-300">/bmad-sprint-planning</code></p>
+          <div class="text-xs text-indigo-300 font-mono bg-indigo-500/10 p-2 rounded border border-indigo-500/20">
+            📄 docs/spec/implementation/sprint-status.yaml
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 relative">
+          <div class="text-xs font-bold text-indigo-400 mb-1">STEP 06: CREATE STORY</div>
+          <div class="text-sm font-bold text-white mb-2">Context Story Specification</div>
+          <p class="text-xs text-gray-400 mb-3"><code class="text-gray-300">/bmad-create-story 1-1</code></p>
+          <div class="text-xs text-indigo-300 font-mono bg-indigo-500/10 p-2 rounded border border-indigo-500/20">
+            📄 docs/spec/implementation/1-1-story.md
+          </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 relative">
+          <div class="text-xs font-bold text-indigo-400 mb-1">STEP 07: CODE STORY</div>
+          <div class="text-sm font-bold text-white mb-2">Spec-Driven Code Generation</div>
+          <p class="text-xs text-gray-400 mb-3"><code class="text-gray-300">/bmad-dev-story 1-1</code></p>
+          <div class="text-xs text-indigo-300 font-mono bg-indigo-500/10 p-2 rounded border border-indigo-500/20">
+            💻 index.html, app.js, main.py
+          </div>
+        </div>
+
+        <!-- Step 8 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 relative">
+          <div class="text-xs font-bold text-indigo-400 mb-1">STEP 08: REVIEW STORY</div>
+          <div class="text-sm font-bold text-white mb-2">Model Garden ZDR Review</div>
+          <p class="text-xs text-gray-400 mb-3"><code class="text-gray-300">/bmad-code-review 1-1</code></p>
+          <div class="text-xs text-indigo-300 font-mono bg-indigo-500/10 p-2 rounded border border-indigo-500/20">
+            📄 code-review-report.md
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 12-Week TDL Field Guide & SDLC Tabs -->
+  <section id="tdl-guide" class="py-16 px-6 bg-brand-card/30 border-t border-brand-border">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <h2 class="text-3xl font-extrabold text-white mb-3">12-Week TDL Customer Engagement Lifecycle</h2>
+        <p class="text-gray-400">The field execution framework governing squad allocation, capability slot audits, and milestone delivery.</p>
+      </div>
+
+      <!-- 4 Phases Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6">
+          <div class="text-xs font-bold text-cyan-400 mb-2">PHASE 1 (WEEKS 1-3)</div>
+          <h4 class="text-lg font-bold text-white mb-2">Discover & Define</h4>
+          <ul class="text-xs text-gray-400 space-y-2">
+            <li>• Repo onboarding mapping</li>
+            <li>• 50 SME ticket baseline audit</li>
+            <li>• Scope contract & squad setup</li>
+          </ul>
+        </div>
+
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6">
+          <div class="text-xs font-bold text-cyan-400 mb-2">PHASE 2 (WEEKS 4-6)</div>
+          <h4 class="text-lg font-bold text-white mb-2">Prototype & Validate</h4>
+          <ul class="text-xs text-gray-400 space-y-2">
+            <li>• GCP Agent Architecture choice</li>
+            <li>• ADK / Agent Engine prototype</li>
+            <li>• ZDR multi-model routing test</li>
+          </ul>
+        </div>
+
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6">
+          <div class="text-xs font-bold text-indigo-400 mb-2">PHASE 3 (WEEKS 7-10)</div>
+          <h4 class="text-lg font-bold text-white mb-2">Production Build</h4>
+          <ul class="text-xs text-gray-400 space-y-2">
+            <li>• 7-Phase SDLC implementation</li>
+            <li>• Capability slot validation</li>
+            <li>• ECC repo conventions enforcement</li>
+          </ul>
+        </div>
+
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6">
+          <div class="text-xs font-bold text-emerald-400 mb-2">PHASE 4 (WEEKS 11-12)</div>
+          <h4 class="text-lg font-bold text-white mb-2">Harden & Launch</h4>
+          <ul class="text-xs text-gray-400 space-y-2">
+            <li>• Post-eval ROI calculation</li>
+            <li>• Baseline KPI savings report</li>
+            <li>• Operational handoff</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Complete Skills Directory Grid -->
+  <section id="skills-catalog" class="py-20 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl font-extrabold text-white mb-4">Complete Skills Directory (11 Meta-Skills)</h2>
+        <p class="text-gray-400">All meta-skills included in the <code class="text-cyan-300">delta-skills</code> plugin.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Skill 1 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6 hover:border-cyan-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-cyan-400">WORKFLOW BRIDGE</span>
+            <span class="px-2 py-0.5 bg-cyan-500/10 text-cyan-300 text-xs rounded">v1.1</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">delta-bmad-workflow</h3>
+          <p class="text-xs text-gray-400 leading-relaxed mb-4">Master bridge mapping BMAD 8-step SDD daisy-chain to GCP TDL enterprise playbooks and ZDR routing.</p>
+          <code class="text-xs font-mono text-cyan-300 bg-brand-dark p-2 rounded block">skills/delta-bmad-workflow</code>
+        </div>
+
+        <!-- Skill 2 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6 hover:border-cyan-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-cyan-400">FIELD PLAYBOOK</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">tdl-field-guide</h3>
+          <p class="text-xs text-gray-400 leading-relaxed mb-4">12-week operational field execution playbook for TDLs across 4 customer engagement phases.</p>
+          <code class="text-xs font-mono text-cyan-300 bg-brand-dark p-2 rounded block">skills/tdl-field-guide</code>
+        </div>
+
+        <!-- Skill 3 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6 hover:border-cyan-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-cyan-400">SDLC LIFECYCLE</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">e2e-delivery-workflow</h3>
+          <p class="text-xs text-gray-400 leading-relaxed mb-4">7-phase software engineering lifecycle enforcing capability slot audits and state regression loops.</p>
+          <code class="text-xs font-mono text-cyan-300 bg-brand-dark p-2 rounded block">skills/e2e-delivery-workflow</code>
+        </div>
+
+        <!-- Skill 4 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6 hover:border-indigo-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-indigo-400">ARCHITECTURE</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">gcp-agent-architecture-advisor</h3>
+          <p class="text-xs text-gray-400 leading-relaxed mb-4">Recommends GCP AI Agent architecture across 3 tiers (Gemini Enterprise, Agent Engine, ADK Python).</p>
+          <code class="text-xs font-mono text-indigo-300 bg-brand-dark p-2 rounded block">skills/gcp-agent-architecture-advisor</code>
+        </div>
+
+        <!-- Skill 5 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6 hover:border-emerald-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-emerald-400">ROI BENCHMARK</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">synthetic-baseline-protocol</h3>
+          <p class="text-xs text-gray-400 leading-relaxed mb-4">Pre-deployment 50-sample retrospective SME ticket audit producing baseline_kpis.json.</p>
+          <code class="text-xs font-mono text-emerald-300 bg-brand-dark p-2 rounded block">skills/synthetic-baseline-protocol</code>
+        </div>
+
+        <!-- Skill 6 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6 hover:border-indigo-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-indigo-400">MULTI-MODEL ZDR</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">claude-review</h3>
+          <p class="text-xs text-gray-400 leading-relaxed mb-4">Two-pass execution (Gemini Flash) and peer review via Vertex AI Model Garden Opus 5 ZDR.</p>
+          <code class="text-xs font-mono text-indigo-300 bg-brand-dark p-2 rounded block">skills/claude-review</code>
+        </div>
+
+        <!-- Skill 7 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6 hover:border-indigo-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-indigo-400">MULTI-MODEL ZDR</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">claude-agent-harness</h3>
+          <p class="text-xs text-gray-400 leading-relaxed mb-4">Delegated spec-to-code generation routing PRDs directly to Model Garden Opus 5 ZDR.</p>
+          <code class="text-xs font-mono text-indigo-300 bg-brand-dark p-2 rounded block">skills/claude-agent-harness</code>
+        </div>
+
+        <!-- Skill 8 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6 hover:border-cyan-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-cyan-400">DISCOVERY</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">codebase-onboarding-and-mapping</h3>
+          <p class="text-xs text-gray-400 leading-relaxed mb-4">Analyzes client repos to generate component dependency graphs and docs/ONBOARDING.md.</p>
+          <code class="text-xs font-mono text-cyan-300 bg-brand-dark p-2 rounded block">skills/codebase-onboarding-and-mapping</code>
+        </div>
+
+        <!-- Skill 9 -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6 hover:border-cyan-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-cyan-400">GOVERNANCE</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">ecc-repo-conventions</h3>
+          <p class="text-xs text-gray-400 leading-relaxed mb-4">Enforces standardized repository structure, STATE.md, and environment hygiene.</p>
+          <code class="text-xs font-mono text-cyan-300 bg-brand-dark p-2 rounded block">skills/ecc-repo-conventions</code>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Options -->
+  <section id="install" class="py-20 px-6 bg-brand-card/50 border-t border-brand-border">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl font-extrabold text-white mb-4">Ready to Integrate Delta Skills?</h2>
+      <p class="text-gray-400 mb-10">Select your preferred AI Agent runner framework below to install the plugin.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+
+        <!-- BMAD Option -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6">
+          <div class="flex items-center space-x-3 mb-3">
+            <i class="fa-solid fa-cube text-cyan-400 text-xl"></i>
+            <h4 class="text-base font-bold text-white">BMAD Method Installer</h4>
+          </div>
+          <div class="bg-brand-dark p-3 rounded-lg border border-brand-border flex items-center justify-between">
+            <code class="text-xs font-mono text-cyan-300">npx bmad-method install --custom https://github.com/enriquekalven/delta-skills</code>
+          </div>
+        </div>
+
+        <!-- Antigravity Option -->
+        <div class="bg-brand-card border border-brand-border rounded-xl p-6">
+          <div class="flex items-center space-x-3 mb-3">
+            <i class="fa-solid fa-rocket text-indigo-400 text-xl"></i>
+            <h4 class="text-base font-bold text-white">Antigravity CLI</h4>
+          </div>
+          <div class="bg-brand-dark p-3 rounded-lg border border-brand-border flex items-center justify-between">
+            <code class="text-xs font-mono text-indigo-300">agy plugin install https://github.com/enriquekalven/delta-skills.git</code>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 px-6 border-t border-brand-border text-center text-xs text-gray-500">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
+      <div>Delta Skills Plugin — Licensed under Apache-2.0</div>
+      <div class="mt-4 md:mt-0 flex space-x-6">
+        <a href="https://github.com/enriquekalven/delta-skills" class="hover:text-gray-300">GitHub Repository</a>
+        <a href="docs/MULTI_MODEL_SKILLS_GUIDE.md" class="hover:text-gray-300">Multi-Model ZDR Guide</a>
+        <a href="docs/tdl-user-guide.md" class="hover:text-gray-300">TDL User Guide</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
