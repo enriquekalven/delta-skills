@@ -1,10 +1,10 @@
 # BMAD Module Manifest for Google Cloud Delta Squad Suite
 code: bmad-module-gcp-delta
 name: Google Cloud Delta Squad Enterprise Suite
-version: 1.1.0
+version: 1.2.0
 type: module
 marketplace-plugin: true
-description: Enterprise Google Cloud AI Agent architecture advisory, multi-model ZDR cost routing, SME baseline KPI auditing, and TDL field execution playbooks.
+description: Enterprise Google Cloud AI Agent architecture advisory, plain-English de-slop auditor, multi-model ZDR cost routing, SME baseline KPI auditing, and TDL field execution playbooks.
 author: Enrique Chan <https://github.com/enriquekalven>
 license: Apache-2.0
 
@@ -25,6 +25,7 @@ bmad_method:
       - ecc-repo-conventions
       - agentic-engineering
     learn:
+      - de-slop-documentation
       - skill-stocktake
 
 workflows:
@@ -37,6 +38,9 @@ skills:
   - name: delta-bmad-workflow
     path: skills/delta-bmad-workflow
     description: Master workflow bridge mapping BMAD 4-phase agile delivery to GCP TDL field playbooks.
+  - name: de-slop-documentation
+    path: skills/de-slop-documentation
+    description: Plain-English technical documentation auditor that strips AI slop, corporate buzzwords, and non-falsifiable claims.
   - name: gcp-agent-architecture-advisor
     path: skills/gcp-agent-architecture-advisor
     description: Google Cloud AI Agent architecture evaluation (No-Code, Low-Code, High-Code ADK).
