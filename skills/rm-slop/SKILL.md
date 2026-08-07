@@ -1,12 +1,12 @@
 ---
-name: de-slop-documentation
+name: rm-slop
 description: >
   Audit technical documentation, PRDs, and architecture guides to strip out AI slop, corporate buzzwords, and hand-wavy claims.
   Translates complex jargon into plain-English, human-grounded technical instructions with falsifiable rules.
-  Triggers on: "de-slop", "humanize docs", "anti ai slop", "strip buzzwords", "plain english docs", "clean technical documentation", "de-jargon".
+  Triggers on: "rm-slop", "rm slop", "humanize docs", "anti ai slop", "strip buzzwords", "plain english docs", "clean technical documentation", "de-jargon".
 ---
 
-# Plain-English & Anti-AI Slop Documentation Auditor (`de-slop-documentation`)
+# Plain-English & Anti-AI Slop Documentation Auditor (`rm-slop`)
 
 Audits technical documentation, PRDs, and guides to detect and eliminate **AI Slop**—corporate filler, non-falsifiable hand-waving, hallucinated package names, and impenetrable jargon—replacing them with grounded, plain-English instructions that non-technical stakeholders and first-time developers easily understand.
 
@@ -30,7 +30,7 @@ The auditor scans documents against 4 specific failure modes:
 ### Pass 1: Automated Slop & Buzzword Scan
 Run the automated scanner CLI tool:
 ```bash
-python3 skills/de-slop-documentation/scripts/scan_doc_slop.py --file <target_doc.md>
+python3 skills/rm-slop/scripts/scan_doc_slop.py --file <target_doc.md>
 ```
 Review the generated **Plain-English Score** and line-by-line findings.
 
