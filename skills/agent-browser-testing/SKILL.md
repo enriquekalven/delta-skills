@@ -1,21 +1,21 @@
 ---
 name: agent-browser-testing
 description: >
-  Automates real browser UI testing, visual screenshot capture, form interaction, and network console error interception using Playwright, Chrome DevTools MCP, and CLI HTTP verifiers.
+  Performs HTTP web endpoint health checks, verifies HTML structure, and executes Playwright CLI headless browser screenshot testing.
   Triggers on: "agent browser", "browser testing", "playwright test", "visual ui testing", "dev tools testing", "browser automation".
 ---
 
-# Real Browser & Visual UI Testing (`agent-browser-testing`)
+# Web Endpoint & Browser Testing (`agent-browser-testing`)
 
-Teaches AI agents how to test web applications in real browsers. Combines **Playwright CLI**, **Chrome DevTools MCP**, and automated HTTP health verifiers to capture DOM state, verify visual rendering, intercept console errors, and validate frontend user journeys.
+Teaches AI agents how to verify web application endpoints. Combines fast HTTP status checks, doctype/asset tag verification, and Playwright CLI headless screenshot audits.
 
 ---
 
 ## 1. When to Use
 
-- Verifying web UI functionality after modifying HTML, CSS, or JS code.
-- Checking for frontend console errors, broken static assets, or failing API calls (`500 / 404`).
-- Testing responsive designs across Desktop (1920x1080) and Mobile (375x812) viewports.
+- Verifying web application availability after modifying HTML, CSS, or JS code.
+- Checking HTTP status codes (`200 OK` vs `404 / 500`).
+- Capturing Playwright full-page screenshots via `--playwright` flag.
 
 ---
 
@@ -24,7 +24,7 @@ Teaches AI agents how to test web applications in real browsers. Combines **Play
 Run the included health tester to verify local or deployed web endpoints:
 
 ```bash
-python3 skills/agent-browser-testing/scripts/run_browser_test.py --url https://delta-tdl-user-guide.web.app
+python3 skills/agent-browser-testing/scripts/run_browser_test.py --url https://delta-tdl-user-guide.web.app --playwright
 ```
 
 ---
