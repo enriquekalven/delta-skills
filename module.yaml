@@ -1,10 +1,10 @@
 # BMAD Module Manifest for Google Cloud Delta Squad Suite
 code: bmad-module-gcp-delta
 name: Google Cloud Delta Squad Enterprise Suite
-version: 1.3.0
+version: 2.0.0
 type: module
 marketplace-plugin: true
-description: Enterprise Google Cloud AI Agent architecture advisory, plain-English rm-slop auditor, MCP Server Builder, Agent Browser Testing, Ralph Task Loop, multi-model ZDR cost routing, SME baseline KPI auditing, and TDL field execution playbooks.
+description: Delta Engine v2.0: The Ultimate Google Cloud AI Agent & Field Engineering Master Suite. Consolidates Discovery, GCP 3-Tier Architecture Advisory, 2-Role Squad Execution, Autonomous TDD Task Loops, FastMCP Server Building, Secret Scanning, Playwright UI Testing, Plain-English Anti-Slop Auditing, and Vertex AI Model Garden Opus 5 ZDR Peer Review into one unified master skill.
 author: Enrique Chan <https://github.com/enriquekalven>
 license: Apache-2.0
 
@@ -13,73 +13,21 @@ bmad_method:
   min_version: "6.0.0"
   phase_extensions:
     analysis:
-      - synthetic-baseline-protocol
-      - codebase-onboarding-and-mapping
+      - delta-engine
     planning:
-      - gcp-agent-architecture-advisor
-      - tdl-field-guide
+      - delta-engine
     build:
-      - e2e-delivery-workflow
-      - mcp-server-builder
-      - agent-browser-testing
-      - ralph-autonomous-loop
-      - claude-review
-      - claude-agent-harness
-      - ecc-repo-conventions
-      - agentic-engineering
+      - delta-engine
     learn:
-      - rm-slop
-      - skill-stocktake
+      - delta-engine
 
 workflows:
-  - name: delta-bmad-workflow
-    path: skills/delta-bmad-workflow
-    command: /delta-bmad-workflow
-    description: Master Spec-Driven Development (SDD) bridge mapping BMAD 8-step daisy-chain to GCP TDL enterprise field playbooks.
+  - name: delta-engine
+    path: skills/delta-engine
+    command: /delta-engine
+    description: Master Delta Engine v2.0: The Ultimate Google Cloud AI Agent & Field Engineering Suite.
 
 skills:
-  - name: delta-bmad-workflow
-    path: skills/delta-bmad-workflow
-    description: Master workflow bridge mapping BMAD 4-phase agile delivery to GCP TDL field playbooks.
-  - name: rm-slop
-    path: skills/rm-slop
-    description: Plain-English technical documentation auditor that strips AI slop, corporate buzzwords, and non-falsifiable claims.
-  - name: mcp-server-builder
-    path: skills/mcp-server-builder
-    description: Design, implement, and register custom Model Context Protocol (MCP) servers with Stdio and SSE transports.
-  - name: agent-browser-testing
-    path: skills/agent-browser-testing
-    description: Real browser UI testing, visual screenshot capture, and network console error interception.
-  - name: ralph-autonomous-loop
-    path: skills/ralph-autonomous-loop
-    description: Autonomous task execution loop consuming prd.json task lists with continuous test verification.
-  - name: gcp-agent-architecture-advisor
-    path: skills/gcp-agent-architecture-advisor
-    description: Google Cloud AI Agent architecture evaluation (No-Code, Low-Code, High-Code ADK).
-  - name: synthetic-baseline-protocol
-    path: skills/synthetic-baseline-protocol
-    description: Pre-deployment 50-sample retrospective SME ticket audit for baseline ROI benchmarking.
-  - name: claude-review
-    path: skills/claude-review
-    description: Two-pass coding (Gemini Flash) and peer review via Vertex AI Model Garden Opus 5 ZDR.
-  - name: claude-agent-harness
-    path: skills/claude-agent-harness
-    description: Spec-to-code delegation to Vertex AI Model Garden Opus 5 ZDR endpoint.
-  - name: tdl-field-guide
-    path: skills/tdl-field-guide
-    description: 12-week operational field playbook for Technical Deployment Leads.
-  - name: e2e-delivery-workflow
-    path: skills/e2e-delivery-workflow
-    description: 7-phase software engineering lifecycle with capability slot auditing.
-  - name: codebase-onboarding-and-mapping
-    path: skills/codebase-onboarding-and-mapping
-    description: Repository component dependency mapping and docs/ONBOARDING.md generation.
-  - name: ecc-repo-conventions
-    path: skills/ecc-repo-conventions
-    description: Enforces standardized repo structure, STATE.md, and environment hygiene.
-  - name: agentic-engineering
-    path: skills/agentic-engineering
-    description: Governs subagent task decomposition, multi-model cost routing, and fleet management.
-  - name: skill-stocktake
-    path: skills/skill-stocktake
-    description: Audits workspace capability slots before phase transitions.
+  - name: delta-engine
+    path: skills/delta-engine
+    description: The Ultimate Google Cloud AI Agent & Field Engineering Master Suite. Consolidates Discovery, Architecture, TDD Loops, FastMCP, Secret Scanning, Playwright, Anti-Slop, and Opus 5 ZDR Review.

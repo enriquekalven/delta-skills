@@ -1,7 +1,7 @@
 {
   "name": "delta-skills",
-  "version": "1.3.0",
-  "description": "Google Cloud Delta Squad Meta-Skills & BMAD Method Enterprise Module: 7-Phase E2E Delivery Workflow, GCP Architecture Advisor, Plain-English RM-Slop Auditor, MCP Server Builder, Agent Browser Testing, Ralph Task Loop, ZDR Multi-Model Routing, and TDL Field Playbook.",
+  "version": "2.0.0",
+  "description": "Delta Engine v2.0: The Ultimate Google Cloud AI Agent & Field Engineering Master Suite. Consolidates Discovery, GCP 3-Tier Architecture Advisory, 2-Role Squad Execution, Autonomous TDD Task Loops, FastMCP Server Building, Secret Scanning, Playwright UI Testing, Plain-English Anti-Slop Auditing, and Vertex AI Model Garden Opus 5 ZDR Peer Review into one unified master skill.",
   "author": {
     "name": "Enrique Chan",
     "url": "https://github.com/enriquekalven"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/enriquekalven/delta-skills.git"
   },
-  "keywords": ["google-cloud", "delta-squad", "tdl", "meta-skills", "agile", "adk", "bmad-method", "bmad-module", "vertex-ai", "rm-slop", "plain-english", "mcp-server", "agent-browser", "ralph-loop"],
+  "keywords": ["delta-engine", "ultimate-skill", "google-cloud", "delta-squad", "adk", "vertex-ai", "mcp-server", "bmad-method", "plain-english", "agent-browser"],
   "license": "Apache-2.0",
   "disabled": false
 }
