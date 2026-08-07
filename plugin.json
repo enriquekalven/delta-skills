@@ -1,7 +1,7 @@
 {
   "name": "delta-skills",
-  "version": "2.0.0",
-  "description": "Delta Engine v2.0: The Ultimate Google Cloud AI Agent & Field Engineering Master Suite. Consolidates Discovery, GCP 3-Tier Architecture Advisory, 2-Role Squad Execution, Autonomous TDD Task Loops, FastMCP Server Building, Secret Scanning, Playwright UI Testing, Plain-English Anti-Slop Auditing, and Vertex AI Model Garden Opus 5 ZDR Peer Review into one unified master skill.",
+  "version": "3.0.0",
+  "description": "Delta Suite v3.0: Natural 4-Phase Customer Engagement Lifecycle Suite (delta-discover, delta-plan, delta-build, delta-harden, delta-orchestrator). Features customer intake interviews, GCP 3-tier architecture advisory, 2-role squad matrix, FastMCP building, Playwright UI testing, plain-English anti-slop auditing, and Model Garden Opus 5 ZDR peer review.",
   "author": {
     "name": "Enrique Chan",
     "url": "https://github.com/enriquekalven"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/enriquekalven/delta-skills.git"
   },
-  "keywords": ["delta-engine", "ultimate-skill", "google-cloud", "delta-squad", "adk", "vertex-ai", "mcp-server", "bmad-method", "plain-english", "agent-browser"],
+  "keywords": ["delta-discover", "delta-plan", "delta-build", "delta-harden", "delta-orchestrator", "google-cloud", "delta-squad", "adk", "vertex-ai", "mcp-server", "bmad-method", "plain-english", "agent-browser"],
   "license": "Apache-2.0",
   "disabled": false
 }

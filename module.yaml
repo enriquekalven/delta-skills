@@ -1,10 +1,10 @@
 # BMAD Module Manifest for Google Cloud Delta Squad Suite
 code: bmad-module-gcp-delta
 name: Google Cloud Delta Squad Enterprise Suite
-version: 2.0.0
+version: 3.0.0
 type: module
 marketplace-plugin: true
-description: Delta Engine v2.0: The Ultimate Google Cloud AI Agent & Field Engineering Master Suite. Consolidates Discovery, GCP 3-Tier Architecture Advisory, 2-Role Squad Execution, Autonomous TDD Task Loops, FastMCP Server Building, Secret Scanning, Playwright UI Testing, Plain-English Anti-Slop Auditing, and Vertex AI Model Garden Opus 5 ZDR Peer Review into one unified master skill.
+description: Delta Suite v3.0: Natural 4-Phase Customer Engagement Lifecycle Suite (delta-discover, delta-plan, delta-build, delta-harden, delta-orchestrator). Features customer intake interviews, GCP 3-tier architecture advisory, 2-role squad matrix, FastMCP building, Playwright UI testing, plain-English anti-slop auditing, and Model Garden Opus 5 ZDR peer review.
 author: Enrique Chan <https://github.com/enriquekalven>
 license: Apache-2.0
 
@@ -13,21 +13,33 @@ bmad_method:
   min_version: "6.0.0"
   phase_extensions:
     analysis:
-      - delta-engine
+      - delta-discover
     planning:
-      - delta-engine
+      - delta-plan
     build:
-      - delta-engine
+      - delta-build
     learn:
-      - delta-engine
+      - delta-harden
 
 workflows:
-  - name: delta-engine
-    path: skills/delta-engine
-    command: /delta-engine
-    description: Master Delta Engine v2.0: The Ultimate Google Cloud AI Agent & Field Engineering Suite.
+  - name: delta-orchestrator
+    path: skills/delta-orchestrator
+    command: /delta-orchestrator
+    description: Master Router & Phase-Gate Lifecycle Orchestrator across 4 natural engagement stages.
 
 skills:
-  - name: delta-engine
-    path: skills/delta-engine
-    description: The Ultimate Google Cloud AI Agent & Field Engineering Master Suite. Consolidates Discovery, Architecture, TDD Loops, FastMCP, Secret Scanning, Playwright, Anti-Slop, and Opus 5 ZDR Review.
+  - name: delta-orchestrator
+    path: skills/delta-orchestrator
+    description: Master Router & Phase-Gate Lifecycle Orchestrator across 4 natural engagement stages.
+  - name: delta-discover
+    path: skills/delta-discover
+    description: Phase 1: Customer Intake Interviews, Repo Onboarding (ONBOARDING.md), and 50 SME Ticket Baseline Audit (baseline_kpis.json).
+  - name: delta-plan
+    path: skills/delta-plan
+    description: Phase 2: GCP Architecture Workshop, Abstraction Selection Matrix, Threat Modeling (THREAT_MODEL.md), and 2-Role Squad Pair.
+  - name: delta-build
+    path: skills/delta-build
+    description: Phase 3: Production TDD Build, prd.json Task Loops, FastMCP Server Integration, Playwright UI Testing, and Secret Scanning.
+  - name: delta-harden
+    path: skills/delta-harden
+    description: Phase 4: Hardening & Launch, Plain-English Anti-Slop Audit (rm-slop), Vertex AI Model Garden Opus 5 ZDR Review, and ROI Savings Report.

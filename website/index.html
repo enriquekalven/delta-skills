@@ -582,65 +582,81 @@
   <section id="skills-catalog" class="py-20 px-6">
     <div class="max-w-7xl mx-auto">
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">The Master Skill Directory (v2.0.0)</h2>
-        <p class="text-slate-600 dark:text-gray-400">All 14 fragmented sub-skills squashed into <strong class="text-cyan-600 dark:text-cyan-400">One Ultimate Master Skill That Rules Them All</strong>.</p>
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">4-Phase Phased Lifecycle Suite (v3.0.0)</h2>
+        <p class="text-slate-600 dark:text-gray-400">Natural phase-gated execution with built-in customer interview & feedback checkpoints.</p>
       </div>
 
-      <div class="max-w-4xl mx-auto">
+      <!-- Master Router + 4 Phase Cards Grid -->
+      <div class="space-y-8 max-w-5xl mx-auto">
 
-        <!-- Master Skill Card: delta-engine -->
-        <div class="bg-white dark:bg-brand-card border-2 border-cyan-500 rounded-2xl p-8 shadow-2xl shadow-cyan-500/10 relative overflow-hidden">
-          <div class="absolute top-0 right-0 bg-gradient-to-l from-cyan-500 to-indigo-600 text-white font-mono text-xs font-bold px-4 py-1.5 rounded-bl-xl shadow-md">
-            v2.0.0 ULTIMATE MASTER SKILL
-          </div>
-
-          <div class="flex items-center space-x-3 mb-4">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-bold text-white text-2xl shadow-lg shadow-cyan-500/20">
+        <!-- Master Router Banner -->
+        <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-2xl p-6 border border-slate-700 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400 text-xl">
               Δ
             </div>
             <div>
-              <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white">delta-engine</h3>
-              <span class="text-xs font-mono text-cyan-600 dark:text-cyan-400">skills/delta-engine/SKILL.md</span>
+              <div class="text-xs font-mono text-cyan-400 font-bold">MASTER ROUTER</div>
+              <h3 class="text-xl font-bold">delta-orchestrator</h3>
+              <p class="text-xs text-slate-400">Enforces phase gate criteria before advancing STATE.md across Phases 1 - 4.</p>
+            </div>
+          </div>
+          <code class="text-xs font-mono text-cyan-300 bg-slate-950 px-3 py-2 rounded-lg border border-slate-800">skills/delta-orchestrator</code>
+        </div>
+
+        <!-- 4 Phase Skill Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- Phase 1: delta-discover -->
+          <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm hover:border-cyan-500/50 transition">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-cyan-600 dark:text-cyan-400">PHASE 1 (WEEKS 1-3)</span>
+              <span class="px-2 py-0.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 text-xs font-mono rounded">delta-discover</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Discovery & Customer Intake</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Conducts customer intake interviews, maps repository ONBOARDING.md, and audits 50 SME tickets to freeze baseline_kpis.json.</p>
+            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-brand-dark p-2.5 rounded border border-slate-200 dark:border-brand-border">
+              ✋ <span class="font-bold text-slate-700 dark:text-slate-300">Human Checkpoint:</span> Problem statement & baseline ROI sign-off.
             </div>
           </div>
 
-          <p class="text-sm text-slate-600 dark:text-gray-300 leading-relaxed mb-6">
-            The consolidated Google Cloud AI Agent & Field Engineering Master Suite. Integrates Discovery, GCP 3-Tier Architecture Advisory, 2-Role Squad Execution, Autonomous TDD Task Loops, FastMCP Server Building, Secret Scanning, Playwright UI Testing, Plain-English Anti-Slop Auditing, and Vertex AI Model Garden Opus 5 ZDR Peer Review into one high-performance master engine.
-          </p>
-
-          <!-- 4 Consolidated Pillars Grid inside card -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 font-mono text-xs">
-            <div class="bg-slate-100 dark:bg-brand-dark/80 p-4 rounded-xl border border-slate-200 dark:border-brand-border">
-              <div class="font-bold text-cyan-600 dark:text-cyan-400 mb-1">1. DISCOVER & ANALYZE</div>
-              <div class="text-slate-600 dark:text-gray-400">• Repo dependency mapping</div>
-              <div class="text-slate-600 dark:text-gray-400">• 50 SME baseline ticket audit</div>
+          <!-- Phase 2: delta-plan -->
+          <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm hover:border-indigo-500/50 transition">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">PHASE 2 (WEEKS 4-6)</span>
+              <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-mono rounded">delta-plan</span>
             </div>
-
-            <div class="bg-slate-100 dark:bg-brand-dark/80 p-4 rounded-xl border border-slate-200 dark:border-brand-border">
-              <div class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">2. PLAN & ARCHITECT</div>
-              <div class="text-slate-600 dark:text-gray-400">• Abstraction Selection Matrix</div>
-              <div class="text-slate-600 dark:text-gray-400">• 2-Role Execution Squad Pair</div>
-            </div>
-
-            <div class="bg-slate-100 dark:bg-brand-dark/80 p-4 rounded-xl border border-slate-200 dark:border-brand-border">
-              <div class="font-bold text-cyan-600 dark:text-cyan-400 mb-1">3. BUILD & TEST</div>
-              <div class="text-slate-600 dark:text-gray-400">• prd.json task execution loop</div>
-              <div class="text-slate-600 dark:text-gray-400">• Playwright & FastMCP templates</div>
-            </div>
-
-            <div class="bg-slate-100 dark:bg-brand-dark/80 p-4 rounded-xl border border-slate-200 dark:border-brand-border">
-              <div class="font-bold text-emerald-600 dark:text-emerald-400 mb-1">4. HARDEN & LAUNCH</div>
-              <div class="text-slate-600 dark:text-gray-400">• Model Garden Opus 5 ZDR review</div>
-              <div class="text-slate-600 dark:text-gray-400">• Plain-English rm-slop audit</div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Architecture & Threat Model</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Workshops PRD requirements, runs Abstraction Selection Matrix (Skill vs MCP vs Agent), and sets up THREAT_MODEL.md.</p>
+            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-brand-dark p-2.5 rounded border border-slate-200 dark:border-brand-border">
+              ✋ <span class="font-bold text-slate-700 dark:text-slate-300">Human Checkpoint:</span> GCP 3-tier architecture recommendation sign-off.
             </div>
           </div>
 
-          <!-- Unified CLI Command Box -->
-          <div class="bg-slate-900 text-slate-200 font-mono text-xs p-4 rounded-xl border border-slate-800 flex items-center justify-between">
-            <div>
-              <span class="text-cyan-400">$</span> python3 skills/delta-engine/scripts/delta_cli.py --help
+          <!-- Phase 3: delta-build -->
+          <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm hover:border-cyan-500/50 transition">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-cyan-600 dark:text-cyan-400">PHASE 3 (WEEKS 7-10)</span>
+              <span class="px-2 py-0.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 text-xs font-mono rounded">delta-build</span>
             </div>
-            <span class="text-slate-500 text-[10px]">Unified Master CLI</span>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Production Build & TDD</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Executes prd.json task loops, implements FastMCP tool servers, runs secret scanning, and performs Playwright UI tests.</p>
+            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-brand-dark p-2.5 rounded border border-slate-200 dark:border-brand-border">
+              ✋ <span class="font-bold text-slate-700 dark:text-slate-300">Human Checkpoint:</span> Programmatic secret scan & 100% pytest pass rate.
+            </div>
+          </div>
+
+          <!-- Phase 4: delta-harden -->
+          <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm hover:border-emerald-500/50 transition">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">PHASE 4 (WEEKS 11-12)</span>
+              <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 text-xs font-mono rounded">delta-harden</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Hardening & ZDR Review</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Runs rm-slop plain-English audit, routes code review to Vertex AI Model Garden Opus 5 ZDR, and validates baseline ROI savings.</p>
+            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-brand-dark p-2.5 rounded border border-slate-200 dark:border-brand-border">
+              ✋ <span class="font-bold text-slate-700 dark:text-slate-300">Human Checkpoint:</span> Operational handoff packet & launch sign-off.
+            </div>
           </div>
 
         </div>
