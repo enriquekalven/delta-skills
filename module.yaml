@@ -1,10 +1,10 @@
 # BMAD Module Manifest for Google Cloud Delta Squad Suite
 code: bmad-module-gcp-delta
 name: Google Cloud Delta Squad Enterprise Suite
-version: 1.2.0
+version: 1.3.0
 type: module
 marketplace-plugin: true
-description: Enterprise Google Cloud AI Agent architecture advisory, plain-English rm-slop auditor, multi-model ZDR cost routing, SME baseline KPI auditing, and TDL field execution playbooks.
+description: Enterprise Google Cloud AI Agent architecture advisory, plain-English rm-slop auditor, MCP Server Builder, Agent Browser Testing, Ralph Task Loop, multi-model ZDR cost routing, SME baseline KPI auditing, and TDL field execution playbooks.
 author: Enrique Chan <https://github.com/enriquekalven>
 license: Apache-2.0
 
@@ -20,6 +20,9 @@ bmad_method:
       - tdl-field-guide
     build:
       - e2e-delivery-workflow
+      - mcp-server-builder
+      - agent-browser-testing
+      - ralph-autonomous-loop
       - claude-review
       - claude-agent-harness
       - ecc-repo-conventions
@@ -41,6 +44,15 @@ skills:
   - name: rm-slop
     path: skills/rm-slop
     description: Plain-English technical documentation auditor that strips AI slop, corporate buzzwords, and non-falsifiable claims.
+  - name: mcp-server-builder
+    path: skills/mcp-server-builder
+    description: Design, implement, and register custom Model Context Protocol (MCP) servers with Stdio and SSE transports.
+  - name: agent-browser-testing
+    path: skills/agent-browser-testing
+    description: Real browser UI testing, visual screenshot capture, and network console error interception.
+  - name: ralph-autonomous-loop
+    path: skills/ralph-autonomous-loop
+    description: Autonomous task execution loop consuming prd.json task lists with continuous test verification.
   - name: gcp-agent-architecture-advisor
     path: skills/gcp-agent-architecture-advisor
     description: Google Cloud AI Agent architecture evaluation (No-Code, Low-Code, High-Code ADK).
