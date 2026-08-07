@@ -51,10 +51,10 @@
           <span class="ml-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">v1.1.0</span>
         </div>
       </div>
-      <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-300">
+      <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-300">
         <a href="#overview" class="hover:text-cyan-400 transition">Overview</a>
+        <a href="#scoring-matrix" class="hover:text-cyan-400 transition">Comparison Matrix</a>
         <a href="#tdl-guide" class="hover:text-cyan-400 transition">12-Week TDL Guide</a>
-        <a href="#e2e-workflow" class="hover:text-cyan-400 transition">E2E SDLC</a>
         <a href="#gcp-architecture" class="hover:text-cyan-400 transition">GCP Architecture Advisor</a>
         <a href="#bmad-sdd" class="hover:text-cyan-400 transition">BMAD Marriage & SDD</a>
         <a href="#skills-catalog" class="hover:text-cyan-400 transition">Skills Directory</a>
@@ -263,6 +263,121 @@
           </div>
         </div>
 
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Multi-Criteria Framework Scoring Matrix -->
+  <section id="scoring-matrix" class="py-20 px-6 bg-brand-card/60 border-t border-brand-border">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-2 block">Weighted Decision Matrix Evaluation</span>
+        <h2 class="text-3xl font-extrabold text-white mb-4">Why Delta Skills Shines for Google Cloud</h2>
+        <p class="text-gray-400">Scored across 4 core enterprise criteria (1-10 scale) using the Weighted Decision Scoring Model.</p>
+      </div>
+
+      <!-- Scorecard Table -->
+      <div class="overflow-x-auto mb-12 rounded-2xl border border-brand-border bg-brand-card shadow-2xl">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-brand-border bg-brand-dark/50 text-xs font-semibold uppercase tracking-wider text-gray-400">
+              <th class="py-4 px-6">Evaluation Criterion</th>
+              <th class="py-4 px-4 text-center">Weight</th>
+              <th class="py-4 px-4 text-center">BMAD Method</th>
+              <th class="py-4 px-4 text-center">PM Skills</th>
+              <th class="py-4 px-4 text-center">Agent Skills</th>
+              <th class="py-4 px-6 text-center text-cyan-400 bg-cyan-500/10 font-bold border-l border-brand-border">Delta Skills</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-brand-border text-sm">
+            <tr class="hover:bg-brand-dark/30 transition">
+              <td class="py-4 px-6 font-semibold text-white">
+                1. Delivery Process Orchestration
+                <span class="block text-xs font-normal text-gray-400">Sprint planning, story breakdown & delivery loops</span>
+              </td>
+              <td class="py-4 px-4 text-center font-mono text-gray-300">25%</td>
+              <td class="py-4 px-4 text-center font-mono font-bold text-cyan-400">9.5</td>
+              <td class="py-4 px-4 text-center font-mono text-gray-400">6.0</td>
+              <td class="py-4 px-4 text-center font-mono text-gray-400">5.5</td>
+              <td class="py-4 px-6 text-center font-mono font-bold text-white bg-cyan-500/10 border-l border-brand-border">8.5</td>
+            </tr>
+
+            <tr class="hover:bg-brand-dark/30 transition">
+              <td class="py-4 px-6 font-semibold text-white">
+                2. Product & Business Strategy
+                <span class="block text-xs font-normal text-gray-400">PRDs, Lean Canvas, OST, market sizing & GTM</span>
+              </td>
+              <td class="py-4 px-4 text-center font-mono text-gray-300">25%</td>
+              <td class="py-4 px-4 text-center font-mono text-gray-400">6.5</td>
+              <td class="py-4 px-4 text-center font-mono font-bold text-indigo-400">9.8</td>
+              <td class="py-4 px-4 text-center font-mono text-gray-400">3.0</td>
+              <td class="py-4 px-6 text-center font-mono font-bold text-white bg-cyan-500/10 border-l border-brand-border">7.0</td>
+            </tr>
+
+            <tr class="hover:bg-brand-dark/30 transition">
+              <td class="py-4 px-6 font-semibold text-white">
+                3. Engineering & Code Quality
+                <span class="block text-xs font-normal text-gray-400">TDD loops, AST refactoring, DevTools & security</span>
+              </td>
+              <td class="py-4 px-4 text-center font-mono text-gray-300">25%</td>
+              <td class="py-4 px-4 text-center font-mono text-gray-400">6.5</td>
+              <td class="py-4 px-4 text-center font-mono text-gray-400">3.5</td>
+              <td class="py-4 px-4 text-center font-mono font-bold text-emerald-400">9.8</td>
+              <td class="py-4 px-6 text-center font-mono font-bold text-white bg-cyan-500/10 border-l border-brand-border">7.5</td>
+            </tr>
+
+            <tr class="hover:bg-brand-dark/30 transition">
+              <td class="py-4 px-6 font-semibold text-white">
+                4. GCP Cloud & Enterprise Field Execution
+                <span class="block text-xs font-normal text-gray-400">ADK / Agent Engine tiers, TDL guide, ZDR & ROI audit</span>
+              </td>
+              <td class="py-4 px-4 text-center font-mono text-gray-300">25%</td>
+              <td class="py-4 px-4 text-center font-mono text-gray-400">3.0</td>
+              <td class="py-4 px-4 text-center font-mono text-gray-400">2.5</td>
+              <td class="py-4 px-4 text-center font-mono text-gray-400">4.0</td>
+              <td class="py-4 px-6 text-center font-mono font-black text-cyan-300 bg-cyan-500/20 text-base border-l border-brand-border">9.9 🏆</td>
+            </tr>
+
+            <tr class="bg-brand-dark/80 font-bold border-t-2 border-brand-border">
+              <td class="py-5 px-6 text-white uppercase tracking-wider text-xs">Weighted Total Score</td>
+              <td class="py-5 px-4 text-center font-mono text-gray-300 text-xs">100%</td>
+              <td class="py-5 px-4 text-center font-mono text-gray-300">6.38 / 10</td>
+              <td class="py-5 px-4 text-center font-mono text-gray-300">5.45 / 10</td>
+              <td class="py-5 px-4 text-center font-mono text-gray-300">5.58 / 10</td>
+              <td class="py-5 px-6 text-center font-mono text-lg text-emerald-400 bg-cyan-500/20 border-l border-brand-border">
+                8.23 / 10 ✨
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Domain Champions Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 border-l-4 border-l-cyan-400">
+          <div class="text-xs font-bold text-cyan-400 mb-1">GCP ENTERPRISE CHAMPION</div>
+          <h4 class="text-sm font-bold text-white mb-2">Delta Skills (9.9/10)</h4>
+          <p class="text-xs text-gray-400">Unmatched for Google Cloud agent architecture advisory, 12-week TDL customer engagements, ZDR cost routing, and SME baseline ROI auditing.</p>
+        </div>
+
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 border-l-4 border-l-cyan-500">
+          <div class="text-xs font-bold text-cyan-400 mb-1">DELIVERY ENGINE CHAMPION</div>
+          <h4 class="text-sm font-bold text-white mb-2">BMAD Method (9.5/10)</h4>
+          <p class="text-xs text-gray-400">The gold standard macro-level engine for managing agile sprint cycles, story breakdown, and delivery loop transitions.</p>
+        </div>
+
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 border-l-4 border-l-indigo-400">
+          <div class="text-xs font-bold text-indigo-400 mb-1">PRODUCT STRATEGY CHAMPION</div>
+          <h4 class="text-sm font-bold text-white mb-2">PM Skills (9.8/10)</h4>
+          <p class="text-xs text-gray-400">40+ specialized tools for PRDs, Lean Canvas, Opportunity Solution Trees, Mom Test scripts, and market sizing.</p>
+        </div>
+
+        <div class="bg-brand-card border border-brand-border rounded-xl p-5 border-l-4 border-l-emerald-400">
+          <div class="text-xs font-bold text-emerald-400 mb-1">CODE QUALITY CHAMPION</div>
+          <h4 class="text-sm font-bold text-white mb-2">Agent Skills (9.8/10)</h4>
+          <p class="text-xs text-gray-400">25+ tactical engineering playbooks for TDD red-green-refactor, AST remediation, Chrome DevTools, and security.</p>
+        </div>
       </div>
 
     </div>
