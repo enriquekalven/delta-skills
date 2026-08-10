@@ -3,12 +3,20 @@ name: delta-orchestrator
 description: >
   Master Router & Anthropic Loop Engineering Orchestrator.
   Coordinates transitions across the 4 natural customer engagement phases (delta-discover, delta-plan, delta-build, delta-harden) using Anthropic's 5 Core Agentic Workflow Patterns (Orchestrator-Workers, Evaluator-Optimizer, Prompt Chaining, Routing, Parallelization).
+  Enforces zero-hardcoding: reads real workspace files, scans live code, and reports missing gaps with actionable recommendations.
   Triggers on: "delta orchestrator", "run delta suite", "delta workflow", "master orchestrator", "loop engineering", "anthropic patterns".
 ---
 
 # Delta Master Lifecycle Orchestrator (`delta-orchestrator`)
 
 Governs the 4-phase enterprise customer engagement lifecycle grounded strictly in **Anthropic's Loop Engineering Best Practices** (*Building Effective Agents*, Dec 2024).
+
+---
+
+## 🚫 ZERO-HARDCODING & GROUND-TRUTH PRINCIPLE
+
+> [!IMPORTANT]
+> **Core Engineering Rule**: Never hallucinate, mock, or hardcode metrics, baseline data, or test results. Always read real workspace files on disk. If artifacts, files, or test suites are missing, explicitly report the gap (`❌ MISSING`) and provide actionable recommendations (`💡 Recommendation`) to resolve it.
 
 ---
 
@@ -64,4 +72,7 @@ Governs the 4-phase enterprise customer engagement lifecycle grounded strictly i
 ```bash
 # Verify phase gate status before advancing STATE.md:
 python3 skills/delta-build/scripts/delta_cli.py build --phase 1
+
+# Run AlphaEvolve dynamic evaluation cascade:
+python3 skills/delta-build/scripts/delta_cli.py build --phase 1 --eval-cascade
 ```
