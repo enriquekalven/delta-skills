@@ -1,10 +1,10 @@
 # BMAD Module Manifest for Google Cloud Delta Squad Suite
 code: bmad-module-gcp-delta
 name: Google Cloud Delta Squad Enterprise Suite
-version: 3.0.0
+version: 3.1.0
 type: module
 marketplace-plugin: true
-description: Delta Suite v3.0: Natural 4-Phase Customer Engagement Lifecycle Suite (delta-discover, delta-plan, delta-build, delta-harden, delta-orchestrator). Features customer intake interviews, GCP 3-tier architecture advisory, 2-role squad matrix, FastMCP building, Playwright UI testing, plain-English anti-slop auditing, and Model Garden Opus 5 ZDR peer review.
+description: Delta Suite v3.1: 4-Phase Customer Engagement Lifecycle Suite (delta-discover, delta-plan, delta-build, delta-harden, delta-orchestrator) + Multi-Model ZDR Skills (claude-review, claude-agent-harness). Features customer intake interviews, GCP 3-tier architecture advisory, 2-role squad matrix, FastMCP building, Playwright UI testing, plain-English anti-slop auditing, and Model Garden Opus 5 ZDR peer review.
 author: Enrique Chan <https://github.com/enriquekalven>
 license: Apache-2.0
 
@@ -18,8 +18,10 @@ bmad_method:
       - delta-plan
     build:
       - delta-build
+      - claude-agent-harness
     learn:
       - delta-harden
+      - claude-review
 
 workflows:
   - name: delta-orchestrator
@@ -43,3 +45,9 @@ skills:
   - name: delta-harden
     path: skills/delta-harden
     description: Phase 4: Hardening & Launch, Plain-English Anti-Slop Audit (rm-slop), Vertex AI Model Garden Opus 5 ZDR Review, and ROI Savings Report.
+  - name: claude-review
+    path: skills/claude-review
+    description: Two-Pass Execution & Review Loop: Generates baseline code with Gemini 3.6 Flash, reviews with Opus 5 via Model Garden API, and applies revisions.
+  - name: claude-agent-harness
+    path: skills/claude-agent-harness
+    description: Direct High-Tier Delegation: Translates specs, PRDs, or natural language prompts directly into production code files via Model Garden API script.
