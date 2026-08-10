@@ -603,6 +603,9 @@
           <span class="px-3 py-1.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 rounded-lg flex items-center">
             <i class="fa-solid fa-store mr-2 text-rose-500"></i> MCPMarket: Indexed on mcpmarket.com/tools/skills
           </span>
+          <span class="px-3 py-1.5 bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20 rounded-lg flex items-center">
+            <i class="fa-solid fa-shapes mr-2 text-teal-500"></i> SkillsMP: Registered on skillsmp.com
+          </span>
         </div>
       </div>
 
@@ -719,53 +722,64 @@
 
   <!-- Installation Options -->
   <section id="install" class="py-20 px-6 bg-slate-100/70 dark:bg-brand-card/50 border-t border-slate-200 dark:border-brand-border">
-    <div class="max-w-4xl mx-auto text-center">
+    <div class="max-w-6xl mx-auto text-center">
       <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">Ready to Integrate Delta Skills?</h2>
-      <p class="text-slate-600 dark:text-gray-400 mb-10">Select your preferred AI Agent runner framework below to install the plugin.</p>
+      <p class="text-slate-600 dark:text-gray-400 mb-10">Select your preferred AI Agent runner framework or skills marketplace below to install the plugin.</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-left">
+
+        <!-- SkillsMP Directory Option -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm">
+          <div class="flex items-center space-x-2 mb-3">
+            <i class="fa-solid fa-shapes text-teal-600 dark:text-teal-400 text-lg"></i>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">SkillsMP</h4>
+          </div>
+          <div class="bg-slate-100 dark:bg-brand-dark p-2.5 rounded-lg border border-slate-300 dark:border-brand-border">
+            <a href="https://skillsmp.com/" target="_blank" class="text-xs font-mono text-teal-600 dark:text-teal-300 hover:underline block truncate">skillsmp.com</a>
+          </div>
+        </div>
 
         <!-- MCPMarket Directory Option -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm">
-          <div class="flex items-center space-x-3 mb-3">
-            <i class="fa-solid fa-store text-rose-600 dark:text-rose-400 text-xl"></i>
-            <h4 class="text-base font-bold text-slate-900 dark:text-white">MCPMarket Directory</h4>
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm">
+          <div class="flex items-center space-x-2 mb-3">
+            <i class="fa-solid fa-store text-rose-600 dark:text-rose-400 text-lg"></i>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">MCPMarket</h4>
           </div>
-          <div class="bg-slate-100 dark:bg-brand-dark p-3 rounded-lg border border-slate-300 dark:border-brand-border flex items-center justify-between">
-            <a href="https://mcpmarket.com/tools/skills" target="_blank" class="text-xs font-mono text-rose-600 dark:text-rose-300 hover:underline">mcpmarket.com/tools/skills</a>
+          <div class="bg-slate-100 dark:bg-brand-dark p-2.5 rounded-lg border border-slate-300 dark:border-brand-border">
+            <a href="https://mcpmarket.com/tools/skills" target="_blank" class="text-xs font-mono text-rose-600 dark:text-rose-300 hover:underline block truncate">mcpmarket.com</a>
           </div>
         </div>
 
         <!-- skills.sh Option -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm">
-          <div class="flex items-center space-x-3 mb-3">
-            <i class="fa-solid fa-code text-purple-600 dark:text-purple-400 text-xl"></i>
-            <h4 class="text-base font-bold text-slate-900 dark:text-white">skills.sh CLI (Vercel Spec)</h4>
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm">
+          <div class="flex items-center space-x-2 mb-3">
+            <i class="fa-solid fa-code text-purple-600 dark:text-purple-400 text-lg"></i>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">skills.sh CLI</h4>
           </div>
-          <div class="bg-slate-100 dark:bg-brand-dark p-3 rounded-lg border border-slate-300 dark:border-brand-border flex items-center justify-between">
-            <code class="text-xs font-mono text-purple-600 dark:text-purple-300">npx skills.sh add enriquekalven/delta-skills</code>
+          <div class="bg-slate-100 dark:bg-brand-dark p-2.5 rounded-lg border border-slate-300 dark:border-brand-border">
+            <code class="text-xs font-mono text-purple-600 dark:text-purple-300 block truncate">npx skills.sh add delta-skills</code>
           </div>
         </div>
 
         <!-- BMAD Option -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm">
-          <div class="flex items-center space-x-3 mb-3">
-            <i class="fa-solid fa-cube text-cyan-600 dark:text-cyan-400 text-xl"></i>
-            <h4 class="text-base font-bold text-slate-900 dark:text-white">BMAD Method Installer</h4>
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm">
+          <div class="flex items-center space-x-2 mb-3">
+            <i class="fa-solid fa-cube text-cyan-600 dark:text-cyan-400 text-lg"></i>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">BMAD Method</h4>
           </div>
-          <div class="bg-slate-100 dark:bg-brand-dark p-3 rounded-lg border border-slate-300 dark:border-brand-border flex items-center justify-between">
-            <code class="text-xs font-mono text-cyan-600 dark:text-cyan-300">npx bmad-method install --custom https://github.com/enriquekalven/delta-skills</code>
+          <div class="bg-slate-100 dark:bg-brand-dark p-2.5 rounded-lg border border-slate-300 dark:border-brand-border">
+            <code class="text-xs font-mono text-cyan-600 dark:text-cyan-300 block truncate">npx bmad-method install</code>
           </div>
         </div>
 
         <!-- Antigravity Option -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm">
-          <div class="flex items-center space-x-3 mb-3">
-            <i class="fa-solid fa-rocket text-indigo-600 dark:text-indigo-400 text-xl"></i>
-            <h4 class="text-base font-bold text-slate-900 dark:text-white">Antigravity CLI</h4>
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm">
+          <div class="flex items-center space-x-2 mb-3">
+            <i class="fa-solid fa-rocket text-indigo-600 dark:text-indigo-400 text-lg"></i>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Antigravity CLI</h4>
           </div>
-          <div class="bg-slate-100 dark:bg-brand-dark p-3 rounded-lg border border-slate-300 dark:border-brand-border flex items-center justify-between">
-            <code class="text-xs font-mono text-indigo-600 dark:text-indigo-300">agy plugin install https://github.com/enriquekalven/delta-skills.git</code>
+          <div class="bg-slate-100 dark:bg-brand-dark p-2.5 rounded-lg border border-slate-300 dark:border-brand-border">
+            <code class="text-xs font-mono text-indigo-600 dark:text-indigo-300 block truncate">agy plugin install delta-skills</code>
           </div>
         </div>
 
