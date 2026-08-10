@@ -689,7 +689,7 @@
           <h4 class="text-lg font-extrabold text-slate-900 dark:text-white mb-4 flex items-center">
             <i class="fa-solid fa-bolt text-indigo-500 mr-2"></i> Standalone Multi-Model & Skill Discovery Tools
           </h4>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
             <!-- Skill: claude-review -->
             <div class="bg-white dark:bg-brand-card border border-indigo-500/30 rounded-xl p-6 shadow-sm hover:border-indigo-500 transition">
@@ -697,7 +697,7 @@
                 <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">TWO-PASS ZDR REVIEW</span>
                 <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-mono rounded">claude-review</span>
               </div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Two-Pass Execution & Review Loop</h3>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Two-Pass Execution Loop</h3>
               <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Generates baseline code with Gemini Flash, reviews with Opus 5 via Model Garden API, and applies revisions.</p>
               <code class="text-xs font-mono text-indigo-600 dark:text-indigo-300 bg-slate-100 dark:bg-brand-dark p-2 rounded block">skills/claude-review/SKILL.md</code>
             </div>
@@ -719,9 +719,20 @@
                 <span class="text-xs font-bold text-purple-600 dark:text-purple-400">MARKET DISCOVERY</span>
                 <span class="px-2 py-0.5 bg-purple-500/10 text-purple-600 dark:text-purple-300 text-xs font-mono rounded">skill-discovery</span>
               </div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Skill Gap & Marketplace Finder</h3>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Skill Gap & Market Finder</h3>
               <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Audits local skill limits and searches skills.sh, SkillsMP, and MCPMarket for higher-performing skill upgrades.</p>
               <code class="text-xs font-mono text-purple-600 dark:text-purple-300 bg-slate-100 dark:bg-brand-dark p-2 rounded block">skills/skill-discovery-and-benchmarking</code>
+            </div>
+
+            <!-- Skill: improve-codebase-architecture -->
+            <div class="bg-white dark:bg-brand-card border border-emerald-500/30 rounded-xl p-6 shadow-sm hover:border-emerald-500 transition">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">VISUAL ARCH REVIEW</span>
+                <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 text-xs font-mono rounded">arch-deepening</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Codebase Architecture Deepening</h3>
+              <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Scans git hot spots for shallow modules, renders a visual HTML report with Mermaid before/after diagrams, and deepens seams.</p>
+              <code class="text-xs font-mono text-emerald-600 dark:text-emerald-300 bg-slate-100 dark:bg-brand-dark p-2 rounded block">improve-codebase-architecture</code>
             </div>
 
           </div>
