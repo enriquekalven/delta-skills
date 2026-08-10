@@ -179,80 +179,81 @@
               <span class="ml-2 text-xs font-mono text-slate-400">Live Skill Artifact Sandbox</span>
             </div>
             <div class="flex space-x-1 text-xs font-mono">
-              <button id="tab-arch" onclick="showArtifact('arch')" class="artifact-tab px-2.5 py-1 rounded-t transition">gcp-advisor</button>
-              <button id="tab-gate" onclick="showArtifact('gate')" class="artifact-tab px-2.5 py-1 rounded-t transition">gate-verifier</button>
-              <button id="tab-kpis" onclick="showArtifact('kpis')" class="artifact-tab px-2.5 py-1 rounded-t transition">baseline_kpis</button>
-              <button id="tab-review" onclick="showArtifact('review')" class="artifact-tab px-2.5 py-1 rounded-t transition">opus5-review</button>
+              <button id="tab-kpis" onclick="showArtifact('kpis')" class="artifact-tab px-2.5 py-1 rounded-t transition active">delta-discover</button>
+              <button id="tab-arch" onclick="showArtifact('arch')" class="artifact-tab px-2.5 py-1 rounded-t transition">delta-plan</button>
+              <button id="tab-gate" onclick="showArtifact('gate')" class="artifact-tab px-2.5 py-1 rounded-t transition">delta-build</button>
+              <button id="tab-review" onclick="showArtifact('review')" class="artifact-tab px-2.5 py-1 rounded-t transition">delta-harden</button>
             </div>
           </div>
 
           <!-- Sandbox Content Screens -->
           <div class="p-5 font-mono text-xs overflow-x-auto min-h-[300px] leading-relaxed">
             
-            <!-- Tab 1: Architecture Recommendation -->
-            <div id="artifact-arch" class="artifact-content">
-              <div class="text-cyan-400 mb-2"># Google Cloud Agent Architecture Recommendation</div>
-              <div class="text-slate-400">Target File: <span class="text-white">docs/ARCHITECTURE_RECOMMENDATION.md</span></div>
-              <div class="text-slate-400 mb-3">---------------------------------------------------------</div>
-              <div><span class="text-emerald-400">Selected Abstraction</span> : Autonomous Agent (<code class="text-indigo-300">google-adk</code>)</div>
-              <div><span class="text-emerald-400">Selected GCP Tier    </span> : Tier 3 (High-Code Custom ADK)</div>
-              <div><span class="text-emerald-400">Runtime Host         </span> : Vertex AI Agent Engine / Cloud Run</div>
-              <div><span class="text-emerald-400">Model Routing        </span> : Gemini 2.5 Pro + Opus 5 ZDR Reviewer</div>
-              <div class="mt-3 text-amber-300">Decision Triggers satisfied:</div>
-              <div class="text-slate-300">• Stateful memory & custom vector search (AlloyDBpg)</div>
-              <div class="text-slate-300">• Strict VPC Service Controls & CMEK encryption</div>
-            </div>
-
-            <!-- Tab 2: Programmatic Gate Verifier -->
-            <div id="artifact-gate" class="artifact-content hidden">
-              <div class="text-amber-400 mb-2">$ python3 scripts/verify_phase_gate.py --phase 1</div>
-              <div class="text-slate-400 mb-3">============================================================</div>
-              <div class="text-slate-300">✓ Found ./docs/ONBOARDING.md (1420 bytes)</div>
-              <div class="text-slate-300">✓ Found ./PRD.md (3890 bytes)</div>
-              <div class="text-slate-300">✓ Found ./baseline_kpis.json (980 bytes)</div>
-              <div class="text-emerald-400">✓ Secret scan passed (no hardcoded API keys/credentials).</div>
-              <div class="text-slate-400 my-2">============================================================</div>
-              <div class="text-emerald-400 font-bold">✨ PHASE 1 GATE VERIFICATION PASSED. Approved to advance STATE.md.</div>
-            </div>
-
-            <!-- Tab 3: Baseline KPIs -->
-            <div id="artifact-kpis" class="artifact-content hidden">
-              <div class="text-emerald-400 mb-2"># 50-Sample SME Ticket Audit Baseline</div>
-              <div class="text-slate-400">Target File: <span class="text-white">docs/spec/baseline_kpis.json</span></div>
+            <!-- Tab 1: Phase 1 delta-discover -->
+            <div id="artifact-kpis" class="artifact-content">
+              <div class="text-emerald-400 mb-2"># Phase 1: Customer Intake & 50 SME Ticket Baseline Audit</div>
+              <div class="text-slate-400">Target File: <span class="text-white">baseline_kpis.json</span></div>
               <div class="text-slate-400 mb-3">---------------------------------------------------------</div>
               <pre class="text-emerald-300">{
   "sample_size": 50,
   "blended_hourly_rate_usd": 75.0,
   "baseline_metrics": {
-    "avg_handling_time_min": 52.5,
-    "error_rate_percent": 24.0,
-    "unit_cost_usd": 65.63,
-    "annual_baseline_cost_usd": 787500.00
+    "avg_handling_time_min": 42.0,
+    "error_rate_percent": 8.0,
+    "unit_cost_usd": 52.50,
+    "annual_baseline_cost_usd": 630000.00
   },
   "target_post_deployment": {
-    "projected_annual_savings_usd": 735000.00
+    "projected_annual_savings_usd": 580000.00
   }
 }</pre>
             </div>
 
-            <!-- Tab 4: Opus 5 Review -->
+            <!-- Tab 2: Phase 2 delta-plan -->
+            <div id="artifact-arch" class="artifact-content hidden">
+              <div class="text-cyan-400 mb-2"># Phase 2: Google Cloud Architecture Recommendation</div>
+              <div class="text-slate-400">Target File: <span class="text-white">docs/ARCHITECTURE_RECOMMENDATION.md</span></div>
+              <div class="text-slate-400 mb-3">---------------------------------------------------------</div>
+              <div><span class="text-emerald-400">Selected Abstraction</span> : Autonomous Agent (<code class="text-indigo-300">google-adk</code>)</div>
+              <div><span class="text-emerald-400">Selected GCP Tier    </span> : Tier 3 (High-Code Custom ADK)</div>
+              <div><span class="text-emerald-400">Runtime Host         </span> : Vertex AI Agent Engine / Cloud Run</div>
+              <div><span class="text-emerald-400">Prompt Caching       </span> : Gemini 1.5 Pro Context Caching (90% Cost ↓)</div>
+              <div><span class="text-emerald-400">Model Routing        </span> : Gemini 2.5 Pro + Opus 5 ZDR Reviewer</div>
+              <div class="mt-3 text-amber-300">Security & Trust Boundaries:</div>
+              <div class="text-slate-300">• Stateful memory & FastMCP servers on Cloud Run</div>
+              <div class="text-slate-300">• Strict VPC Service Controls & CMEK encryption</div>
+            </div>
+
+            <!-- Tab 3: Phase 3 delta-build -->
+            <div id="artifact-gate" class="artifact-content hidden">
+              <div class="text-amber-400 mb-2">$ python3 skills/delta-build/scripts/delta_cli.py build --phase 3</div>
+              <div class="text-slate-400 mb-3">============================================================</div>
+              <div class="text-slate-300">✓ Secret scan passed (no exposed API keys / JWT tokens).</div>
+              <div class="text-slate-300">✓ FastMCP servers verified on Cloud Run SSE transport.</div>
+              <div class="text-slate-300">✓ Playwright CLI full-page browser screenshots captured.</div>
+              <div class="text-slate-300">✓ 100% PyTest evaluation dataset pass rate.</div>
+              <div class="text-slate-400 my-2">============================================================</div>
+              <div class="text-emerald-400 font-bold">✨ PHASE 3 BUILD VERIFICATION PASSED. Approved for Phase 4.</div>
+            </div>
+
+            <!-- Tab 4: Phase 4 delta-harden -->
             <div id="artifact-review" class="artifact-content hidden">
-              <div class="text-indigo-400 mb-2"># Vertex AI Model Garden Opus 5 ZDR Peer Review</div>
-              <div class="text-slate-400">Target File: <span class="text-white">docs/spec/implementation/code-review-report.md</span></div>
+              <div class="text-indigo-400 mb-2"># Phase 4: Vertex AI Model Garden Opus 5 ZDR Peer Review</div>
+              <div class="text-slate-400">Target File: <span class="text-white">docs/code-review-report.md</span></div>
               <div class="text-slate-400 mb-3">---------------------------------------------------------</div>
               <div><span class="text-amber-300">Reviewer Tier</span> : Opus 5 Tier (ZDR Compliant - <code class="text-cyan-300">claude-opus-5</code>)</div>
               <div><span class="text-amber-300">Overall Verdict</span>: <span class="text-emerald-400 font-bold">APPROVED</span></div>
               <div class="mt-3 text-slate-300">Audit Checkpoints:</div>
+              <div class="text-slate-300">✓ Plain-English rm-slop documentation audit: 100/100</div>
               <div class="text-slate-300">✓ Security & CMEK boundaries verified</div>
-              <div class="text-slate-300">✓ 100% TDD test pass rate</div>
-              <div class="text-slate-300">✓ Zero intent-implementation gaps</div>
+              <div class="text-slate-300">✓ ROI validated: Handling time reduced to 3.2 min/ticket</div>
             </div>
 
           </div>
 
           <div class="p-3 bg-slate-950/80 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
             <span class="flex items-center"><i class="fa-solid fa-shield-halved text-emerald-400 mr-2"></i> Vertex AI ZDR Compliant</span>
-            <span class="flex items-center"><i class="fa-solid fa-cubes text-cyan-400 mr-2"></i> 11 Meta-Skills</span>
+            <span class="flex items-center"><i class="fa-solid fa-cubes text-cyan-400 mr-2"></i> 4-Phase Lifecycle Suite</span>
           </div>
         </div>
       </div>
