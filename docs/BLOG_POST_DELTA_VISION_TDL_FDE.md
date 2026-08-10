@@ -23,7 +23,7 @@ In this article, we share our core philosophy, the **2-Role Squad Model**, the *
 In the first wave of generative AI, success was often defined by how quickly a team could spin up a demo. However, when enterprises attempt to scale these systems to mission-critical operations, three major hurdles emerge:
 
 1. **The Reliability Gap**: A prototype that works 80% of the time is impressive; an enterprise workflow that fails 20% of the time is unusable. Without automated grading datasets and test-driven validation, small errors compound across multi-step agent actions.
-2. **The Cost and Latency Trap**: Unstructured, bloated prompts consume vast amounts of model context. Without leverage like **Gemini 1.5 Pro Context Caching**, repeated system prompts and large document contexts drive up cloud costs and slow response times.
+2. **The Cost and Latency Trap**: Unstructured, bloated prompts consume vast amounts of model context. Without optimizations like **Gemini 1.5 Pro Context Caching**, repeated system prompts and large document contexts drive up cloud costs and slow response times.
 3. **The Control Illusion**: Fully autonomous loops operating without guardrails create compliance risks. Enterprise leaders need visibility and human oversight at key decision gates, not black-box automation.
 
 To cross the chasm from prototype to production, organizations must treat AI agent development with the same engineering rigor as core enterprise software.
@@ -122,7 +122,7 @@ Finally, the TDL audits the production pilot against the original 50-ticket benc
 For technology executives planning their AI roadmap, three core principles emerge from our field work:
 
 1. **Measure Baseline ROI Early**: Don't guess the value of AI. Audit actual manual ticket volumes, handling times, and error rates in Phase 1 so you can measure exact cost savings in Phase 4.
-2. **Leverage GCP-Native Optimization**: Use **Gemini 1.5 Pro Context Caching** to solve the cost trap, host FastMCP servers on **Cloud Run**, and grade non-deterministic outputs using **Vertex AI Evaluation Service**.
+2. **Apply GCP-Native Optimization**: Use **Gemini 1.5 Pro Context Caching** to solve the cost trap, host FastMCP servers on **Cloud Run**, and grade non-deterministic outputs using **Vertex AI Evaluation Service**.
 3. **Embed Governance into the Lifecycle**: Maintain human-in-the-loop checkpoints at critical project gates. Trust is built through programmatic secret scanning, security reviews, and Zero Data Retention controls.
 
 ---

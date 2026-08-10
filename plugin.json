@@ -1,7 +1,7 @@
 {
   "name": "delta-skills",
-  "version": "3.1.0",
-  "description": "Delta Suite v3.1: 4-Phase Customer Engagement Lifecycle Suite (delta-discover, delta-plan, delta-build, delta-harden, delta-orchestrator) + Multi-Model ZDR Skills (claude-review, claude-agent-harness). Features customer intake interviews, GCP 3-tier architecture advisory, 2-role squad matrix, FastMCP building, Playwright UI testing, plain-English anti-slop auditing, and Model Garden Opus 5 ZDR peer review.",
+  "version": "3.2.0",
+  "description": "Delta Suite v3.2: 4-Phase Customer Engagement Lifecycle Suite (delta-discover, delta-plan, delta-build, delta-harden, delta-orchestrator) + Multi-Model ZDR Skills (claude-review, claude-agent-harness) + Skill Discovery & Benchmarking (skill-discovery-and-benchmarking). Features skill gap auditing, external registry search (skills.sh, SkillsMP, MCPMarket), customer intake interviews, GCP 3-tier architecture advisory, 2-role squad matrix, FastMCP building, Playwright UI testing, plain-English anti-slop auditing, and Model Garden Opus 5 ZDR peer review.",
   "author": {
     "name": "Enrique Chan",
     "url": "https://github.com/enriquekalven"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/enriquekalven/delta-skills.git"
   },
-  "keywords": ["delta-discover", "delta-plan", "delta-build", "delta-harden", "delta-orchestrator", "claude-review", "claude-agent-harness", "google-cloud", "delta-squad", "adk", "vertex-ai", "mcp-server", "bmad-method", "plain-english", "agent-browser"],
+  "keywords": ["delta-discover", "delta-plan", "delta-build", "delta-harden", "delta-orchestrator", "claude-review", "claude-agent-harness", "skill-discovery-and-benchmarking", "skills.sh", "skillsmp", "mcpmarket", "google-cloud", "delta-squad", "adk", "vertex-ai", "mcp-server", "bmad-method", "plain-english", "agent-browser"],
   "license": "Apache-2.0",
   "disabled": false
 }
