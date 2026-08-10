@@ -17,6 +17,18 @@ Of the 20 skills evaluated:
 
 ---
 
+## ⚡ Strict Superiority Filter Protocol
+
+> **Rule of Adoption**: A external marketplace skill is adopted **ONLY if it is provably superior** in capabilities, performance, or abstraction to existing repo tools. Redundant or inferior skills are rejected to prevent skill sprawl.
+
+### Superiority Verification Examples:
+- **`improve-codebase-architecture`**: **PROVABLY SUPERIOR**. Generates visual HTML reports with Mermaid diagrams for shallow module refactoring. Existing repo skills lacked visual HTML diagram generation. -> **ADOPTED**.
+- **`vercel-labs/skills/find-skills`**: **PROVABLY SUPERIOR**. Dynamically searches external registries when local skills reach capability limits. -> **ADOPTED**.
+- **`playwright-browser-testing`**: **REJECTED (Redundant)**. Existing `delta_cli.py build --url --playwright` already performs headless Playwright CLI screenshot and HTTP verification.
+- **`security-and-hardening`**: **REJECTED (Redundant)**. Existing `run_secret_scan()` in `delta_cli.py` already scans GCP, OpenAI, GitHub PATs, and JWTs.
+
+---
+
 ## 2. Top 20 Skills Audit & De-duplication Matrix
 
 | # | Skill Name | Primary Registry | Capability Category | Status in `delta-skills` Suite | De-duplication Action |
