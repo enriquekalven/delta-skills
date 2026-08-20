@@ -2,6 +2,8 @@
 
 > Enterprise Google Cloud AI Agent architecture advisory, multi-model ZDR cost routing, SME baseline KPI auditing, and 12-week Technical Deployment Lead (TDL) field execution playbooks. Fully integrated with **BMAD Method**, **Antigravity CLI**, **Google Agents CLI**, and **Open Skills**.
 
+🌐 **Live User Guide & Interactive Sandbox**: [https://delta-tdl-user-guide.web.app](https://delta-tdl-user-guide.web.app)
+
 `delta-skills` packages meta-skills for customer engagement orchestration, technical discovery, baseline KPI auditing, GCP AI Agent architecture evaluation, repository governance, multi-model Vertex AI ZDR integration, and phase-gated software engineering lifecycles.
 
 ---
@@ -12,12 +14,10 @@
 
 | BMAD Delivery Phase | Delta Skills Integrated Workflows |
 | :--- | :--- |
-| **Phase 1: Analysis (Clarify)** | `synthetic-baseline-protocol` (50 SME sample audit ➔ `baseline_kpis.json`), `codebase-onboarding-and-mapping` |
-| **Phase 2: Planning (Solution)** | `gcp-agent-architecture-advisor` (No-Code vs Low-Code vs High-Code ADK), `tdl-field-guide` (12-Week Squad & Scope) |
-| **Phase 3: Build & Verify** | `e2e-delivery-workflow` (7-Phase SDLC), `claude-review` (Gemini Flash + Vertex ZDR Opus 5 peer review), `ecc-repo-conventions` |
-| **Phase 4: Learn & Adjust** | Post-eval ROI benchmark verification against `baseline_kpis.json`, `skill-stocktake` |
-
-* **Bridge Skill**: `delta-bmad-workflow` — Runs BMAD delivery loops with GCP enterprise skills.
+| **Phase 1: Analysis (Clarify)** | `delta-discover` (50 SME sample audit ➔ `baseline_kpis.json`), `codebase-onboarding-and-mapping` |
+| **Phase 2: Planning (Solution)** | `delta-plan` (3-Tier GCP Advisor: No-Code vs Low-Code vs High-Code ADK), `tdl-field-guide` (12-Week Squad & Scope) |
+| **Phase 3: Build & Verify** | `delta-build` (FastMCP tools, Secret Scanning, Playwright UI testing, 100% PyTest), `ecc-repo-conventions` |
+| **Phase 4: Learn & Adjust** | `delta-harden` (Model Garden Opus 5 ZDR Peer Review, Plain-English Anti-Slop Audit, Realized ROI Report) |
 
 ---
 
@@ -38,30 +38,33 @@
 * **BMAD Method CLI** (`npx bmad-method`)
 * **Antigravity CLI** (`agy`)
 * **Google Agents CLI / Gemini CLI** (`agents-cli` / `gemini`)
+* **skills.sh / Open Skills** (`npx skills.sh`)
 * **Claude Code / Cursor / Codex**
 
 ---
 
-## Skills Included
+## Skills Catalog (v3.2.0)
 
-### Meta-Orchestrators & Workflow Bridges
-1. **`delta-bmad-workflow`**: **[NEW]** Master workflow bridge mapping BMAD Method 4-phase delivery to GCP TDL enterprise field playbooks.
-2. **`tdl-field-guide`**: Operational execution playbook for 12-week enterprise engagements across 4 phases (Discover/Define ➔ Prototype/Validate ➔ Production Build ➔ Harden/Launch).
-3. **`e2e-delivery-workflow`**: Phase-gated software delivery workflow guiding projects step-by-step through a 7-phase SDLC.
+### 1. 4-Phase Phased Lifecycle Suite
+1. **`delta-orchestrator`**: Master phase router enforcing phase gate criteria before advancing `STATE.md`.
+2. **`delta-discover`** (Phase 1, Weeks 1–3): Customer intake interviews, repository mapping (`docs/ONBOARDING.md`), and 50 SME ticket baseline audit (`baseline_kpis.json`).
+3. **`delta-plan`** (Phase 2, Weeks 4–6): Abstraction matrix evaluation (Skill vs MCP vs Agent), GCP 3-Tier Architecture recommendation (`docs/ARCHITECTURE_RECOMMENDATION.md`), and `THREAT_MODEL.md`.
+4. **`delta-build`** (Phase 3, Weeks 7–10): FastMCP tool server implementation, automated secret scanning, Playwright CLI browser UI tests, and 100% PyTest validation.
+5. **`delta-harden`** (Phase 4, Weeks 11–12): Plain-English anti-slop documentation audit, Vertex AI Model Garden Opus 5 ZDR peer review, and customer ROI savings report.
 
-### Architecture & Discovery Skills
-4. **`gcp-agent-architecture-advisor`**: Ingests PRD & intake notes to recommend a Google Cloud AI Agent architecture across 3 tiers (No-Code, Low-Code, High-Code ADK) with product release maturity flags (GA vs Preview).
-5. **`synthetic-baseline-protocol`**: Pre-deployment quantitative baseline protocol for auditing historical SME records and outputting `baseline_kpis.json`.
-6. **`codebase-onboarding-and-mapping`**: Analyzes client repositories to map components, entry points, and dependencies into `docs/ONBOARDING.md`.
+### 2. Multi-Model Vertex AI ZDR Skills
+6. **`claude-review`**: Two-pass execution loop. Generates baseline code rapidly with Gemini 3.6 Flash, executes ZDR peer review with Opus 5 via Vertex AI Model Garden API, and applies revisions.
+7. **`claude-agent-harness`**: Delegated high-tier code generation routing PRDs and specs directly to Vertex AI Model Garden Opus 5 (`claude-opus-5` in region `us-central1`).
+   ```bash
+   # Spec ingestion
+   python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --spec docs/PRD.md
 
-### Multi-Model & Claude Integration Skills (ZDR Compliant)
-7. **`claude-review`**: Two-pass coding and review workflow. Baseline execution via Gemini 3.6 Flash followed by peer review via Vertex AI Model Garden Opus 5 ZDR endpoint.
-8. **`claude-agent-harness`**: Delegated spec-to-code generation routing PRDs and specs directly to Model Garden Opus 5 ZDR endpoint.
+   # File review
+   python3 skills/claude-review/scripts/call_opus_model_garden.py --review src/agent_server.py
+   ```
 
-### Operations, Governance, & Auditing Skills
-9. **`ecc-repo-conventions`**: Enforces standardized repository structure, file naming conventions, `STATE.md`, and environment hygiene.
-10. **`agentic-engineering`**: Governs subagent task decomposition, multi-model cost routing, and subagent fleet management.
-11. **`skill-stocktake`**: Audits workspace capability slots (`#CAPABILITY: Slot-Name`) to verify tool readiness prior to executing project phases.
+### 3. Discovery & Benchmarking
+8. **`skill-discovery-and-benchmarking`**: Audits local skill gaps and searches external registries (`skills.sh`, `SkillsMP`, `MCPMarket`) for high-performing upgrades.
 
 ---
 
@@ -74,30 +77,31 @@ npx bmad-method install --custom https://github.com/enriquekalven/delta-skills
 
 ### Antigravity CLI
 ```bash
-agy plugin install https://github.com/enriquekalven/delta-skills.git
+agy plugin install delta-skills
+```
+
+### skills.sh Universal Registry
+```bash
+npx skills.sh add delta-skills
 ```
 
 ### Gemini CLI / Google Agents CLI
 ```bash
-gemini skills install https://github.com/enriquekalven/delta-skills.git --path skills
-```
-
-### Open Skills Standard
-```bash
-npx skills add enriquekalven/delta-skills
+agents-cli plugin install delta-skills
 ```
 
 ---
 
-## Documentation
+## Documentation & Playbooks
 
-* [Delta-BMAD Master Workflow Bridge](skills/delta-bmad-workflow/SKILL.md)
-* [Using Claude Models in Antigravity Guide](docs/MULTI_MODEL_SKILLS_GUIDE.md)
-* [Technical Deployment Lead (TDL) Field Execution User Guide](docs/tdl-user-guide.md)
-* [End-to-End Delivery Workflow Guide](docs/e2e-delivery-workflow.md)
-* [AlphaEvolve Skill Evaluation Matrix](docs/alphaevolve-masterclass-matrix.md)
+* 🌐 [Live User Guide Website](https://delta-tdl-user-guide.web.app)
+* 📘 [Technical Deployment Lead (TDL) Field Execution User Guide](docs/tdl-user-guide.md)
+* 🛡️ [Using Claude Models in Antigravity (Vertex AI ZDR Guide)](docs/MULTI_MODEL_SKILLS_GUIDE.md)
+* 🚀 [Delta Vision: TDL + FDE Field Strategy](docs/BLOG_POST_DELTA_VISION_TDL_FDE.md)
+* 📊 [Squash & Unification Master Report](docs/SQUASH_AND_UNIFICATION_MASTER_REPORT.md)
 
 ---
 
 ## License
 Licensed under the [Apache-2.0 License](LICENSE).
+

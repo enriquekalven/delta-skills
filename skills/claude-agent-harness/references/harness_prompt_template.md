@@ -1,13 +1,13 @@
-# Subagent Harness Prompt Templates
+# Opus 5 ZDR Harness Prompt Templates
 
-This reference provides standard prompt structures used when invoking subagent harnesses under the **Claude Agent Harness** skill.
+This reference provides standard prompt structures used when invoking code generation harnesses under the **Claude Agent Harness** skill on Vertex AI Model Garden.
 
 ---
 
-## 1. Opus 5 Tier Harness Template (Standard / Precision Implementation)
+## 1. Feature & Endpoint Implementation Template
 
 ```markdown
-You are acting as an Opus 5 Tier Code Generation Subagent.
+You are acting as an Opus 5 Tier Code Generation Subagent via Vertex AI Model Garden (Zero Data Retention).
 Your goal is to turn the specification below into complete, production-ready source code.
 
 ### SPECIFICATION
@@ -26,10 +26,10 @@ Your goal is to turn the specification below into complete, production-ready sou
 
 ---
 
-## 2. Claude Fable 5 Tier Harness Template (Complex Architectural Subsystems)
+## 2. Multi-Module System Architecture Template
 
 ```markdown
-You are acting as a Claude Fable 5 Tier System Architect & Code Generation Subagent.
+You are acting as an Opus 5 Tier System Architect & Code Generator via Vertex AI Model Garden (Zero Data Retention).
 Your goal is to design and implement a robust, multi-module system based on the provided architecture document or spec.
 
 ### SPECIFICATION & ARCHITECTURE
@@ -47,3 +47,4 @@ Your goal is to design and implement a robust, multi-module system based on the 
 3. Include inline architectural rationale for non-obvious design choices.
 4. Verify end-to-end type safety and compile readiness.
 ```
+

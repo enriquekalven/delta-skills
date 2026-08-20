@@ -88,16 +88,57 @@
       }
     }
 
+    // Quickstart Tab & Command Copier
+    const quickstartCommands = {
+      bmad: 'npx bmad-method install --custom https://github.com/enriquekalven/delta-skills',
+      agy: 'agy plugin install delta-skills',
+      skills: 'npx skills.sh add delta-skills',
+      agents: 'agents-cli plugin install delta-skills'
+    };
+
+    let activeFramework = 'bmad';
+
+    function setQuickstartFramework(fw) {
+      activeFramework = fw;
+      document.querySelectorAll('.fw-tab').forEach(btn => {
+        btn.classList.remove('bg-cyan-500', 'text-white', 'shadow-md');
+        btn.classList.add('text-slate-600', 'dark:text-gray-400', 'hover:text-slate-900', 'dark:hover:text-white');
+      });
+
+      const activeBtn = document.getElementById('fw-tab-' + fw);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-600', 'dark:text-gray-400', 'hover:text-slate-900', 'dark:hover:text-white');
+        activeBtn.classList.add('bg-cyan-500', 'text-white', 'shadow-md');
+      }
+
+      const cmdText = document.getElementById('quickstart-command-text');
+      if (cmdText) {
+        cmdText.innerText = quickstartCommands[fw];
+      }
+    }
+
+    function copyQuickstartCommand() {
+      const text = quickstartCommands[activeFramework];
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn-text');
+        if (btn) {
+          btn.innerText = 'Copied!';
+          setTimeout(() => { btn.innerText = 'Copy'; }, 2000);
+        }
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       updateThemeIcons();
-      showArtifact('arch');
+      showArtifact('discover');
+      setQuickstartFramework('bmad');
     });
   </script>
 </head>
 <body class="antialiased min-h-screen flex flex-col justify-between transition-colors duration-300">
 
   <!-- Navigation -->
-  <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-brand-dark/80 border-b border-slate-200 dark:border-brand-border px-6 py-4 transition-colors">
+  <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/90 dark:bg-brand-dark/90 border-b border-slate-200 dark:border-brand-border px-6 py-4 transition-colors">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-cyan-500/20">
@@ -105,16 +146,16 @@
         </div>
         <div>
           <span class="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">Delta TDL <span class="text-cyan-500 dark:text-cyan-400">User Guide</span></span>
-          <span class="ml-2 px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30">Draft</span>
+          <span class="ml-2 px-2.5 py-0.5 text-xs font-bold rounded-full bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/30">v3.2</span>
         </div>
       </div>
       <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600 dark:text-gray-300">
         <a href="#overview" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">Overview</a>
-        <a href="#scoring-matrix" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">Comparison Matrix</a>
-        <a href="#pillars" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">Core Pillars</a>
-        <a href="#bmad-sdd" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">BMAD Marriage</a>
-        <a href="#tdl-guide" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">12-Week TDL Lifecycle</a>
-        <a href="#skills-catalog" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">Skills Directory</a>
+        <a href="#phases" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">4-Phase Field Lifecycle</a>
+        <a href="#architecture" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">GCP 3-Tier Advisor</a>
+        <a href="#multi-model" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">Multi-Model ZDR</a>
+        <a href="#install" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">Quickstart & Install</a>
+        <a href="#docs" class="hover:text-cyan-500 dark:hover:text-cyan-400 transition">Playbooks</a>
       </div>
       <div class="flex items-center space-x-3">
         <!-- Theme Toggle Button -->
@@ -144,23 +185,34 @@
           At Enterprise Scale
         </h1>
         <p class="text-lg text-slate-600 dark:text-gray-400 mb-8 leading-relaxed">
-          The official field execution playbooks, 3-tier GCP agent architecture advisors, SME baseline ROI auditors, and 12-week Technical Deployment Lead (TDL) meta-skills. Fully married with <strong class="text-slate-900 dark:text-white">BMAD Method</strong>, <strong class="text-slate-900 dark:text-white">Antigravity CLI</strong>, and <strong class="text-slate-900 dark:text-white">Google Agents CLI</strong>.
+          The official operational field playbooks, 3-tier GCP agent architecture advisors, 50-sample SME baseline ROI auditors, and 12-week Technical Deployment Lead (TDL) meta-skills. Fully integrated with <strong class="text-slate-900 dark:text-white">BMAD Method</strong>, <strong class="text-slate-900 dark:text-white">Antigravity CLI</strong>, and <strong class="text-slate-900 dark:text-white">skills.sh</strong>.
         </p>
 
-        <!-- Command Copier Pill -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-3 flex items-center justify-between mb-8 max-w-lg shadow-sm">
-          <code class="text-sm font-mono text-cyan-600 dark:text-cyan-300">npx bmad-method install --custom .../delta-skills</code>
-          <button onclick="navigator.clipboard.writeText('npx bmad-method install --custom https://github.com/enriquekalven/delta-skills'); alert('Command copied to clipboard!')" class="ml-3 px-3 py-1.5 bg-slate-100 dark:bg-brand-border hover:bg-slate-200 dark:hover:bg-gray-700 text-xs font-medium text-slate-700 dark:text-gray-200 rounded-lg transition flex items-center">
-            <i class="fa-regular fa-copy mr-1.5"></i> Copy
-          </button>
+        <!-- Interactive Framework Selector & Command Copier -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-4 mb-8 shadow-md">
+          <div class="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-brand-border pb-2 text-xs font-semibold">
+            <span class="text-slate-500 dark:text-gray-400">Select Framework:</span>
+            <div class="flex space-x-1 bg-slate-100 dark:bg-brand-dark p-1 rounded-lg">
+              <button id="fw-tab-bmad" onclick="setQuickstartFramework('bmad')" class="fw-tab px-2.5 py-1 rounded text-xs transition">BMAD</button>
+              <button id="fw-tab-agy" onclick="setQuickstartFramework('agy')" class="fw-tab px-2.5 py-1 rounded text-xs transition">Antigravity</button>
+              <button id="fw-tab-skills" onclick="setQuickstartFramework('skills')" class="fw-tab px-2.5 py-1 rounded text-xs transition">skills.sh</button>
+              <button id="fw-tab-agents" onclick="setQuickstartFramework('agents')" class="fw-tab px-2.5 py-1 rounded text-xs transition">Agents CLI</button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <code id="quickstart-command-text" class="text-xs sm:text-sm font-mono text-cyan-600 dark:text-cyan-300 break-all">npx bmad-method install --custom https://github.com/enriquekalven/delta-skills</code>
+            <button onclick="copyQuickstartCommand()" class="ml-3 px-3 py-1.5 bg-slate-100 dark:bg-brand-border hover:bg-slate-200 dark:hover:bg-gray-700 text-xs font-medium text-slate-700 dark:text-gray-200 rounded-lg transition flex items-center shrink-0">
+              <i class="fa-regular fa-copy mr-1.5"></i> <span id="copy-btn-text">Copy</span>
+            </button>
+          </div>
         </div>
 
         <div class="flex flex-wrap gap-4">
-          <a href="#scoring-matrix" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-cyan-500/25 transition">
-            Why Delta Skills Shines <i class="fa-solid fa-arrow-right ml-2"></i>
+          <a href="#phases" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-cyan-500/25 transition">
+            Explore 4-Phase Field Lifecycle <i class="fa-solid fa-arrow-right ml-2"></i>
           </a>
-          <a href="#tdl-guide" class="px-6 py-3 bg-white dark:bg-brand-card hover:bg-slate-100 dark:hover:bg-brand-border border border-slate-200 dark:border-brand-border text-slate-700 dark:text-gray-200 font-semibold text-sm rounded-xl transition shadow-sm">
-            View 12-Week TDL Playbook
+          <a href="#architecture" class="px-6 py-3 bg-white dark:bg-brand-card hover:bg-slate-100 dark:hover:bg-brand-border border border-slate-200 dark:border-brand-border text-slate-700 dark:text-gray-200 font-semibold text-sm rounded-xl transition shadow-sm">
+            GCP 3-Tier Architecture
           </a>
         </div>
       </div>
@@ -179,18 +231,18 @@
               <span class="ml-2 text-xs font-mono text-slate-400">Live Skill Artifact Sandbox</span>
             </div>
             <div class="flex space-x-1 text-xs font-mono">
-              <button id="tab-kpis" onclick="showArtifact('kpis')" class="artifact-tab px-2.5 py-1 rounded-t transition active">delta-discover</button>
-              <button id="tab-arch" onclick="showArtifact('arch')" class="artifact-tab px-2.5 py-1 rounded-t transition">delta-plan</button>
-              <button id="tab-gate" onclick="showArtifact('gate')" class="artifact-tab px-2.5 py-1 rounded-t transition">delta-build</button>
-              <button id="tab-review" onclick="showArtifact('review')" class="artifact-tab px-2.5 py-1 rounded-t transition">delta-harden</button>
+              <button id="tab-discover" onclick="showArtifact('discover')" class="artifact-tab px-2.5 py-1 rounded-t transition active">delta-discover</button>
+              <button id="tab-plan" onclick="showArtifact('plan')" class="artifact-tab px-2.5 py-1 rounded-t transition">delta-plan</button>
+              <button id="tab-build" onclick="showArtifact('build')" class="artifact-tab px-2.5 py-1 rounded-t transition">delta-build</button>
+              <button id="tab-harden" onclick="showArtifact('harden')" class="artifact-tab px-2.5 py-1 rounded-t transition">delta-harden</button>
             </div>
           </div>
 
           <!-- Sandbox Content Screens -->
-          <div class="p-5 font-mono text-xs overflow-x-auto min-h-[300px] leading-relaxed">
+          <div class="p-5 font-mono text-xs overflow-x-auto min-h-[320px] leading-relaxed">
             
-            <!-- Tab 1: Phase 1 delta-discover -->
-            <div id="artifact-kpis" class="artifact-content">
+            <!-- Tab 1: delta-discover -->
+            <div id="artifact-discover" class="artifact-content">
               <div class="text-emerald-400 mb-2"># Phase 1: Customer Intake & 50 SME Ticket Baseline Audit</div>
               <div class="text-slate-400">Target File: <span class="text-white">baseline_kpis.json</span></div>
               <div class="text-slate-400 mb-3">---------------------------------------------------------</div>
@@ -207,25 +259,26 @@
     "projected_annual_savings_usd": 580000.00
   }
 }</pre>
+              <div class="mt-3 text-cyan-400">✓ Onboarding map generated: docs/ONBOARDING.md</div>
             </div>
 
-            <!-- Tab 2: Phase 2 delta-plan -->
-            <div id="artifact-arch" class="artifact-content hidden">
-              <div class="text-cyan-400 mb-2"># Phase 2: Google Cloud Architecture Recommendation</div>
+            <!-- Tab 2: delta-plan -->
+            <div id="artifact-plan" class="artifact-content hidden">
+              <div class="text-cyan-400 mb-2"># Phase 2: Google Cloud 3-Tier Architecture Recommendation</div>
               <div class="text-slate-400">Target File: <span class="text-white">docs/ARCHITECTURE_RECOMMENDATION.md</span></div>
               <div class="text-slate-400 mb-3">---------------------------------------------------------</div>
               <div><span class="text-emerald-400">Selected Abstraction</span> : Autonomous Agent (<code class="text-indigo-300">google-adk</code>)</div>
               <div><span class="text-emerald-400">Selected GCP Tier    </span> : Tier 3 (High-Code Custom ADK)</div>
               <div><span class="text-emerald-400">Runtime Host         </span> : Vertex AI Agent Engine / Cloud Run</div>
-              <div><span class="text-emerald-400">Prompt Caching       </span> : Gemini 1.5 Pro Context Caching (90% Cost ↓)</div>
-              <div><span class="text-emerald-400">Model Routing        </span> : Gemini 2.5 Pro + Opus 5 ZDR Reviewer</div>
+              <div><span class="text-emerald-400">Context Strategy     </span> : Gemini Context Caching (90% Cost Reduction)</div>
+              <div><span class="text-emerald-400">ZDR Peer Reviewer    </span> : Model Garden Opus 5 (Zero Data Retention)</div>
               <div class="mt-3 text-amber-300">Security & Trust Boundaries:</div>
               <div class="text-slate-300">• Stateful memory & FastMCP servers on Cloud Run</div>
               <div class="text-slate-300">• Strict VPC Service Controls & CMEK encryption</div>
             </div>
 
-            <!-- Tab 3: Phase 3 delta-build -->
-            <div id="artifact-gate" class="artifact-content hidden">
+            <!-- Tab 3: delta-build -->
+            <div id="artifact-build" class="artifact-content hidden">
               <div class="text-amber-400 mb-2">$ python3 skills/delta-build/scripts/delta_cli.py build --phase 3</div>
               <div class="text-slate-400 mb-3">============================================================</div>
               <div class="text-slate-300">✓ Secret scan passed (no exposed API keys / JWT tokens).</div>
@@ -236,17 +289,17 @@
               <div class="text-emerald-400 font-bold">✨ PHASE 3 BUILD VERIFICATION PASSED. Approved for Phase 4.</div>
             </div>
 
-            <!-- Tab 4: Phase 4 delta-harden -->
-            <div id="artifact-review" class="artifact-content hidden">
+            <!-- Tab 4: delta-harden -->
+            <div id="artifact-harden" class="artifact-content hidden">
               <div class="text-indigo-400 mb-2"># Phase 4: Vertex AI Model Garden Opus 5 ZDR Peer Review</div>
               <div class="text-slate-400">Target File: <span class="text-white">docs/code-review-report.md</span></div>
               <div class="text-slate-400 mb-3">---------------------------------------------------------</div>
               <div><span class="text-amber-300">Reviewer Tier</span> : Opus 5 Tier (ZDR Compliant - <code class="text-cyan-300">claude-opus-5</code>)</div>
               <div><span class="text-amber-300">Overall Verdict</span>: <span class="text-emerald-400 font-bold">APPROVED</span></div>
               <div class="mt-3 text-slate-300">Audit Checkpoints:</div>
-              <div class="text-slate-300">✓ Plain-English rm-slop documentation audit: 100/100</div>
+              <div class="text-slate-300">✓ Plain-English anti-slop documentation audit: 100/100</div>
               <div class="text-slate-300">✓ Security & CMEK boundaries verified</div>
-              <div class="text-slate-300">✓ ROI validated: Handling time reduced to 3.2 min/ticket</div>
+              <div class="text-slate-300">✓ ROI validated: Handling time reduced from 42.0 ➔ 3.2 min/ticket</div>
             </div>
 
           </div>
@@ -260,481 +313,195 @@
     </div>
   </section>
 
-  <!-- Multi-Criteria Framework Scoring Matrix -->
-  <section id="scoring-matrix" class="py-20 px-6 bg-slate-100/70 dark:bg-brand-card/60 border-t border-slate-200 dark:border-brand-border">
+  <!-- Unified 4-Phase Field Delivery Lifecycle -->
+  <section id="phases" class="py-20 px-6 bg-slate-100/70 dark:bg-brand-card/40 border-t border-slate-200 dark:border-brand-border">
     <div class="max-w-7xl mx-auto">
       <div class="text-center max-w-3xl mx-auto mb-14">
-        <span class="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-2 block">Weighted Decision Matrix Evaluation</span>
-        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">Why Delta Skills Shines for Google Cloud</h2>
-        <p class="text-slate-600 dark:text-gray-400">Scored across 4 core enterprise criteria (1-10 scale) using the Weighted Decision Scoring Model.</p>
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-2 block">Unified Field Framework</span>
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">12-Week Customer Engagement Lifecycle</h2>
+        <p class="text-slate-600 dark:text-gray-400">Combining squad governance, dynamic capability slots, human gate checkpoints, and automated CLI verifications across 4 disciplined phases.</p>
       </div>
 
-      <!-- Scorecard Table -->
-      <div class="overflow-x-auto mb-12 rounded-2xl border border-slate-200 dark:border-brand-border bg-white dark:bg-brand-card shadow-2xl">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="border-b border-slate-200 dark:border-brand-border bg-slate-50 dark:bg-brand-dark/50 text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-gray-400">
-              <th class="py-4 px-6">Evaluation Criterion</th>
-              <th class="py-4 px-4 text-center">Weight</th>
-              <th class="py-4 px-4 text-center">BMAD Method</th>
-              <th class="py-4 px-4 text-center">PM Skills</th>
-              <th class="py-4 px-4 text-center">Agent Skills</th>
-              <th class="py-4 px-6 text-center text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 font-bold border-l border-slate-200 dark:border-brand-border">Delta Skills</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-200 dark:divide-brand-border text-sm">
-            <tr class="hover:bg-slate-50 dark:hover:bg-brand-dark/30 transition">
-              <td class="py-4 px-6 font-semibold text-slate-900 dark:text-white">
-                1. Delivery Process Orchestration
-                <span class="block text-xs font-normal text-slate-500 dark:text-gray-400">Sprint planning, story breakdown & delivery loops</span>
-              </td>
-              <td class="py-4 px-4 text-center font-mono text-slate-600 dark:text-gray-300">25%</td>
-              <td class="py-4 px-4 text-center font-mono font-bold text-cyan-600 dark:text-cyan-400">9.5</td>
-              <td class="py-4 px-4 text-center font-mono text-slate-500 dark:text-gray-400">6.0</td>
-              <td class="py-4 px-4 text-center font-mono text-slate-500 dark:text-gray-400">5.5</td>
-              <td class="py-4 px-6 text-center font-mono font-bold text-slate-900 dark:text-white bg-cyan-500/10 border-l border-slate-200 dark:border-brand-border">8.5</td>
-            </tr>
+      <!-- 4 Phase Pipeline Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            <tr class="hover:bg-slate-50 dark:hover:bg-brand-dark/30 transition">
-              <td class="py-4 px-6 font-semibold text-slate-900 dark:text-white">
-                2. Product & Business Strategy
-                <span class="block text-xs font-normal text-slate-500 dark:text-gray-400">PRDs, Lean Canvas, OST, market sizing & GTM</span>
-              </td>
-              <td class="py-4 px-4 text-center font-mono text-slate-600 dark:text-gray-300">25%</td>
-              <td class="py-4 px-4 text-center font-mono text-slate-500 dark:text-gray-400">6.5</td>
-              <td class="py-4 px-4 text-center font-mono font-bold text-indigo-600 dark:text-indigo-400">9.8</td>
-              <td class="py-4 px-4 text-center font-mono text-slate-500 dark:text-gray-400">3.0</td>
-              <td class="py-4 px-6 text-center font-mono font-bold text-slate-900 dark:text-white bg-cyan-500/10 border-l border-slate-200 dark:border-brand-border">7.0</td>
-            </tr>
+        <!-- Phase 1 -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-6 shadow-sm hover:border-cyan-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 text-xs font-mono font-bold rounded-lg">WEEKS 1–3</span>
+              <span class="text-xs font-mono text-slate-500 dark:text-gray-400">delta-discover</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">01. Discover & Baseline</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">
+              Conduct customer intake interviews, map existing repositories into <code class="text-slate-800 dark:text-gray-300">docs/ONBOARDING.md</code>, and audit 50 historical SME tickets to freeze quantifiable baseline ROI.
+            </p>
+            <div class="space-y-1.5 text-xs text-slate-700 dark:text-gray-300 font-mono mb-4">
+              <div>📄 <span class="text-slate-500 dark:text-gray-400">Deliverable:</span> baseline_kpis.json</div>
+              <div>📄 <span class="text-slate-500 dark:text-gray-400">Deliverable:</span> docs/ONBOARDING.md</div>
+              <div>👥 <span class="text-slate-500 dark:text-gray-400">Squad:</span> TDL + AI Activation Lead</div>
+            </div>
+          </div>
+          <div class="text-[11px] font-mono text-cyan-800 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/40 p-2.5 rounded-lg border border-cyan-200 dark:border-cyan-800/40">
+            ✋ <span class="font-bold">Human Checkpoint:</span> Customer problem statement & baseline ROI sign-off.
+          </div>
+        </div>
 
-            <tr class="hover:bg-slate-50 dark:hover:bg-brand-dark/30 transition">
-              <td class="py-4 px-6 font-semibold text-slate-900 dark:text-white">
-                3. Engineering & Code Quality
-                <span class="block text-xs font-normal text-slate-500 dark:text-gray-400">TDD loops, AST refactoring, DevTools & security</span>
-              </td>
-              <td class="py-4 px-4 text-center font-mono text-slate-600 dark:text-gray-300">25%</td>
-              <td class="py-4 px-4 text-center font-mono text-slate-500 dark:text-gray-400">6.5</td>
-              <td class="py-4 px-4 text-center font-mono text-slate-500 dark:text-gray-400">3.5</td>
-              <td class="py-4 px-4 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400">9.8</td>
-              <td class="py-4 px-6 text-center font-mono font-bold text-slate-900 dark:text-white bg-cyan-500/10 border-l border-slate-200 dark:border-brand-border">7.5</td>
-            </tr>
+        <!-- Phase 2 -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-6 shadow-sm hover:border-indigo-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-1 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-mono font-bold rounded-lg">WEEKS 4–6</span>
+              <span class="text-xs font-mono text-slate-500 dark:text-gray-400">delta-plan</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">02. Plan & Architect</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">
+              Run Abstraction Matrix (Skill vs MCP vs Agent), evaluate GCP 3-Tier stack (No-Code, Low-Code, High-Code ADK), and define threat model trust boundaries.
+            </p>
+            <div class="space-y-1.5 text-xs text-slate-700 dark:text-gray-300 font-mono mb-4">
+              <div>📄 <span class="text-slate-500 dark:text-gray-400">Deliverable:</span> ARCHITECTURE_REC.md</div>
+              <div>📄 <span class="text-slate-500 dark:text-gray-400">Deliverable:</span> THREAT_MODEL.md</div>
+              <div>👥 <span class="text-slate-500 dark:text-gray-400">Squad:</span> TDL + Forward Deployed Eng</div>
+            </div>
+          </div>
+          <div class="text-[11px] font-mono text-indigo-800 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/40 p-2.5 rounded-lg border border-indigo-200 dark:border-indigo-800/40">
+            ✋ <span class="font-bold">Human Checkpoint:</span> GCP 3-Tier architecture recommendation sign-off.
+          </div>
+        </div>
 
-            <tr class="hover:bg-slate-50 dark:hover:bg-brand-dark/30 transition">
-              <td class="py-4 px-6 font-semibold text-slate-900 dark:text-white">
-                4. GCP Cloud & Enterprise Field Execution
-                <span class="block text-xs font-normal text-slate-500 dark:text-gray-400">ADK / Agent Engine tiers, TDL guide, ZDR & ROI audit</span>
-              </td>
-              <td class="py-4 px-4 text-center font-mono text-slate-600 dark:text-gray-300">25%</td>
-              <td class="py-4 px-4 text-center font-mono text-slate-500 dark:text-gray-400">3.0</td>
-              <td class="py-4 px-4 text-center font-mono text-slate-500 dark:text-gray-400">2.5</td>
-              <td class="py-4 px-4 text-center font-mono text-slate-500 dark:text-gray-400">4.0</td>
-              <td class="py-4 px-6 text-center font-mono font-black text-cyan-600 dark:text-cyan-300 bg-cyan-500/20 text-base border-l border-slate-200 dark:border-brand-border">9.9 🏆</td>
-            </tr>
+        <!-- Phase 3 -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-6 shadow-sm hover:border-cyan-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 text-xs font-mono font-bold rounded-lg">WEEKS 7–10</span>
+              <span class="text-xs font-mono text-slate-500 dark:text-gray-400">delta-build</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">03. Build & Verify</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">
+              Execute TDD task loops, implement FastMCP tool servers on Cloud Run, enforce strict secret scanning, and capture Playwright UI headless test verifications.
+            </p>
+            <div class="space-y-1.5 text-xs text-slate-700 dark:text-gray-300 font-mono mb-4">
+              <div>💻 <span class="text-slate-500 dark:text-gray-400">Deliverable:</span> FastMCP Tool Servers</div>
+              <div>💻 <span class="text-slate-500 dark:text-gray-400">Deliverable:</span> 100% PyTest & Playwright</div>
+              <div>👥 <span class="text-slate-500 dark:text-gray-400">Squad:</span> Forward Deployed Eng (FDE)</div>
+            </div>
+          </div>
+          <div class="text-[11px] font-mono text-cyan-800 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/40 p-2.5 rounded-lg border border-cyan-200 dark:border-cyan-800/40">
+            ✋ <span class="font-bold">Human Checkpoint:</span> Automated secret scan & 100% pytest pass rate.
+          </div>
+        </div>
 
-            <tr class="bg-slate-100 dark:bg-brand-dark/80 font-bold border-t-2 border-slate-300 dark:border-brand-border">
-              <td class="py-5 px-6 text-slate-900 dark:text-white uppercase tracking-wider text-xs">Weighted Total Score</td>
-              <td class="py-5 px-4 text-center font-mono text-slate-600 dark:text-gray-300 text-xs">100%</td>
-              <td class="py-5 px-4 text-center font-mono text-slate-600 dark:text-gray-300">6.38 / 10</td>
-              <td class="py-5 px-4 text-center font-mono text-slate-600 dark:text-gray-300">5.45 / 10</td>
-              <td class="py-5 px-4 text-center font-mono text-slate-600 dark:text-gray-300">5.58 / 10</td>
-              <td class="py-5 px-6 text-center font-mono text-lg text-emerald-600 dark:text-emerald-400 bg-cyan-500/20 border-l border-slate-200 dark:border-brand-border">
-                8.23 / 10 ✨
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- Phase 4 -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-6 shadow-sm hover:border-emerald-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 text-xs font-mono font-bold rounded-lg">WEEKS 11–12</span>
+              <span class="text-xs font-mono text-slate-500 dark:text-gray-400">delta-harden</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">04. Harden & Launch</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">
+              Perform plain-English anti-slop documentation audits, route code review to Vertex AI Model Garden Opus 5 ZDR, and prove realized customer ROI savings.
+            </p>
+            <div class="space-y-1.5 text-xs text-slate-700 dark:text-gray-300 font-mono mb-4">
+              <div>📄 <span class="text-slate-500 dark:text-gray-400">Deliverable:</span> code-review-report.md</div>
+              <div>📄 <span class="text-slate-500 dark:text-gray-400">Deliverable:</span> ROI Realization Report</div>
+              <div>👥 <span class="text-slate-500 dark:text-gray-400">Squad:</span> TDL + Executive Sponsor</div>
+            </div>
+          </div>
+          <div class="text-[11px] font-mono text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-200 dark:border-emerald-800/40">
+            ✋ <span class="font-bold">Human Checkpoint:</span> Operational handoff packet & launch sign-off.
+          </div>
+        </div>
+
       </div>
 
-      <!-- Domain Champions Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 border-l-4 border-l-cyan-500 shadow-sm">
-          <div class="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-1">GCP ENTERPRISE CHAMPION</div>
-          <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2">Delta Skills (9.9/10)</h4>
-          <p class="text-xs text-slate-600 dark:text-gray-400">Unmatched for Google Cloud agent architecture advisory, 12-week TDL customer engagements, ZDR cost routing, and SME baseline ROI auditing.</p>
+      <!-- Master Router Bar -->
+      <div class="mt-8 bg-white dark:bg-brand-card rounded-2xl p-5 border border-slate-200 dark:border-brand-border shadow-md flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-diagram-project"></i>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Master Phase Gate Engine</span>
+            <div class="text-sm font-bold text-slate-900 dark:text-white">Automated CLI Phase Gates: <code class="text-xs font-mono text-cyan-600 dark:text-cyan-300">python3 skills/delta-build/scripts/delta_cli.py build --phase [1|2|3|4]</code></div>
+          </div>
         </div>
-
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 border-l-4 border-l-cyan-600 shadow-sm">
-          <div class="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-1">DELIVERY ENGINE CHAMPION</div>
-          <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2">BMAD Method (9.5/10)</h4>
-          <p class="text-xs text-slate-600 dark:text-gray-400">The gold standard macro-level engine for managing agile sprint cycles, story breakdown, and delivery loop transitions.</p>
-        </div>
-
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 border-l-4 border-l-indigo-500 shadow-sm">
-          <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-1">PRODUCT STRATEGY CHAMPION</div>
-          <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2">PM Skills (9.8/10)</h4>
-          <p class="text-xs text-slate-600 dark:text-gray-400">40+ specialized tools for PRDs, Lean Canvas, Opportunity Solution Trees, Mom Test scripts, and market sizing.</p>
-        </div>
-
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 border-l-4 border-l-emerald-500 shadow-sm">
-          <div class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">CODE QUALITY CHAMPION</div>
-          <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2">Agent Skills (9.8/10)</h4>
-          <p class="text-xs text-slate-600 dark:text-gray-400">25+ tactical engineering playbooks for TDD red-green-refactor, AST remediation, Chrome DevTools, and security.</p>
+        <div class="text-xs text-slate-500 dark:text-gray-400 font-mono">
+          Advances <span class="text-slate-800 dark:text-gray-200 font-bold">STATE.md</span> upon verified phase gate completion.
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- Core Pillars -->
-  <section id="pillars" class="py-16 px-6 bg-white dark:bg-brand-dark/40 border-y border-slate-200 dark:border-brand-border">
+  <!-- GCP 3-Tier Architecture Matrix -->
+  <section id="architecture" class="py-20 px-6">
     <div class="max-w-7xl mx-auto">
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">Engineered for Google Cloud Field Excellence</h2>
-        <p class="text-slate-600 dark:text-gray-400">Everything enterprise deployment teams need to evaluate, audit, build, and launch AI agents on GCP.</p>
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2 block">Architecture Decision Framework</span>
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">GCP Agent Architecture Advisor</h2>
+        <p class="text-slate-600 dark:text-gray-400">Match customer requirements and team maturity to the right Google Cloud AI Agent tier.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Pillar 1 -->
-        <div class="bg-slate-50 dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-8 hover:border-cyan-500/50 transition shadow-sm">
-          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center text-2xl font-bold mb-6">
-            <i class="fa-solid fa-sitemap"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">12-Week TDL Field Playbook</h3>
-          <p class="text-slate-600 dark:text-gray-400 text-sm leading-relaxed mb-4">
-            Structured customer engagement lifecycle across 4 phases with 6-role squad matrix (TDL, FDE, ATL, SME) and strict 1-in-1-out scope governance.
-          </p>
-          <span class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 flex items-center"><i class="fa-solid fa-chevron-right text-xs mr-1"></i> Skill: tdl-field-guide</span>
-        </div>
-
-        <!-- Pillar 2 -->
-        <div class="bg-slate-50 dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-8 hover:border-indigo-500/50 transition shadow-sm">
-          <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl font-bold mb-6">
-            <i class="fa-solid fa-layer-group"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">GCP Agent Architecture Advisor</h3>
-          <p class="text-slate-600 dark:text-gray-400 text-sm leading-relaxed mb-4">
-            Ingests PRDs and intake notes to evaluate Abstraction Level (Skill vs MCP vs Agent) and recommend Tier 1 No-Code, Tier 2 Low-Code, or Tier 3 ADK.
-          </p>
-          <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center"><i class="fa-solid fa-chevron-right text-xs mr-1"></i> Skill: gcp-agent-architecture-advisor</span>
-        </div>
-
-        <!-- Pillar 3 -->
-        <div class="bg-slate-50 dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-8 hover:border-emerald-500/50 transition shadow-sm">
-          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-bold mb-6">
-            <i class="fa-solid fa-calculator"></i>
-          </div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">SME Baseline ROI Audit</h3>
-          <p class="text-slate-600 dark:text-gray-400 text-sm leading-relaxed mb-4">
-            Pre-deployment 50-sample retrospective SME ticket audit producing <code class="text-emerald-600 dark:text-emerald-300">baseline_kpis.json</code> for measuring unit cost & error rate ROI.
-          </p>
-          <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center"><i class="fa-solid fa-chevron-right text-xs mr-1"></i> Skill: synthetic-baseline-protocol</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BMAD Method Marriage & 8-Step SDD Daisy-Chain -->
-  <section id="bmad-sdd" class="py-20 px-6">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-2 block">Special Integration</span>
-          <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">BMAD Method Marriage & 8-Step SDD Daisy-Chain</h2>
-        </div>
-        <div class="mt-4 md:mt-0">
-          <span class="px-3 py-1 bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30 rounded-lg text-xs font-mono">
-            Bridge: skills/delta-bmad-workflow/SKILL.md
-          </span>
-        </div>
-      </div>
-
-      <!-- SDD Pipeline Visualization -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
-
-        <!-- Step 1 -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 relative shadow-sm">
-          <div class="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-1">STEP 01: ONBOARDING</div>
-          <div class="text-sm font-bold text-slate-900 dark:text-white mb-2">Tech Stack Guardrails</div>
-          <p class="text-xs text-slate-600 dark:text-gray-400 mb-3"><code class="text-slate-800 dark:text-gray-300">/bmad-generate-project-context</code></p>
-          <div class="text-xs text-emerald-600 dark:text-emerald-400 font-mono bg-emerald-500/10 p-2 rounded border border-emerald-500/20">
-            📄 docs/spec/project-context.md
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 relative shadow-sm">
-          <div class="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-1">STEP 02: ANALYSIS</div>
-          <div class="text-sm font-bold text-slate-900 dark:text-white mb-2">Brainstorm & SME Audit</div>
-          <p class="text-xs text-slate-600 dark:text-gray-400 mb-3"><code class="text-slate-800 dark:text-gray-300">/bmad-brainstorming</code></p>
-          <div class="text-xs text-emerald-600 dark:text-emerald-400 font-mono bg-emerald-500/10 p-2 rounded border border-emerald-500/20">
-            📄 docs/spec/plans/brainstorming/
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 relative shadow-sm">
-          <div class="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-1">STEP 03: PLANNING</div>
-          <div class="text-sm font-bold text-slate-900 dark:text-white mb-2">PRD & GCP Architecture</div>
-          <p class="text-xs text-slate-600 dark:text-gray-400 mb-3"><code class="text-slate-800 dark:text-gray-300">/bmad-prd</code> + GCP Advisor</p>
-          <div class="text-xs text-emerald-600 dark:text-emerald-400 font-mono bg-emerald-500/10 p-2 rounded border border-emerald-500/20">
-            📄 docs/spec/plans/prd/prd.md
-          </div>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 relative shadow-sm">
-          <div class="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-1">STEP 04: SOLUTIONING</div>
-          <div class="text-sm font-bold text-slate-900 dark:text-white mb-2">Epics & Stories Breakdown</div>
-          <p class="text-xs text-slate-600 dark:text-gray-400 mb-3"><code class="text-slate-800 dark:text-gray-300">/bmad-create-epics-and-stories</code></p>
-          <div class="text-xs text-emerald-600 dark:text-emerald-400 font-mono bg-emerald-500/10 p-2 rounded border border-emerald-500/20">
-            📄 docs/spec/plans/epics-and-stories.md
-          </div>
-        </div>
-
-        <!-- Step 5 -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 relative shadow-sm">
-          <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-1">STEP 05: BACKLOG</div>
-          <div class="text-sm font-bold text-slate-900 dark:text-white mb-2">Sprint Backlog Sequencing</div>
-          <p class="text-xs text-slate-600 dark:text-gray-400 mb-3"><code class="text-slate-800 dark:text-gray-300">/bmad-sprint-planning</code></p>
-          <div class="text-xs text-indigo-600 dark:text-indigo-300 font-mono bg-indigo-500/10 p-2 rounded border border-indigo-500/20">
-            📄 docs/spec/implementation/sprint-status.yaml
-          </div>
-        </div>
-
-        <!-- Step 6 -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 relative shadow-sm">
-          <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-1">STEP 06: CREATE STORY</div>
-          <div class="text-sm font-bold text-slate-900 dark:text-white mb-2">Context Story Specification</div>
-          <p class="text-xs text-slate-600 dark:text-gray-400 mb-3"><code class="text-slate-800 dark:text-gray-300">/bmad-create-story 1-1</code></p>
-          <div class="text-xs text-indigo-600 dark:text-indigo-300 font-mono bg-indigo-500/10 p-2 rounded border border-indigo-500/20">
-            📄 docs/spec/implementation/1-1-story.md
-          </div>
-        </div>
-
-        <!-- Step 7 -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 relative shadow-sm">
-          <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-1">STEP 07: CODE STORY</div>
-          <div class="text-sm font-bold text-slate-900 dark:text-white mb-2">Spec-Driven Code Generation</div>
-          <p class="text-xs text-slate-600 dark:text-gray-400 mb-3"><code class="text-slate-800 dark:text-gray-300">/bmad-dev-story 1-1</code></p>
-          <div class="text-xs text-indigo-600 dark:text-indigo-300 font-mono bg-indigo-500/10 p-2 rounded border border-indigo-500/20">
-            💻 index.html, app.js, main.py
-          </div>
-        </div>
-
-        <!-- Step 8 -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 relative shadow-sm">
-          <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-1">STEP 08: REVIEW STORY</div>
-          <div class="text-sm font-bold text-slate-900 dark:text-white mb-2">Model Garden ZDR Review</div>
-          <p class="text-xs text-slate-600 dark:text-gray-400 mb-3"><code class="text-slate-800 dark:text-gray-300">/bmad-code-review 1-1</code></p>
-          <div class="text-xs text-indigo-600 dark:text-indigo-300 font-mono bg-indigo-500/10 p-2 rounded border border-indigo-500/20">
-            📄 code-review-report.md
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- 12-Week TDL Field Guide & SDLC Tabs -->
-  <section id="tdl-guide" class="py-16 px-6 bg-slate-100/50 dark:bg-brand-card/30 border-t border-slate-200 dark:border-brand-border">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center max-w-3xl mx-auto mb-12">
-        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-3">12-Week TDL Customer Engagement Lifecycle</h2>
-        <p class="text-slate-600 dark:text-gray-400">The field execution framework governing squad allocation, capability slot audits, and milestone delivery.</p>
-      </div>
-
-      <!-- 4 Phases Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm">
-          <div class="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-2">PHASE 1 (WEEKS 1-3)</div>
-          <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Discover & Define</h4>
-          <ul class="text-xs text-slate-600 dark:text-gray-400 space-y-2">
-            <li>• Repo onboarding mapping</li>
-            <li>• 50 SME ticket baseline audit</li>
-            <li>• Scope contract & squad setup</li>
-          </ul>
-        </div>
-
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm">
-          <div class="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-2">PHASE 2 (WEEKS 4-6)</div>
-          <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Prototype & Validate</h4>
-          <ul class="text-xs text-slate-600 dark:text-gray-400 space-y-2">
-            <li>• GCP Agent Architecture choice</li>
-            <li>• ADK / Agent Engine prototype</li>
-            <li>• ZDR multi-model routing test</li>
-          </ul>
-        </div>
-
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm">
-          <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-2">PHASE 3 (WEEKS 7-10)</div>
-          <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Production Build</h4>
-          <ul class="text-xs text-slate-600 dark:text-gray-400 space-y-2">
-            <li>• 7-Phase SDLC implementation</li>
-            <li>• Capability slot validation</li>
-            <li>• ECC repo conventions enforcement</li>
-          </ul>
-        </div>
-
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm">
-          <div class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-2">PHASE 4 (WEEKS 11-12)</div>
-          <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Harden & Launch</h4>
-          <ul class="text-xs text-slate-600 dark:text-gray-400 space-y-2">
-            <li>• Post-eval ROI calculation</li>
-            <li>• Baseline KPI savings report</li>
-            <li>• Operational handoff</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Complete Skills Directory Grid -->
-  <section id="skills-catalog" class="py-20 px-6">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">4-Phase Phased Lifecycle Suite (v3.2.0)</h2>
-        <p class="text-slate-600 dark:text-gray-400 mb-6">Grounded in <strong class="text-cyan-600 dark:text-cyan-400">Google Cloud, OpenAI, & Anthropic Engineering Best Practices</strong>.</p>
         
-        <!-- Multi-Platform Alliance Badges -->
-        <div class="flex flex-wrap items-center justify-center gap-3 text-xs font-mono">
-          <span class="px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-lg flex items-center">
-            <i class="fa-brands fa-google mr-2 text-blue-500"></i> Google Cloud: Gemini Context Caching & ADK Memory
-          </span>
-          <span class="px-3 py-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 rounded-lg flex items-center">
-            <i class="fa-solid fa-cube mr-2 text-emerald-500"></i> OpenAI: Strict JSON Schemas & Eval Cascades
-          </span>
-          <span class="px-3 py-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 rounded-lg flex items-center">
-            <i class="fa-solid fa-fire mr-2 text-amber-500"></i> Anthropic: MCP Server Registry & Loop Engineering
-          </span>
-          <span class="px-3 py-1.5 bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 rounded-lg flex items-center">
-            <i class="fa-solid fa-code mr-2 text-purple-500"></i> skills.sh: Vercel Open Skills Spec Compliant
-          </span>
-          <span class="px-3 py-1.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 rounded-lg flex items-center">
-            <i class="fa-solid fa-store mr-2 text-rose-500"></i> MCPMarket: Indexed on mcpmarket.com/tools/skills
-          </span>
-          <span class="px-3 py-1.5 bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20 rounded-lg flex items-center">
-            <i class="fa-solid fa-shapes mr-2 text-teal-500"></i> SkillsMP: Registered on skillsmp.com
-          </span>
-        </div>
-      </div>
-
-      <!-- Master Router + 4 Phase Cards Grid -->
-      <div class="space-y-8 max-w-5xl mx-auto">
-
-        <!-- Master Router Banner -->
-        <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-2xl p-6 border border-slate-700 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
-          <div class="flex items-center space-x-4">
-            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400 text-xl">
-              Δ
-            </div>
-            <div>
-              <div class="text-xs font-mono text-cyan-400 font-bold">MASTER ROUTER</div>
-              <h3 class="text-xl font-bold">delta-orchestrator</h3>
-              <p class="text-xs text-slate-400">Enforces phase gate criteria before advancing STATE.md across Phases 1 - 4.</p>
-            </div>
+        <!-- Tier 1 -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-7 shadow-sm hover:border-cyan-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="inline-block px-3 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 rounded-lg text-xs font-bold font-mono mb-4">TIER 1 • NO-CODE</div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Gemini Enterprise Agent Builder</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
+              Turnkey agent building with zero code. Ideal for FAQ bots, customer support grounding on unstructured PDFs, and rapid out-of-the-box knowledge search.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-gray-300 space-y-2 mb-6">
+              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Instant document ingestion & grounding</li>
+              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Built-in chat widgets & security filters</li>
+              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Zero infrastructure maintenance</li>
+            </ul>
           </div>
-          <code class="text-xs font-mono text-cyan-300 bg-slate-950 px-3 py-2 rounded-lg border border-slate-800">skills/delta-orchestrator</code>
+          <div class="text-xs font-mono text-slate-500 dark:text-gray-400 pt-4 border-t border-slate-200 dark:border-brand-border">
+            Best for: Internal Knowledge & Helpdesk
+          </div>
         </div>
 
-        <!-- 4 Phase Skill Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-          <!-- Phase 1: delta-discover -->
-          <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm hover:border-cyan-500/50 transition">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-cyan-600 dark:text-cyan-400">PHASE 1 (WEEKS 1-3)</span>
-              <span class="px-2 py-0.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 text-xs font-mono rounded">delta-discover</span>
-            </div>
-            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Discovery & Customer Intake</h3>
-            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Conducts customer intake interviews, maps repository ONBOARDING.md, and audits 50 SME tickets to freeze baseline_kpis.json.</p>
-            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-brand-dark p-2.5 rounded border border-slate-200 dark:border-brand-border">
-              ✋ <span class="font-bold text-slate-700 dark:text-slate-300">Human Checkpoint:</span> Problem statement & baseline ROI sign-off.
-            </div>
+        <!-- Tier 2 -->
+        <div class="bg-white dark:bg-brand-card border border-indigo-500/40 rounded-2xl p-7 shadow-md relative flex flex-col justify-between">
+          <div class="absolute -top-3 right-6 px-3 py-0.5 bg-gradient-to-r from-indigo-500 to-cyan-500 text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow">
+            Popular Choice
           </div>
-
-          <!-- Phase 2: delta-plan -->
-          <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm hover:border-indigo-500/50 transition">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">PHASE 2 (WEEKS 4-6)</span>
-              <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-mono rounded">delta-plan</span>
-            </div>
-            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Architecture & Threat Model</h3>
-            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Workshops PRD requirements, runs Abstraction Selection Matrix (Skill vs MCP vs Agent), and sets up THREAT_MODEL.md.</p>
-            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-brand-dark p-2.5 rounded border border-slate-200 dark:border-brand-border">
-              ✋ <span class="font-bold text-slate-700 dark:text-slate-300">Human Checkpoint:</span> GCP 3-tier architecture recommendation sign-off.
-            </div>
+          <div>
+            <div class="inline-block px-3 py-1 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 rounded-lg text-xs font-bold font-mono mb-4">TIER 2 • MANAGED LOW-CODE</div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Vertex AI Agent Engine</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
+              Managed reasoning engine with stateful memory, managed sessions, and pre-built enterprise connectors (BigQuery, Spanner, Salesforce).
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-gray-300 space-y-2 mb-6">
+              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Multi-turn memory & session state</li>
+              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> LangGraph & LlamaIndex managed hosts</li>
+              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Built-in evaluation & monitoring</li>
+            </ul>
           </div>
-
-          <!-- Phase 3: delta-build -->
-          <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm hover:border-cyan-500/50 transition">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-cyan-600 dark:text-cyan-400">PHASE 3 (WEEKS 7-10)</span>
-              <span class="px-2 py-0.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 text-xs font-mono rounded">delta-build</span>
-            </div>
-            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Production Build & TDD</h3>
-            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Executes prd.json task loops, implements FastMCP tool servers, runs secret scanning, and performs Playwright UI tests.</p>
-            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-brand-dark p-2.5 rounded border border-slate-200 dark:border-brand-border">
-              ✋ <span class="font-bold text-slate-700 dark:text-slate-300">Human Checkpoint:</span> Programmatic secret scan & 100% pytest pass rate.
-            </div>
+          <div class="text-xs font-mono text-slate-500 dark:text-gray-400 pt-4 border-t border-slate-200 dark:border-brand-border">
+            Best for: Enterprise Workflow Automations
           </div>
-
-          <!-- Phase 4: delta-harden -->
-          <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-6 shadow-sm hover:border-emerald-500/50 transition">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">PHASE 4 (WEEKS 11-12)</span>
-              <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 text-xs font-mono rounded">delta-harden</span>
-            </div>
-            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Hardening & ZDR Review</h3>
-            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Runs rm-slop plain-English audit, routes code review to Vertex AI Model Garden Opus 5 ZDR, and validates baseline ROI savings.</p>
-            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-brand-dark p-2.5 rounded border border-slate-200 dark:border-brand-border">
-              ✋ <span class="font-bold text-slate-700 dark:text-slate-300">Human Checkpoint:</span> Operational handoff packet & launch sign-off.
-            </div>
-          </div>
-
         </div>
 
-        <!-- Standalone Skills & Market Discovery Section -->
-        <div class="pt-6 border-t border-slate-200 dark:border-brand-border">
-          <h4 class="text-lg font-extrabold text-slate-900 dark:text-white mb-4 flex items-center">
-            <i class="fa-solid fa-bolt text-indigo-500 mr-2"></i> Standalone Multi-Model & Skill Discovery Tools
-          </h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            <!-- Skill: claude-review -->
-            <div class="bg-white dark:bg-brand-card border border-indigo-500/30 rounded-xl p-6 shadow-sm hover:border-indigo-500 transition">
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">TWO-PASS ZDR REVIEW</span>
-                <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-mono rounded">claude-review</span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Two-Pass Execution Loop</h3>
-              <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Generates baseline code with Gemini Flash, reviews with Opus 5 via Model Garden API, and applies revisions.</p>
-              <code class="text-xs font-mono text-indigo-600 dark:text-indigo-300 bg-slate-100 dark:bg-brand-dark p-2 rounded block">skills/claude-review/SKILL.md</code>
-            </div>
-
-            <!-- Skill: claude-agent-harness -->
-            <div class="bg-white dark:bg-brand-card border border-indigo-500/30 rounded-xl p-6 shadow-sm hover:border-indigo-500 transition">
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">HIGH-TIER CODE GEN</span>
-                <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-mono rounded">claude-agent-harness</span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Direct High-Tier Delegation</h3>
-              <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Translates specs, PRDs, or natural language prompts directly into production code files via Model Garden API script.</p>
-              <code class="text-xs font-mono text-indigo-600 dark:text-indigo-300 bg-slate-100 dark:bg-brand-dark p-2 rounded block">skills/claude-agent-harness/SKILL.md</code>
-            </div>
-
-            <!-- Skill: skill-discovery-and-benchmarking -->
-            <div class="bg-white dark:bg-brand-card border border-purple-500/30 rounded-xl p-6 shadow-sm hover:border-purple-500 transition">
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-bold text-purple-600 dark:text-purple-400">MARKET DISCOVERY</span>
-                <span class="px-2 py-0.5 bg-purple-500/10 text-purple-600 dark:text-purple-300 text-xs font-mono rounded">skill-discovery</span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Skill Gap & Market Finder</h3>
-              <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Audits local skill limits and searches skills.sh, SkillsMP, and MCPMarket for higher-performing skill upgrades.</p>
-              <code class="text-xs font-mono text-purple-600 dark:text-purple-300 bg-slate-100 dark:bg-brand-dark p-2 rounded block">skills/skill-discovery-and-benchmarking</code>
-            </div>
-
-            <!-- Skill: improve-codebase-architecture -->
-            <div class="bg-white dark:bg-brand-card border border-emerald-500/30 rounded-xl p-6 shadow-sm hover:border-emerald-500 transition">
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">VISUAL ARCH REVIEW</span>
-                <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 text-xs font-mono rounded">arch-deepening</span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Codebase Architecture Deepening</h3>
-              <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-4">Scans git hot spots for shallow modules, renders a visual HTML report with Mermaid before/after diagrams, and deepens seams.</p>
-              <code class="text-xs font-mono text-emerald-600 dark:text-emerald-300 bg-slate-100 dark:bg-brand-dark p-2 rounded block">improve-codebase-architecture</code>
-            </div>
-
+        <!-- Tier 3 -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-2xl p-7 shadow-sm hover:border-emerald-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 rounded-lg text-xs font-bold font-mono mb-4">TIER 3 • HIGH-CODE CUSTOM</div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Google ADK Python + Cloud Run</h3>
+            <p class="text-xs text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
+              Full developer freedom with Agent Development Kit (ADK), custom FastMCP servers, strict VPC Service Controls, and Gemini Context Caching.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-gray-300 space-y-2 mb-6">
+              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Custom FastMCP tool server topologies</li>
+              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> 90% cost reduction via Prompt Caching</li>
+              <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> CMEK & VPC-SC enterprise compliance</li>
+            </ul>
+          </div>
+          <div class="text-xs font-mono text-slate-500 dark:text-gray-400 pt-4 border-t border-slate-200 dark:border-brand-border">
+            Best for: Production Engineering Fleets
           </div>
         </div>
 
@@ -742,77 +509,191 @@
     </div>
   </section>
 
-  <!-- Installation Options -->
-  <section id="install" class="py-20 px-6 bg-slate-100/70 dark:bg-brand-card/50 border-t border-slate-200 dark:border-brand-border">
-    <div class="max-w-6xl mx-auto text-center">
-      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">Ready to Integrate Delta Skills?</h2>
-      <p class="text-slate-600 dark:text-gray-400 mb-10">Select your preferred AI Agent runner framework or skills marketplace below to install the plugin.</p>
+  <!-- Multi-Model ZDR & Two-Pass Architecture -->
+  <section id="multi-model" class="py-20 px-6 bg-slate-100/70 dark:bg-brand-card/40 border-t border-slate-200 dark:border-brand-border">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-2 block">Zero Data Retention (ZDR) Architecture</span>
+          <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">Two-Pass Multi-Model Engineering Pipeline</h2>
+          <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
+            Enterprise clients require strict data sovereignty. Delta Skills pairs the high-speed iterative execution of <strong class="text-slate-900 dark:text-white">Gemini 3.6 Flash</strong> with the rigorous code verification of <strong class="text-slate-900 dark:text-white">Opus 5</strong> hosted on <strong class="text-cyan-600 dark:text-cyan-400">Vertex AI Model Garden</strong> under Zero Data Retention (ZDR).
+          </p>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-left">
+          <div class="space-y-4 mb-8">
+            <div class="flex items-start space-x-3">
+              <div class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-xs mt-0.5">1</div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">Pass 1: Interactive Tool Builder (Gemini Flash)</h4>
+                <p class="text-xs text-slate-600 dark:text-gray-400">Builds workspace code, tests, and FastMCP tools with rapid tool execution and context caching.</p>
+              </div>
+            </div>
 
-        <!-- SkillsMP Directory Option -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm">
-          <div class="flex items-center space-x-2 mb-3">
-            <i class="fa-solid fa-shapes text-teal-600 dark:text-teal-400 text-lg"></i>
-            <h4 class="text-sm font-bold text-slate-900 dark:text-white">SkillsMP</h4>
+            <div class="flex items-start space-x-3">
+              <div class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-xs mt-0.5">2</div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">Pass 2: ZDR Multi-Model Peer Review (Opus 5 on Vertex)</h4>
+                <p class="text-xs text-slate-600 dark:text-gray-400">Audits baseline implementation for edge cases, race conditions, and security trust boundaries.</p>
+              </div>
+            </div>
           </div>
-          <div class="bg-slate-100 dark:bg-brand-dark p-2.5 rounded-lg border border-slate-300 dark:border-brand-border">
-            <a href="https://skillsmp.com/" target="_blank" class="text-xs font-mono text-teal-600 dark:text-teal-300 hover:underline block truncate">skillsmp.com</a>
+
+          <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-800 dark:text-amber-300">
+            <i class="fa-solid fa-triangle-exclamation mr-2"></i>
+            <strong>Compliance Policy:</strong> Non-ZDR models with 30-day retention policies (such as public consumer tiers) are strictly blocked for customer data. All calls use Vertex AI Model Garden endpoints via ADC.
           </div>
         </div>
 
-        <!-- MCPMarket Directory Option -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm">
-          <div class="flex items-center space-x-2 mb-3">
-            <i class="fa-solid fa-store text-rose-600 dark:text-rose-400 text-lg"></i>
-            <h4 class="text-sm font-bold text-slate-900 dark:text-white">MCPMarket</h4>
+        <!-- CLI Usage Cards -->
+        <div class="bg-slate-900 text-slate-100 rounded-2xl p-6 border border-slate-800 shadow-2xl font-mono text-xs">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+            <span class="text-cyan-400 font-bold"><i class="fa-solid fa-terminal mr-2"></i>Model Garden ZDR Helper CLI</span>
+            <span class="text-slate-500 text-[11px]">Region: us-central1</span>
           </div>
-          <div class="bg-slate-100 dark:bg-brand-dark p-2.5 rounded-lg border border-slate-300 dark:border-brand-border">
-            <a href="https://mcpmarket.com/tools/skills" target="_blank" class="text-xs font-mono text-rose-600 dark:text-rose-300 hover:underline block truncate">mcpmarket.com</a>
+
+          <div class="space-y-4">
+            <div>
+              <div class="text-slate-400 mb-1"># 1. Spec-to-Code Direct Ingestion:</div>
+              <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-cyan-300 overflow-x-auto">
+                python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --spec docs/PRD.md
+              </div>
+            </div>
+
+            <div>
+              <div class="text-slate-400 mb-1"># 2. Automated File Peer Review:</div>
+              <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-indigo-300 overflow-x-auto">
+                python3 skills/claude-review/scripts/call_opus_model_garden.py --review src/agent_server.py
+              </div>
+            </div>
+
+            <div>
+              <div class="text-slate-400 mb-1"># 3. Direct Prompt Execution:</div>
+              <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-emerald-300 overflow-x-auto">
+                python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --prompt "Implement async rate limiter"
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+            <span>Auth: Application Default Credentials (ADC)</span>
+            <span class="text-emerald-400"><i class="fa-solid fa-check mr-1"></i> ZDR Verified</span>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- skills.sh Option -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm">
-          <div class="flex items-center space-x-2 mb-3">
-            <i class="fa-solid fa-code text-purple-600 dark:text-purple-400 text-lg"></i>
-            <h4 class="text-sm font-bold text-slate-900 dark:text-white">skills.sh CLI</h4>
-          </div>
-          <div class="bg-slate-100 dark:bg-brand-dark p-2.5 rounded-lg border border-slate-300 dark:border-brand-border">
-            <code class="text-xs font-mono text-purple-600 dark:text-purple-300 block truncate">npx skills.sh add delta-skills</code>
-          </div>
-        </div>
+  <!-- Quickstart & Installation Hub -->
+  <section id="install" class="py-20 px-6">
+    <div class="max-w-7xl mx-auto text-center">
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">Install & Integrate Delta Skills</h2>
+      <p class="text-slate-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">One-click installation commands across all supported AI agent frameworks and open marketplace registries.</p>
 
-        <!-- BMAD Option -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 text-left">
+
+        <!-- BMAD Method -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm hover:border-cyan-500/50 transition">
           <div class="flex items-center space-x-2 mb-3">
             <i class="fa-solid fa-cube text-cyan-600 dark:text-cyan-400 text-lg"></i>
             <h4 class="text-sm font-bold text-slate-900 dark:text-white">BMAD Method</h4>
           </div>
-          <div class="bg-slate-100 dark:bg-brand-dark p-2.5 rounded-lg border border-slate-300 dark:border-brand-border">
-            <code class="text-xs font-mono text-cyan-600 dark:text-cyan-300 block truncate">npx bmad-method install</code>
+          <p class="text-xs text-slate-500 dark:text-gray-400 mb-3">Official enterprise module for BMAD delivery loops.</p>
+          <div class="bg-slate-100 dark:bg-brand-dark p-2 rounded border border-slate-300 dark:border-brand-border">
+            <code class="text-[11px] font-mono text-cyan-600 dark:text-cyan-300 block truncate">npx bmad-method install</code>
           </div>
         </div>
 
-        <!-- Antigravity Option -->
-        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm">
+        <!-- Antigravity CLI -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm hover:border-indigo-500/50 transition">
           <div class="flex items-center space-x-2 mb-3">
             <i class="fa-solid fa-rocket text-indigo-600 dark:text-indigo-400 text-lg"></i>
             <h4 class="text-sm font-bold text-slate-900 dark:text-white">Antigravity CLI</h4>
           </div>
-          <div class="bg-slate-100 dark:bg-brand-dark p-2.5 rounded-lg border border-slate-300 dark:border-brand-border">
-            <code class="text-xs font-mono text-indigo-600 dark:text-indigo-300 block truncate">agy plugin install delta-skills</code>
+          <p class="text-xs text-slate-500 dark:text-gray-400 mb-3">Native plugin for Google Antigravity environments.</p>
+          <div class="bg-slate-100 dark:bg-brand-dark p-2 rounded border border-slate-300 dark:border-brand-border">
+            <code class="text-[11px] font-mono text-indigo-600 dark:text-indigo-300 block truncate">agy plugin install delta-skills</code>
           </div>
         </div>
 
+        <!-- skills.sh CLI -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm hover:border-purple-500/50 transition">
+          <div class="flex items-center space-x-2 mb-3">
+            <i class="fa-solid fa-code text-purple-600 dark:text-purple-400 text-lg"></i>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">skills.sh CLI</h4>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-gray-400 mb-3">Universal Open Skills specification registry.</p>
+          <div class="bg-slate-100 dark:bg-brand-dark p-2 rounded border border-slate-300 dark:border-brand-border">
+            <code class="text-[11px] font-mono text-purple-600 dark:text-purple-300 block truncate">npx skills.sh add delta-skills</code>
+          </div>
+        </div>
+
+        <!-- SkillsMP -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm hover:border-teal-500/50 transition">
+          <div class="flex items-center space-x-2 mb-3">
+            <i class="fa-solid fa-shapes text-teal-600 dark:text-teal-400 text-lg"></i>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">SkillsMP</h4>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-gray-400 mb-3">AI Agent Skills Marketplace directory listing.</p>
+          <div class="bg-slate-100 dark:bg-brand-dark p-2 rounded border border-slate-300 dark:border-brand-border">
+            <a href="https://skillsmp.com/" target="_blank" class="text-[11px] font-mono text-teal-600 dark:text-teal-300 hover:underline block truncate">skillsmp.com ↗</a>
+          </div>
+        </div>
+
+        <!-- MCPMarket -->
+        <div class="bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border rounded-xl p-5 shadow-sm hover:border-rose-500/50 transition">
+          <div class="flex items-center space-x-2 mb-3">
+            <i class="fa-solid fa-store text-rose-600 dark:text-rose-400 text-lg"></i>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">MCPMarket</h4>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-gray-400 mb-3">Model Context Protocol tools & skill index.</p>
+          <div class="bg-slate-100 dark:bg-brand-dark p-2 rounded border border-slate-300 dark:border-brand-border">
+            <a href="https://mcpmarket.com/tools/skills" target="_blank" class="text-[11px] font-mono text-rose-600 dark:text-rose-300 hover:underline block truncate">mcpmarket.com ↗</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Playbooks & Documentation Hub -->
+  <section id="docs" class="py-16 px-6 bg-slate-100/70 dark:bg-brand-card/40 border-t border-slate-200 dark:border-brand-border">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-1 block">Resource Library</span>
+          <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Field Playbooks & Architecture Docs</h2>
+        </div>
+        <a href="https://github.com/enriquekalven/delta-skills" target="_blank" class="mt-4 md:mt-0 inline-flex items-center text-xs font-semibold text-cyan-600 dark:text-cyan-400 hover:underline">
+          View on GitHub <i class="fa-solid fa-arrow-up-right-from-square ml-1.5"></i>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <a href="docs/tdl-user-guide.md" class="p-5 rounded-xl bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border hover:border-cyan-500/50 transition block group shadow-sm">
+          <div class="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-1">FIELD PLAYBOOK</div>
+          <h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-cyan-500 transition mb-2">TDL Field Execution Guide</h4>
+          <p class="text-xs text-slate-600 dark:text-gray-400">12-week customer engagement lifecycle, 6-role squad matrix, dynamic capability slots, and scope governance.</p>
+        </a>
+
+        <a href="docs/MULTI_MODEL_SKILLS_GUIDE.md" class="p-5 rounded-xl bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border hover:border-indigo-500/50 transition block group shadow-sm">
+          <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-1">MULTI-MODEL GUIDE</div>
+          <h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-indigo-500 transition mb-2">Vertex AI ZDR Guide</h4>
+          <p class="text-xs text-slate-600 dark:text-gray-400">Zero Data Retention (ZDR) configuration, IAM permissions, and two-pass Gemini + Opus 5 execution protocols.</p>
+        </a>
+
+        <a href="docs/BLOG_POST_DELTA_VISION_TDL_FDE.md" class="p-5 rounded-xl bg-white dark:bg-brand-card border border-slate-200 dark:border-brand-border hover:border-emerald-500/50 transition block group shadow-sm">
+          <div class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">STRATEGY ARTICLE</div>
+          <h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-500 transition mb-2">Delta Vision: TDL + FDE</h4>
+          <p class="text-xs text-slate-600 dark:text-gray-400">How the pairing of Technical Deployment Leads and Forward Deployed Engineers drives 10X client ROI on GCP.</p>
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="py-8 px-6 border-t border-slate-200 dark:border-brand-border text-center text-xs text-slate-500 dark:text-gray-500">
+  <footer class="py-8 px-6 border-t border-slate-200 dark:border-brand-border text-center text-xs text-slate-500 dark:text-gray-500 bg-white dark:bg-brand-dark">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
-      <div>Delta Skills Plugin — Licensed under Apache-2.0</div>
+      <div>Delta Skills Plugin • Licensed under Apache-2.0</div>
       <div class="mt-4 md:mt-0 flex space-x-6">
         <a href="https://github.com/enriquekalven/delta-skills" class="hover:text-slate-800 dark:hover:text-gray-300">GitHub Repository</a>
         <a href="docs/MULTI_MODEL_SKILLS_GUIDE.md" class="hover:text-slate-800 dark:hover:text-gray-300">Multi-Model ZDR Guide</a>

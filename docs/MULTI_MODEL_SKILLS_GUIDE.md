@@ -44,7 +44,20 @@ export CLOUD_ML_REGION="us-central1"
 ```
 
 ### 3. How Skills Execute Model Garden API Calls
-Unlike basic prompt roleplaying, these skills execute an explicit Python helper script (`scripts/call_opus_model_garden.py`) via `run_command`:
+These skills invoke the unified Python helper script (`scripts/call_opus_model_garden.py`) via `run_command` using clean CLI flags:
+
+```bash
+# Direct Spec Ingestion (Opus 5 Code Gen)
+python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --spec docs/PRD.md
+
+# Direct File Review (Opus 5 Peer Review)
+python3 skills/claude-review/scripts/call_opus_model_garden.py --review src/auth_service.py
+
+# Direct Prompt
+python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --prompt "Implement rate limiter"
+```
+
+Under the hood, the script authenticates via Application Default Credentials and connects to the ZDR endpoint:
 
 ```python
 from anthropic import AnthropicVertex
