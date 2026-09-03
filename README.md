@@ -12,6 +12,7 @@ Skills are organized into categories, such as:
 - **usecase-canvas:** Skills for creating usecase canvases and business value propositions.
 - **product-management:** Skills related to managing product life cycle and generating product requirement documents.
 - **prototyping:** Skills focused on quickly prototyping designs, like frontend generation and component stitching.
+- **ai-coding:** Enterprise-grade AI coding solutions executing on Google Cloud Vertex AI Model Garden with Zero Data Retention (ZDR) and PSO security compliance.
 - **utils:** Foundational agent tools and workflows, like prompt engineering, skill creation, and specifications.
 
 ## Usage

@@ -121,11 +121,24 @@ Meta-level skills to create, standardise, and optimize agent systems.
 
 ---
 
+## 8. AI Coding & Engineering Execution
+Production-grade, Zero Data Retention (ZDR) code generation harnessing frontier models hosted on Google Cloud Vertex AI Model Garden. Compliant with Google Cloud Professional Services Organization (PSO) enterprise governance.
+
+*   **[claude-agent-harness](ai-coding/claude-agent-harness/SKILL.md)**
+    *   *Role:* Principal AI Systems Engineer & Coding Harness Architect.
+    *   *Trigger:* When translating specifications, PRDs, or architecture blueprints into production-ready software using Vertex AI Model Garden (Anthropic Claude Opus 5 ZDR).
+    *   *Key Deliverable:* Production-grade, verified source code files with zero placeholders, passing syntax, type checks, and unit tests.
+
+---
+
 ## Skill Integration & Handoff Rules
 
 AI Agents using this repository should locate the corresponding directory of a skill and read its dedicated `SKILL.md` file for full step-by-step execution instructions. 
 
-When encountering complex requests (e.g., *"design a strategy for our onboarding portal and map the automation ROI"*), agents should orchestrate multiple skills:
+When encountering complex requests (e.g., *"design a strategy for our onboarding portal, size the ROI, and implement the backend engine"*), agents should orchestrate multiple skills:
 1.  Use **[strategy-partner-orchestrator](strategy-agent/strategy-partner-orchestrator/SKILL.md)** to set up the diagnostic base.
 2.  Use **[business-process-redesign](business-process-redesign/SKILL.md)** to map and optimize the onboarding flow.
 3.  Use **[ai-value-sizing](ai_value_sizing/SKILL.md)** to calculate the 3-year ROI / TCO business case.
+4.  Use **[product-md](product-management/product-md/SKILL.md)** to draft the comprehensive technical PRD.
+5.  Use **[claude-agent-harness](ai-coding/claude-agent-harness/SKILL.md)** to execute production code generation on Vertex AI Model Garden with 4-tier verification.
+
