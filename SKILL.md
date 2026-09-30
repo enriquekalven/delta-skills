@@ -122,12 +122,12 @@ Meta-level skills to create, standardise, and optimize agent systems.
 ---
 
 ## 8. AI Coding & Engineering Execution
-Production-grade, Zero Data Retention (ZDR) code generation harnessing frontier models hosted on Google Cloud Vertex AI Model Garden. Compliant with Google Cloud Professional Services Organization (PSO) enterprise governance.
+Goal-driven code generation with frontier models on Google Cloud Vertex AI Model Garden. Work is bound by an executable Goal Contract and iterates until every acceptance check passes.
 
 *   **[claude-agent-harness](ai-coding/claude-agent-harness/SKILL.md)**
     *   *Role:* Principal AI Systems Engineer & Coding Harness Architect.
-    *   *Trigger:* When translating specifications, PRDs, or architecture blueprints into production-ready software using Vertex AI Model Garden (Anthropic Claude Opus 5 ZDR).
-    *   *Key Deliverable:* Production-grade, verified source code files with zero placeholders, passing syntax, type checks, and unit tests.
+    *   *Trigger:* When turning specifications, PRDs, or architecture blueprints into verified code with Anthropic Claude on Vertex AI Model Garden.
+    *   *Key Deliverable:* Code that passes the Goal Contract's acceptance commands (syntax, lint, types, tests), plus a JSON run report.
 
 ---
 
@@ -140,5 +140,5 @@ When encountering complex requests (e.g., *"design a strategy for our onboarding
 2.  Use **[business-process-redesign](business-process-redesign/SKILL.md)** to map and optimize the onboarding flow.
 3.  Use **[ai-value-sizing](ai_value_sizing/SKILL.md)** to calculate the 3-year ROI / TCO business case.
 4.  Use **[product-md](product-management/product-md/SKILL.md)** to draft the comprehensive technical PRD.
-5.  Use **[claude-agent-harness](ai-coding/claude-agent-harness/SKILL.md)** to execute production code generation on Vertex AI Model Garden with 4-tier verification.
+5.  Use **[claude-agent-harness](ai-coding/claude-agent-harness/SKILL.md)** to implement the backend as a goal loop on Vertex AI Model Garden, iterating until the 4-tier acceptance checks pass.
 

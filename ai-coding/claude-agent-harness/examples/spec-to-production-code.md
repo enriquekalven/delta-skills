@@ -1,30 +1,44 @@
-# End-to-End Walkthrough: Spec to Verified Production Code
+# Walkthrough: Spec to Verified Code in Goal Mode
 
-This walkthrough demonstrates how the **Claude Agent Harness** takes an enterprise software specification and generates production-ready, verified code via Anthropic Claude Opus 5 on Google Cloud Vertex AI Model Garden.
+This walkthrough shows the **Claude Agent Harness** turning a spec into code through a goal loop. Claude iterates with sandboxed tools until every acceptance command passes, instead of producing code from one API call.
+
+> [!NOTE]
+> The turn log and report below are illustrative. Your actual turn counts, token usage, and failures will differ.
 
 ---
 
-## 1. Input Specification Document (`specs/rate_limiter_spec.md`)
+## 1. Input Specification (`specs/rate_limiter_spec.md`)
 
 ```markdown
-# Specification: Distributed Token Bucket Rate Limiter
+# Specification: Token Bucket Rate Limiter
 
 ## Objective
-Build a thread-safe, distributed token bucket rate limiter in Python for microservice ingress protection.
+Thread-safe token bucket rate limiter for microservice ingress protection.
 
 ## Requirements
-1. **Algorithm**: Token Bucket with refill rate `r` tokens/sec and capacity `b` tokens.
-2. **Backend**: Redis-backed with atomic Lua scripting to prevent race conditions across distributed workers.
-3. **Telemetry**: Emit latency metrics and rejection counters compatible with Cloud Monitoring / Prometheus.
-4. **Fallback**: If Redis becomes unavailable, degrade gracefully to an in-memory local token bucket rather than dropping requests.
-5. **Testing**: 100% test coverage including concurrency stress tests and Redis disconnection simulation.
+1. Token bucket with refill rate `r` tokens/sec and capacity `b` tokens.
+2. Redis backend using an atomic Lua script, so distributed workers can't race.
+3. If Redis is unavailable, degrade to an in-memory bucket instead of dropping requests.
+4. Metrics hooks for allowed, rejected, and fallback events.
+5. Tests for refill math, concurrency, and Redis disconnection.
 ```
 
 ---
 
-## 2. Harness Execution via Vertex AI Model Garden
+## 2. Goal Contract (written by the host agent before running)
 
-Run the live runner script using Google Cloud Application Default Credentials:
+| Field | Value |
+|---|---|
+| Objective | Implement `src/ratelimit/` per `specs/rate_limiter_spec.md`, including tests |
+| Workspace | Repository root (`.`) |
+| Acceptance | `python3 -m compileall -q src` · `ruff check src tests` · `mypy --strict src` · `python3 -m pytest -q tests/ratelimit` |
+| Budget | `--max-turns 40`, `--token-budget 2000000` |
+
+The host agent first writes `tests/ratelimit/test_contract.py` from the spec: refill math, capacity ceiling, and fallback when Redis raises `ConnectionError`. That way Claude can't define its own finish line.
+
+---
+
+## 3. Run the Goal Loop
 
 ```bash
 export GOOGLE_CLOUD_PROJECT="my-enterprise-gcp-project"
@@ -32,175 +46,63 @@ export CLOUD_ML_REGION="us-central1"
 
 python3 ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
   --spec specs/rate_limiter_spec.md \
-  --output-dir src/ratelimit
+  --workspace . \
+  --verify "python3 -m compileall -q src" \
+  --verify "ruff check src tests" \
+  --verify "mypy --strict src" \
+  --verify "python3 -m pytest -q tests/ratelimit" \
+  --report .harness_report.json
+```
+
+### Representative turn log (stderr)
+
+```text
+[goal] turn 1/40 -> claude-opus-5        # list_files, read_file tests/ratelimit/test_contract.py
+[goal] turn 2/40 -> claude-opus-5        # read_file pyproject.toml (conventions, deps)
+[goal] wrote src/ratelimit/__init__.py (212 bytes)
+[goal] wrote src/ratelimit/bucket.py (4810 bytes)
+[goal] wrote tests/ratelimit/test_bucket.py (3920 bytes)
+[goal] verification 1: 2/4 passing       # mypy: redis client typed as Any; pytest: refill off-by-one
+[goal] turn 7/40 -> claude-opus-5        # replace_in_file bucket.py: Protocol for Redis client
+[goal] verification 2: 3/4 passing       # pytest: fallback test still failing
+[goal] turn 9/40 -> claude-opus-5        # replace_in_file bucket.py: catch redis ConnectionError, not bare Exception
+[goal] verification 3: 4/4 passing
+[goal] verification 4: 4/4 passing       # declare_goal_complete -> harness re-verifies -> accepted
+```
+
+The harness would have rejected completion if any acceptance command failed, or if a written file still contained a `TODO`/`FIXME` placeholder.
+
+---
+
+## 4. Report (stdout, exit code 0)
+
+```json
+{
+  "status": "goal_met",
+  "goal_met": true,
+  "model": "claude-opus-5",
+  "turns": 10,
+  "verification_runs": 4,
+  "usage": {"input_tokens": 312000, "output_tokens": 18400},
+  "files_written": ["src/ratelimit/__init__.py", "src/ratelimit/bucket.py", "tests/ratelimit/test_bucket.py"],
+  "acceptance": [
+    {"command": "python3 -m compileall -q src", "passed": true, "exit_code": 0},
+    {"command": "ruff check src tests", "passed": true, "exit_code": 0},
+    {"command": "mypy --strict src", "passed": true, "exit_code": 0},
+    {"command": "python3 -m pytest -q tests/ratelimit", "passed": true, "exit_code": 0}
+  ],
+  "summary": "Token bucket with atomic Lua script, Protocol-typed Redis client, in-memory fallback on ConnectionError, metrics hooks; tests for refill, concurrency, and fallback.",
+  "project": "my-enterprise-gcp-project",
+  "region": "us-central1"
+}
 ```
 
 ---
 
-## 3. Generated Production Code Artifacts
+## 5. Close the Goal (host agent)
 
-### Core Module (`src/ratelimit/distributed_bucket.py`)
-```python
-"""Distributed Token Bucket Rate Limiter with Atomic Lua and Graceful Local Fallback.
+1. Re-run all four acceptance commands yourself. Don't trust the report alone.
+2. Run `git diff`. Confirm `tests/ratelimit/test_contract.py` is unchanged, and check that no secrets or unrelated files were touched.
+3. Deliver: the Goal Contract with pass/fail status, links to the files, turns and tokens used, and the endpoint (model, region, project).
 
-Adheres to Google Cloud Enterprise Reliability and Security standards.
-"""
-
-from __future__ import annotations
-
-import logging
-import time
-from dataclasses import dataclass
-from typing import Optional, Protocol
-
-logger = logging.getLogger(__name__)
-
-# Atomic Redis Lua script for token bucket rate limiting
-LUA_TOKEN_BUCKET = """
-local key = KEYS[1]
-local capacity = tonumber(ARGV[1])
-local refill_rate = tonumber(ARGV[2])
-local now = tonumber(ARGV[3])
-local requested = tonumber(ARGV[4])
-
-local data = redis.call("HMGET", key, "tokens", "last_update")
-local tokens = tonumber(data[1])
-local last_update = tonumber(data[2])
-
-if not tokens then
-    tokens = capacity
-    last_update = now
-else
-    local elapsed = math.max(0, now - last_update)
-    tokens = math.min(capacity, tokens + (elapsed * refill_rate))
-    last_update = now
-end
-
-if tokens >= requested then
-    tokens = tokens - requested
-    redis.call("HMSET", key, "tokens", tokens, "last_update", last_update)
-    redis.call("EXPIRE", key, math.ceil(capacity / refill_rate) * 2)
-    return {1, tokens}
-else
-    return {0, tokens}
-end
-"""
-
-
-class MetricsCollector(Protocol):
-    def record_allowed(self, client_id: str, remaining_tokens: float) -> None: ...
-    def record_rejected(self, client_id: str) -> None: ...
-    def record_fallback(self, client_id: str) -> None: ...
-
-
-class NoopMetrics:
-    def record_allowed(self, client_id: str, remaining_tokens: float) -> None: pass
-    def record_rejected(self, client_id: str) -> None: pass
-    def record_fallback(self, client_id: str) -> None: pass
-
-
-@dataclass(frozen=True)
-class RateLimitResult:
-    allowed: bool
-    remaining_tokens: float
-    degraded_mode: bool = False
-
-
-class LocalTokenBucket:
-    """Thread-safe in-memory fallback token bucket."""
-    def __init__(self, capacity: float, refill_rate: float):
-        import threading
-        self.capacity = float(capacity)
-        self.refill_rate = float(refill_rate)
-        self.tokens = float(capacity)
-        self.last_update = time.time()
-        self.lock = threading.Lock()
-
-    def acquire(self, requested: float = 1.0) -> RateLimitResult:
-        with self.lock:
-            now = time.time()
-            elapsed = max(0.0, now - self.last_update)
-            self.tokens = min(self.capacity, self.tokens + (elapsed * self.refill_rate))
-            self.last_update = now
-
-            if self.tokens >= requested:
-                self.tokens -= requested
-                return RateLimitResult(allowed=True, remaining_tokens=self.tokens, degraded_mode=True)
-            return RateLimitResult(allowed=False, remaining_tokens=self.tokens, degraded_mode=True)
-
-
-class DistributedRateLimiter:
-    """Enterprise Distributed Rate Limiter with atomic Redis Lua and local fallback."""
-
-    def __init__(
-        self,
-        redis_client: Optional[any] = None,
-        capacity: float = 100.0,
-        refill_rate: float = 10.0,
-        metrics: Optional[MetricsCollector] = None,
-    ):
-        self.redis = redis_client
-        self.capacity = capacity
-        self.refill_rate = refill_rate
-        self.metrics = metrics or NoopMetrics()
-        self.local_bucket = LocalTokenBucket(capacity, refill_rate)
-        self._lua_sha = None
-
-    def _ensure_lua_script(self) -> str:
-        if self._lua_sha is None and self.redis:
-            self._lua_sha = self.redis.script_load(LUA_TOKEN_BUCKET)
-        return self._lua_sha
-
-    def check_rate_limit(self, client_id: str, requested: int = 1) -> RateLimitResult:
-        key = f"ratelimit:{client_id}"
-        now = time.time()
-
-        if self.redis is not None:
-            try:
-                sha = self._ensure_lua_script()
-                result = self.redis.evalsha(sha, 1, key, self.capacity, self.refill_rate, now, requested)
-                allowed = bool(result[0])
-                remaining = float(result[1])
-
-                if allowed:
-                    self.metrics.record_allowed(client_id, remaining)
-                else:
-                    self.metrics.record_rejected(client_id)
-
-                return RateLimitResult(allowed=allowed, remaining_tokens=remaining, degraded_mode=False)
-            except Exception as exc:
-                logger.warning("Redis rate limiter failed for %s (%s). Engaging local fallback.", client_id, exc)
-                self.metrics.record_fallback(client_id)
-
-        # Fallback to local bucket
-        res = self.local_bucket.acquire(requested)
-        if res.allowed:
-            self.metrics.record_allowed(client_id, res.remaining_tokens)
-        else:
-            self.metrics.record_rejected(client_id)
-        return res
-```
-
----
-
-## 4. 4-Tier Verification Gate Output
-
-```bash
-# Tier 1: Syntax / AST compilation validation
-python3 -m py_compile src/ratelimit/distributed_bucket.py
-
-# Tier 2: Static Analysis & Linting
-ruff check src/ratelimit/
-
-# Tier 3: Static Type Checking
-mypy --strict src/ratelimit/
-
-# Tier 4: Automated Test Execution
-pytest tests/ -v --cov=src/ratelimit
-```
-
-**Verification Summary**:
-- Syntax checks: 100% Passed.
-- Mypy strict mode: 0 errors detected.
-- Ruff linting: Clean.
-- Test coverage: 100% passing across nominal and simulated Redis failure scenarios.
+**If the status had been `max_turns_reached`:** re-run with a narrower `--goal` that names the failing check (for example, "make `mypy --strict src` pass without changing behavior"), or fix it directly. Stop and report after three unsuccessful harness runs.

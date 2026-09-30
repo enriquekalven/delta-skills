@@ -1,92 +1,90 @@
-# Production Harness Prompt Templates
+# Goal Objective Templates
 
-This reference defines the enterprise prompt engineering templates used by the **Claude Agent Harness** AI coding solution to drive Zero Data Retention (ZDR) code generation via Anthropic Claude Opus 5 on Google Cloud Vertex AI Model Garden.
+These templates are **objectives** for the goal-mode harness. Pass one as `--goal` (or in a `--file`), together with `--verify` acceptance commands. The harness adds the acceptance criteria, a workspace snapshot, and the tool instructions automatically, so **don't** ask for a special output format. Claude writes files through its sandboxed tools.
+
+> [!IMPORTANT]
+> A template is never a single-shot prompt. Every run needs at least one `--verify` command, and the loop continues until all of them pass. Always fill in `ACCEPTANCE` with the same commands you pass as `--verify`, so the objective and the contract agree.
 
 ---
 
-## 1. Spec-to-Production-Code Template (Full Implementation)
+## 1. Spec-to-Production-Code (Full Implementation)
 
-Use this prompt when translating a Product Requirements Document (PRD), API specification, or technical architecture blueprint into production-ready source code.
+Use this when turning a PRD, API specification, or architecture blueprint into working code. Usually paired with `--spec <file>`, which inlines the spec.
 
 ```markdown
-You are an expert Google Cloud Principal Software Engineer and Enterprise Solutions Architect.
-Your task is to transform the provided technical specification into complete, production-ready, enterprise-grade source code.
+Implement the attached specification completely inside the workspace.
 
-### SPECIFICATION DOCUMENT
-<INSERT_SPECIFICATION_OR_PRD_CONTENT>
+### TARGET SCOPE
+- Stack: <e.g., Python 3.11+, TypeScript, Go 1.22+>
+- Files: <e.g., src/queue/distributed_retry_queue.py, tests/queue/test_retry_queue.py>
+- Architecture: deep modules, explicit seams, decoupled interfaces. Follow the existing project layout.
 
-### TARGET WORKSPACE & SCOPE
-- Primary Output Language/Stack: <e.g., Python 3.11+, TypeScript, Go 1.22+>
-- Target File(s): <e.g., src/queue/distributed_retry_queue.py, tests/test_retry_queue.py>
-- Target Architecture: Modular deep modules, explicit seams, decoupled interfaces.
+### IMPLEMENTATION RULES
+1. Complete implementations only: no TODO, stub, or elided sections.
+2. Validate input at boundaries. Handle timeouts, partial failures, races, and corrupt data.
+3. Strict typing (Python type hints with dataclasses/Pydantic, or TypeScript strict mode).
+4. Structured logging that's safe for Cloud Logging. Never log secrets or PII.
+5. No hardcoded secrets. Use parameterized queries. Never pass untrusted input to shell/exec sinks.
+6. Tests for the happy path, boundary conditions, and failure modes.
 
-### MANDATORY ENTERPRISE IMPLEMENTATION RULES
-1. **Zero Placeholders**: Write COMPLETE, fully working implementations. NEVER emit `TODO`, `pass`, `// implement here`, or omitted lines.
-2. **Defensive Programming**: Validate all inputs at boundaries. Handle edge cases (network partition, timeout, race conditions, corrupt data) gracefully.
-3. **Strict Type Safety**: Use strict typing throughout (e.g. Python type hints with Pydantic/dataclasses, TypeScript strict mode).
-4. **Structured Logging & Telemetry**: Include structured JSON logging or OpenTelemetry hooks suitable for Google Cloud Logging and Cloud Trace.
-5. **Security Hardening**:
-   - Zero hardcoded secrets, tokens, or plaintext credentials.
-   - Sanitize all external inputs to prevent injection (SQLi, Command Injection, XSS).
-   - Use secure cryptographic libraries and constant-time comparisons where applicable.
-6. **Comprehensive Test Suite**: Produce unit and integration tests covering the happy path, boundary conditions, and failure modes.
+### ACCEPTANCE
+The goal is met when these commands pass from the workspace root (mirror your --verify flags):
+- <e.g., python3 -m pytest -q tests/queue>
+- <e.g., mypy --strict src/queue>
 
-### OUTPUT FORMAT
-For each file to be created or modified, format as:
-FILE: <relative_path_to_file>
-```<language>
-<complete_file_content>
-```
+Do not modify these existing acceptance tests: <e.g., tests/queue/test_contract.py>
 ```
 
 ---
 
-## 2. Architectural Subsystem Template (Multi-Module Systems)
+## 2. Architectural Subsystem (Multi-Module Systems)
 
-Use this template when implementing complex, multi-service, or multi-component subsystems (e.g., event streaming, distributed caching, agent tool protocols).
+Use this for multi-component subsystems (event streaming, distributed caching, agent tool protocols).
 
 ```markdown
-You are a Principal Systems Architect.
-Design and implement a robust, decoupled subsystem satisfying the architecture requirements below.
+Design and implement a decoupled subsystem that satisfies the requirements below.
 
-### SYSTEM SPECIFICATION
+### SYSTEM REQUIREMENTS
 <INSERT_ARCHITECTURE_REQUIREMENTS>
 
 ### ARCHITECTURAL PRIORITIES
-1. **Clear Seams & Deep Modules**: Define minimal, cohesive interfaces that hide internal complexity.
-2. **Concurrency & Thread Safety**: Ensure atomic state updates, thread-safe queues, and backpressure handling.
-3. **Resilience & Fault Tolerance**: Implement exponential backoff retry with jitter, circuit breakers, and dead-letter queues.
-4. **Google Cloud Alignment**: Leverage Google Cloud native conventions (Application Default Credentials, Cloud Storage, Pub/Sub, Cloud Run patterns).
+1. Clear seams and deep modules: minimal, cohesive interfaces that hide internal complexity.
+2. Concurrency safety: atomic state updates, thread-safe queues, backpressure.
+3. Resilience: retries with exponential backoff and jitter, circuit breakers, and dead-letter handling where the requirements call for them.
+4. Google Cloud conventions: Application Default Credentials, Cloud Storage, Pub/Sub, Cloud Run patterns.
 
 ### DELIVERABLES
-1. Interface / Data Contract definitions.
+1. Interface / data contract definitions.
 2. Core engine / service implementation.
 3. Configuration / factory loaders.
-4. Comprehensive test verification suite.
+4. Test suite that exercises the contracts.
+
+### ACCEPTANCE
+- <one command per --verify flag>
 ```
 
 ---
 
-## 3. Code Review & Enterprise Hardening Template
+## 3. Code Review & Hardening
 
-Use this template when invoking the harness in review or hardening mode.
+Use this with `--review <file>` to harden a workspace file in place.
 
 ```markdown
-You are a Senior Google Cloud Security & Reliability Auditor.
-Review and harden the following source code against Google Cloud enterprise standards.
-
-### CODE UNDER REVIEW
-<INSERT_CODE_CONTENT>
+Review and harden the target file against enterprise security and reliability standards, fixing issues in place.
 
 ### AUDIT VECTORS
-1. **Security & Data Privacy**: Detect secret leaks, unvalidated inputs, insecure deserialization, and lack of authentication.
-2. **Concurrency & Race Conditions**: Check locks, shared memory mutations, and async task cancellations.
-3. **Reliability & Timeouts**: Ensure all network calls have explicit deadlines, timeouts, and retry policies.
-4. **Resource Management**: Check for file descriptor leaks, memory leaks, unclosed connections, and uncapped buffers.
+1. Security and data privacy: secret leaks, unvalidated input, insecure deserialization, missing authentication.
+2. Concurrency: locks, shared-state mutation, async cancellation.
+3. Reliability: explicit timeouts, deadlines, and retry policies on every network call.
+4. Resource management: file descriptor, memory, and connection leaks; unbounded buffers.
 
-### OUTPUT REQUIREMENTS
-Provide:
-- Executive Risk Rating (Critical, High, Medium, Low).
-- Specific Line-by-Line Vulnerability Breakdown.
-- Fully Remediated, Production-Ready Replacement Code.
+### REQUIREMENTS
+- Fix every Critical and High finding in place with replace_in_file.
+- Add or extend tests that fail before each fix and pass after it.
+- In the declare_goal_complete summary, list each finding with its risk rating (Critical, High, Medium, Low) and the fix.
+
+### ACCEPTANCE
+- <one command per --verify flag>
 ```
+
+Run it with: `--review <file> --goal "$(cat hardening_objective.md)" --verify ...`

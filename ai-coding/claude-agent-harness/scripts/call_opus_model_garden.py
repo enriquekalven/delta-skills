@@ -1,261 +1,787 @@
 #!/usr/bin/env python3
-"""Google Cloud Vertex AI Model Garden - Anthropic Claude Opus 5 Runner.
+"""Claude Agent Harness: goal-driven coding loop on Vertex AI Model Garden.
 
-This script executes Zero Data Retention (ZDR) API calls to Anthropic Claude Opus 5
-hosted on Google Cloud Vertex AI Model Garden. It adheres to Google Cloud Professional
-Services Organization (PSO) enterprise delivery standards.
+The harness always runs in goal mode. It never makes a single completion call.
+Claude (default ``claude-opus-5``) runs as a tool-using agent inside a
+sandboxed workspace and keeps iterating until the Goal Contract is met:
+
+* every acceptance command passed with ``--verify`` exits with code 0, and
+* the model calls ``declare_goal_complete``, after which the harness re-runs
+  all acceptance commands and scans the files it wrote for placeholders.
+
+The model can only list, read, and write files inside the workspace and run
+the acceptance commands you configured. It cannot run arbitrary shell commands.
+
+Exit codes: 0 = goal met, 2 = goal not met (turn/token budget or stall),
+1 = setup or API error. A JSON report is always printed to stdout.
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import os
-import random
 import re
+import shlex
 import subprocess
 import sys
-import time
-from typing import Optional
+from collections.abc import Callable
+from dataclasses import dataclass, field
+from typing import Any
+
+DEFAULT_MODEL = os.environ.get("CLAUDE_MODEL_NAME", "claude-opus-5")
+DEFAULT_REGION = os.environ.get("CLOUD_ML_REGION", "us-central1")
+
+IGNORED_DIRS = frozenset(
+    {
+        ".git",
+        ".hg",
+        ".svn",
+        ".venv",
+        "venv",
+        "node_modules",
+        "__pycache__",
+        ".mypy_cache",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".tox",
+    }
+)
+MAX_READ_BYTES = 200_000
+MAX_WRITE_BYTES = 1_000_000
+MAX_SPEC_BYTES = 400_000
+MAX_TOOL_OUTPUT_CHARS = 30_000
+MAX_LIST_ENTRIES = 500
+SHELL_OPERATORS = frozenset({"&&", "||", "|", ";", ">", ">>", "<", "&"})
+
+# Uppercase markers only, so ordinary words like "todo list" don't count.
+# TODO(security) is allowed because it documents a deliberately deferred control.
+_PLACEHOLDER_MARKERS = re.compile(r"\b(?:TODO|FIXME|XXX)\b(?!\(security\))")
+_PLACEHOLDER_PHRASES = re.compile(
+    r"implement (?:this|me|later|here)|rest of (?:the )?(?:code|implementation)|\.\.\. ?existing code",
+    re.IGNORECASE,
+)
+
+SYSTEM_PROMPT = """You are a principal software engineer working inside a goal-driven harness. \
+You act only through the provided tools, inside a sandboxed workspace.
+
+Operating rules:
+1. This is a goal, not a single answer. Keep iterating until every acceptance command passes. \
+Never end a turn with prose alone while the goal is unmet.
+2. Read before you write. Inspect the relevant files and follow the project's existing conventions, \
+dependencies, and layout.
+3. Write complete, working code. No placeholders, stubs, TODO/FIXME markers, or elided sections. \
+A TODO(security) note that explains a deliberately deferred control is allowed.
+4. Use replace_in_file for targeted edits to existing files. Use write_file for new files or full \
+rewrites. Keep each write under 1 MB.
+5. Never hardcode secrets or credentials. Validate input at trust boundaries. Use parameterized \
+queries. Never bind test servers to 0.0.0.0.
+6. When verification fails, read the output, find the root cause, and fix it. Never weaken, skip, \
+or delete tests or acceptance checks to make them pass.
+7. Once run_verification passes, call declare_goal_complete with a short summary of what changed and why."""
+
+TOOLS: list[dict[str, Any]] = [
+    {
+        "name": "list_files",
+        "description": "List files under a workspace directory as relative paths. Skips VCS, virtualenv, and cache directories.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Directory relative to the workspace root. Defaults to '.'.",
+                }
+            },
+            "required": [],
+        },
+    },
+    {
+        "name": "read_file",
+        "description": "Read a UTF-8 text file from the workspace.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "File path relative to the workspace root.",
+                }
+            },
+            "required": ["path"],
+        },
+    },
+    {
+        "name": "write_file",
+        "description": "Create or overwrite a UTF-8 text file in the workspace, creating parent directories as needed.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "File path relative to the workspace root.",
+                },
+                "content": {"type": "string", "description": "Complete file content."},
+            },
+            "required": ["path", "content"],
+        },
+    },
+    {
+        "name": "replace_in_file",
+        "description": "Replace exactly one occurrence of old_text with new_text in a workspace file. Fails unless old_text occurs exactly once.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {"type": "string"},
+                "old_text": {"type": "string"},
+                "new_text": {"type": "string"},
+            },
+            "required": ["path", "old_text", "new_text"],
+        },
+    },
+    {
+        "name": "run_verification",
+        "description": "Run every acceptance command in the Goal Contract from the workspace root. Returns each command's exit code and the tail of its output.",
+        "input_schema": {"type": "object", "properties": {}, "required": []},
+    },
+    {
+        "name": "declare_goal_complete",
+        "description": "Claim the goal is met. The harness re-runs every acceptance command and scans the files you wrote for placeholders. Completion is accepted only if all checks pass.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "summary": {"type": "string", "description": "What changed and why."}
+            },
+            "required": ["summary"],
+        },
+    },
+]
 
 
-def discover_project_id() -> Optional[str]:
-    """Auto-discovers GCP project ID from environment or gcloud config."""
+class WorkspaceError(Exception):
+    """Raised when a tool request violates the workspace sandbox or limits."""
+
+
+def _truncate(
+    text: str, limit: int = MAX_TOOL_OUTPUT_CHARS, keep_tail: bool = False
+) -> str:
+    if len(text) <= limit:
+        return text
+    omitted = len(text) - limit
+    if keep_tail:
+        return f"[... {omitted} chars omitted ...]\n" + text[-limit:]
+    return text[:limit] + f"\n[... {omitted} chars omitted ...]"
+
+
+class Workspace:
+    """Tool-facing file access confined to a single root directory."""
+
+    def __init__(self, root: str) -> None:
+        self.root = os.path.realpath(root)
+        self.written: set[str] = set()
+
+    def resolve(self, rel_path: Any) -> str:
+        if not isinstance(rel_path, str) or not rel_path.strip() or "\x00" in rel_path:
+            raise WorkspaceError("path must be a non-empty string")
+        if os.path.isabs(rel_path):
+            raise WorkspaceError(f"absolute paths are not allowed: {rel_path}")
+        candidate = os.path.realpath(os.path.join(self.root, rel_path))
+        if candidate != self.root and not candidate.startswith(self.root + os.sep):
+            raise WorkspaceError(f"path escapes the workspace: {rel_path}")
+        if ".git" in os.path.relpath(candidate, self.root).split(os.sep):
+            raise WorkspaceError("access inside .git is not allowed")
+        return candidate
+
+    def relative(self, abs_path: str) -> str:
+        return os.path.relpath(abs_path, self.root)
+
+    def list_files(self, rel_dir: str = ".") -> str:
+        base = self.resolve(rel_dir or ".")
+        if not os.path.isdir(base):
+            raise WorkspaceError(f"not a directory: {rel_dir}")
+        entries: list[str] = []
+        for current, dirs, files in os.walk(base):
+            dirs[:] = sorted(d for d in dirs if d not in IGNORED_DIRS)
+            for name in sorted(files):
+                entries.append(self.relative(os.path.join(current, name)))
+                if len(entries) >= MAX_LIST_ENTRIES:
+                    return (
+                        "\n".join(entries)
+                        + f"\n[... listing capped at {MAX_LIST_ENTRIES} entries ...]"
+                    )
+        return "\n".join(entries) if entries else "(empty)"
+
+    def read_file(self, rel_path: Any) -> str:
+        path = self.resolve(rel_path)
+        if not os.path.isfile(path):
+            raise WorkspaceError(f"file not found: {rel_path}")
+        size = os.path.getsize(path)
+        with open(path, "rb") as handle:
+            data = handle.read(MAX_READ_BYTES)
+        try:
+            text = data.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise WorkspaceError(f"{rel_path} is binary or not UTF-8") from exc
+        if size > MAX_READ_BYTES:
+            text += f"\n[... truncated: file is {size} bytes, showing first {MAX_READ_BYTES} ...]"
+        return text
+
+    def write_file(self, rel_path: Any, content: Any) -> str:
+        if not isinstance(content, str):
+            raise WorkspaceError("content must be a string")
+        encoded = content.encode("utf-8")
+        if len(encoded) > MAX_WRITE_BYTES:
+            raise WorkspaceError(
+                f"content exceeds {MAX_WRITE_BYTES} bytes; split the file"
+            )
+        path = self.resolve(rel_path)
+        if os.path.isdir(path):
+            raise WorkspaceError(f"{rel_path} is a directory")
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "wb") as handle:
+            handle.write(encoded)
+        self.written.add(self.relative(path))
+        return f"wrote {self.relative(path)} ({len(encoded)} bytes)"
+
+    def replace_in_file(self, rel_path: Any, old_text: Any, new_text: Any) -> str:
+        if (
+            not isinstance(old_text, str)
+            or not old_text
+            or not isinstance(new_text, str)
+        ):
+            raise WorkspaceError(
+                "old_text must be a non-empty string and new_text a string"
+            )
+        current = self.read_file(rel_path)
+        count = current.count(old_text)
+        if count != 1:
+            raise WorkspaceError(
+                f"old_text must occur exactly once in {rel_path}; found {count}"
+            )
+        return self.write_file(rel_path, current.replace(old_text, new_text, 1))
+
+    def placeholder_findings(self) -> list[str]:
+        findings: list[str] = []
+        for rel in sorted(self.written):
+            try:
+                text = self.read_file(rel)
+            except WorkspaceError:
+                continue
+            for lineno, line in enumerate(text.splitlines(), 1):
+                if _PLACEHOLDER_MARKERS.search(line) or _PLACEHOLDER_PHRASES.search(
+                    line
+                ):
+                    findings.append(f"{rel}:{lineno}: {line.strip()[:160]}")
+        return findings
+
+
+@dataclass
+class VerifyResult:
+    command: str
+    exit_code: int
+    passed: bool
+    output_tail: str
+
+
+def parse_verify_command(command: str) -> list[str]:
+    """Split an acceptance command into argv. Shell operators are rejected."""
+    argv = shlex.split(command)
+    if not argv:
+        raise ValueError("empty --verify command")
+    operators = SHELL_OPERATORS.intersection(argv)
+    if operators:
+        raise ValueError(
+            f"--verify {command!r} uses shell operators {sorted(operators)}; "
+            "pass each command as its own --verify flag"
+        )
+    return argv
+
+
+def run_verification(commands: list[str], cwd: str, timeout: int) -> list[VerifyResult]:
+    results: list[VerifyResult] = []
+    # Python checks cached bytecode by source mtime and size, so a same-size edit made
+    # within the same second could run stale code. Don't write .pyc files during verification.
+    env = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
+    for command in commands:
+        argv = parse_verify_command(command)
+        try:
+            proc = subprocess.run(
+                argv,
+                cwd=cwd,
+                env=env,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=timeout,
+                check=False,
+            )
+            code, output = proc.returncode, (proc.stdout or "") + (proc.stderr or "")
+        except FileNotFoundError:
+            code, output = 127, f"command not found: {argv[0]}"
+        except subprocess.TimeoutExpired:
+            code, output = 124, f"timed out after {timeout}s"
+        results.append(
+            VerifyResult(
+                command, code, code == 0, _truncate(output, 6_000, keep_tail=True)
+            )
+        )
+    return results
+
+
+def format_verification(results: list[VerifyResult]) -> str:
+    lines = []
+    for index, result in enumerate(results, 1):
+        status = "PASS" if result.passed else f"FAIL (exit {result.exit_code})"
+        lines.append(
+            f"[{index}] {status}: {result.command}\n{result.output_tail}".rstrip()
+        )
+    return "\n\n".join(lines)
+
+
+@dataclass
+class GoalConfig:
+    goal: str
+    verify_commands: list[str]
+    workspace: str
+    model: str = DEFAULT_MODEL
+    max_turns: int = 40
+    max_tokens: int = 16_000
+    token_budget: int = 2_000_000
+    verify_timeout: int = 600
+    temperature: float | None = None
+    max_idle_turns: int = 3
+
+
+@dataclass
+class GoalState:
+    status: str = "running"
+    turns: int = 0
+    input_tokens: int = 0
+    output_tokens: int = 0
+    verification_runs: int = 0
+    idle_turns: int = 0
+    summary: str = ""
+    error: str = ""
+    last_verification: list[VerifyResult] = field(default_factory=list)
+
+
+def build_initial_message(goal: str, verify_commands: list[str], snapshot: str) -> str:
+    criteria = "\n".join(
+        f"{i}. `{cmd}` exits with code 0" for i, cmd in enumerate(verify_commands, 1)
+    )
+    return (
+        f"<goal>\n{goal}\n</goal>\n\n"
+        "<acceptance_criteria>\nThe goal is met only when every command below passes, run from the workspace root:\n"
+        f"{criteria}\n</acceptance_criteria>\n\n"
+        f"<workspace_snapshot>\n{snapshot}\n</workspace_snapshot>\n\n"
+        "Work iteratively: inspect the relevant files, make changes with the file tools, run verification, "
+        "fix any failures, and repeat. Call declare_goal_complete only after run_verification passes."
+    )
+
+
+class GoalHarness:
+    """Runs the tool-use loop until the Goal Contract is met or a budget runs out."""
+
+    def __init__(
+        self, client: Any, config: GoalConfig, log: Callable[[str], None] | None = None
+    ) -> None:
+        if not config.verify_commands:
+            raise ValueError(
+                "goal mode requires at least one acceptance command (--verify)"
+            )
+        for command in config.verify_commands:
+            parse_verify_command(command)
+        self.client = client
+        self.config = config
+        self.workspace = Workspace(config.workspace)
+        self.state = GoalState()
+        self.log = log or (lambda message: print(message, file=sys.stderr))
+
+    def _call_model(self, messages: list[dict[str, Any]]) -> Any:
+        kwargs: dict[str, Any] = {
+            "model": self.config.model,
+            "max_tokens": self.config.max_tokens,
+            "system": SYSTEM_PROMPT,
+            "tools": TOOLS,
+            "messages": messages,
+        }
+        if self.config.temperature is not None:
+            kwargs["temperature"] = self.config.temperature
+        # Streaming avoids the SDK's non-streaming timeout guard on large max_tokens.
+        with self.client.messages.stream(**kwargs) as stream:
+            return stream.get_final_message()
+
+    def _verify(self) -> list[VerifyResult]:
+        self.state.verification_runs += 1
+        results = run_verification(
+            self.config.verify_commands, self.workspace.root, self.config.verify_timeout
+        )
+        self.state.last_verification = results
+        passed = sum(r.passed for r in results)
+        self.log(
+            f"[goal] verification {self.state.verification_runs}: {passed}/{len(results)} passing"
+        )
+        return results
+
+    def _dispatch(self, name: str, args: dict[str, Any]) -> tuple[str, bool]:
+        ws = self.workspace
+        try:
+            if name == "list_files":
+                return ws.list_files(args.get("path") or "."), False
+            if name == "read_file":
+                return _truncate(ws.read_file(args.get("path"))), False
+            if name == "write_file":
+                result = ws.write_file(args.get("path"), args.get("content"))
+                self.log(f"[goal] {result}")
+                return result, False
+            if name == "replace_in_file":
+                result = ws.replace_in_file(
+                    args.get("path"), args.get("old_text"), args.get("new_text")
+                )
+                self.log(f"[goal] {result}")
+                return result, False
+            if name == "run_verification":
+                return format_verification(self._verify()), False
+            if name == "declare_goal_complete":
+                return self._judge_completion(str(args.get("summary", ""))), False
+            return f"unknown tool: {name}", True
+        except (WorkspaceError, OSError, ValueError) as exc:
+            return f"error: {exc}", True
+
+    def _judge_completion(self, summary: str) -> str:
+        results = self._verify()
+        placeholders = self.workspace.placeholder_findings()
+        if all(r.passed for r in results) and not placeholders:
+            self.state.status = "goal_met"
+            self.state.summary = summary
+            return "Goal accepted: all acceptance commands pass and no placeholders were found."
+        problems = ["Goal NOT accepted. Keep working."]
+        if not all(r.passed for r in results):
+            problems.append(
+                "Failing acceptance commands:\n"
+                + format_verification([r for r in results if not r.passed])
+            )
+        if placeholders:
+            problems.append(
+                "Placeholder markers in files you wrote:\n"
+                + "\n".join(placeholders[:50])
+            )
+        return "\n\n".join(problems)
+
+    def run(self) -> dict[str, Any]:
+        cfg, state = self.config, self.state
+        snapshot = self.workspace.list_files(".")
+        messages: list[dict[str, Any]] = [
+            {
+                "role": "user",
+                "content": build_initial_message(
+                    cfg.goal, cfg.verify_commands, snapshot
+                ),
+            }
+        ]
+        while state.status == "running":
+            if state.turns >= cfg.max_turns:
+                state.status = "max_turns_reached"
+                break
+            if state.input_tokens + state.output_tokens >= cfg.token_budget:
+                state.status = "token_budget_exhausted"
+                break
+            state.turns += 1
+            self.log(f"[goal] turn {state.turns}/{cfg.max_turns} -> {cfg.model}")
+            try:
+                message = self._call_model(messages)
+            except Exception as exc:  # noqa: BLE001 - any SDK/transport error is reported, not raised
+                state.status = "api_error"
+                state.error = f"{type(exc).__name__}: {exc}"
+                break
+            usage = getattr(message, "usage", None)
+            state.input_tokens += int(getattr(usage, "input_tokens", 0) or 0)
+            state.output_tokens += int(getattr(usage, "output_tokens", 0) or 0)
+            stop_reason = getattr(message, "stop_reason", None)
+            content = list(getattr(message, "content", []) or [])
+            messages.append({"role": "assistant", "content": content})
+
+            if stop_reason == "refusal":
+                state.status = "model_refused"
+                break
+
+            tool_uses = [
+                block for block in content if getattr(block, "type", "") == "tool_use"
+            ]
+            if not tool_uses:
+                state.idle_turns += 1
+                if state.idle_turns >= cfg.max_idle_turns:
+                    state.status = "stalled"
+                    break
+                nudge = (
+                    "Your response was cut off at the token limit. Continue with smaller tool calls."
+                    if stop_reason == "max_tokens"
+                    else "The goal is not verified yet. Keep working with the tools and call "
+                    "declare_goal_complete once run_verification passes."
+                )
+                messages.append({"role": "user", "content": nudge})
+                continue
+            state.idle_turns = 0
+
+            results: list[dict[str, Any]] = []
+            for block in tool_uses:
+                if stop_reason == "max_tokens":
+                    # The tool input may be truncated (for example, half a file). Never execute it.
+                    output, is_error = (
+                        "Not executed: this call was cut off at the token limit. Resend it in smaller pieces.",
+                        True,
+                    )
+                else:
+                    raw_input = getattr(block, "input", {})
+                    output, is_error = self._dispatch(
+                        block.name, raw_input if isinstance(raw_input, dict) else {}
+                    )
+                results.append(
+                    {
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": output,
+                        "is_error": is_error,
+                    }
+                )
+            messages.append({"role": "user", "content": results})
+
+        if state.status != "goal_met" and state.status != "api_error":
+            self._verify()
+        return self.report()
+
+    def report(self) -> dict[str, Any]:
+        state = self.state
+        return {
+            "status": state.status,
+            "goal_met": state.status == "goal_met",
+            "model": self.config.model,
+            "workspace": self.workspace.root,
+            "turns": state.turns,
+            "verification_runs": state.verification_runs,
+            "usage": {
+                "input_tokens": state.input_tokens,
+                "output_tokens": state.output_tokens,
+            },
+            "files_written": sorted(self.workspace.written),
+            "acceptance": [
+                {"command": r.command, "passed": r.passed, "exit_code": r.exit_code}
+                for r in state.last_verification
+            ],
+            "summary": state.summary,
+            "error": state.error,
+        }
+
+
+def discover_project_id() -> str | None:
+    """Resolve the GCP project from the environment or gcloud config."""
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("GCP_PROJECT")
     if project_id:
         return project_id.strip()
-
     try:
         res = subprocess.run(
             ["gcloud", "config", "get-value", "project"],
             capture_output=True,
             text=True,
-            timeout=5,
+            timeout=10,
             check=False,
         )
-        if res.returncode == 0 and res.stdout.strip() and "(unset)" not in res.stdout:
-            return res.stdout.strip()
-    except Exception:
-        pass
-    return None
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    value = res.stdout.strip()
+    return value if res.returncode == 0 and value and "(unset)" not in value else None
 
 
-def call_opus_model_garden(
-    prompt: str,
-    project_id: str,
-    region: str = "us-central1",
-    model_name: str = "claude-opus-5",
-    max_tokens: int = 4096,
-    temperature: float = 0.2,
-    max_retries: int = 4,
-) -> str:
-    """Calls Vertex AI Model Garden Anthropic Opus 5 ZDR endpoint with exponential backoff."""
-    try:
-        from anthropic import AnthropicVertex
-    except ImportError:
-        raise ImportError(
-            "The 'anthropic[vertex]' package is required for Vertex AI Model Garden calls.\n"
-            "Install it via: pip install --upgrade 'anthropic[vertex]'"
+def _read_text(path: str, limit: int = MAX_SPEC_BYTES) -> str:
+    if not os.path.isfile(path):
+        raise FileNotFoundError(f"file not found: {path}")
+    if os.path.getsize(path) > limit:
+        raise ValueError(
+            f"{path} exceeds {limit} bytes; reference it from the workspace instead"
         )
+    with open(path, "r", encoding="utf-8") as handle:
+        return handle.read()
 
-    # Initialize client with Application Default Credentials (ADC)
-    client = AnthropicVertex(region=region, project_id=project_id)
 
-    system_prompt = (
-        "You are an expert Google Cloud Principal Software Engineer operating as a PSO AI Coding Solution. "
-        "Your role is to produce complete, robust, secure, and production-ready implementations adhering to "
-        "Google Cloud architecture standards. NEVER output placeholders, TODO stubs, or incomplete implementations."
+def build_goal_text(args: argparse.Namespace, workspace: str) -> str:
+    objective = (
+        args.goal
+        or args.prompt
+        or (" ".join(args.prompt_pos) if args.prompt_pos else "")
     )
-
-    last_error: Optional[Exception] = None
-    for attempt in range(1, max_retries + 1):
-        try:
-            print(
-                f"[Model Garden] Calling {model_name} in {region} (project: {project_id})...",
-                file=sys.stderr,
+    if args.file:
+        objective = (objective + "\n\n" if objective else "") + _read_text(args.file)
+    if not objective and not args.spec and not args.review and not sys.stdin.isatty():
+        objective = sys.stdin.read()
+    parts = [objective.strip()] if objective.strip() else []
+    if args.spec:
+        if not parts:
+            parts.append(
+                "Implement the specification below completely inside the workspace."
             )
-            message = client.messages.create(
-                model=model_name,
-                max_tokens=max_tokens,
-                temperature=temperature,
-                system=system_prompt,
-                messages=[{"role": "user", "content": prompt}],
+        parts.append(
+            f'<specification path="{args.spec}">\n{_read_text(args.spec)}\n</specification>'
+        )
+    if args.review:
+        review_abs = os.path.realpath(args.review)
+        root = os.path.realpath(workspace)
+        if not review_abs.startswith(root + os.sep):
+            raise ValueError(
+                f"--review file must be inside the workspace: {args.review}"
             )
-
-            # Extract pure text blocks
-            text_blocks = [
-                block.text for block in message.content if getattr(block, "type", "") == "text"
-            ]
-            if text_blocks:
-                return "\n".join(text_blocks)
-            return str(message.content)
-
-        except Exception as exc:
-            last_error = exc
-            error_msg = str(exc)
-            if "DefaultCredentialsError" in error_msg or "could not be found" in error_msg:
-                raise PermissionError(
-                    "Google Cloud Application Default Credentials (ADC) not found.\n"
-                    "Please run: gcloud auth application-default login"
-                ) from exc
-
-            if attempt == max_retries:
-                raise RuntimeError(
-                    f"Vertex AI Model Garden call failed after {max_retries} attempts: {exc}"
-                ) from exc
-
-            # Exponential backoff with jitter
-            backoff = (2 ** attempt) + random.uniform(0.5, 1.5)
-            print(
-                f"⚠️ Transient API error (attempt {attempt}/{max_retries}): {exc}. "
-                f"Retrying in {backoff:.1f}s...",
-                file=sys.stderr,
+        if not parts:
+            parts.append(
+                "Review and harden the file below in place for security, reliability, and correctness."
             )
-            time.sleep(backoff)
-
-    if last_error:
-        raise last_error
-    return ""
-
-
-def extract_and_write_files(content: str, output_dir: str) -> list[str]:
-    """Parses markdown file blocks (FILE: path\\n```lang\\ncode```) and writes to disk."""
-    pattern = re.compile(
-        r"(?:FILE:\s*([^\n\r`]+)\s*)?```(?:[a-zA-Z0-9_\-\.]+)?\s*\n(.*?)```",
-        re.DOTALL,
-    )
-    written_files = []
-    matches = list(pattern.finditer(content))
-
-    for idx, match in enumerate(matches):
-        filepath = match.group(1)
-        code = match.group(2)
-        if not filepath:
-            filepath = f"generated_artifact_{idx + 1}.txt"
-        else:
-            filepath = filepath.strip()
-
-        target_path = os.path.join(output_dir, filepath)
-        os.makedirs(os.path.dirname(target_path), exist_ok=True)
-        with open(target_path, "w", encoding="utf-8") as f:
-            f.write(code)
-        written_files.append(target_path)
-        print(f"  [Wrote] {target_path}", file=sys.stderr)
-
-    return written_files
+        parts.append(
+            f"Target file (read it with read_file): {os.path.relpath(review_abs, root)}"
+        )
+    if not parts:
+        raise ValueError(
+            "no goal provided: use --goal, --spec, --review, --prompt, --file, or stdin"
+        )
+    return "\n\n".join(parts)
 
 
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Invoke Anthropic Claude Opus 5 on Google Cloud Vertex AI Model Garden (ZDR)"
+        description="Goal-driven Claude coding harness on Vertex AI Model Garden (never a single call)."
     )
-    parser.add_argument("prompt_pos", nargs="*", help="Optional positional prompt string")
-    parser.add_argument("-p", "--prompt", help="Direct text prompt for generation")
-    parser.add_argument("-s", "--spec", help="Path to specification or PRD document to implement")
-    parser.add_argument("-f", "--file", help="Path to source or context file")
-    parser.add_argument("-r", "--review", help="Path to source file to review & harden")
-    parser.add_argument("-o", "--output-dir", help="Directory to extract generated files into")
-    parser.add_argument("--project", help="GCP Project ID (default: auto-detected)")
+    parser.add_argument("prompt_pos", nargs="*", help="Optional goal text")
+    parser.add_argument("-g", "--goal", help="Objective of the Goal Contract")
+    parser.add_argument("-p", "--prompt", help="Alias for --goal")
     parser.add_argument(
-        "--region",
-        default=os.environ.get("CLOUD_ML_REGION", "us-central1"),
-        help="Vertex AI region (default: us-central1 or CLOUD_ML_REGION)",
+        "-s",
+        "--spec",
+        help="Specification or PRD file to implement (inlined into the goal)",
     )
     parser.add_argument(
-        "--model",
-        default=os.environ.get("CLAUDE_MODEL_NAME", "claude-opus-5"),
-        help="Model Garden model name (default: claude-opus-5)",
+        "-r", "--review", help="Workspace file to review and harden in place"
+    )
+    parser.add_argument("-f", "--file", help="Read additional goal text from a file")
+    parser.add_argument(
+        "-w",
+        "--workspace",
+        "-o",
+        "--output-dir",
+        dest="workspace",
+        default=".",
+        help="Sandbox root the agent may read and write (default: current directory)",
+    )
+    parser.add_argument(
+        "-v",
+        "--verify",
+        action="append",
+        default=[],
+        metavar="CMD",
+        help="Acceptance command that must exit 0. Repeatable. Required.",
+    )
+    parser.add_argument(
+        "--max-turns", type=int, default=40, help="Max model turns (default: 40)"
     )
     parser.add_argument(
         "--max-tokens",
         type=int,
-        default=4096,
-        help="Maximum generation tokens (default: 4096)",
+        default=16_000,
+        help="Max output tokens per turn (default: 16000)",
     )
     parser.add_argument(
-        "--temperature",
-        type=float,
-        default=0.2,
-        help="Generation temperature (default: 0.2 for precise coding)",
+        "--token-budget",
+        type=int,
+        default=2_000_000,
+        help="Stop after this many input+output tokens in total (default: 2,000,000)",
     )
+    parser.add_argument(
+        "--verify-timeout",
+        type=int,
+        default=600,
+        help="Seconds per acceptance command (default: 600)",
+    )
+    parser.add_argument(
+        "--temperature", type=float, default=None, help="Optional sampling temperature"
+    )
+    parser.add_argument(
+        "--max-retries",
+        type=int,
+        default=4,
+        help="SDK retries for transient API errors (default: 4)",
+    )
+    parser.add_argument("--project", help="GCP project ID (default: auto-detected)")
+    parser.add_argument(
+        "--region",
+        default=DEFAULT_REGION,
+        help="Vertex AI region (default: us-central1 or CLOUD_ML_REGION)",
+    )
+    parser.add_argument(
+        "--model",
+        default=DEFAULT_MODEL,
+        help="Model Garden model ID (default: claude-opus-5 or CLAUDE_MODEL_NAME)",
+    )
+    parser.add_argument("--report", help="Also write the JSON report to this path")
     return parser
 
 
-def main() -> None:
-    parser = build_arg_parser()
-    args = parser.parse_args()
+def main(argv: list[str] | None = None) -> int:
+    args = build_arg_parser().parse_args(argv)
+    try:
+        os.makedirs(args.workspace, exist_ok=True)
+        goal = build_goal_text(args, args.workspace)
+        if not args.verify:
+            raise ValueError(
+                "goal mode needs at least one --verify acceptance command, "
+                "e.g. --verify 'python3 -m pytest -q' --verify 'ruff check .'"
+            )
+        for command in args.verify:
+            parse_verify_command(command)
+    except (OSError, ValueError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
 
     project_id = args.project or discover_project_id()
     if not project_id:
         print(
-            "Error: Google Cloud Project ID could not be identified.\n"
-            "Set GOOGLE_CLOUD_PROJECT env var or pass --project <project_id>.",
-            file=sys.stderr,
+            "Error: set GOOGLE_CLOUD_PROJECT or pass --project <id>.", file=sys.stderr
         )
-        sys.exit(1)
-
-    prompt = ""
-    if args.spec:
-        if not os.path.isfile(args.spec):
-            print(f"Error: Spec file not found: {args.spec}", file=sys.stderr)
-            sys.exit(1)
-        with open(args.spec, "r", encoding="utf-8") as f:
-            spec_text = f.read()
-        prompt = (
-            f"Please implement complete, production-grade source code for the following specification.\n\n"
-            f"--- SPECIFICATION: {args.spec} ---\n{spec_text}"
-        )
-    elif args.review:
-        if not os.path.isfile(args.review):
-            print(f"Error: Review file not found: {args.review}", file=sys.stderr)
-            sys.exit(1)
-        with open(args.review, "r", encoding="utf-8") as f:
-            code_text = f.read()
-        prompt = (
-            f"Please perform a Google Cloud enterprise security, reliability, and code quality review on this file.\n\n"
-            f"--- SOURCE CODE: {args.review} ---\n{code_text}"
-        )
-    elif args.file:
-        if not os.path.isfile(args.file):
-            print(f"Error: File not found: {args.file}", file=sys.stderr)
-            sys.exit(1)
-        with open(args.file, "r", encoding="utf-8") as f:
-            prompt = f.read()
-    elif args.prompt:
-        prompt = args.prompt
-    elif args.prompt_pos:
-        prompt = " ".join(args.prompt_pos)
-    else:
-        if not sys.stdin.isatty():
-            prompt = sys.stdin.read()
-
-    if not prompt.strip():
-        print(
-            "Error: No prompt provided. Use --spec <file>, --prompt <text>, --review <file>, or pass text via stdin.",
-            file=sys.stderr,
-        )
-        sys.exit(1)
-
+        return 1
     try:
-        output = call_opus_model_garden(
-            prompt=prompt,
-            project_id=project_id,
-            region=args.region,
-            model_name=args.model,
-            max_tokens=args.max_tokens,
-            temperature=args.temperature,
+        from anthropic import AnthropicVertex
+    except ImportError:
+        print(
+            "Error: install the Vertex extra: pip install 'anthropic[vertex]'",
+            file=sys.stderr,
         )
+        return 1
 
-        if args.output_dir:
-            print(f"[Model Garden] Extracting code blocks to: {args.output_dir}...", file=sys.stderr)
-            files = extract_and_write_files(output, args.output_dir)
-            print(f"[Model Garden] Successfully created {len(files)} file(s).", file=sys.stderr)
-        else:
-            print(output)
+    client = AnthropicVertex(
+        region=args.region, project_id=project_id, max_retries=args.max_retries
+    )
+    config = GoalConfig(
+        goal=goal,
+        verify_commands=list(args.verify),
+        workspace=args.workspace,
+        model=args.model,
+        max_turns=args.max_turns,
+        max_tokens=args.max_tokens,
+        token_budget=args.token_budget,
+        verify_timeout=args.verify_timeout,
+        temperature=args.temperature,
+    )
+    report = GoalHarness(client, config).run()
+    report.update({"project": project_id, "region": args.region})
+    error = report["error"]
+    if (
+        "DefaultCredentialsError" in error or "RefreshError" in error
+    ) and "application-default login" not in error:
+        report["error"] += " | Run: gcloud auth application-default login"
 
-    except Exception as err:
-        print(f"\n[Model Garden Error] {err}", file=sys.stderr)
-        sys.exit(1)
+    rendered = json.dumps(report, indent=2)
+    print(rendered)
+    if args.report:
+        with open(args.report, "w", encoding="utf-8") as handle:
+            handle.write(rendered + "\n")
+    if report["goal_met"]:
+        return 0
+    return 1 if report["status"] == "api_error" else 2
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

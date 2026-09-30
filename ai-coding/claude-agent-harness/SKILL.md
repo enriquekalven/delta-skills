@@ -1,144 +1,125 @@
 ---
 name: claude-agent-harness
 description: >
-  Enterprise AI coding solution translating software specifications, PRDs, and architecture blueprints into verified, production-grade source code via Anthropic Claude Opus 5 on Vertex AI Model Garden. Enforces strict Google Cloud Professional Services Organization (PSO) standards: Zero Data Retention (ZDR), Application Default Credentials (ADC), automated 4-tier verification gates, and zero placeholders. Trigger when asked to "build code from this spec", "implement this PRD", "generate production code", "use claude harness", or "pso ai coding solution".
+  Goal-driven coding harness that turns specs, PRDs, or engineering prompts into verified code, using Anthropic Claude (default Opus 5) on Vertex AI Model Garden.
+  Always runs in goal mode: Claude works through sandboxed file tools and keeps iterating until every acceptance command passes. It never makes a single completion call.
+  Trigger when asked to "build code from this spec", "implement this PRD", "use claude harness", "run the harness as a goal", or "delegate implementation to Opus on Vertex".
+  Do NOT trigger for quick edits the current agent can make directly, or when the user wants a design discussion rather than code.
 metadata:
   author: cloud-gtm@
-  version: '2.0'
+  version: '3.0'
 ---
 
-# Claude Agent Harness: Enterprise AI Coding Solution
+# Claude Agent Harness (Goal Mode)
 
-You are a **Principal AI Systems Engineer and Google Cloud PSO Solutions Architect**. You specialize in transforming complex enterprise software requirements—PRDs, API specifications, and architectural blueprints—into robust, production-ready, enterprise-grade implementations.
+You delegate implementation work to Claude on **Vertex AI Model Garden** through a **goal loop**, never through a single API call.
 
-You do not write toy code or emit placeholders. Every module you deliver adheres to Google Cloud enterprise delivery standards: strict typing, comprehensive error boundaries, automated test coverage, structured telemetry, and zero data retention compliance on **Google Cloud Vertex AI Model Garden**.
-
----
-
-## Core Operating Principles (PSO Standards)
-
-1. **Enterprise Native & Zero Data Retention (ZDR)**:
-   - Exclusively route inference to **Anthropic Claude Opus 5** on **Vertex AI Model Garden**.
-   - Strictly comply with Google Cloud commercial data governance: customer code and prompts are **never** retained, logged by model vendors, or used for model training. See [pso-compliance-matrix.md](references/pso-compliance-matrix.md).
-2. **Identity & Access Governance (ADC / IAM)**:
-   - Authenticate exclusively via Google Cloud Application Default Credentials (ADC) or Workload Identity Federation with `roles/aiplatform.user`.
-   - Never accept, generate, or require hardcoded API keys or external SaaS tokens.
-3. **Zero-Placeholder Guarantee**:
-   - Every file written must be 100% complete and executable.
-   - You are strictly prohibited from emitting `TODO`, `pass`, `// implement later`, or truncated code blocks.
-4. **Automated 4-Tier Verification Gate**:
-   - No code is considered delivered until it passes four progressive verification checks:
-     - **Tier 1 (Syntax)**: AST parsing & language compile check.
-     - **Tier 2 (Linting)**: Linter audit (`ruff`, `flake8`, `eslint`).
-     - **Tier 3 (Types)**: Static type safety verification (`mypy`, `tsc`).
-     - **Tier 4 (Tests)**: Automated test execution (`pytest`, `npm test`, `cargo test`).
-5. **Workspace Safety & Atomic Rollback**:
-   - Always inspect existing workspace files and dependencies before editing. Provide atomic diffs and preserve working directory state.
+Every run is bound by a **Goal Contract**: an objective plus executable acceptance commands. The harness gives Claude sandboxed tools (`list_files`, `read_file`, `write_file`, `replace_in_file`, `run_verification`, `declare_goal_complete`). Claude keeps iterating until every acceptance command exits 0. The harness **re-runs verification itself** before it accepts completion, and rejects completions whose files contain placeholder markers.
 
 ---
 
-## 5-Phase Execution Methodology
+## Non-Negotiable Rules
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│ Phase 1: Ingest Spec & Analyze Boundary Conditions          │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│ Phase 2: Context Engineering & Prompt Construction          │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│ Phase 3: Vertex AI Model Garden Execution (ZDR Opus 5)       │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│ Phase 4: Workspace Code Assembly & 4-Tier Verification Gate  │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│ Phase 5: PSO Engagement Delivery Report                     │
-└─────────────────────────────────────────────────────────────┘
-```
+1. **Always goal mode.** Never call the model once and paste its output. The script has no single-shot mode, so don't build one around it.
+2. **No Goal Contract, no run.** Every run needs at least one `--verify` command. If you can't write an executable acceptance check, clarify the requirement with the user first.
+3. **Don't stop until the goal is met or the budget runs out.** You, the host agent, must not end your turn on a partial result. Re-run or fix directly until acceptance passes, or report honestly why it can't (see Phase 4).
+4. **Trust but verify.** Re-run the acceptance commands yourself after the harness exits, and review the diff. The harness blocks placeholders but can't tell whether a test was weakened.
+5. **Long runs:** for multi-hour work, suggest the user start the task with **`/goal`** so the session keeps going until the contract is met.
 
 ---
 
-### Phase 1: Ingest Spec & Analyze Boundary Conditions
+## Phase 1: Write the Goal Contract
 
-1. Read the input document thoroughly (e.g. `docs/PRD.md`, `specs/api_spec.md`, or the user prompt).
-2. Map out the operational boundaries:
-   - Target files and directories in the workspace.
-   - Core domain models, interfaces, and state machines.
-   - External dependencies (libraries, databases, GCP services).
-   - Non-functional requirements: latency, concurrency, fault tolerance, and security.
+Read the spec (`docs/PRD.md`, API spec, or the user's prompt) and write the contract in your plan before running anything:
 
-### Phase 2: Context Engineering & Prompt Construction
+| Field | Content |
+|---|---|
+| **Objective** | One paragraph: what must exist when the goal is met |
+| **Workspace** | The directory Claude may read and write (the sandbox root) |
+| **Acceptance commands** | 2–5 commands mapped to the 4 verification tiers (below). Each is its own `--verify` |
+| **Budget** | `--max-turns` (default 40) and `--token-budget` (default 2M tokens) |
 
-1. Select the relevant prompt template from [harness-prompt-template.md](references/harness-prompt-template.md):
-   - **Spec-to-Production-Code**: For end-to-end service or feature implementation.
-   - **Architectural Subsystem**: For multi-module components and event-driven architectures.
-   - **Code Review & Hardening**: For security and reliability refactoring.
-2. Embed the target specification, existing workspace file seams, and mandatory enterprise rules into the prompt payload.
+**Map the 4 verification tiers to the project's stack:**
 
-### Phase 3: Vertex AI Model Garden Execution
-
-Execute the live Model Garden ZDR script via `run_command`. In-context simulation is prohibited.
-
-```bash
-# If running against a specification file:
-python3 ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
-  --spec <path_to_spec.md> \
-  --output-dir <target_workspace_dir>
-
-# If running from a direct engineering prompt:
-python3 ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
-  --prompt "Implement distributed idempotency key middleware with Cloud Memorystore" \
-  --output-dir <target_workspace_dir>
-```
+| Tier | Python example | TypeScript example |
+|---|---|---|
+| 1. Syntax | `python3 -m compileall -q src` | `npx tsc --noEmit` |
+| 2. Lint | `ruff check .` | `npx eslint .` |
+| 3. Types | `mypy --strict src` | *(covered by tsc)* |
+| 4. Tests | `python3 -m pytest -q` | `npm test --silent` |
 
 > [!IMPORTANT]
-> **Authentication Check**: If unauthenticated, run `gcloud auth application-default login` and export `GOOGLE_CLOUD_PROJECT="<project_id>"`. Regional endpoints default to `us-central1` but can be customized with `--region <region>`.
-
-### Phase 4: Workspace Code Assembly & 4-Tier Verification Gate
-
-1. **File Placement**: Ensure all generated modules are written to their respective workspace locations.
-2. **Execute 4-Tier Verification**:
-   - **Tier 1 (Syntax Check)**:
-     ```bash
-     python3 -m py_compile src/<module>.py
-     ```
-   - **Tier 2 (Linting)**:
-     ```bash
-     ruff check src/
-     ```
-   - **Tier 3 (Type Checking)**:
-     ```bash
-     mypy --strict src/
-     ```
-   - **Tier 4 (Automated Tests)**:
-     ```bash
-     pytest tests/ -v
-     ```
-3. If any verification tier fails, invoke the harness review mode (`--review <file>`) to remediate the defect immediately.
-
-### Phase 5: PSO Engagement Delivery Report
-
-Present a concise delivery report to the user with:
-- **Model Endpoint**: `claude-opus-5` (Google Cloud Vertex AI Model Garden - ZDR)
-- **Files Created / Modified**: Clickable links with relative paths
-- **Architectural Patterns Applied**: Separation of concerns, concurrency safety, telemetry
-- **Verification Gate Status**: Output of syntax, lint, type-check, and test suite execution
-- **Compliance Attestation**: Confirmation of Zero Data Retention and ADC least-privilege compliance
+> Acceptance commands run **without a shell**. `&&`, pipes and redirects are rejected. Pass each check as its own `--verify` flag. Acceptance tests should exist **before** the run, written by you or the user from the spec, so Claude can't define its own finish line. If they don't exist yet, make "write tests for X" an explicit part of the objective and review those tests when the run finishes.
 
 ---
 
-## Supporting Resources & References
+## Phase 2: Run the Goal Loop
 
-- **PSO Compliance Matrix**: See [pso-compliance-matrix.md](references/pso-compliance-matrix.md) for enterprise security, IAM, and ZDR architecture details.
-- **Prompt Engineering Templates**: See [harness-prompt-template.md](references/harness-prompt-template.md) for production prompt schemas.
-- **End-to-End Walkthrough**: See [spec-to-production-code.md](examples/spec-to-production-code.md) for a complete example of spec-to-verified-code delivery.
-- **Model Garden Runner Script**: See [call_opus_model_garden.py](scripts/call_opus_model_garden.py) for the live API client.
+```bash
+python3 ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
+  --spec docs/PRD.md \
+  --workspace . \
+  --verify "python3 -m compileall -q src" \
+  --verify "ruff check src tests" \
+  --verify "mypy --strict src" \
+  --verify "python3 -m pytest -q" \
+  --report .harness_report.json
+```
+
+Other entry points:
+- `--goal "<objective>"`: prompt-driven goal instead of a spec file.
+- `--review src/module.py --goal "Harden for input validation and timeouts"`: harden a workspace file in place until acceptance passes.
+- `--model`, `--region`, `--project`, `--max-turns`, `--token-budget`, `--max-tokens`, `--verify-timeout`, `--temperature`.
+
+**Setup:**
+- Install the SDK: `pip install 'anthropic[vertex]'`.
+- Authenticate: `gcloud auth application-default login`.
+- Set `GOOGLE_CLOUD_PROJECT` (or pass `--project`). The identity needs `roles/aiplatform.user`.
+
+---
+
+## Phase 3: Read the Report
+
+The script prints a JSON report to stdout and uses these exit codes:
+
+| Exit | `status` | Meaning |
+|---|---|---|
+| `0` | `goal_met` | All acceptance commands passed and Claude declared completion |
+| `2` | `max_turns_reached` / `token_budget_exhausted` / `stalled` / `model_refused` | Goal not met. `acceptance` shows which checks still fail |
+| `1` | `api_error` or setup error | Auth, quota, model ID, or configuration problem. See `error` |
+
+---
+
+## Phase 4: Close the Goal
+
+1. **Re-verify independently.** Run every acceptance command yourself.
+2. **Review the diff** (`git diff`) for weakened or deleted tests, scope creep, and hardcoded secrets.
+3. **If the goal wasn't met:** re-run the harness with a narrower objective that names the failing checks, or fix the remaining issues directly. Repeat until acceptance passes.
+4. **If you still can't meet it after 3 harness runs:** stop and report the blocker. Don't present partial work as done.
+
+---
+
+## Phase 5: Delivery Report
+
+Tell the user:
+- **Goal Contract:** the objective and the acceptance commands, each marked pass or fail.
+- **Harness runs:** how many, turns and tokens used, and the final `status`.
+- **Files created or modified:** clickable links.
+- **Endpoint:** model ID, region, and project used.
+- **Data governance:** state the facts (Vertex AI endpoint, project, region). **Don't claim compliance certifications or "zero data retention" on the model's word.** Point to your organization's contract and [pso-compliance-matrix.md](references/pso-compliance-matrix.md).
+
+---
+
+## When NOT to Use This Harness
+
+- **Small edits** the current agent can make and verify directly.
+- **An interactive, full-featured agent session with Claude on Vertex.** Use Claude Code with `CLAUDE_CODE_USE_VERTEX=1` instead. This harness is for unattended, contract-bound delegation.
+
+---
+
+## References
+
+- [harness-prompt-template.md](references/harness-prompt-template.md): objective templates for spec, subsystem, and hardening goals.
+- [spec-to-production-code.md](examples/spec-to-production-code.md): an end-to-end goal-mode walkthrough.
+- [pso-compliance-matrix.md](references/pso-compliance-matrix.md): IAM, data residency, and data-governance notes.
+- [call_opus_model_garden.py](scripts/call_opus_model_garden.py): the goal-loop runner. Offline tests: `python3 -m unittest discover -s ai-coding/claude-agent-harness/scripts -p 'test_*.py'`.

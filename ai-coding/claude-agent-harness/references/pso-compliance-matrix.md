@@ -1,63 +1,55 @@
-# Google Cloud PSO Compliance & Security Matrix: Claude Agent Harness
+# Security & Data-Governance Notes: Claude Agent Harness
 
-This document outlines the enterprise security, governance, and architectural compliance standards enforced by the **Claude Agent Harness** AI coding solution. It aligns with Google Cloud Professional Services Organization (PSO) delivery standards for enterprise customer engagements.
+This document covers the security controls the **Claude Agent Harness** actually implements, and the data-governance facts to confirm before using it on a customer engagement.
+
+> [!WARNING]
+> **Confirm data-handling terms before you rely on them.** Retention, logging, and training commitments for third-party models on Vertex AI come from your organization's Google Cloud agreement, the model's Model Garden terms, and project settings (for example, caching and abuse-monitoring configuration). **Neither the harness nor the model can attest to them.** Check the current Vertex AI data-governance documentation and your contract before telling a customer that data is "zero retention".
 
 ---
 
-## 1. Compliance Architecture Overview
+## 1. Architecture Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│ Enterprise Customer Security Perimeter (VPC-SC / Cloud IAM)                             │
+│ Customer / engagement environment (IAM, optionally VPC-SC)                              │
 │                                                                                         │
-│  ┌───────────────────────┐         ┌────────────────────────┐                           │
-│  │ Spec / PRD Document   │ ──────▶ │ Claude Agent Harness   │                           │
-│  │ (Architecture / Code) │         │ (Context & Gatekeeper) │                           │
-│  └───────────────────────┘         └───────────┬────────────┘                           │
-│                                                │                                        │
-│                 Google Cloud Application Default Credentials (ADC) / IAM                │
-│                 `roles/aiplatform.user` / Workload Identity Federation                  │
-│                                                │                                        │
-│                                                ▼                                        │
-│                                    ┌────────────────────────┐                           │
-│                                    │ Vertex AI Model Garden │                           │
-│                                    │ API Endpoint           │                           │
-│                                    └───────────┬────────────┘                           │
-│                                                │                                        │
-│                                                ▼                                        │
-│                             ┌──────────────────────────────────────┐                    │
-│                             │ Anthropic Claude Opus 5 on Vertex AI │                    │
-│                             │  - Zero Data Retention (ZDR)         │                    │
-│                             │  - Enterprise SLA & Encryption       │                    │
-│                             │  - Customer Data Isolation           │                    │
-│                             └──────────────────────────────────────┘                    │
+│  ┌───────────────────────┐       ┌──────────────────────────────┐                       │
+│  │ Spec / PRD + Goal     │ ────▶ │ Goal-loop harness (local)    │── acceptance cmds ──┐ │
+│  │ Contract (--verify)   │       │ sandboxed file tools only    │◀─ exit codes ───────┘ │
+│  └───────────────────────┘       └──────────────┬───────────────┘                       │
+│                                                 │ ADC / Workload Identity               │
+│                                                 │ roles/aiplatform.user                 │
+│                                                 ▼                                       │
+│                                   ┌──────────────────────────────┐                      │
+│                                   │ Vertex AI Model Garden       │                      │
+│                                   │ Anthropic Claude (regional)  │                      │
+│                                   └──────────────────────────────┘                      │
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 2. Compliance Pillars
+## 2. Controls
 
-| Pillar | Requirement | PSO Standard Implementation | Verification Mechanism |
+| Area | Requirement | How the harness implements it | How to verify |
 | :--- | :--- | :--- | :--- |
-| **Data Retention (ZDR)** | Zero Data Retention on inference prompts and outputs | Exclusively routes requests to Anthropic Claude Opus 5 on Vertex AI Model Garden under Google Cloud commercial ZDR terms. Prompts and completions are never retained, logged by model providers, or used for model training. | Commercial Enterprise Agreement & Vertex AI Data Governance SLAs. |
-| **Identity & Access** | Least-privilege IAM; zero hardcoded credentials | Uses Application Default Credentials (ADC) via `gcloud auth application-default login`, Google Service Accounts, or Workload Identity Federation. Requires `roles/aiplatform.user`. | Pre-flight credential check via `google.auth.default()`. |
-| **Data Residency** | Control over physical geographic data processing | Dynamic region selection (`CLOUD_ML_REGION` or `--region`), allowing routing to `us-central1`, `europe-west1`, or other authorized Vertex AI regional endpoints. | Regional endpoint validation in script flags. |
-| **Perimeter Security** | VPC Service Controls (VPC-SC) readiness | Operates within Google Cloud VPC perimeters without traversing public third-party SaaS endpoints. | Google API endpoint resolution within private Google Access / PSC. |
-| **Code Completeness** | Zero placeholder / zero hallucination delivery | Strict prompt engineering and post-generation gatekeeping prohibit `TODO`, `pass`, or truncated code stubs. | Automated lint and AST parsing passes before delivery. |
-| **Quality Verification** | Multi-tier validation before disk modification | 4-tier verification gate: Syntax -> Linting -> Type Check -> Test Suite execution. | Automated CLI test execution (`pytest`, `npm test`). |
+| **Data handling** | Inference data governed by Google Cloud terms | Requests go only to Anthropic Claude on Vertex AI Model Garden, in your project and region. No third-party SaaS endpoints. | Confirm retention and training terms in your agreement and the Vertex AI docs (see warning above). |
+| **Identity & access** | Least-privilege IAM; no hardcoded credentials | Application Default Credentials (`gcloud auth application-default login`), service accounts, or Workload Identity Federation, resolved by the Anthropic Vertex client. No API keys. | A failed auth is reported as `api_error` with a re-login hint. The identity needs `roles/aiplatform.user`. |
+| **Data residency** | Control over processing region | `--region` / `CLOUD_ML_REGION` pick the regional endpoint. | `region` field in the JSON report. |
+| **Perimeter** | VPC-SC compatibility | Calls only Google APIs (`*-aiplatform.googleapis.com`). | Test inside your perimeter; add Vertex AI to the service perimeter. |
+| **Workspace sandbox** | Model output can't write outside the target repo | Every tool path is resolved (including symlinks) and must stay inside `--workspace`. Absolute paths, `..` escapes, and `.git/` are rejected. 1 MB write cap. | Offline unit tests in `scripts/test_call_opus_model_garden.py`. |
+| **Command execution** | No arbitrary shell from model output | The model can only trigger the operator-defined `--verify` commands, run without a shell. Shell operators are rejected. | Code review of `run_verification` / `parse_verify_command`. |
+| **Code completeness** | No placeholder delivery | Completion is rejected if files written in the run contain `TODO`/`FIXME`/`XXX` markers (except `TODO(security)`) or "implement later"-style phrases. | `declare_goal_complete` rejection messages; unit tests. |
+| **Quality verification** | Code verified before it's accepted | Goal loop: the harness re-runs every acceptance command (syntax → lint → types → tests) before accepting completion. The host agent re-runs them again. | JSON report `acceptance` array plus an independent re-run. |
 
 ---
 
-## 3. Identity and Access Management (IAM) Roles
+## 3. IAM Roles
 
-To execute the Claude Agent Harness in an enterprise environment, the calling identity (user account or service account) must hold the following minimum permissions:
+The calling identity (user or service account) needs:
 
-- **Required Role**: `roles/aiplatform.user` (Vertex AI User)
-- **Minimum Permissions**:
-  - `aiplatform.endpoints.predict`
-  - `aiplatform.models.list`
-  - `resourcemanager.projects.get`
+- **Role:** `roles/aiplatform.user` (Vertex AI User)
+- **Also:** access to the project where the Claude model is enabled in Model Garden.
 
 ### Service Account Example (Terraform)
 ```hcl
@@ -70,31 +62,33 @@ resource "google_project_iam_member" "ai_coding_harness" {
 
 ---
 
-## 4. Zero Data Retention (ZDR) Guarantees
+## 4. What You May and May Not Claim to a Customer
 
-Under the Google Cloud Vertex AI terms for third-party models in Model Garden:
-1. **No Foundation Model Training**: Customer prompts, inputs, specifications, and generated code are **never** used to train, retrain, or improve foundational models by Google or Anthropic.
-2. **Ephemeral Inference**: Inference data is processed in-memory and discarded upon completion of the response stream.
-3. **Encryption**: All data in transit is encrypted using TLS 1.3; data at rest in Vertex AI is encrypted with Google-managed or Customer-Managed Encryption Keys (CMEK).
+| ✅ Supported by this harness | ⚠️ Needs contractual or documentation confirmation |
+|---|---|
+| Requests go to Vertex AI in project `X`, region `Y` | "Zero data retention" |
+| No API keys; ADC / Workload Identity only | "Never used for training" (confirm current Model Garden terms) |
+| Model output was sandboxed to the repo, and only operator-defined commands ran | Specific encryption or TLS versions, CMEK coverage |
+| Acceptance commands passed (with the report attached) | Any certification (SOC 2, HIPAA, etc.) for this workflow |
 
 ---
 
-## 5. Pre-Flight Checklist for PSO Engagements
+## 5. Pre-Flight Checklist
 
-Before running the harness in customer environments:
-1. Verify Google Cloud Project ID is active:
+1. Project is set:
    ```bash
    gcloud config get-value project
    ```
-2. Ensure Vertex AI API is enabled:
+2. Vertex AI API is enabled:
    ```bash
    gcloud services enable aiplatform.googleapis.com
    ```
-3. Verify Application Default Credentials:
+3. ADC is valid:
    ```bash
-   gcloud auth application-default print-access-token
+   gcloud auth application-default print-access-token > /dev/null && echo ok
    ```
-4. Verify required Python packages:
+4. SDK is installed in the project environment (not globally):
    ```bash
-   pip install --upgrade "anthropic[vertex]" google-auth
+   pip install "anthropic[vertex]"
    ```
+5. The Claude model you pass as `--model` is enabled in Model Garden for your project and region.
