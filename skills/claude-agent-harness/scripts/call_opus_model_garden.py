@@ -19,6 +19,7 @@ Exit codes: 0 = goal met, 2 = goal not met (turn/token budget or stall),
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import os
 import re
@@ -193,15 +194,27 @@ class Workspace:
     def relative(self, abs_path: str) -> str:
         return os.path.relpath(abs_path, self.root)
 
+    def _is_contained(self, path: str) -> bool:
+        real = os.path.realpath(path)
+        return real == self.root or real.startswith(self.root + os.sep)
+
     def list_files(self, rel_dir: str = ".") -> str:
         base = self.resolve(rel_dir or ".")
         if not os.path.isdir(base):
             raise WorkspaceError(f"not a directory: {rel_dir}")
         entries: list[str] = []
         for current, dirs, files in os.walk(base):
-            dirs[:] = sorted(d for d in dirs if d not in IGNORED_DIRS)
+            dirs[:] = sorted(
+                d
+                for d in dirs
+                if d not in IGNORED_DIRS
+                and self._is_contained(os.path.join(current, d))
+            )
             for name in sorted(files):
-                entries.append(self.relative(os.path.join(current, name)))
+                full = os.path.join(current, name)
+                if not self._is_contained(full):
+                    continue
+                entries.append(self.relative(full))
                 if len(entries) >= MAX_LIST_ENTRIES:
                     return (
                         "\n".join(entries)
@@ -349,6 +362,7 @@ class GoalConfig:
     verify_timeout: int = 600
     temperature: float | None = None
     max_idle_turns: int = 3
+    tracked_files: tuple[str, ...] = ()
 
 
 @dataclass
@@ -388,11 +402,23 @@ class GoalHarness:
             raise ValueError(
                 "goal mode requires at least one acceptance command (--verify)"
             )
+        if (
+            config.max_turns < 1
+            or config.max_tokens < 1
+            or config.token_budget < 1
+            or config.verify_timeout < 1
+        ):
+            raise ValueError(
+                "max_turns, max_tokens, token_budget, and verify_timeout must be >= 1"
+            )
         for command in config.verify_commands:
             parse_verify_command(command)
         self.client = client
         self.config = config
         self.workspace = Workspace(config.workspace)
+        for rel in config.tracked_files:
+            resolved = self.workspace.resolve(rel)
+            self.workspace.written.add(self.workspace.relative(resolved))
         self.state = GoalState()
         self.log = log or (lambda message: print(message, file=sys.stderr))
 
@@ -574,7 +600,12 @@ class GoalHarness:
 
 def discover_project_id() -> str | None:
     """Resolve the GCP project from the environment or gcloud config."""
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("GCP_PROJECT")
+    project_id = (
+        os.environ.get("ANTHROPIC_VERTEX_PROJECT_ID")
+        or os.environ.get("GOOGLE_CLOUD_PROJECT")
+        or os.environ.get("CLOUD_ML_PROJECT_ID")
+        or os.environ.get("GCP_PROJECT")
+    )
     if project_id:
         return project_id.strip()
     try:
@@ -628,6 +659,8 @@ def build_goal_text(args: argparse.Namespace, workspace: str) -> str:
             raise ValueError(
                 f"--review file must be inside the workspace: {args.review}"
             )
+        if not os.path.isfile(review_abs):
+            raise FileNotFoundError(f"--review file not found: {args.review}")
         if not parts:
             parts.append(
                 "Review and harden the file below in place for security, reliability, and correctness."
@@ -732,6 +765,10 @@ def main(argv: list[str] | None = None) -> int:
             )
         for command in args.verify:
             parse_verify_command(command)
+        tracked: tuple[str, ...] = ()
+        if args.review:
+            root = os.path.realpath(args.workspace)
+            tracked = (os.path.relpath(os.path.realpath(args.review), root),)
     except (OSError, ValueError) as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
@@ -743,8 +780,8 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 1
     try:
-        from anthropic import AnthropicVertex
-    except ImportError:
+        AnthropicVertex = importlib.import_module("anthropic").AnthropicVertex
+    except (ImportError, AttributeError):
         print(
             "Error: install the Vertex extra: pip install 'anthropic[vertex]'",
             file=sys.stderr,
@@ -764,6 +801,7 @@ def main(argv: list[str] | None = None) -> int:
         token_budget=args.token_budget,
         verify_timeout=args.verify_timeout,
         temperature=args.temperature,
+        tracked_files=tracked,
     )
     report = GoalHarness(client, config).run()
     report.update({"project": project_id, "region": args.region})

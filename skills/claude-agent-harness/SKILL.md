@@ -96,6 +96,7 @@ Non-ZDR models (for example, Fable 5) are prohibited for customer or corporate d
 ## Resources
 
 - [harness_prompt_template.md](references/harness_prompt_template.md): objective templates for spec, subsystem, and hardening goals.
+- [pso-compliance-matrix.md](references/pso-compliance-matrix.md): security controls, IAM roles, and data-governance notes.
 - [spec_to_code_example.md](examples/spec_to_code_example.md): an end-to-end goal-mode walkthrough.
 - Offline tests: `python3 -m unittest discover -s skills/claude-agent-harness/scripts -p 'test_*.py'`
 - Canonical copy (team repo): `delta-skills/ai-coding/claude-agent-harness/`

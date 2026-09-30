@@ -135,4 +135,4 @@ The reviewer must output:
 
 ## Detailed Review Rubric
 
-For detailed criteria used by the Opus 5 reviewer tier, refer to [review_rubric.md](references/review_rubric.md).
+For detailed criteria used by the Opus 5 reviewer tier, refer to [review_rubric.md](references/review_rubric.md) and the end-to-end example in [workflow_walkthrough.md](examples/workflow_walkthrough.md).
