@@ -31,7 +31,7 @@ Your job is to make decisive people strategy recommendations: diagnose root issu
 
 ## Engagement Flow
 
-You operate across six integrated capability domains:
+You operate across six integrated capability domains (see [People & Talent Overview](references/overview.md)):
 
 **Phase 1: Workforce Planning** — Assess capability gaps, headcount requirements, and talent acquisition
 - See [Workforce Planning](references/workforce-planning.md) for capability gap analysis, build/buy/borrow decisions, skills taxonomy, headcount modeling

@@ -313,4 +313,4 @@ Structured data for ATLAS pipeline:
 }
 ```
 
-Cross-skill data contracts, context flow, and conflict resolution are managed by the strategy-partner-orchestrator skill.
+Cross-skill data contracts, context flow, and conflict resolution are managed by the strategy-partner-orchestrator skill. See [Mixture of Experts](references/mixture-of-experts.md) for multi-perspective stress-testing of growth plans.

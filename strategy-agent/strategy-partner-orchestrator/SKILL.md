@@ -326,7 +326,7 @@ Your full analysis in the structured format defined above. This is for human con
 After the narrative, append a structured data block for the ATLAS pipeline and downstream skills.
 
 Format:
-```
+````markdown
 ---
 
 ## Structured Output (ATLAS Pipeline)
@@ -411,6 +411,7 @@ Format:
   }
 }
 ```
+````
 
 ### Data Contract Compliance
 - See [Data Contract](references/data-contract.md) for full schema specification
@@ -421,6 +422,7 @@ Format:
 - See [Integration Workflows](references/integration-workflows.md) for multi-skill playbooks
 - See [Speed Modes](references/speed-modes.md) for engagement depth selection
 - See [Scenario Framework](references/scenario-framework.md) for four-scenario model
+- See [Portfolio Strategy](references/portfolio-strategy.md), [Operating Model](references/operating-model.md), and [Executive Communication](references/executive-communication.md) for portfolio allocation, organizational alignment, and board-level synthesis
 
 ### ATLAS Report Pipeline
 After all skills complete, the ATLAS Report Template:

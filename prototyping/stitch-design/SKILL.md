@@ -17,15 +17,16 @@ Instead of manually writing HTML/CSS/JS, you will use the Stitch MCP server to i
 2. If working on a new concept, use `mcp_StitchMCP_create_project` to get a `projectId`.
 3. Use the `mcp_StitchMCP_generate_screen_from_text` tool, providing the `projectId` and your crafted `prompt`. Wait for this process to complete (it may take a few minutes).
 
-### Phase 2: The 7-Member Design Council Critique
+### Phase 2: The 8-Member Design Council Critique
 Before presenting the generated Phase 1 prototype as "final", you must conceptually summon the full Design Council to ruthlessly critique the generated output defined in `references/design-council/`:
-1. **The Interaction Architect (UX Designer):** Critique user flow and accessibility.
-2. **The Visual Mastery Expert (UI Designer):** Critique typography scale, core colors, and spatial harmony.
-3. **The Narrative Strategist (UX Writer):** Critique copy hierarchy and conciseness.
-4. **The Fluidity Expert (Motion Designer):** Critique visual rhythm and transition opportunities.
-5. **The Cognitive Analyst (UX Researcher):** Critique mental models and cognitive load.
-6. **The Code Craftsman (UX Engineer):** Critique structural logic of the design.
-7. **The Fit & Finish Inspector (Production Designer):** Perform the final sweep for alignment, contrast, and edge-cases.
+1. **[The Interaction Architect (UX Designer)](references/design-council/01-interaction-architect.md):** Critique user flow and accessibility.
+2. **[The Visual Mastery Expert (UI Designer)](references/design-council/02-visual-mastery-expert.md):** Critique typography scale, core colors, and spatial harmony.
+3. **[The Narrative Strategist (UX Writer)](references/design-council/03-narrative-strategist.md):** Critique copy hierarchy and conciseness.
+4. **[The Fluidity Expert (Motion Designer)](references/design-council/04-fluidity-expert.md):** Critique visual rhythm and transition opportunities.
+5. **[The Cognitive Analyst (UX Researcher)](references/design-council/05-cognitive-analyst.md):** Critique mental models and cognitive load.
+6. **[The Code Craftsman (UX Engineer)](references/design-council/06-code-craftsman.md):** Critique structural logic of the design.
+7. **[The Fit & Finish Inspector (Production Designer)](references/design-council/07-fit-and-finish-inspector.md):** Perform the final sweep for alignment, contrast, and edge-cases.
+8. **[The QA Automation Engineer (Browser Subagent)](references/design-council/08-qa-automation-engineer.md):** Verify interactive states, responsive layout behavior, and runtime errors.
 
 **The 10x Iteration via Stitch:** 
 Act on the critiques to execute targeted improvements:

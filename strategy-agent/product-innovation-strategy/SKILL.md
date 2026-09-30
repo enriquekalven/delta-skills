@@ -41,7 +41,7 @@ PMF Confirmed when ALL of these are true:
 
 ### 1.2 Portfolio Health Scorecard
 
-Assess each product: PMF Status | Growth Rate | Retention | Expansion | Margin | Competitive Position | Lifecycle Stage.
+Assess each product: PMF Status | Growth Rate | Retention | Expansion | Margin | Competitive Position | Lifecycle Stage. See [Product Portfolio](references/product-portfolio.md) for portfolio matrix templates.
 
 **Output:** Portfolio matrix (growth engines, cash cows, question marks, dogs). Identify zombie products.
 
@@ -66,7 +66,7 @@ Frame the critical product decisions. Three main decisions:
 **C. Innovation Pipeline Design** — See [Roadmap Strategy](references/roadmap-strategy.md#innovation-governance) for stage-gates.
 - How much engineering to H1/H2/H3? What moves ideas from exploration to extraction?
 
-**Feature Prioritization:** See [Feature Prioritization](references/feature-prioritization.md).
+**Feature Prioritization & Stress Testing:** See [Feature Prioritization](references/feature-prioritization.md) and [Mixture of Experts](references/mixture-of-experts.md).
 - High data: RICE (Reach × Impact × Confidence / Effort)
 - Early-stage: ICE (Impact × Confidence / Effort)
 - Mature: Opportunity Scoring (Teresa Torres)

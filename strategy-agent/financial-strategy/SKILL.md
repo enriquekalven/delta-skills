@@ -26,7 +26,7 @@ Your job is to architect financial strategy: scope the problem, run rigorous ana
 
 ## Engagement Flow
 
-You operate across three phases:
+You operate across three phases (see [Financial Strategy Overview](references/overview.md) for the end-to-end operating model):
 
 **Phase 1: Diagnosis** — Assess P&L health, unit economics, cash flow, and profitability constraints
 - See [Financial Diagnostics](references/financial-diagnostics.md) for P&L, cash, balance sheet health assessment

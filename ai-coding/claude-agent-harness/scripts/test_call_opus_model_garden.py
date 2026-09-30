@@ -312,6 +312,61 @@ class CliTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 harness.build_goal_text(args, root)
 
+    def test_review_target_must_exist(self) -> None:
+        with tempfile.TemporaryDirectory() as root:
+            missing = os.path.join(root, "nonexistent.py")
+            args = harness.build_arg_parser().parse_args(
+                ["--review", missing, "--workspace", root]
+            )
+            with self.assertRaises(FileNotFoundError):
+                harness.build_goal_text(args, root)
+
+    def test_list_files_omits_symlinks_escaping_workspace(self) -> None:
+        with tempfile.TemporaryDirectory() as outer:
+            ws_dir = os.path.join(outer, "ws")
+            os.makedirs(ws_dir)
+            secret = os.path.join(outer, "secret.txt")
+            with open(secret, "w", encoding="utf-8") as handle:
+                handle.write("secret")
+            os.symlink(secret, os.path.join(ws_dir, "escape.txt"))
+            ws = harness.Workspace(ws_dir)
+            ws.write_file("safe.py", "x = 1\n")
+            self.assertEqual(ws.list_files("."), "safe.py")
+
+    def test_tracked_review_file_is_checked_for_placeholders(self) -> None:
+        with tempfile.TemporaryDirectory() as root:
+            target = os.path.join(root, "calc.py")
+            with open(target, "w", encoding="utf-8") as handle:
+                handle.write(FIXED + "# TODO remove before prod\n")
+            client = FakeClient(
+                [
+                    reply(tool("declare_goal_complete", "t1", summary="looks good")),
+                    reply(tool("write_file", "t2", path="calc.py", content=FIXED)),
+                    reply(tool("declare_goal_complete", "t3", summary="cleaned up")),
+                ]
+            )
+            config = harness.GoalConfig(
+                goal="Harden calc.py",
+                verify_commands=[CHECK_ADD],
+                workspace=root,
+                tracked_files=("calc.py",),
+            )
+            report = harness.GoalHarness(client, config, log=lambda _m: None).run()
+            self.assertTrue(report["goal_met"])
+            self.assertEqual(report["turns"], 3)
+
+    def test_rejects_non_positive_budgets(self) -> None:
+        with tempfile.TemporaryDirectory() as root, self.assertRaises(ValueError):
+            harness.GoalHarness(
+                FakeClient([]),
+                harness.GoalConfig(
+                    goal="g",
+                    verify_commands=[CHECK_ADD],
+                    workspace=root,
+                    max_turns=0,
+                ),
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -47,6 +47,7 @@ Determine the AI solution's "altitude":
 4.  **Categorize Intent & Metrics:** For every AI touchpoint, pick an exact Intent and define Quality Measurement Variants.
 5.  **Determine Effect:** Explicitly define the AI Effect (Remove/Replace/etc.).
 6.  **Linguistic Formulation:** Draft the final value prop using the strict template.
+7.  **Output & Schema Validation:** Format the deliverable using [output-template.md](references/output-template.md) and validate structured JSON payloads against [schema.json](references/schema.json).
 
 ---
 

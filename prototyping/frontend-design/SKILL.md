@@ -18,14 +18,14 @@ Before setting up a complex build system, you must prove the concept visually wi
 
 ### Phase 2: The 8-Member Design Council Critique
 Before presenting the Phase 1 prototype to the user, you must summon the full Design Council to ruthlessly critique the code based on the persona files defined in `references/design-council/`:
-1. **The Interaction Architect (UX Designer):** Critique user flow and accessibility.
-2. **The Visual Mastery Expert (UI Designer):** Critique typography scale, core colors, and spatial harmony.
-3. **The Narrative Strategist (UX Writer):** Critique copy hierarchy and conciseness.
-4. **The Fluidity Expert (Motion Designer):** Critique CSS physics, transitions, and easing curves.
-5. **The Cognitive Analyst (UX Researcher):** Critique mental models and cognitive load.
-6. **The Code Craftsman (UX Engineer):** Critique DOM structure and CSS modularity.
-7. **The Fit & Finish Inspector (Production Designer):** Perform the final sweep for mathematical alignment, SVGs, and edge-case rendering.
-8. **The QA Automation Engineer (Browser Subagent):** Launch the prototype physically in a Chrome browser, interact with buttons, capture layout discrepancies, and report JavaScript console errors.
+1. **[The Interaction Architect (UX Designer)](references/design-council/01-interaction-architect.md):** Critique user flow and accessibility.
+2. **[The Visual Mastery Expert (UI Designer)](references/design-council/02-visual-mastery-expert.md):** Critique typography scale, core colors, and spatial harmony.
+3. **[The Narrative Strategist (UX Writer)](references/design-council/03-narrative-strategist.md):** Critique copy hierarchy and conciseness.
+4. **[The Fluidity Expert (Motion Designer)](references/design-council/04-fluidity-expert.md):** Critique CSS physics, transitions, and easing curves.
+5. **[The Cognitive Analyst (UX Researcher)](references/design-council/05-cognitive-analyst.md):** Critique mental models and cognitive load.
+6. **[The Code Craftsman (UX Engineer)](references/design-council/06-code-craftsman.md):** Critique DOM structure and CSS modularity.
+7. **[The Fit & Finish Inspector (Production Designer)](references/design-council/07-fit-and-finish-inspector.md):** Perform the final sweep for mathematical alignment, SVGs, and edge-case rendering.
+8. **[The QA Automation Engineer (Browser Subagent)](references/design-council/08-qa-automation-engineer.md):** Launch the prototype physically in a Chrome browser, interact with buttons, capture layout discrepancies, and report JavaScript console errors.
 9. **The 10x Iteration:** Act on the 8 critiques to execute a massive iteration on the `index.html` file. **CRITICAL EXECUTION RULE: When extracting shared CSS based on council feedback, YOU MUST NEVER delete page-specific `.hero` padding, unique CSS grid layouts, or local width constraints.** Only extract generic tokens and nav/footer boilerplate. Destroying local layout grids is an unacceptable failure.
 *Only after this 10x iteration do you present the prototype to the user for sign-off.*
 

@@ -324,7 +324,7 @@ Your full kernel with crux, diagnosis, guiding policy, coherent actions. This is
 After the narrative, append a structured data block for the ATLAS pipeline and downstream skills.
 
 Format:
-```
+````markdown
 ---
 
 ## Structured Output (ATLAS Pipeline)
@@ -409,9 +409,12 @@ Format:
   }
 }
 ```
+````
 
-### Data Contract Compliance
+### Data Contract Compliance & Additional References
 - Cross-skill data contracts, context flow, and conflict resolution are managed by the strategy-partner-orchestrator skill.
+- See [Strategy Foundry](references/strategy-foundry.md) for end-to-end kernel facilitation and workshop execution.
+- See [Mixture of Experts](references/mixture-of-experts.md) for 3-perspective stress-test prompts.
 
 
 

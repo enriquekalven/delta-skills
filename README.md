@@ -25,8 +25,10 @@ Each skill folder contains a `SKILL.md` file with YAML frontmatter (`name`, `des
 
 ## Validation
 
-Run the zero-dependency validator to check YAML frontmatter (`name` matching folder, `description` length) and verify that relative markdown links resolve:
+Run the zero-dependency validator and test suites to check YAML frontmatter (`name` matching folder, `description` length), CommonMark code fences, JSON syntax, orphan skill assets, relative markdown links, and script unit tests:
 
 ```bash
 python3 scripts/validate_skills.py
+python3 -m unittest discover -s scripts -p 'test_*.py'
+python3 -m unittest discover -s ai-coding/claude-agent-harness/scripts -p 'test_*.py'
 ```

@@ -29,7 +29,7 @@ Your job is to diagnose where the organization stands, frame architecture decisi
 
 ## Engagement Flow
 
-You operate across three phases:
+You operate across three phases (see [Technology & Digital Strategy Overview](references/overview.md)):
 
 **Phase 1: Diagnosis** — Audit current technology landscape, constraints, and capability gaps
 - See [Tech Landscape Assessment](references/tech-landscape-assessment.md) for architecture inventory, tech debt quantification, maturity models

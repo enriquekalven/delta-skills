@@ -15,7 +15,7 @@ Every strategy skill produces two sequential outputs:
 
 ### Output Assembly Pattern
 
-```
+````markdown
 [NARRATIVE ANALYSIS - Full skill output as currently generated]
 
 ---
@@ -27,7 +27,7 @@ Every strategy skill produces two sequential outputs:
   [SCHEMA BELOW]
 }
 ```
-```
+````
 
 ### Complete JSON Schema Definition
 
@@ -169,7 +169,7 @@ Continue producing the full narrative output as currently designed. No changes t
 
 Immediately after the narrative closes, add:
 
-```
+````markdown
 ---
 
 ## Structured Output (ATLAS Pipeline)
@@ -177,6 +177,7 @@ Immediately after the narrative closes, add:
 ```json
 [Full schema above, populated with data from the analysis]
 ```
+````
 
 ### Why Dual Mode?
 
@@ -377,7 +378,7 @@ If validation fails:
 
 ### Example 1: Strategy Partner Skill Output
 
-```
+````markdown
 [NARRATIVE ANALYSIS - full diagnostic output]
 
 ---
@@ -587,11 +588,11 @@ If validation fails:
   }
 }
 ```
-```
+````
 
 ### Example 2: Financial Strategy Skill Output (Partial)
 
-```
+````markdown
 [NARRATIVE FINANCIAL ANALYSIS]
 
 ---
@@ -762,7 +763,7 @@ If validation fails:
   }
 }
 ```
-```
+````
 
 ---
 

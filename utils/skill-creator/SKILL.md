@@ -8,7 +8,7 @@ description: Guides the creation and initialization of new agent skills. Trigger
 This skill guides the process of creating highly effective, reusable agent skills specifically optimized for the **Gemini 3.1 Pro** ecosystem. A skill is a self-contained directory that teaches the agent how to handle specific, repeatable workflows by combining instructions, scripts, and reference files.
 
 ## Mandatory Architectural Standards
-When creating a new skill, you MUST adhere to the following framework defined in our `agentskills-specification.md`:
+When creating a new skill, you MUST adhere to the following framework defined in our [agentskills-specification.md](references/agentskills-specification.md):
 
 1.  **Progressive Disclosure:** Gemini has massive context, but fast inference requires lean instructions. The primary `SKILL.md` file MUST stay under 5,000 words. Push heavyweight domain knowledge to the `references/` folder and executable logic to the `scripts/` folder.
 2.  **The 3-Pass Test (`description` block formatting):** The `description` in the YAML frontmatter controls when a skill activates. You must write descriptions that pass:
@@ -27,20 +27,20 @@ Ask the user what kind of skill they want to build. Ask them for:
 2. What scenario should explicitly *not* trigger the skill (Negative Trigger).
 
 ### Step 2: Plan the Architecture
-Analyze the user's requirements against the `agentskills-specification.md` (located in `references/`). Plan the skill's contents using the Progressive Disclosure model:
+Analyze the user's requirements against [agentskills-specification.md](references/agentskills-specification.md). Plan the skill's contents using the Progressive Disclosure model:
 -   **Core `SKILL.md`:** What are the high-level operational instructions?
 -   **Scripts (`scripts/`):** Are there repetitive actions that require bash/python execution?
 -   **References (`references/`):** Is there domain knowledge or templates needed that should be loaded on-demand rather than polluting the core `SKILL.md`?
 
 ### Step 3: Initialize the Directory
-Once the user approves the plan, establish the skill directory.
+Once the user approves the plan, establish the skill directory (for example using [init_skill.py](scripts/init_skill.py): `python3 utils/skill-creator/scripts/init_skill.py <skill-name> --path <parent-dir>`).
 Ensure it has the following structure:
 - `[skill-name]/SKILL.md`
 - `[skill-name]/scripts/` (optional)
 - `[skill-name]/references/` (optional)
 
 ### Step 4: Write `SKILL.md`
-Draft the `SKILL.md` using `references/skill-template.md` as your structural base.
+Draft the `SKILL.md` using [skill-template.md](references/skill-template.md) as your structural base.
 **Crucial Formatting Rules:**
 1.  **YAML Frontmatter:** Must be at the very top.
     ```yaml
