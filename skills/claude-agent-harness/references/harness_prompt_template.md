@@ -1,50 +1,90 @@
-# Opus 5 ZDR Harness Prompt Templates
+# Goal Objective Templates
 
-This reference provides standard prompt structures used when invoking code generation harnesses under the **Claude Agent Harness** skill on Vertex AI Model Garden.
+These templates are **objectives** for the goal-mode harness. Pass one as `--goal` (or in a `--file`), together with `--verify` acceptance commands. The harness adds the acceptance criteria, a workspace snapshot, and the tool instructions automatically, so **don't** ask for a special output format. Claude writes files through its sandboxed tools.
+
+> [!IMPORTANT]
+> A template is never a single-shot prompt. Every run needs at least one `--verify` command, and the loop continues until all of them pass. Always fill in `ACCEPTANCE` with the same commands you pass as `--verify`, so the objective and the contract agree.
 
 ---
 
-## 1. Feature & Endpoint Implementation Template
+## 1. Spec-to-Production-Code (Full Implementation)
+
+Use this when turning a PRD, API specification, or architecture blueprint into working code. Usually paired with `--spec <file>`, which inlines the spec.
 
 ```markdown
-You are acting as an Opus 5 Tier Code Generation Subagent via Vertex AI Model Garden (Zero Data Retention).
-Your goal is to turn the specification below into complete, production-ready source code.
+Implement the attached specification completely inside the workspace.
 
-### SPECIFICATION
-<Insert Spec / Doc Content / Requirement Summary>
-
-### SCOPE & TARGET FILES
-- Target File(s): <e.g., src/services/user_service.ts>
-- Language & Framework: <e.g., TypeScript / Node.js>
+### TARGET SCOPE
+- Stack: <e.g., Python 3.11+, TypeScript, Go 1.22+>
+- Files: <e.g., src/queue/distributed_retry_queue.py, tests/queue/test_retry_queue.py>
+- Architecture: deep modules, explicit seams, decoupled interfaces. Follow the existing project layout.
 
 ### IMPLEMENTATION RULES
-1. Write COMPLETE, fully executable code. Do NOT use TODOs or placeholder comments.
-2. Follow strict type safety and explicit return types.
-3. Include comprehensive error handling and input validation.
-4. Match existing coding style and formatting in the workspace.
+1. Complete implementations only: no TODO, stub, or elided sections.
+2. Validate input at boundaries. Handle timeouts, partial failures, races, and corrupt data.
+3. Strict typing (Python type hints with dataclasses/Pydantic, or TypeScript strict mode).
+4. Structured logging that's safe for Cloud Logging. Never log secrets or PII.
+5. No hardcoded secrets. Use parameterized queries. Never pass untrusted input to shell/exec sinks.
+6. Tests for the happy path, boundary conditions, and failure modes.
+
+### ACCEPTANCE
+The goal is met when these commands pass from the workspace root (mirror your --verify flags):
+- <e.g., python3 -m pytest -q tests/queue>
+- <e.g., mypy --strict src/queue>
+
+Do not modify these existing acceptance tests: <e.g., tests/queue/test_contract.py>
 ```
 
 ---
 
-## 2. Multi-Module System Architecture Template
+## 2. Architectural Subsystem (Multi-Module Systems)
+
+Use this for multi-component subsystems (event streaming, distributed caching, agent tool protocols).
 
 ```markdown
-You are acting as an Opus 5 Tier System Architect & Code Generator via Vertex AI Model Garden (Zero Data Retention).
-Your goal is to design and implement a robust, multi-module system based on the provided architecture document or spec.
+Design and implement a decoupled subsystem that satisfies the requirements below.
 
-### SPECIFICATION & ARCHITECTURE
-<Insert Architectural Spec / PRD / Complex Prompt>
+### SYSTEM REQUIREMENTS
+<INSERT_ARCHITECTURE_REQUIREMENTS>
 
-### DESIGN & IMPLEMENTATION GOALS
-- High-level modularity and clean separation of concerns.
-- Resilient concurrency / state management handling.
-- Graceful degradation and comprehensive error recovery.
-- Complete unit and integration test coverage.
+### ARCHITECTURAL PRIORITIES
+1. Clear seams and deep modules: minimal, cohesive interfaces that hide internal complexity.
+2. Concurrency safety: atomic state updates, thread-safe queues, backpressure.
+3. Resilience: retries with exponential backoff and jitter, circuit breakers, and dead-letter handling where the requirements call for them.
+4. Google Cloud conventions: Application Default Credentials, Cloud Storage, Pub/Sub, Cloud Run patterns.
 
-### IMPLEMENTATION INSTRUCTIONS
-1. Define clear data contracts and interfaces first.
-2. Implement core state machines, controllers, and services in workspace files.
-3. Include inline architectural rationale for non-obvious design choices.
-4. Verify end-to-end type safety and compile readiness.
+### DELIVERABLES
+1. Interface / data contract definitions.
+2. Core engine / service implementation.
+3. Configuration / factory loaders.
+4. Test suite that exercises the contracts.
+
+### ACCEPTANCE
+- <one command per --verify flag>
 ```
 
+---
+
+## 3. Code Review & Hardening
+
+Use this with `--review <file>` to harden a workspace file in place.
+
+```markdown
+Review and harden the target file against enterprise security and reliability standards, fixing issues in place.
+
+### AUDIT VECTORS
+1. Security and data privacy: secret leaks, unvalidated input, insecure deserialization, missing authentication.
+2. Concurrency: locks, shared-state mutation, async cancellation.
+3. Reliability: explicit timeouts, deadlines, and retry policies on every network call.
+4. Resource management: file descriptor, memory, and connection leaks; unbounded buffers.
+
+### REQUIREMENTS
+- Fix every Critical and High finding in place with replace_in_file.
+- Add or extend tests that fail before each fix and pass after it.
+- In the declare_goal_complete summary, list each finding with its risk rating (Critical, High, Medium, Low) and the fix.
+
+### ACCEPTANCE
+- <one command per --verify flag>
+```
+
+Run it with: `--review <file> --goal "$(cat hardening_objective.md)" --verify ...`

@@ -54,12 +54,13 @@
 
 ### 2. Multi-Model Vertex AI ZDR Skills
 6. **`claude-review`**: Two-pass execution loop. Generates baseline code rapidly with Gemini 3.6 Flash, executes ZDR peer review with Opus 5 via Vertex AI Model Garden API, and applies revisions.
-7. **`claude-agent-harness`**: Delegated high-tier code generation routing PRDs and specs directly to Vertex AI Model Garden Opus 5 (`claude-opus-5` in region `us-central1`).
+7. **`claude-agent-harness`**: Goal-driven code generation loop on Vertex AI Model Garden Opus 5 (`claude-opus-5` in region `us-central1`). Iterates with sandboxed tools until every `--verify` acceptance command passes.
    ```bash
-   # Spec ingestion
-   python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --spec docs/PRD.md
+   # Spec-to-code goal loop
+   python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py \
+     --spec docs/PRD.md --workspace . --verify "python3 -m pytest -q"
 
-   # File review
+   # File review (single-pass peer review)
    python3 skills/claude-review/scripts/call_opus_model_garden.py --review src/agent_server.py
    ```
 

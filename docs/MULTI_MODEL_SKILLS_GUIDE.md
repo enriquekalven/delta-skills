@@ -9,7 +9,7 @@ This guide provides step-by-step setup instructions and usage patterns for team 
 | Skill | Purpose | Key Models Used | Compliance Status |
 |---|---|---|---|
 | [`claude-review`](../skills/claude-review/SKILL.md) | **Two-Pass Execution & Review Loop**: Generates baseline implementation immediately with Gemini 3.6 Flash, reviews with Opus 5 via Model Garden API, and applies revisions. | Gemini 3.6 Flash (Primary)<br>Opus 5 Tier (ZDR Reviewer) | **ZDR Compliant** |
-| [`claude-agent-harness`](../skills/claude-agent-harness/SKILL.md) | **Direct High-Tier Delegation**: Translates specs, PRDs, or natural language prompts directly into production code files via Model Garden API script. | Opus 5 Tier (ZDR Code Gen) | **ZDR Compliant** |
+| [`claude-agent-harness`](../skills/claude-agent-harness/SKILL.md) | **Goal-Driven Code Generation Loop**: Iterates with sandboxed file and verification tools on Model Garden until every `--verify` acceptance command passes. | Opus 5 Tier (ZDR Goal Loop) | **ZDR Compliant** |
 
 > [!CAUTION]
 > **Security Policy & Data Retention Requirement**:
@@ -44,17 +44,19 @@ export CLOUD_ML_REGION="us-central1"
 ```
 
 ### 3. How Skills Execute Model Garden API Calls
-These skills invoke the unified Python helper script (`scripts/call_opus_model_garden.py`) via `run_command` using clean CLI flags:
+These skills invoke their Python helper scripts (`scripts/call_opus_model_garden.py`) via `run_command`:
 
 ```bash
-# Direct Spec Ingestion (Opus 5 Code Gen)
-python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --spec docs/PRD.md
+# Spec-to-Code Goal Loop (Opus 5 iterates until --verify passes)
+python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py \
+  --spec docs/PRD.md --workspace . --verify "python3 -m pytest -q"
 
 # Direct File Review (Opus 5 Peer Review)
 python3 skills/claude-review/scripts/call_opus_model_garden.py --review src/auth_service.py
 
-# Direct Prompt
-python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --prompt "Implement rate limiter"
+# Goal Prompt Loop
+python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py \
+  --goal "Implement token-bucket rate limiter" --workspace . --verify "python3 -m pytest -q"
 ```
 
 Under the hood, the script authenticates via Application Default Credentials and connects to the ZDR endpoint:
