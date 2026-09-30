@@ -42,7 +42,7 @@ The host agent first writes `tests/ratelimit/test_contract.py` from the spec: re
 
 ```bash
 export GOOGLE_CLOUD_PROJECT="my-enterprise-gcp-project"
-export CLOUD_ML_REGION="us-central1"
+export CLOUD_ML_REGION="global"
 
 python3 ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
   --spec specs/rate_limiter_spec.md \
@@ -57,15 +57,15 @@ python3 ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
 ### Representative turn log (stderr)
 
 ```text
-[goal] turn 1/40 -> claude-opus-5        # list_files, read_file tests/ratelimit/test_contract.py
-[goal] turn 2/40 -> claude-opus-5        # read_file pyproject.toml (conventions, deps)
+[goal] turn 1/40 -> claude-sonnet-5-5     # list_files, read_file tests/ratelimit/test_contract.py
+[goal] turn 2/40 -> claude-sonnet-5-5     # read_file pyproject.toml (conventions, deps)
 [goal] wrote src/ratelimit/__init__.py (212 bytes)
 [goal] wrote src/ratelimit/bucket.py (4810 bytes)
 [goal] wrote tests/ratelimit/test_bucket.py (3920 bytes)
 [goal] verification 1: 2/4 passing       # mypy: redis client typed as Any; pytest: refill off-by-one
-[goal] turn 7/40 -> claude-opus-5        # replace_in_file bucket.py: Protocol for Redis client
+[goal] turn 7/40 -> claude-sonnet-5-5     # replace_in_file bucket.py: Protocol for Redis client
 [goal] verification 2: 3/4 passing       # pytest: fallback test still failing
-[goal] turn 9/40 -> claude-opus-5        # replace_in_file bucket.py: catch redis ConnectionError, not bare Exception
+[goal] turn 9/40 -> claude-sonnet-5-5     # replace_in_file bucket.py: catch redis ConnectionError, not bare Exception
 [goal] verification 3: 4/4 passing
 [goal] verification 4: 4/4 passing       # declare_goal_complete -> harness re-verifies -> accepted
 ```
@@ -80,7 +80,7 @@ The harness would have rejected completion if any acceptance command failed, or 
 {
   "status": "goal_met",
   "goal_met": true,
-  "model": "claude-opus-5",
+  "model": "claude-sonnet-5-5",
   "turns": 10,
   "verification_runs": 4,
   "usage": {"input_tokens": 312000, "output_tokens": 18400},
@@ -93,7 +93,7 @@ The harness would have rejected completion if any acceptance command failed, or 
   ],
   "summary": "Token bucket with atomic Lua script, Protocol-typed Redis client, in-memory fallback on ConnectionError, metrics hooks; tests for refill, concurrency, and fallback.",
   "project": "my-enterprise-gcp-project",
-  "region": "us-central1"
+  "region": "global"
 }
 ```
 

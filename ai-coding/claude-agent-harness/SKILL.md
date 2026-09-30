@@ -1,9 +1,9 @@
 ---
 name: claude-agent-harness
 description: >
-  Goal-driven coding harness that turns specs, PRDs, or engineering prompts into verified code, using Anthropic Claude (default Opus 5) on Vertex AI Model Garden.
+  Goal-driven coding harness that turns specs, PRDs, or engineering prompts into verified code, using Anthropic Claude (default `claude-sonnet-5-5` in region `global`) on Vertex AI Model Garden.
   Always runs in goal mode: Claude works through sandboxed file tools and keeps iterating until every acceptance command passes. It never makes a single completion call.
-  Trigger when asked to "build code from this spec", "implement this PRD", "use claude harness", "run the harness as a goal", or "delegate implementation to Opus on Vertex".
+  Trigger when asked to "build code from this spec", "implement this PRD", "use claude harness", "run the harness as a goal", or "delegate implementation to Claude on Vertex".
   Do NOT trigger for quick edits the current agent can make directly, or when the user wants a design discussion rather than code.
 metadata:
   author: cloud-gtm@
@@ -69,7 +69,21 @@ python3 ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
 Other entry points:
 - `--goal "<objective>"`: prompt-driven goal instead of a spec file.
 - `--review src/module.py --goal "Harden for input validation and timeouts"`: harden a workspace file in place until acceptance passes.
-- `--model`, `--region`, `--project`, `--max-turns`, `--token-budget`, `--max-tokens`, `--verify-timeout`, `--temperature`.
+- `--model` (default `claude-sonnet-5-5` or `CLAUDE_MODEL_NAME`), `--region` (default `global` or `CLOUD_ML_REGION`), `--project`, `--max-turns`, `--token-budget`, `--max-tokens`, `--verify-timeout`, `--temperature`.
+
+**Underlying Vertex AI SDK Pattern (inside `call_opus_model_garden.py`):**
+```python
+from anthropic import AnthropicVertex
+
+client = AnthropicVertex(region="global", project_id=project_id)
+message = client.messages.create(
+    max_tokens=max_tokens,
+    messages=messages,
+    model="claude-sonnet-5-5",
+    system=SYSTEM_PROMPT,
+    tools=TOOLS,
+)
+```
 
 **Setup:**
 - Install the SDK: `pip install 'anthropic[vertex]'`.

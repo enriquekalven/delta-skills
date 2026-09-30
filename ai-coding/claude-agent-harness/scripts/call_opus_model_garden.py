@@ -2,8 +2,9 @@
 """Claude Agent Harness: goal-driven coding loop on Vertex AI Model Garden.
 
 The harness always runs in goal mode. It never makes a single completion call.
-Claude (default ``claude-opus-5``) runs as a tool-using agent inside a
-sandboxed workspace and keeps iterating until the Goal Contract is met:
+Claude (default ``claude-sonnet-5-5`` in region ``global``) runs as a tool-using
+agent inside a sandboxed workspace and keeps iterating until the Goal Contract
+is met:
 
 * every acceptance command passed with ``--verify`` exits with code 0, and
 * the model calls ``declare_goal_complete``, after which the harness re-runs
@@ -19,7 +20,6 @@ Exit codes: 0 = goal met, 2 = goal not met (turn/token budget or stall),
 from __future__ import annotations
 
 import argparse
-import importlib
 import json
 import os
 import re
@@ -30,8 +30,8 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
-DEFAULT_MODEL = os.environ.get("CLAUDE_MODEL_NAME", "claude-opus-5")
-DEFAULT_REGION = os.environ.get("CLOUD_ML_REGION", "us-central1")
+DEFAULT_MODEL = os.environ.get("CLAUDE_MODEL_NAME", "claude-sonnet-5-5")
+DEFAULT_REGION = os.environ.get("CLOUD_ML_REGION", "global")
 
 IGNORED_DIRS = frozenset(
     {
@@ -424,17 +424,15 @@ class GoalHarness:
 
     def _call_model(self, messages: list[dict[str, Any]]) -> Any:
         kwargs: dict[str, Any] = {
-            "model": self.config.model,
             "max_tokens": self.config.max_tokens,
+            "messages": messages,
+            "model": self.config.model,
             "system": SYSTEM_PROMPT,
             "tools": TOOLS,
-            "messages": messages,
         }
         if self.config.temperature is not None:
             kwargs["temperature"] = self.config.temperature
-        # Streaming avoids the SDK's non-streaming timeout guard on large max_tokens.
-        with self.client.messages.stream(**kwargs) as stream:
-            return stream.get_final_message()
+        return self.client.messages.create(**kwargs)
 
     def _verify(self) -> list[VerifyResult]:
         self.state.verification_runs += 1
@@ -742,12 +740,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--region",
         default=DEFAULT_REGION,
-        help="Vertex AI region (default: us-central1 or CLOUD_ML_REGION)",
+        help="Vertex AI region (default: global or CLOUD_ML_REGION)",
     )
     parser.add_argument(
         "--model",
         default=DEFAULT_MODEL,
-        help="Model Garden model ID (default: claude-opus-5 or CLAUDE_MODEL_NAME)",
+        help="Model Garden model ID (default: claude-sonnet-5-5 or CLAUDE_MODEL_NAME)",
     )
     parser.add_argument("--report", help="Also write the JSON report to this path")
     return parser
@@ -780,8 +778,8 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 1
     try:
-        AnthropicVertex = importlib.import_module("anthropic").AnthropicVertex
-    except (ImportError, AttributeError):
+        from anthropic import AnthropicVertex  # type: ignore[import-not-found]
+    except ImportError:
         print(
             "Error: install the Vertex extra: pip install 'anthropic[vertex]'",
             file=sys.stderr,
