@@ -51,7 +51,8 @@ Write the acceptance tests from the spec **before** the run whenever you can, so
 python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py \
   --spec docs/PRD.md \
   --workspace . \
-  --model claude-opus-5-5 \
+  --model claude-sonnet-5-5 \
+  --region global \
   --verify "python3 -m compileall -q src" \
   --verify "ruff check src tests" \
   --verify "mypy --strict src" \
@@ -60,7 +61,20 @@ python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py \
 
 - `--goal "<objective>"` instead of `--spec` for prompt-driven work.
 - `--review <file> --goal "<hardening objective>"` hardens a workspace file in place.
-- `--model` defaults to `claude-opus-5` (or `$CLAUDE_MODEL_NAME`). Pass the exact Model Garden model ID enabled in your project.
+- `--model` defaults to `claude-sonnet-5-5` (or `$CLAUDE_MODEL_NAME`), and `--region` defaults to `global` (or `$CLOUD_ML_REGION`).
+- Underlying Vertex AI SDK pattern inside `call_opus_model_garden.py`:
+  ```python
+  from anthropic import AnthropicVertex
+
+  client = AnthropicVertex(region="global", project_id=project_id)
+  message = client.messages.create(
+      max_tokens=max_tokens,
+      messages=messages,
+      model="claude-sonnet-5-5",
+      system=SYSTEM_PROMPT,
+      tools=TOOLS,
+  )
+  ```
 - Other flags: `--project`, `--region`, `--max-turns`, `--token-budget`, `--max-tokens`, `--verify-timeout`, `--report <path>`.
 - Setup: install `anthropic[vertex]` in the project environment, run `gcloud auth application-default login`, and set `GOOGLE_CLOUD_PROJECT`.
 

@@ -12,10 +12,7 @@ import tempfile
 import unittest
 from contextlib import redirect_stderr
 from types import SimpleNamespace
-from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    from typing import Self
+from typing import Any
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -46,33 +43,19 @@ def reply(
     )
 
 
-class _Stream:
-    def __init__(self, message: SimpleNamespace) -> None:
-        self._message = message
-
-    def __enter__(self) -> Self:
-        return self
-
-    def __exit__(self, *exc: object) -> None:
-        return None
-
-    def get_final_message(self) -> SimpleNamespace:
-        return self._message
-
-
 class FakeClient:
-    """Replays scripted model turns and records every request."""
+    """Replays scripted model turns and records every messages.create request."""
 
     def __init__(self, script: list[SimpleNamespace]) -> None:
         self.script = list(script)
         self.requests: list[dict[str, Any]] = []
         self.messages = self
 
-    def stream(self, **kwargs: Any) -> _Stream:
+    def create(self, **kwargs: Any) -> SimpleNamespace:
         self.requests.append({**kwargs, "messages": list(kwargs["messages"])})
         if not self.script:
             raise AssertionError("model called more times than scripted")
-        return _Stream(self.script.pop(0))
+        return self.script.pop(0)
 
 
 class WorkspaceSandboxTests(unittest.TestCase):
@@ -203,6 +186,8 @@ class GoalLoopTests(unittest.TestCase):
             ]
         )
         first = client.requests[0]
+        self.assertEqual(first["model"], "claude-sonnet-5-5")
+        self.assertEqual(harness.DEFAULT_REGION, "global")
         self.assertIn("<acceptance_criteria>", first["messages"][0]["content"])
         self.assertEqual(
             {t["name"] for t in first["tools"]}
@@ -270,7 +255,7 @@ class GoalLoopTests(unittest.TestCase):
 
     def test_api_error_is_reported(self) -> None:
         class Boom(FakeClient):
-            def stream(self, **kwargs: Any) -> _Stream:
+            def create(self, **kwargs: Any) -> SimpleNamespace:
                 raise RuntimeError("503 overloaded")
 
         client = Boom([])
