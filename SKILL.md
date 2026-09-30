@@ -49,7 +49,7 @@ Operations and workflow engineering to redesign traditional manual processes aro
 ## 3. Value Realization & Business Case Sizing
 Grounded metrics, financial sizing, and ROI validation models to prove the business case for AI initiatives.
 
-*   **[ai-value-sizing](ai_value_sizing/SKILL.md)**
+*   **[ai-value-sizing](ai-value-sizing/SKILL.md)**
     *   *Role:* Expert Strategic Value Realization Consultant & TCO Architect.
     *   *Trigger:* When analyzing the financial potential of an idea, running market sizing, or drafting an investment-ready ROI/TCO business case.
     *   *Key Deliverable:* Sizing Funnel (TAM/SAM/SOM), 3-Year ROI/NPV scenarios.
@@ -59,7 +59,7 @@ Grounded metrics, financial sizing, and ROI validation models to prove the busin
 ## 4. Product Design & Journey Mapping
 UX and Product Design frameworks to align features to user achievements and evaluate specific AI touchpoint quality.
 
-*   **[ai-enhanced-cuj-strategist](cuj-architect/SKILL.md)**
+*   **[cuj-architect](cuj-architect/SKILL.md)**
     *   *Role:* Expert UX/AI Product Strategist.
     *   *Trigger:* When generating an AI CUJ, mapping user journeys, or evaluating exact quality measurement variants.
     *   *Key Deliverable:* Modernized hierarchy maps (Outcome → Stage → CUJ → Task → CUI), linguistic value proposition formulations.
@@ -71,8 +71,13 @@ UX and Product Design frameworks to align features to user achievements and eval
 
 ---
 
-## 5. Product Management & Requirements
-Writing detailed, modular, and bulletproof specifications for feature engineering and development handoff.
+## 5. Product Management, Discovery & Requirements
+Customer discovery intake and modular specifications for feature engineering and development handoff.
+
+*   **[workshop-intake](workshop-intake/SKILL.md)**
+    *   *Role:* Discovery Facilitator & Intake Lead.
+    *   *Trigger:* Conducting a customer workshop intake call, planning discovery, or capturing strategic, technical, and logistical requirements.
+    *   *Key Deliverable:* Structured workshop brief and stakeholder intake notes.
 
 *   **[product-md](product-management/product-md/SKILL.md)**
     *   *Role:* Senior Technical Product Manager.
@@ -131,14 +136,35 @@ Goal-driven code generation with frontier models on Google Cloud Vertex AI Model
 
 ---
 
+## 9. Engagement Delivery & Architecture Governance
+Field execution playbooks for running 12-week Google Cloud engagements, establishing pre-build baselines, and selecting agent architectures.
+
+*   **[tdl-field-guide](delivery/tdl-field-guide/SKILL.md)**
+    *   *Role:* Technical Deployment Lead (TDL).
+    *   *Trigger:* Planning or running a 12-week Delta engagement, checking phase gates, managing 1-in-1-out scope swaps, or handling `STATE.md` rollbacks.
+    *   *Key Deliverable:* Phase-gated execution plan and `STATE.md` tracking.
+
+*   **[synthetic-baseline-protocol](delivery/synthetic-baseline-protocol/SKILL.md)**
+    *   *Role:* Operational Baseline Auditor.
+    *   *Trigger:* Auditing 50 historical work items with client SMEs before build to measure manual handling time, error rate, and unit cost.
+    *   *Key Deliverable:* Frozen `docs/baseline_kpis.json` with confidence intervals for Phase 4 ROI comparison.
+
+*   **[gcp-agent-architecture-advisor](delivery/gcp-agent-architecture-advisor/SKILL.md)**
+    *   *Role:* Google Cloud Agent Architect.
+    *   *Trigger:* Selecting between no-code (Gemini Enterprise), ADK on Agent Runtime, and self-hosted ADK on Cloud Run/GKE from a PRD and intake notes.
+    *   *Key Deliverable:* `docs/ARCHITECTURE_RECOMMENDATION.md` with doc-verified launch stages.
+
+---
+
 ## Skill Integration & Handoff Rules
 
 AI Agents using this repository should locate the corresponding directory of a skill and read its dedicated `SKILL.md` file for full step-by-step execution instructions. 
 
 When encountering complex requests (e.g., *"design a strategy for our onboarding portal, size the ROI, and implement the backend engine"*), agents should orchestrate multiple skills:
-1.  Use **[strategy-partner-orchestrator](strategy-agent/strategy-partner-orchestrator/SKILL.md)** to set up the diagnostic base.
-2.  Use **[business-process-redesign](business-process-redesign/SKILL.md)** to map and optimize the onboarding flow.
-3.  Use **[ai-value-sizing](ai_value_sizing/SKILL.md)** to calculate the 3-year ROI / TCO business case.
-4.  Use **[product-md](product-management/product-md/SKILL.md)** to draft the comprehensive technical PRD.
+1.  Use **[tdl-field-guide](delivery/tdl-field-guide/SKILL.md)** to govern the 4 phases and gates, starting with **[workshop-intake](workshop-intake/SKILL.md)** and **[synthetic-baseline-protocol](delivery/synthetic-baseline-protocol/SKILL.md)**.
+2.  Use **[strategy-partner-orchestrator](strategy-agent/strategy-partner-orchestrator/SKILL.md)** and **[business-process-redesign](business-process-redesign/SKILL.md)** to diagnose and redesign the workflow.
+3.  Use **[ai-value-sizing](ai-value-sizing/SKILL.md)** to calculate the 3-year ROI / TCO business case from the baseline.
+4.  Use **[product-md](product-management/product-md/SKILL.md)** and **[gcp-agent-architecture-advisor](delivery/gcp-agent-architecture-advisor/SKILL.md)** to lock the PRD and target GCP stack.
 5.  Use **[claude-agent-harness](ai-coding/claude-agent-harness/SKILL.md)** to implement the backend as a goal loop on Vertex AI Model Garden, iterating until the 4-tier acceptance checks pass.
+
 

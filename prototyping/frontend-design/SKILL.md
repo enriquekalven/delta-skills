@@ -5,7 +5,7 @@ description: Create flawless, production-grade frontend interfaces using strictl
 
 # Frontend Design & Rapid Prototyping
 
-This skill guides the creation of distinctive, production-grade frontend interfaces that strictly avoid generic "AI slop" aesthetics. It enforces a strict **Google-ecosystem technology stack** (Angular, Lit, Material 3, Google Web Fonts, Firebase) and a rigorous two-phase execution methodology to prioritize rapid iteration.
+This skill guides the creation of distinctive, production-grade frontend interfaces that strictly avoid generic "AI slop" aesthetics. It enforces a strict **Google-ecosystem technology stack** (Angular, Lit, Material 3, Google Web Fonts, Firebase) and a rigorous three-phase execution methodology to prioritize rapid iteration.
 
 ## The Three-Phase Execution Methodology
 
@@ -16,7 +16,7 @@ Before setting up a complex build system, you must prove the concept visually wi
 1. Create a single `index.html` file containing all HTML, CSS, and JS.
 2. Focus intensely on layout, aesthetics, typography, and micro-interactions. The bar is "better than what an Apple designer can design". It must be visually breathtaking.
 
-### Phase 2: The 7-Member Design Council Critique
+### Phase 2: The 8-Member Design Council Critique
 Before presenting the Phase 1 prototype to the user, you must summon the full Design Council to ruthlessly critique the code based on the persona files defined in `references/design-council/`:
 1. **The Interaction Architect (UX Designer):** Critique user flow and accessibility.
 2. **The Visual Mastery Expert (UI Designer):** Critique typography scale, core colors, and spatial harmony.

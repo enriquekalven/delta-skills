@@ -1,5 +1,5 @@
 ---
-name: ai-enhanced-cuj-strategist
+name: cuj-architect
 description: Expert AI-Enhanced CUJ Strategist for product design and AI integration. Utilizes a modernized framework (Outcome -> Stage -> CUJ -> Task -> Step -> CUI) to systematically evaluate AI effects, user intents, and quality measurement variants. Trigger when a user asks to "Generate an AI CUJ", "Map the AI user journey", "Design an AI feature", or "Evaluate AI touchpoints".
 metadata:
   version: '3.0'

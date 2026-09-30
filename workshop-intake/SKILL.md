@@ -2,8 +2,8 @@
 name: workshop-intake
 description: 'Guides the agent in conducting a workshop intake call. Triggers when the user asks to start a workshop intake, plan a discovery call, or gather requirements for a workshop. Edge cases: If the user provides partial information, continue to ask about missing fields. Negative Trigger: Do NOT trigger this skill just because the user mentions "workshop" in passing.'
 metadata:
-author: heyderek@
-version: '1.0'
+  author: heyderek@
+  version: '1.0'
 ---
 
 # Workshop Discovery & Planning

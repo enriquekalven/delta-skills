@@ -218,4 +218,3 @@ Cross-skill data contracts, context flow, and conflict resolution are managed by
 - [AI Talent & Organization](references/ai-talent-organization.md) — Agentic engineer hiring, CoE design, org structures, compensation benchmarks
 - [Agentic Architecture Strategy](references/agentic-architecture-strategy.md) — Multi-agent patterns, orchestration design, architecture decision trees
 - [Mixture of Experts](references/mixture-of-experts.md) — Cross-skill orchestration and expert selection
-- [AI Build Summary](references/BUILD_SUMMARY.md) — Skill inventory and deliverables

@@ -201,5 +201,5 @@ Every engagement produces integrated output:
 - [Due Diligence Framework](references/due-diligence.md) — Commercial, financial, operational, legal, and cultural DD protocols
 - [PMI Integration Playbook](references/pmi-integration.md) — Integration model selection, 100-day roadmap, KPIs, failure mode mitigation
 - [Mixture of Experts](references/mixture-of-experts.md) — Cross-skill orchestration and expert selection
-- [M&A Build Summary](references/BUILD_SUMMARY.txt) — Skill inventory and deliverables
+- [M&A Build Summary](references/INDEX.md) — Skill inventory and deliverables
 - [M&A Index](references/INDEX.md) — File index and navigation guide

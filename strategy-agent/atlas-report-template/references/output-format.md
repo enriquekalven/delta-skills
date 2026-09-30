@@ -18,7 +18,7 @@ Every ATLAS report produces a single, self-contained HTML file with the followin
   - Section 07: Go-to-Market
   - Section 08: Risk Assessment
 
-  (See [Section Structure & Critique Framework](references/section-structure.md) for complete structure and content requirements)
+  (See [Section Structure & Critique Framework](section-structure.md) for complete structure and content requirements)
 
 - **Fixed Progress Bar:** 4px gradient bar at top (navy → wine-red → blue) tracking scroll position. Updates dynamically as user scrolls. Box shadow provides subtle depth.
 
