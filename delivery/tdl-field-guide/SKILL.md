@@ -17,7 +17,7 @@ metadata:
 This skill sequences the engagement and enforces gates; specialist work is delegated to the linked skills. Two kinds of content are kept apart on purpose:
 
 - **Official** — taken from the TDL Toolbox: `go/delta-delivery-guide` (12-Week AI Delivery Guide), the example Kickoff Deck, the Demo Frame-Up deck, the Program Tracker, the Closeout Deck template and the FDE Retro deck.
-- **Repo convention** — governance this repository adds (`STATE.md`, gate sign-offs, 1-in-1-out scope swaps, rollback loop, 50-sample baseline). Useful, but do not present it to a customer as Google's standard.
+- **Repo convention** — governance this repository adds (`STATE.md`, gate sign-offs, 1-in-1-out scope swaps, rollback loop). Useful, but do not present it to a customer as Google's standard.
 
 ---
 
@@ -50,7 +50,7 @@ Customer side (kickoff deck): executive sponsor, product owner, engineering/plat
 **Repo convention (this skill adds)**
 6. **12-week cap:** scope moves, the date does not.
 7. **1-in / 1-out:** a mid-flight request enters only if an item of equal or higher RICE score leaves; log both in `STATE.md`.
-8. **Baseline before build:** run [synthetic-baseline-protocol](../synthetic-baseline-protocol/SKILL.md) in Phase 1 and freeze `docs/baseline_kpis.json`; no ROI claim in week 12 without it.
+8. **Baseline before build:** establish baseline evaluation metrics on the curated Golden Dataset in `docs/TDD.md` (Part IV) and record operational baseline metrics in `docs/as_is_report.md` in Phase 1; no ROI or quality lift claim in week 12 without them.
 9. **Environment segregation:** synthetic data in shared sandboxes (`gcc-delta-tdl`); customer data only inside the customer's project/VPC.
 10. **No phase advance without a named human sign-off recorded in `STATE.md`.**
 
@@ -104,13 +104,13 @@ Read `STATE.md` before any session. If `action` is a rollback, stop feature work
 | Step (official activity list) | Skill / asset | Output |
 |---|---|---|
 | Kickoff: team intros, charter, cadences, assumptions (sandbox, user scope) | Kickoff deck (toolbox asset 06) | kickoff deck, in-squad RACI (`go/delta-12-week-delivery-raci`) |
-| Process ethnography & CUJ map | [business-process-redesign](../../business-process-redesign/SKILL.md), [cuj-architect](../../cuj-architect/SKILL.md) | `docs/CUJ_MAP.md` |
-| Baseline evaluation metrics on the Golden Dataset | [synthetic-baseline-protocol](../synthetic-baseline-protocol/SKILL.md) | `docs/baseline_kpis.json` |
+| Process ethnography & CUJ map | [business-process-redesign](../../business-process-redesign/SKILL.md), [cuj-architect](../../cuj-architect/SKILL.md) | `docs/as_is_report.md`, `docs/CUJ_MAP.md` |
+| Baseline evaluation metrics on the Golden Dataset | [specification-engineer](../../utils/specification-engineer/SKILL.md) Part IV, [agent-eval-statistical-auditing](../agent-eval-statistical-auditing/SKILL.md) | `docs/TDD.md` (Part IV Golden Dataset & Eval Rubrics) |
 | Agentic PRD (due end of week 2) | [product-md](../../product-management/product-md/SKILL.md) | `docs/PRD.md` |
 | Architecture + agent technical specs | [gcp-agent-architecture-advisor](../gcp-agent-architecture-advisor/SKILL.md), [specification-engineer](../../utils/specification-engineer/SKILL.md) | `docs/ARCHITECTURE_RECOMMENDATION.md`, `docs/TDD.md` |
 | Discovery prototype / feasibility spike (2–4 h synthetic; ≤ 2 weeks on real data) | [stitch-design](../../prototyping/stitch-design/SKILL.md) | `docs/STITCH_PROTOTYPE.md` |
 
-**Gate 1:** sponsor and engineering lead sign `docs/PRD.md`, `docs/TDD.md`, `docs/baseline_kpis.json`. Set `phase: 2`.
+**Gate 1:** sponsor and engineering lead sign `docs/PRD.md`, `docs/TDD.md` (including Golden Dataset baseline metrics), and `docs/as_is_report.md`. Set `phase: 2`.
 
 ### Phase 2 — Core Build & Demo Sprints (weeks 3–10, four 2-week sprints)
 

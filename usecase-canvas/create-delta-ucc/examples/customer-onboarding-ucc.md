@@ -110,7 +110,7 @@ flowchart LR
 | **BigQuery (`credit_audit.spread_signoffs`)** | BigQuery Storage Write API | Immutable SR 11-7 audit log of raw LLM mappings, confidence scores, analyst overrides, and covenant results |
 
 ### 5. Evaluation and Testing Approach
-* **Status Quo Quality:** Human baseline spreading discrepancy rate is **12.0%** across audited credit files, with a mean handling time of **192 minutes/packet** (`docs/baseline_kpis.json`).
+* **Status Quo Quality:** Human baseline spreading discrepancy rate is **12.0%** across audited credit files, with a mean handling time of **192 minutes/packet** (`docs/as_is_report.md`).
 * **UAT Required:** **Yes** (5 Senior Commercial Credit Analysts will execute blind parallel UAT across 50 held-out quarterly packets during Weeks 9–10).
 * **Tentative Evaluation Metrics:**
   * **Line-Item Mapping F1 & Exact Match:** Percentage of borrower PDF line items mapped to the exact canonical Chart of Accounts code AND exact numeric value (`Target >= 96.0%`; Status Quo: `88.0%`).

@@ -34,7 +34,7 @@ Date: 2026-08-12 | Status: Confirmed | Engagement Track: 12-Week Delta Engagemen
 | **Commercial Fleet Policyholder** | `External` | Submits initial loss packet via broker email or portal after a commercial vehicle accident. | Waits 3.4 business days for initial claim assignment and reserve confirmation. |
 
 ### 2.3 OKRs and Quantifiable Success Metrics
-- **Current Baseline Performance:** `45.0 minutes` mean handling time, `14.0%` queue misrouting rate, `$56.25` labor cost per claim across `50,000` annual claims (`docs/baseline_kpis.json`).
+- **Current Baseline Performance:** `45.0 minutes` mean handling time, `14.0%` queue misrouting rate, `$56.25` labor cost per claim across `50,000` annual claims (`docs/as_is_report.md`).
 - **1-Year Executive "Wildly Successful" Headline Metric:** Cut FNOL triage handling time by **80%** (`45 min -> 9 min`), reclaim **30,000 adjuster hours/year** (`$2.25M` gross capacity), and reduce subrogation leakage by **75%**.
 - **PoC / MVP Go-to-Production Gate Metrics:**
   - `>= 92.0%` field extraction F1 and queue routing accuracy on the 200-claim golden evaluation dataset.
@@ -81,14 +81,14 @@ Date: 2026-08-12 | Status: Confirmed | Engagement Track: 12-Week Delta Engagemen
 - [x] **3. Active Weekly Customer Tech Collaboration:** 3 Acme engineers (Guidewire Lead, BigQuery Engineer, Python Platform Dev) allocated 50% time for weekly co-development.
 - [x] **4. Assigned Business SMEs:** 2 Senior Commercial Auto Adjusters assigned 4 hours/week for golden dataset labeling and bi-weekly demo UAT.
 - [x] **5. Clear Co-Development Boundaries:** Google FDEs build the ADK multi-agent extraction & routing service; Acme Guidewire team owns the ClaimCenter UI webhook consumer.
-- [x] **6. Baseline Analytics or Survey Commitment:** 50 stratified historical claims audited and frozen in `docs/baseline_kpis.json`.
+- [x] **6. Baseline Analytics or Survey Commitment:** Historical operational baseline documented in `docs/as_is_report.md` and 200-claim Golden Dataset curated for baseline evaluation metrics.
 
 ---
 
 ## 5. Pillar 3: Estimated Dates, Agenda & 30-60-90 Day Execution Plan
 
 ### 5.1 Onsite Workshop Agenda & Breakout Structure (September 9–10, 2026)
-- **Day 1 AM:** Kickoff, Voice of Customer, Business Objectives Overview, and 50-Sample Baseline Audit review.
+- **Day 1 AM:** Kickoff, Voice of Customer, Business Objectives Overview, and Operational Baseline & Golden Dataset review.
 - **Day 1 PM (Breakout Session 1 — Technical Planning):** Pods complete Data Strategy (`Available/Usable/Quality`), Core Capabilities, and Security/FinOps mapping → 15-min Pod Present-Backs.
 - **Day 2 AM (Breakout Sessions 2 & 3 — Test Assumptions With Something Tangible):** Pod 1 builds live Document AI + Gemini 2.5 Flash extraction spike on 10 sanitized police reports; Pod 2 builds Guidewire coverage lookup + deterministic routing evaluator.
 - **Day 2 PM (Breakout Session 4 — 30-60-90 Plan & Present-Back):** Lock 30-60-90 day milestones, live demo of tangible Day 2 prototypes to SVP Sponsor, and Gate 1 sign-off.
@@ -97,6 +97,6 @@ Date: 2026-08-12 | Status: Confirmed | Engagement Track: 12-Week Delta Engagemen
 
 | Horizon | Key Milestones | Tangible Leadership Review Assets | Pending Access / Blockers |
 | :--- | :--- | :--- | :--- |
-| **Next 30 Days (Weeks 1–4)** | Finalize `docs/PRD.md` & `docs/TDD.md`; curate 200-claim Golden Dataset; build end-to-end ADK extraction + Guidewire lookup pipeline in `acme-claims-nonprod`. | Signed-off `docs/PRD.md`, `docs/TDD.md`, `docs/baseline_kpis.json`, and **Demo 1 (Core Experience)** live walkthrough. | Guidewire non-prod mTLS certificate provisioning (Due Sept 15). |
+| **Next 30 Days (Weeks 1–4)** | Finalize `docs/PRD.md` & `docs/TDD.md`; curate 200-claim Golden Dataset; build end-to-end ADK extraction + Guidewire lookup pipeline in `acme-claims-nonprod`. | Signed-off `docs/PRD.md`, `docs/TDD.md`, `docs/as_is_report.md`, and **Demo 1 (Core Experience)** live walkthrough. | Guidewire non-prod mTLS certificate provisioning (Due Sept 15). |
 | **Days 31–60 (Weeks 5–8)** | Alpha evaluation with Senior Adjusters; add OCR confidence fallback & subrogation detection; establish Cloud Build CI/CD and Locust load test at 60 claims/hr. | **Demo 2 (Advanced Features & Enterprise Readiness)**, Hill-Climb Eval Readout (`>=90%` F1), Load Test Report. | CISO sign-off on Cloud DLP log sanitization rules. |
 | **Days 61–90 (Weeks 9–12)** | Blind parallel UAT on 50 live claims; executive Go/No-Go review against OKRs; FinOps token dashboard in Looker Studio; production cutover & handoff training. | **Demo 3 (Full Delivery)**, Final Closeout Slide Deck, Production Runbook & Transition Guide. | Final Production ARB sign-off (Week 11). |

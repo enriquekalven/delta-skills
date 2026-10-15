@@ -18,7 +18,7 @@ This skill maps a proposed AI use case to measurable value pillars, narrows the 
 
 ## Operating Principles
 
-1. **Size Before Math:** Establish the obtainable annual unit volume (`SOM / Q`) before computing dollar savings. If [synthetic-baseline-protocol](../delivery/synthetic-baseline-protocol/SKILL.md) has been run, read `unit_cost_usd`, `handling_time_minutes`, and `annual_volume_units` directly from `docs/baseline_kpis.json`.
+1. **Size Before Math:** Establish the obtainable annual unit volume (`SOM / Q`) before computing dollar savings. Read baseline handling time, unit cost, and annual volume from `docs/as_is_report.md` and `docs/USE_CASE_CANVAS.md` (or use the Google Cloud ADK Agents TCO Calculator from the TDL Toolbox).
 2. **The 1-to-1 Time Trap:** 1 hour of saved employee time does NOT equal 1 hour of P&L cash flow. Always apply a **Value Capture Rate (VCR)**:
    - `0.25` (25%) — Task automation where headcount is unchanged and time is reallocated.
    - `0.50` (50%) — Revenue-generating or overflow-avoidance workflows (sales pipeline, avoided TPA/overtime).
@@ -68,7 +68,7 @@ This skill maps a proposed AI use case to measurable value pillars, narrows the 
 
 ## Quality Checklist
 
-- [ ] Every TAM/SAM figure cites a concrete internal document, `docs/baseline_kpis.json`, or web source.
+- [ ] Every TAM/SAM figure cites a concrete internal document, `docs/as_is_report.md`, or web source.
 - [ ] Year-1 `adoption_rate` is `<= 0.30` (or justified by an executive mandate).
 - [ ] `VCR` and `SCDF` haircuts are explicitly justified.
 - [ ] All table totals match the JSON output of [`scripts/calculate_roi.py`](scripts/calculate_roi.py).
@@ -78,4 +78,4 @@ This skill maps a proposed AI use case to measurable value pillars, narrows the 
 ## Scripts & Examples
 
 - [Deterministic ROI & Sizing Calculator](scripts/calculate_roi.py): Zero-dependency Python CLI computing SOM, 3-Year TCO, Net Value, ROI %, NPV, and payback across Base/Bull/Bear scenarios.
-- [Worked Example: Commercial Auto Claims Triage Value Sizing](examples/claims-triage-value-sizing.md): Complete `docs/VALUE_SIZING.md` deliverable tied to `docs/baseline_kpis.json` and verified by `calculate_roi.py`.
+- [Worked Example: Commercial Auto Claims Triage Value Sizing](examples/claims-triage-value-sizing.md): Complete `docs/VALUE_SIZING.md` deliverable tied to `docs/as_is_report.md` and verified by `calculate_roi.py`.

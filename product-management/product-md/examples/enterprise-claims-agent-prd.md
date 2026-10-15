@@ -2,7 +2,7 @@
 - **Status:** Gate 1 Approved
 - **Last Updated:** 2026-08-15
 - **Owners:** Victor Chen (Director of Claims Tech), Dana Morales (SVP Commercial Claims), Lead TDL
-- **Linked Artifacts:** `docs/WORKSHOP_INTAKE.md`, `docs/baseline_kpis.json`, `docs/CUJ_MAP.md`
+- **Linked Artifacts:** `docs/WORKSHOP_INTAKE.md`, `docs/as_is_report.md`, `docs/CUJ_MAP.md`
 
 ---
 
@@ -14,7 +14,7 @@ The Commercial Auto Claims FNOL Intake & Triage Agent extracts structured claim 
 ## 2. Background, Problem & Target Users
 
 ### 2.1 Problem & Baseline Context
-Per the 50-claim baseline audit (`docs/baseline_kpis.json`), Acme P&C receives 50,000 serviceable commercial auto claims annually (12,000 in the Phase 1 regional rollout). Adjusters currently spend **45.0 minutes (mean)** and **82.0 minutes (p90)** manually reading 30–80 page PDF packets (ACORD 2, police crash reports, repair estimates, medical bills), keying 42 fields into Guidewire ClaimCenter, and assigning routing queues. Manual entry causes a **14.0% error/rework rate** and **8.0% senior-specialist escalation rate**, costing **$56.25 per claim ($675,000/yr across the 12,000-claim Phase 1 cohort)**.
+Per the Phase 1 As-Is workflow report (`docs/as_is_report.md`), Acme P&C receives 50,000 serviceable commercial auto claims annually (12,000 in the Phase 1 regional rollout). Adjusters currently spend **45.0 minutes (mean)** and **82.0 minutes (p90)** manually reading 30–80 page PDF packets (ACORD 2, police crash reports, repair estimates, medical bills), keying 42 fields into Guidewire ClaimCenter, and assigning routing queues. Manual entry causes a **14.0% error/rework rate** and **8.0% senior-specialist escalation rate**, costing **$56.25 per claim ($675,000/yr across the 12,000-claim Phase 1 cohort)**.
 
 ### 2.2 Target Users
 | User Role | Headcount / Volume | Primary Need |
@@ -45,10 +45,10 @@ Per the 50-claim baseline audit (`docs/baseline_kpis.json`), Acme P&C receives 5
 - **NG3:** Non-North American paper-mail claims outside Guidewire ClaimCenter v2.
 
 ### 3.3 Success Metrics (Baseline vs. Target)
-| Metric | Baseline (`baseline_kpis.json`) | Target (final read-out, weeks 11-12) | Measurement Method |
+| Metric | Baseline (`docs/as_is_report.md`) | Target (final read-out, weeks 11-12) | Measurement Method |
 |---|---|---|---|
-| **Mean Handling Time ($T$)** | 45.0 mins (95% CI: 39.1–50.9) | <= 3.0 mins | Guidewire ClaimCenter active session timestamps across N=50 post-launch stratified sample |
-| **Intake Error / Rework Rate ($E$)** | 14.0% (95% CI: 7.0%–26.2%) | <= 2.0% | Weekly QA audit of 50 routed claims |
+| **Mean Handling Time ($T$)** | 45.0 mins (95% CI: 39.1–50.9) | <= 3.0 mins | Guidewire ClaimCenter active session timestamps across post-launch stratified sample |
+| **Intake Error / Rework Rate ($E$)** | 14.0% (95% CI: 7.0%–26.2%) | <= 2.0% | Weekly QA audit of routed claims |
 | **Unit Cost per Claim ($C_{\text{unit}}$)** | $56.25 | <= $4.50 (incl. $0.75 GCP/token overhead) | `(T / 60) * $75.00 + GCP unit cost` |
 
 ---

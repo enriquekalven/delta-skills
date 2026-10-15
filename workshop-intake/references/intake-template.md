@@ -79,7 +79,7 @@ Date: <YYYY-MM-DD> | Status: <Draft | Confirmed | Onsite Complete> | Engagement 
 - [ ] **3. Active Weekly Customer Tech Collaboration:** Customer engineering team commits to active weekly co-development, experimentation, and problem-solving.
 - [ ] **4. Assigned Business SMEs:** Customer business SMEs are named and allocated to share process knowledge and run UAT/baseline audits.
 - [ ] **5. Clear Co-Development Boundaries:** Explicit delineation of development responsibilities between Customer tech teams, third-party partners, and Google FDEs.
-- [ ] **6. Baseline Analytics or Survey Commitment:** Historical time/motion baseline data (`N=50` sample) is available or customer commits to running a baseline user survey.
+- [ ] **6. Baseline Analytics or Survey Commitment:** Historical operational baseline data and curated Golden Dataset test cases are available (or customer commits to running a baseline user survey).
 
 ---
 
@@ -93,7 +93,7 @@ Date: <YYYY-MM-DD> | Status: <Draft | Confirmed | Onsite Complete> | Engagement 
 
 | Horizon | Key Milestones | Tangible Leadership Review Assets | Pending Access / Blockers |
 | :--- | :--- | :--- | :--- |
-| **Next 30 Days (Days 1–30)** | <Finalize architecture, ingest/vectorize initial dataset, build PoC pipeline, lock 50-sample baseline> | `docs/PRD.md`, `docs/TDD.md`, `docs/baseline_kpis.json`, Working Demo 1 PoC | `<Pending IAM/data access>` |
+| **Next 30 Days (Days 1–30)** | <Finalize architecture, ingest/vectorize initial dataset, build PoC pipeline, establish Golden Dataset baseline metrics> | `docs/PRD.md`, `docs/TDD.md`, `docs/as_is_report.md`, Working Demo 1 PoC | `<Pending IAM/data access>` |
 | **Days 31–60** | <Alpha testing with veteran SMEs, prompt/retrieval tuning, CI/CD & widget integration> | Demo 2 Readout, Alpha Eval Scorecard, Integrated Staging Build | `<Pending UAT signoff>` |
 | **Days 61–90** | <Executive Go/No-Go review against OKRs, FinOps token monitoring, production rollout & training> | Demo 3 Full Delivery, Final Closeout Deck, Production Cutover & Handoff Guide | `<Production ARB>` |
 ```

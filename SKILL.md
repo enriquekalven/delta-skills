@@ -1,19 +1,19 @@
 ---
 name: tdl-user-guide
-description: Master registry and navigation index for the 14 TDL-exclusive skills in the TDL User Guide repository (10 codify all 18 official TDL Toolbox assets behind go/delta-delivery-guide; 4 are Google Cloud TDL engineering and ROI accelerators). Maps each skill to its source, input files, output artifacts, scripts, and worked examples across the 12-week Delta engagement. Triggers on "tdl user guide", "list available skills", "find a skill", "which skill should I use", "tdl toolbox mapping", or "understand the capabilities of this workspace".
+description: Master registry and navigation index for the 13 TDL-exclusive skills in the TDL User Guide repository (10 codify all 18 official TDL Toolbox assets behind go/delta-delivery-guide; 3 are Google Cloud TDL engineering and ROI accelerators). Maps each skill to its source, input files, output artifacts, scripts, and worked examples across the 12-week Delta engagement. Triggers on "tdl user guide", "list available skills", "find a skill", "which skill should I use", "tdl toolbox mapping", or "understand the capabilities of this workspace".
 ---
 
-# TDL User Guide (14 TDL-Exclusive Skills)
+# TDL User Guide (13 TDL-Exclusive Skills)
 
-14 focused skills for executing an end-to-end 12-week Google Cloud AI / Agent Delta engagement (`go/delta-delivery-guide`): qualification, process ethnography and 50-sample baseline measurement → CUJ, Agentic PRD, GCP architecture and 4-pillar technical spec → Stitch/Delta-brand prototyping and goal-driven build → recursive fan-out load testing and LLM-judge statistical auditing (CLA + AUA) → value realization and closeout.
+13 focused skills for executing an end-to-end 12-week Google Cloud AI / Agent Delta engagement (`go/delta-delivery-guide`): qualification, process ethnography and baseline evaluation metrics on the Golden Dataset → CUJ, Agentic PRD, GCP architecture and 4-pillar technical spec → Stitch/Delta-brand prototyping and goal-driven build → recursive fan-out load testing and LLM-judge statistical auditing (CLA + AUA) → value realization and closeout.
 
 - **10 skills codify all 18 official TDL Toolbox assets** (`go/delta-delivery-guide` and linked docs, sheets, and decks).
-- **4 skills are Google Cloud TDL delivery & engineering accelerators** (`synthetic-baseline-protocol`, `gcp-agent-architecture-advisor`, `ai-value-sizing`, `claude-agent-harness`).
+- **3 skills are Google Cloud TDL delivery & engineering accelerators** (`gcp-agent-architecture-advisor`, `ai-value-sizing`, `claude-agent-harness`).
 - Generic commodity skills (React/UI styling, TDD, ticket breakdown, browser testing, generic strategy) are intentionally delegated to upstream `skills.sh` packs — see [README.md](README.md).
 
 Rules enforced by `scripts/validate_skills.py`:
 1. **Explicit file contracts** — every skill names the artifacts it reads and writes (`docs/*.md`, `docs/*.json`, `STATE.md`).
-2. **Deterministic, unit-tested scripts** where numbers are produced (ROI/NPV, 50-sample baseline statistics, agent fan-out & Vertex 5x quota sizing, LLM-judge AUA statistics, Model Garden goal loop); no hidden constants.
+2. **Deterministic, unit-tested scripts** where numbers are produced (ROI/NPV, agent fan-out & Vertex 5x quota sizing, LLM-judge AUA statistics, Model Garden goal loop); no hidden constants.
 3. **A worked example per skill.** Four are adapted from toolbox material and one quotes a deck's real output; the rest follow one consistent *fictional* scenario (Acme P&C commercial-auto claims) and say so. Numbers attributed to a script are that script's actual output.
 
 ---
@@ -26,10 +26,9 @@ Prelude & Phase 1: Qualification, Discovery & Foundations (Weeks 0-2)
   create-delta-ucc                 -> docs/USE_CASE_CANVAS.md (4-Tab UCC + MVP Alignment Summary)
   business-process-redesign        -> docs/as_is_report.md, docs/to_be_designs.md, docs/human_agent_roles.md
   cuj-architect                    -> docs/CUJ_MAP.md (4-Tab Ethnography, L1-L5 CUJ & 0.6V+0.4F Matrix)
-  synthetic-baseline-protocol      -> docs/baseline_kpis.json (50-Sample Historical Audit)
   product-md                       -> docs/PRD.md (go/delta-prd-template 8-Section Agentic PRD)
   gcp-agent-architecture-advisor   -> docs/ARCHITECTURE_RECOMMENDATION.md (Tier 1/2/3 + Model Economics)
-  specification-engineer           -> docs/TDD.md (go/delta-squad-agent-specs Parts I-IV + 4 Pillars)
+  specification-engineer           -> docs/TDD.md (go/delta-squad-agent-specs Parts I-IV + Golden Dataset Eval Baseline)
 
 Phase 2: Core Build & Bi-Weekly Demo Sprints (Weeks 3-10, four 2-week sprints, Demos 1-3)
   stitch-design                    -> docs/STITCH_PROTOTYPE.md (3-stage prototyping, Delta Brand #13, Stitch MCP)
@@ -38,19 +37,18 @@ Phase 2: Core Build & Bi-Weekly Demo Sprints (Weeks 3-10, four 2-week sprints, D
   agent-eval-statistical-auditing  -> docs/EVAL_AUDIT_REPORT.md (sprints 3-4: 27 CLA criteria + 3 AUA pipelines)
 
 Phase 3: Final Read-Out & Close (Weeks 11-12)
-  ai-value-sizing                  -> docs/VALUE_SIZING.md (measured post-launch KPIs vs. frozen baseline)
+  ai-value-sizing                  -> docs/VALUE_SIZING.md (measured post-launch KPIs vs. Phase 1 baseline)
   tdl-field-guide                  -> STATE.md, dual RAID logs, demo frame-up, closeout deck, retro
 ```
 
 ---
 
-## Complete Skill Catalog (14 TDL-Exclusive Skills)
+## Complete Skill Catalog (13 TDL-Exclusive Skills)
 
 ### 1. Engagement Governance, Architecture, Load Testing & Judge Auditing (`delivery/`)
 | Skill | Source | Output Artifact(s) | Scripts & References | Worked Example(s) |
 | :--- | :--- | :--- | :--- | :--- |
 | **[tdl-field-guide](delivery/tdl-field-guide/SKILL.md)** | Toolbox 06·07·08·09·11·12 | `STATE.md`, `docs/DEMO_FRAME_UP.md` | — | [`engagement-state-and-gate-review.md`](delivery/tdl-field-guide/examples/engagement-state-and-gate-review.md) |
-| **[synthetic-baseline-protocol](delivery/synthetic-baseline-protocol/SKILL.md)** | TDL repo-native | `docs/baseline_kpis.json` | [`compute_baseline_stats.py`](delivery/synthetic-baseline-protocol/scripts/compute_baseline_stats.py) | [`claims-baseline-audit.md`](delivery/synthetic-baseline-protocol/examples/claims-baseline-audit.md) |
 | **[gcp-agent-architecture-advisor](delivery/gcp-agent-architecture-advisor/SKILL.md)** | TDL repo-native | `docs/ARCHITECTURE_RECOMMENDATION.md` | [`model-economics-config.json`](delivery/gcp-agent-architecture-advisor/references/model-economics-config.json) | [`architecture-recommendation-example.md`](delivery/gcp-agent-architecture-advisor/examples/architecture-recommendation-example.md) |
 | **[agent-load-testing](delivery/agent-load-testing/SKILL.md)** | Toolbox 16 | `docs/LOAD_TEST_REPORT.md` | [`calculate_agent_quotas.py`](delivery/agent-load-testing/scripts/calculate_agent_quotas.py), [`load-testing-and-quota-playbook.md`](delivery/agent-load-testing/references/load-testing-and-quota-playbook.md) | [`clinical-search-load-test-report.md`](delivery/agent-load-testing/examples/clinical-search-load-test-report.md) |
 | **[agent-eval-statistical-auditing](delivery/agent-eval-statistical-auditing/SKILL.md)** | Toolbox 17·18 | `docs/EVAL_AUDIT_REPORT.md` | [`audit_llm_judge.py`](delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py), [`cla-rubric-and-aua-methodology.md`](delivery/agent-eval-statistical-auditing/references/cla-rubric-and-aua-methodology.md) | [`enterprise-analyst-aua-certification.md`](delivery/agent-eval-statistical-auditing/examples/enterprise-analyst-aua-certification.md) |

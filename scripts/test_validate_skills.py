@@ -1,4 +1,4 @@
-"""Unit tests for scripts/validate_skills.py, init_skill.py, calculate_roi.py, compute_baseline_stats.py, calculate_agent_quotas.py, and audit_llm_judge.py."""
+"""Unit tests for scripts/validate_skills.py, calculate_roi.py, calculate_agent_quotas.py, and audit_llm_judge.py."""
 
 from __future__ import annotations
 
@@ -14,14 +14,12 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 sys.path.insert(0, str(REPO_ROOT / "ai-value-sizing" / "scripts"))
-sys.path.insert(0, str(REPO_ROOT / "delivery" / "synthetic-baseline-protocol" / "scripts"))
 sys.path.insert(0, str(REPO_ROOT / "delivery" / "agent-load-testing" / "scripts"))
 sys.path.insert(0, str(REPO_ROOT / "delivery" / "agent-eval-statistical-auditing" / "scripts"))
 
 import audit_llm_judge
 import calculate_agent_quotas
 import calculate_roi
-import compute_baseline_stats
 import validate_skills
 
 VALID_EXAMPLE_MD = """# Worked Example: My Skill
@@ -203,56 +201,6 @@ class CalculateRoiTests(unittest.TestCase):
             payload["scenarios"]["bear"]["npv_3yr_usd"],
             payload["scenarios"]["bull"]["npv_3yr_usd"],
         )
-
-
-class ComputeBaselineStatsTests(unittest.TestCase):
-    EXAMPLE = REPO_ROOT / "delivery" / "synthetic-baseline-protocol" / "examples" / "claims-baseline-audit.md"
-
-    def test_worked_example_matches_script_output(self) -> None:
-        times = "[16,18,18,19,20,21,22,23,24,25,26,28,30,32,34,35,36,37,37,38,38,38,38,38,38,38,38,39,40,41,42,43,44,45,46,50,53,56,59,62,66,70,74,78,82,84,88,91,95,97]"
-        out = io.StringIO()
-        with redirect_stdout(out):
-            code = compute_baseline_stats.main([
-                "--times-json", times, "--errors", "7", "--escalations", "4",
-                "--hourly-rate", "75.00", "--overhead-per-unit", "0.00", "--annual-volume", "12000",
-            ])
-        self.assertEqual(code, 0)
-        data = json.loads(out.getvalue())
-        example = self.EXAMPLE.read_text(encoding="utf-8")
-        ht = data["handling_time_minutes"]
-        for token in (f"Mean = `{ht['mean']}", f"Median = `{ht['median']}", f"p90 = `{ht['p90']}", f"SD = `{ht['sd']}",
-                      f"[{ht['ci95'][0]}, {ht['ci95'][1]}]",
-                      f"{data['error_rate_percent']['value']}%", f"[{data['error_rate_percent']['ci95'][0]}%, {data['error_rate_percent']['ci95'][1]}%]",
-                      f"{data['escalation_rate_percent']['value']}%", f"\"unit_cost_usd\": {data['unit_cost_usd']}",
-                      f"{int(data['total_baseline_annual_cost_usd'])}"):
-            self.assertIn(token, example, f"baseline example drifted: {token!r}")
-
-    def test_computes_baseline_kpis_from_times_array(self) -> None:
-        times = [30.0 + (i % 15) for i in range(50)]
-        out = io.StringIO()
-        with redirect_stdout(out):
-            code = compute_baseline_stats.main(
-                [
-                    "--times-json",
-                    json.dumps(times),
-                    "--errors",
-                    "5",
-                    "--escalations",
-                    "10",
-                    "--hourly-rate",
-                    "65",
-                    "--overhead-per-unit",
-                    "1.25",
-                    "--annual-volume",
-                    "120000",
-                ]
-            )
-        self.assertEqual(code, 0)
-        data = json.loads(out.getvalue())
-        self.assertEqual(data["sample_size"], 50)
-        self.assertAlmostEqual(data["error_rate_percent"]["value"], 10.0)
-        self.assertAlmostEqual(data["escalation_rate_percent"]["value"], 20.0)
-        self.assertGreater(data["unit_cost_usd"], 0)
 
 
 class CalculateAgentQuotasTests(unittest.TestCase):

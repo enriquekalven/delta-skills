@@ -7,7 +7,7 @@ Use this official 8-section Delta Agentic PRD template (paired with RICE feature
 
 | [<Client>] <Product / Agent Initiative Name> PRD | | **Summary:** <1-sentence summary of the agent system and primary workflow automated> |
 | :--- | :--- | :--- |
-| **Authors:** <TDL Name, PM Name><br>**Client POCs:** <Business Sponsor, Technical POCs> | **Status:** <Draft \| Gate 1 Approved><br>**Last Revised:** <YYYY-MM-DD><br>**Read Time:** ~5 min | **Context & Upstream Artifacts:**<br>- `docs/WORKSHOP_INTAKE.md`<br>- `docs/USE_CASE_CANVAS.md`<br>- `docs/CUJ_MAP.md`<br>- `docs/baseline_kpis.json` |
+| **Authors:** <TDL Name, PM Name><br>**Client POCs:** <Business Sponsor, Technical POCs> | **Status:** <Draft \| Gate 1 Approved><br>**Last Revised:** <YYYY-MM-DD><br>**Read Time:** ~5 min | **Context & Upstream Artifacts:**<br>- `docs/WORKSHOP_INTAKE.md`<br>- `docs/USE_CASE_CANVAS.md`<br>- `docs/CUJ_MAP.md`<br>- `docs/as_is_report.md` |
 
 **Discovery Sessions Completed:**
 - <Date>: <Discovery / Technical Alignment Session Name & Notes Link>
@@ -41,7 +41,7 @@ Use this official 8-section Delta Agentic PRD template (paired with RICE feature
 
 ## 2. PAIN POINTS & PROBLEMS
 
-Addressing these systemic blockers and friction points is the prerequisite for achieving the target outcome cited in `docs/baseline_kpis.json`.
+Addressing these systemic blockers and friction points is the prerequisite for achieving the target outcome cited in `docs/as_is_report.md`.
 
 | Classification | Pain Point | Description & Operational Impact |
 | :--- | :--- | :--- |
@@ -159,7 +159,7 @@ To maintain architectural integrity of the 12-week MVP and enforce the 1-in-1-ou
 | :--- | :--- |
 | **Project Leadership** | **Google Owner:** <TDL / PM> \| **Client POCs:** <Names & Roles> |
 | **User Impact** | Target user base of **<N> employees / operators** |
-| **Core Value Metric** | <e.g., Deflect and resolve 55% of internal support tickets> (Baseline vs. Target from `docs/baseline_kpis.json`) |
+| **Core Value Metric** | <e.g., Deflect and resolve 55% of internal support tickets> (Baseline vs. Target from `docs/as_is_report.md`) |
 | **Efficiency Gain** | <e.g., Reclaim 114,000 hours of wait/handling time annually ($X.XM/yr)> |
 | **Phase 1 Success** | Judged by <e.g., Triage Accuracy >= 92% and elimination of misrouted records> |
 | **Phase 2 Success** | Judged by <e.g., Autonomous Remediation Volume cleared without human intervention> |

@@ -1,5 +1,5 @@
 # AI Value Realization Case: Commercial Auto Claims Intake & Triage Agent
-Date: 2026-08-21 | Baseline Source: `docs/baseline_kpis.json` (50-Claim Audit) | WACC: 10.0%
+Date: 2026-08-21 | Baseline Source: `docs/as_is_report.md` (Phase 1 Operational Baseline) | WACC: 10.0%
 
 ## 1. Executive Bottom Line
 Automating commercial auto First Notice of Loss (FNOL) document extraction and adjuster triage across **12,000 obtainable annual claims (SOM)** requires **$180,000 in Year 0 CapEx** and **$68,000 in annual OpEx ($384,000 3-Year TCO)**, generating **$316,588 in risk-adjusted net annual value** (**Base Case 3-Year ROI: +147.3%**, **3-Year NPV @ 10%: $438,201**, **Payback: 8.7 months**).
@@ -25,7 +25,7 @@ Automating commercial auto First Notice of Loss (FNOL) document extraction and a
 - **Year 0 CapEx ($180,000):**
   - Forward-Deployed Engineering & Document AI / ADK pipeline build: $125,000
   - Guidewire ClaimCenter REST integration & VPC-SC security review: $35,000
-  - 50-sample baseline audit & 200-claim golden evaluation harness: $20,000
+  - Golden Dataset curation & 200-claim automated evaluation harness: $20,000
 - **Annual Run OpEx ($68,000 / yr):**
   - Vertex AI (`gemini-3` + Document AI OCR) + Agent Runtime compute ($0.75/claim × 12,000 claims): $9,000/yr
   - Cloud Logging, BigQuery audit storage, and monitoring: $12,000/yr
@@ -33,7 +33,7 @@ Automating commercial auto First Notice of Loss (FNOL) document extraction and a
 - **Total 3-Year TCO:** `$180,000 + (3 × $68,000) = $384,000`
 
 ### 3.2 Gross-to-Net Value Haircuts
-- **Baseline Time Saved per Claim:** `45.0 mins (baseline) - 3.0 mins (HITL review) = 42.0 mins (0.70 hours) saved/claim` (from `docs/baseline_kpis.json`).
+- **Baseline Time Saved per Claim:** `45.0 mins (baseline) - 3.0 mins (HITL review) = 42.0 mins (0.70 hours) saved/claim` (from `docs/as_is_report.md`).
 - **Blended Adjuster Hourly Rate:** `$75.00 / hr` (fully loaded).
 - **Gross Annual Labor Value:** `12,000 claims × 0.70 hrs × $75.00/hr = $630,000 / yr`.
 - **Value Capture Rate (VCR = 59.1% blended):**

@@ -42,7 +42,7 @@ This skill produces, prioritizes, or critiques a structured Product Requirements
 ## Operational Modes
 
 ### Mode 1: Generate (`docs/PRD.md`)
-Read discovery inputs (`docs/WORKSHOP_INTAKE.md`, `docs/USE_CASE_CANVAS.md`, `docs/CUJ_MAP.md`, and `docs/baseline_kpis.json` if present) and generate a complete 8-section PRD following [prd-template.md](references/prd-template.md).
+Read discovery inputs (`docs/WORKSHOP_INTAKE.md`, `docs/USE_CASE_CANVAS.md`, `docs/CUJ_MAP.md`, and `docs/as_is_report.md` if present) and generate a complete 8-section PRD following [prd-template.md](references/prd-template.md).
 
 ### Mode 2: Prioritize Backlog (RICE)
 Take a raw list of candidate features and platform dependencies, compute Reach, Impact, Confidence, and Effort with explicit justifications, and sort the backlog into **Phase 1 MVP (P0 — Weeks 3–10)** vs. **Phase 2 Proactive Fast-Follow (P1)**.

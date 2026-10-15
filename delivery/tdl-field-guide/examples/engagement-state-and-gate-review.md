@@ -109,7 +109,7 @@ gate_history:
     signoff: "Victor Chen (Dir. Claims Tech)"
   - gate: 1
     date: 2026-08-22
-    artifacts: ["docs/WORKSHOP_INTAKE.md", "docs/CUJ_MAP.md", "docs/PRD.md", "docs/TDD.md", "docs/baseline_kpis.json"]
+    artifacts: ["docs/WORKSHOP_INTAKE.md", "docs/CUJ_MAP.md", "docs/PRD.md", "docs/TDD.md", "docs/as_is_report.md"]
     signoff: "Dana Morales (SVP Claims)"
   - gate: 2
     date: 2026-10-23
@@ -125,6 +125,6 @@ program_raid: []
 
 ### Closeout deck (toolbox structure)
 
-- **The Challenge | The Vision | The Experience** — manual FNOL intake averaged 45.0 min (p90 82.0) across four systems with a 14.0% field-error rate (from `docs/baseline_kpis.json`); the vision was zero-touch multimodal intake with cited evidence inside ClaimCenter; before/after walk-through of one claim.
+- **The Challenge | The Vision | The Experience** — manual FNOL intake averaged 45.0 min (p90 82.0) across four systems with a 14.0% field-error rate (from `docs/as_is_report.md`); the vision was zero-touch multimodal intake with cited evidence inside ClaimCenter; before/after walk-through of one claim.
 - **The Architecture | The Tech** — user workflow in ClaimCenter; Vertex AI Agent Engine, Gemini 2.5 Flash/Pro router, Document AI, BigQuery policy + VIN mirror inside `acme-claims-vpc-sc`, Cloud DLP + Model Armor.
-- **The Value | The Future** — measured 2.8 min handle time, F1 0.954, bodily-injury recall 1.00 (`docs/VALUE_SIZING.md` computes the dollar case against the frozen baseline); next phase: subrogation demand package generation.
+- **The Value | The Future** — measured 2.8 min handle time, F1 0.954, bodily-injury recall 1.00 (`docs/VALUE_SIZING.md` computes the dollar case against the Phase 1 baseline); next phase: subrogation demand package generation.

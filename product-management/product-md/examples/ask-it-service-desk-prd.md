@@ -2,7 +2,7 @@
 
 | [Global Semiconductor Corp] AskIT Service Desk Optimization PRD | | **Summary:** Internal IT service desk agent for triage, task-distilled troubleshooting, and autonomous command center remediation. |
 | :--- | :--- | :--- |
-| **Authors:** Enrique Chan (TDL), Mariem Ayadi (FDE Lead)<br>**Client POCs:** VP IT Service Operations, Global Service Desk Lead, Enterprise Command Center Lead | **Status:** Gate 1 Approved<br>**Last Revised:** 2026-06-22<br>**Read Time:** ~6 min | **Context & Upstream Artifacts:**<br>- `docs/WORKSHOP_INTAKE.md`<br>- `docs/USE_CASE_CANVAS.md`<br>- `docs/CUJ_MAP.md`<br>- `docs/baseline_kpis.json` |
+| **Authors:** Enrique Chan (TDL), Mariem Ayadi (FDE Lead)<br>**Client POCs:** VP IT Service Operations, Global Service Desk Lead, Enterprise Command Center Lead | **Status:** Gate 1 Approved<br>**Last Revised:** 2026-06-22<br>**Read Time:** ~6 min | **Context & Upstream Artifacts:**<br>- `docs/WORKSHOP_INTAKE.md`<br>- `docs/USE_CASE_CANVAS.md`<br>- `docs/CUJ_MAP.md`<br>- `docs/as_is_report.md` |
 
 **Discovery Sessions Completed:**
 - `2026-06-18`: AI Factory Biweekly — Use Case Backlog & Prioritization Review

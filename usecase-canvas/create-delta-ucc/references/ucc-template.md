@@ -101,7 +101,7 @@ flowchart LR
 | *e.g., ServiceNow / Cloud SQL / UI* | *REST API / Webhook* | *Automated ticket filing, audit log write, structured triage packet* |
 
 ### 5. Evaluation and Testing Approach
-* **Status Quo Quality:** <Current human baseline accuracy, MTTR, or error rate from `docs/baseline_kpis.json`>
+* **Status Quo Quality:** <Current human baseline accuracy, MTTR, or error rate from `docs/as_is_report.md`>
 * **UAT Required:** `<Yes / No>` (<Number of client SMEs and UAT sign-off window>)
 * **Tentative Evaluation Metrics:**
   * **Metric:** `<Metric Name & Mathematical Definition>`

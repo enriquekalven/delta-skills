@@ -39,7 +39,7 @@ Use this official **Delta Squad Enterprise Agent Technical Specifications (`go/d
 
 ## A. Business Goal & Problem Statement
 * **✳️ Core Problem Statement:** <What explicit manual bottleneck, business inefficiency, or cost driver does this agent solve?>
-* **✳️ Target Business Outcome:** <Describe the measurable quantitative value delivered by this agent, citing `docs/baseline_kpis.json`.>
+* **✳️ Target Business Outcome:** <Describe the measurable quantitative value delivered by this agent, citing `docs/as_is_report.md`.>
 
 ## B. ✳️ Measurable Success Metrics (KPIs)
 - [ ] **Time Savings / Productivity:** <e.g., Reduces manual compilation time by 80%, saves 25 hours/week>
