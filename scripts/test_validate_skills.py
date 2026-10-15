@@ -13,7 +13,6 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
-sys.path.insert(0, str(REPO_ROOT / "utils" / "skill-creator" / "scripts"))
 sys.path.insert(0, str(REPO_ROOT / "ai-value-sizing" / "scripts"))
 sys.path.insert(0, str(REPO_ROOT / "delivery" / "synthetic-baseline-protocol" / "scripts"))
 sys.path.insert(0, str(REPO_ROOT / "delivery" / "agent-load-testing" / "scripts"))
@@ -23,7 +22,6 @@ import audit_llm_judge
 import calculate_agent_quotas
 import calculate_roi
 import compute_baseline_stats
-import init_skill
 import validate_skills
 
 VALID_EXAMPLE_MD = """# Worked Example: My Skill
@@ -145,24 +143,6 @@ class ValidateSkillsTests(unittest.TestCase):
             errs = validate_skills.validate_json_files(root)
             self.assertEqual(len(errs), 1)
             self.assertIn("invalid JSON", errs[0])
-
-
-class InitSkillTests(unittest.TestCase):
-    def test_creates_valid_skill_that_passes_validator(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            with redirect_stdout(io.StringIO()):
-                skill_dir = init_skill.create_skill("sample-skill", tmp)
-            self.assertTrue((skill_dir / "SKILL.md").is_file())
-            self.assertTrue((skill_dir / "examples" / "worked-example.md").is_file())
-            with redirect_stdout(io.StringIO()):
-                code = validate_skills.main(["--root", tmp])
-            self.assertEqual(code, 0)
-
-    def test_rejects_invalid_or_escaping_skill_names(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            for bad in ("../escape", "Bad_Name", "-leading", "trailing-", ""):
-                with self.assertRaises(ValueError):
-                    init_skill.create_skill(bad, tmp)
 
 
 class CalculateRoiTests(unittest.TestCase):

@@ -126,7 +126,7 @@ Frame-up table columns: `Pillar | Feature (ID from the PRD backlog, e.g. AI-HR-0
 
 | Sprint focus (repo recommendation) | Skill | Output |
 |---|---|---|
-| Sprints 1–2: core build, Demo 1 | [claude-agent-harness](../../ai-coding/claude-agent-harness/SKILL.md) or your coding agent, [prompt-engineer](../../utils/prompt-engineer/SKILL.md) | code + passing tests, eval round 1 |
+| Sprints 1–2: core build, Demo 1 | [claude-agent-harness](../../ai-coding/claude-agent-harness/SKILL.md) (or your coding agent + `google-agents-cli-adk-code`), [product-md](../../product-management/product-md/SKILL.md) §5 | code + passing tests, eval round 1 |
 | Sprints 3–4: enterprise readiness, Demo 2–3 | [agent-load-testing](../agent-load-testing/SKILL.md), [agent-eval-statistical-auditing](../agent-eval-statistical-auditing/SKILL.md) | `docs/LOAD_TEST_REPORT.md`, `docs/EVAL_AUDIT_REPORT.md` |
 | ~Week 10: next-phase scoping & backlog | [create-delta-ucc](../../usecase-canvas/create-delta-ucc/SKILL.md), [ai-value-sizing](../../ai-value-sizing/SKILL.md) | next-phase plan (another Delta cycle or PSO scaling) |
 

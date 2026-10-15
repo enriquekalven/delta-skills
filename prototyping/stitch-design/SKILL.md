@@ -3,20 +3,20 @@ name: stitch-design
 description: >
   Run rapid prototyping and generative UI design for Delta engagements using the official
   TDL Prototyping Guide (3-stage prototyping lifecycle, 7-step hypothesis-to-mini-eval loop,
-  gcc-delta-tdl sandbox governance, AI Studio vs. Agent Studio vs. ADK matrix) and the Stitch
-  MCP Server (create_project, generate_screen_from_text, edit_screens, generate_variants,
-  get_screen). Trigger when asked to prototype an agent UI, run a feasibility spike, or
-  generate/iterate on screens with Stitch MCP.
+  gcc-delta-tdl sandbox governance, AI Studio vs. Agent Studio vs. ADK matrix), the official
+  Delta Brand & UI Guidelines (Google Material 3 color palette, Google Sans/Roboto typography,
+  co-branding rules), and the Stitch MCP Server. Trigger when asked to prototype an agent UI,
+  apply Delta brand guidelines, run a feasibility spike, or generate screens with Stitch MCP.
 metadata:
-  version: '3.0'
+  version: '3.1'
 ---
 
-# TDL Prototyping & Stitch Generative UI Design (`stitch-design`)
+# TDL Prototyping, Brand Guidelines & Stitch Generative UI (`stitch-design`)
 
-This skill combines the official **TDL Prototyping Guide** (3-stage prototyping lifecycle, 7-step hypothesis loop, and GCP sandbox governance) with the **Stitch MCP Server** workflow to build high-signal prototypes and UI workbenches grounded in `docs/PRD.md` and `docs/CUJ_MAP.md`.
+This skill codifies **Toolbox Asset #15 (TDL Prototyping Guide)** and **Toolbox Asset #13 (Delta Brand & UI Guidelines)** alongside the **Stitch MCP Server** workflow to build high-signal prototypes and UI workbenches grounded in `docs/PRD.md` and `docs/CUJ_MAP.md`.
 
 > [!IMPORTANT]
-> **Prerequisite:** sections 4–5 call `mcp_StitchMCP_*` tools, which exist only if a Stitch MCP server is configured in your agent's MCP settings under the server name `StitchMCP` (tool names are `mcp_<server>_<tool>`). If it is not installed, the lifecycle, playbook and governance in sections 1–3 still apply — do the screen generation manually in the Stitch web app and paste the exported HTML/CSS into `docs/STITCH_PROTOTYPE.md`. Do not pretend the tools ran.
+> **Prerequisite:** sections 5–6 call `mcp_StitchMCP_*` tools, which exist only if a Stitch MCP server is configured in your agent's MCP settings under the server name `StitchMCP` (tool names are `mcp_<server>_<tool>`). If it is not installed, the lifecycle, playbook, and brand guidelines in sections 1–4 still apply — do the screen generation manually in the Stitch web app or build a single-file HTML/CSS/JS prototype verified against [`ui-review-checklist.md`](references/ui-review-checklist.md). Do not pretend the tools ran.
 
 ---
 
@@ -69,29 +69,45 @@ Every prototype or spike must execute this 7-step loop—never ship a prototype 
 
 ---
 
-## 4. Three-Phase Stitch MCP UI Execution Procedure
+## 4. Delta Brand & UI Guidelines (Toolbox Asset #13)
+
+Apply the official Google Cloud Delta brand tokens across all prototypes, slide decks, and customer-facing UI workbenches:
+
+| Token Category | Token Name / Usage | Hex / Specification |
+|---|---|---|
+| **Primary Brand Colors** | Google Blue (Primary CTA / Links) · Google Green (Success / Passed Gate) · Google Yellow (Warning / HITL Review) · Google Red (Error / Blocked) | `#4285F4` · `#34A853` · `#FBBC04` · `#EA4335` |
+| **Secondary / Interactive Accents** | Dark Blue (Hover/Active) · Dark Green · Dark Yellow · Dark Red | `#1967D2` · `#188038` · `#F29900` · `#C5221F` |
+| **Surfaces & Neutrals** | Surface Primary (`#FFFFFF`) · Background Secondary (`#F8F9FA`) · Border (`#DADCE0`) · Text Secondary (`#5F6368`, contrast $\ge 4.5:1$) · Text Primary (`#202124`, contrast $\ge 12:1$) | Material Design 3 light-surface baseline |
+| **Typography** | **Headlines / Titles:** `Google Sans` (`Inter` fallback) · **Body / UI Labels:** `Roboto` · **Code / Traces / Metrics:** `Roboto Mono` | 8px spacing grid (`4px`, `8px`, `16px`, `24px`, `32px`, `48px`) |
+| **Co-Branding Lockup** | Header lockup: `Google Cloud × [Customer Name]` with equal visual weight and a `1px solid #DADCE0` vertical divider (`16px` horizontal padding). | Never distort customer logos or mix unapproved accent colors |
+
+---
+
+## 5. Three-Phase Stitch MCP UI Execution Procedure
 
 ### Phase 1: Project Initialization & Initial Screen Generation
 1. Read `docs/PRD.md` and `docs/CUJ_MAP.md` to extract the target persona, primary CUJ task flow, HITL role (`Reviewer / Prompt Curator / Approver`), data fields, and status states.
 2. Create or select a Stitch project using `mcp_StitchMCP_create_project`.
-3. Construct a structured generation prompt specifying layout grid, Material 3 color tokens (`#ffffff` surface, `#f8f9fa` background, `#1a73e8` primary action, `#202124` typography), domain fields, and interactive controls, then invoke `mcp_StitchMCP_generate_screen_from_text` (see [stitch-mcp-workflow.md](references/stitch-mcp-workflow.md)).
+3. Construct a structured generation prompt specifying layout grid, Delta Brand & Material 3 color tokens (Section 4), domain fields, and interactive controls, then invoke `mcp_StitchMCP_generate_screen_from_text` (see [stitch-mcp-workflow.md](references/stitch-mcp-workflow.md)).
 
 ### Phase 2: Screen Audit & Targeted Refinement (`edit_screens` / `generate_variants`)
-Inspect the generated screen via `mcp_StitchMCP_get_screen` and evaluate it against five concrete criteria:
-1. **Primary CTA & Task Hierarchy:** One primary `#1a73e8` button per screen; clear visual path through the CUJ.
+Inspect the generated screen via `mcp_StitchMCP_get_screen` (or audit your HTML/CSS/JS prototype against [ui-review-checklist.md](references/ui-review-checklist.md)):
+1. **Primary CTA & Task Hierarchy:** One primary `#4285F4` / `#1967D2` button per screen; clear visual path through the CUJ.
 2. **Domain Fidelity:** Real field labels, status badges (`PASS`, `HITL REVIEW`, `BLOCKED`), and citations from the PRD—zero placeholder `Lorem ipsum`.
 3. **Information Density:** Maximum 4 summary KPIs in the header strip; split-pane or drawer layout for document/trace inspection.
-4. **Contrast & Legibility:** High-contrast `#202124` primary text and `#5f6368` secondary labels on light surfaces; `Roboto` / `Inter` typography.
+4. **Contrast & Legibility:** High-contrast `#202124` primary text and `#5F6368` secondary labels on light surfaces; `Google Sans` / `Roboto` / `Roboto Mono` typography.
 5. **Edge & Empty States:** Explicit UI states for low-confidence warnings, loading skeletons, and human escalation actions.
 
 Apply fixes using `mcp_StitchMCP_edit_screens` (for targeted layout/component fixes) or `mcp_StitchMCP_generate_variants` (to compare layout alternatives).
 
 ### Phase 3: Handoff & Component Extraction
-Retrieve the approved screen metadata and HTML/CSS structure via `mcp_StitchMCP_get_screen` and document the hypothesis, mini-eval results, screen inventory, Stitch IDs, and component breakdown in `docs/STITCH_PROTOTYPE.md` (or hand off to [frontend-design](../frontend-design/SKILL.md) for production implementation).
+Retrieve the approved screen metadata and HTML/CSS structure via `mcp_StitchMCP_get_screen` and document the hypothesis, mini-eval results, screen inventory, Stitch IDs, and component breakdown in `docs/STITCH_PROTOTYPE.md`.
 
 ---
 
-## 5. References & Examples
+## 6. References & Examples
 
 - [Stitch MCP Tool Sequence, Sandbox Governance & Prompt Specification](references/stitch-mcp-workflow.md): Parameter contracts, `gcc-delta-tdl` sandbox governance rules, and prompt templates for Stitch MCP tools.
+- [8-Point UI & Accessibility Review Checklist](references/ui-review-checklist.md): Engineering rubric for auditing HTML/CSS/JS prototypes before delivery.
 - [Worked Example: Commercial Underwriting Triage Portal via Stitch MCP](examples/stitch-claims-portal-walkthrough.md): End-to-end Stitch MCP tool trace (`create_project` → `generate_screen_from_text` → `edit_screens` → `get_screen`) and resulting `docs/STITCH_PROTOTYPE.md` handoff specification.
+- [Worked Example: Commercial Claims HITL Review Console Prototype](examples/agent-ops-console-prototype.md): Complete runnable `index.html` prototype for the Acme Claims FNOL Adjuster Workbench plus its completed 8-point verification scorecard.

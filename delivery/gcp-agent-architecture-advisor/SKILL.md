@@ -110,11 +110,11 @@ IAM / service accounts, network perimeter, data residency, secrets, logging of p
 
 ## 3. Hand-offs
 
-- **Tier 2 or 3:** the implementation plan goes to the TDL Phase 3 build; the optional
+- **Tier 2 or 3:** the implementation plan goes to the TDL Phase 2 build; the optional
   `google-agents-cli-scaffold` / `google-agents-cli-deploy` skills cover scaffolding and
   deployment.
-- **Security:** feed section 6 into the Phase 2 threat model.
-- **Cost:** feed the cost drivers into [ai-value-sizing](../../ai-value-sizing/SKILL.md) for TCO.
+- **Security:** feed section 6 into the Phase 1 threat model.
+- **Cost & Model Routing:** ground token unit economics and model tier routing in [`references/model-economics-config.json`](references/model-economics-config.json) and feed the cost drivers into [ai-value-sizing](../../ai-value-sizing/SKILL.md) for TCO.
 
 ## 4. Anti-patterns
 
@@ -123,6 +123,7 @@ IAM / service accounts, network perimeter, data residency, secrets, logging of p
 - Copying a maturity table from an older document instead of re-verifying.
 - Recommending without citing which PRD or intake lines drove the decision.
 
-## 5. Worked Example
+## 5. References & Worked Example
 
+- [Model Economics & Routing Reference (`model-economics-config.json`)](references/model-economics-config.json): Per-1M-token pricing, context window, latency, and downsampling split benchmarks across frontier and fast model tiers.
 - [Worked Example: Commercial Auto Claims FNOL Architecture Recommendation](examples/architecture-recommendation-example.md): Complete `docs/ARCHITECTURE_RECOMMENDATION.md` showing constraint-to-tier traceability, Tier 1–3 comparison, verified GA launch stages, VPC-SC Mermaid topology, and least-privilege IAM specification.
