@@ -1,17 +1,31 @@
+# Skill Authoring Template (`SKILL.md`)
+
+Copy this template when authoring a new `SKILL.md` file:
+
+````markdown
 ---
 name: template-skill
-description: Triggers when the user asks to use the template skill.
+description: >
+  State what artifact this skill produces, what inputs it reads, and when to trigger it.
+  Triggers on: "<explicit trigger phrases>".
+  Do NOT trigger when: "<explicit negative trigger>".
+metadata:
+  version: '1.0'
 ---
 
 # Template Skill Name
 
-[High level summary of the workflow]
+State in 1–2 sentences what concrete file or action this skill produces (e.g., `docs/OUTPUT.md`) and which upstream files it reads.
 
-## Step-by-Step Instructions
-1. First, analyze X.
-2. Second, run `scripts/example.py`.
-3. Finally, output the results using the format in `references/format.md`.
+## Step-by-Step Procedure
+1. **Read Inputs:** Inspect `<input_file>` and validate required fields.
+2. **Execute / Calculate:** Run `<script_or_analysis>` and apply domain rules from `references/` if needed.
+3. **Write Deliverable:** Write the output to `<output_file>` and verify against the checklist below.
 
-## Guidelines
-* **Mandatory**: Always verify the data before processing.
-* **Prohibited**: Do not guess schema names; always read the reference files.
+## Validation Checklist
+- [ ] Output file exists at `<output_file>` with all required sections populated.
+- [ ] All numeric calculations and citations are verified.
+
+## References & Examples
+- [Worked Example](examples/worked-example.md): Complete end-to-end input → execution → output artifact.
+````

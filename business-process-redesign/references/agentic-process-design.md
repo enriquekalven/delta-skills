@@ -171,13 +171,24 @@ This is the formal layout for **Output 2**. Use this template to compile the tar
 - **Process Boundaries:** [Clearly state what is in-scope for agentic automation vs. what remains explicitly manual.]
 
 ## 2. Collaborative Architecture & Workflow Spec
-- [Insert the completed REDESIGNED AGENTIC PROCESS SPECIFICATION detailing trigger, agent, data, and tools.]
+| Attribute | Specification |
+| :--- | :--- |
+| **Trigger Event** | `<Event / API webhook / schedule that initiates the agent>` |
+| **Agent Role & Autonomy** | `<L1 Human-Assisted / L2 Supervised Autonomy / L3 Bounded Autonomy>` |
+| **Data Sources (Read)** | `<Systems of record, vector stores, and document schemas>` |
+| **Tools & Actions (Write)** | `<APIs, MCP tools, and state transitions executed by the agent>` |
 
 ## 3. Step-by-Step Agentic Execution Path
-- [Detail the step-by-step workflow. Use formatting like `[Agent]` for autonomous steps, and `[HITL Gate]` for steps requiring human interaction.]
-- **Escalation Matrix:** [Document the precise escalation gates: thresholds, low-confidence overrides, and error triggers.]
+- `1. [Agent]` `<Step 1 action, tool invocation, and output schema>`
+- `2. [HITL Gate]` `<Human review trigger, confidence threshold, and approval SLA>`
+- `3. [Agent]` `<Downstream commit and audit log entry>`
+- **Escalation Matrix:** `<Document thresholds, low-confidence overrides, and fallback queue>`
 
 ## 4. Business Case & ROI Model
-- [Insert the completed REDUX BUSINESS CASE CARD showing time, labor, and error savings.]
-- [Detail the build cost calculations: developer hours, software licensing changes, and payback period.]
+| Metric | Annual Baseline | Target ("To-Be") | Annual Savings ($) |
+| :--- | :--- | :--- | :--- |
+| **Labor Hours & Cost** | `<Hours/yr ($Cost)>` | `<Hours/yr ($Cost)>` | `$<Labor Saved>/yr` |
+| **Rework / Error Cost** | `<Error % ($Cost)>` | `<Error % ($Cost)>` | `$<Rework Saved>/yr` |
+| **Total Annual Value** | — | — | **`$<Total Value>/yr`** |
+| **One-Time Build Cost & Payback** | — | `$<Build Cost>` | `<X.X> months` |
 ```

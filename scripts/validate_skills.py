@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
-"""Validate SKILL.md frontmatter, CommonMark code fences, JSON files, orphan skill assets, and relative links.
+"""Validate SKILL.md frontmatter, worked examples, code fences, JSON files, scaffolds, and relative links.
 
-Stdlib-only validator enforcing the Agent Skills specification:
+Stdlib-only validator enforcing the Delta Skills repository standards:
 - Every SKILL.md has YAML frontmatter with required `name` and `description`.
 - `name` is 1..64 chars, lowercase alphanumeric + single hyphens, and matches
   the parent directory name (except the root index SKILL.md).
 - `description` is 1..1024 chars.
-- Every markdown file has balanced CommonMark code fences (no unclosed fences or
-  nested same-length fences with info strings).
+- Every non-root skill has a non-empty `examples/` directory containing at least
+  one worked example markdown file (>= 10 non-empty lines) referenced in SKILL.md.
+- Zero `.gitkeep` placeholder files or empty directories inside skill folders.
+- Zero banned AI-fluff / fake state-theater phrases (`context_versioning`,
+  `conflict_register`, `atlas-report-template`, `rumelt-strategy-forge`).
+- Every markdown file has balanced CommonMark code fences.
 - Relative markdown links outside fenced/inline code resolve to existing files
   inside the repository root.
 - Every JSON file in the repository parses cleanly.
 - Every file in a skill's `references/`, `examples/`, `scripts/`, or `assets/`
   directory is referenced in that skill's markdown documentation.
-- Byte-identical markdown files across directories are reported as warnings.
+- Byte-identical duplicate markdown files across directories fail validation.
 """
 
 from __future__ import annotations
@@ -36,7 +40,6 @@ SKIP_DIRS: frozenset[str] = frozenset(
         ".pytest_cache",
         ".ruff_cache",
         "__pycache__",
-        "experiments",
         "node_modules",
     }
 )
@@ -50,7 +53,15 @@ SPEC_EXAMPLE_ALLOWLIST: frozenset[tuple[str, str]] = frozenset(
     }
 )
 
+BANNED_FLUFF_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("context_versioning", re.compile(r"\bcontext_versioning\b", re.IGNORECASE)),
+    ("conflict_register", re.compile(r"\bconflict_register\b", re.IGNORECASE)),
+    ("atlas-report-template", re.compile(r"\batlas-report-template\b", re.IGNORECASE)),
+    ("rumelt-strategy-forge", re.compile(r"\brumelt-strategy-forge\b", re.IGNORECASE)),
+)
+
 SKILL_SUBDIRS: tuple[str, ...] = ("references", "examples", "scripts", "assets")
+MIN_EXAMPLE_LINES: int = 8
 
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 FENCE_RE = re.compile(r"^( {0,3})(`{3,}|~{3,})(.*)$")
@@ -148,7 +159,7 @@ def parse_frontmatter(text: str) -> tuple[dict[str, str] | None, str | None]:
 
 
 def validate_skill_file(skill_path: Path, repo_root: Path) -> list[str]:
-    """Validate a single SKILL.md file against the Agent Skills specification."""
+    """Validate a single SKILL.md file against the Agent Skills specification and worked-example requirement."""
     rel = skill_path.relative_to(repo_root).as_posix()
     text = skill_path.read_text(encoding="utf-8")
     fields, err = parse_frontmatter(text)
@@ -181,6 +192,29 @@ def validate_skill_file(skill_path: Path, repo_root: Path) -> list[str]:
         errors.append(
             f"{rel}: 'description' exceeds 1024 chars ({len(description)})"
         )
+
+    # Every non-root skill must include at least one substantive worked example in examples/*.md
+    if skill_path.parent != repo_root:
+        examples_dir = skill_path.parent / "examples"
+        example_mds = (
+            sorted(examples_dir.glob("*.md")) if examples_dir.is_dir() else []
+        )
+        if not example_mds:
+            errors.append(
+                f"{rel}: missing required worked example in '{skill_path.parent.relative_to(repo_root).as_posix()}/examples/*.md'"
+            )
+        else:
+            for ex_md in example_mds:
+                non_empty_lines = [
+                    ln
+                    for ln in ex_md.read_text(encoding="utf-8").splitlines()
+                    if ln.strip()
+                ]
+                if len(non_empty_lines) < MIN_EXAMPLE_LINES:
+                    ex_rel = ex_md.relative_to(repo_root).as_posix()
+                    errors.append(
+                        f"{ex_rel}: worked example is too short ({len(non_empty_lines)} non-empty lines; minimum {MIN_EXAMPLE_LINES})"
+                    )
 
     return errors
 
@@ -226,11 +260,17 @@ def strip_fenced_blocks(
 def validate_markdown_file(
     md_path: Path, repo_root: Path, real_root: str
 ) -> list[str]:
-    """Validate code fences and relative markdown links in md_path."""
+    """Validate code fences, relative markdown links, and banned fluff phrases in md_path."""
     rel = md_path.relative_to(repo_root).as_posix()
     text = md_path.read_text(encoding="utf-8")
     kept_lines, fence_errs = strip_fenced_blocks(text.splitlines())
     errors: list[str] = [f"{rel}:{err}" for err in fence_errs]
+
+    for label, pattern in BANNED_FLUFF_PATTERNS:
+        if pattern.search(text):
+            errors.append(
+                f"{rel}: contains banned AI-fluff / deprecated token {label!r}"
+            )
 
     for line_no, clean_line in kept_lines:
         for match in LINK_RE.finditer(clean_line):
@@ -275,6 +315,22 @@ def validate_json_files(repo_root: Path) -> list[str]:
     return errors
 
 
+def validate_no_empty_scaffolds(repo_root: Path) -> list[str]:
+    """Reject .gitkeep placeholder files and empty directories in the repository."""
+    errors: list[str] = []
+    for root, dirs, files in os.walk(repo_root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        root_path = Path(root)
+        for fname in sorted(files):
+            if fname == ".gitkeep":
+                rel = (root_path / fname).relative_to(repo_root).as_posix()
+                errors.append(f"{rel}: empty scaffold placeholder (.gitkeep) is not allowed")
+        if root_path != repo_root and not dirs and not files:
+            rel_dir = root_path.relative_to(repo_root).as_posix()
+            errors.append(f"{rel_dir}: empty directory is not allowed")
+    return errors
+
+
 def validate_skill_orphans(skill_files: list[Path], repo_root: Path) -> list[str]:
     """Verify files in skill subdirectories are referenced in the skill's markdown."""
     errors: list[str] = []
@@ -290,11 +346,7 @@ def validate_skill_orphans(skill_files: list[Path], repo_root: Path) -> list[str
             if not subdir.is_dir():
                 continue
             for asset in sorted(subdir.rglob("*")):
-                if (
-                    asset.is_dir()
-                    or asset.name == ".gitkeep"
-                    or any(part in SKIP_DIRS for part in asset.parts)
-                ):
+                if asset.is_dir() or any(part in SKIP_DIRS for part in asset.parts):
                     continue
                 if asset.name not in md_corpus:
                     rel = asset.relative_to(repo_root).as_posix()
@@ -322,9 +374,9 @@ def main(argv: list[str] | None = None) -> int:
         help="Repository root directory (defaults to parent of scripts/).",
     )
     parser.add_argument(
-        "--strict-duplicates",
+        "--allow-duplicates",
         action="store_true",
-        help="Exit non-zero if byte-identical markdown files are found.",
+        help="Warn instead of failing when byte-identical markdown files are found.",
     )
     args = parser.parse_args(argv)
 
@@ -339,20 +391,19 @@ def main(argv: list[str] | None = None) -> int:
     for md_path in md_files:
         errors.extend(validate_markdown_file(md_path, repo_root, real_root))
     errors.extend(validate_json_files(repo_root))
+    errors.extend(validate_no_empty_scaffolds(repo_root))
     errors.extend(validate_skill_orphans(skill_files, repo_root))
 
     duplicates = find_duplicate_files(md_files, repo_root)
+    if duplicates and not args.allow_duplicates:
+        for group in duplicates:
+            errors.append(
+                f"duplicate markdown files ({len(group)} identical copies): {', '.join(group)}"
+            )
 
     print(
         f"Checked {len(skill_files)} SKILL.md files and {len(md_files)} markdown files."
     )
-    if duplicates:
-        print(f"Warnings: {len(duplicates)} duplicate markdown file group(s):")
-        for group in duplicates:
-            print(
-                f"  - {len(group)} identical copies: {', '.join(group[:3])}"
-                + (f" (+{len(group) - 3} more)" if len(group) > 3 else "")
-            )
 
     if errors:
         print(f"\nFAILED with {len(errors)} error(s):", file=sys.stderr)
@@ -360,12 +411,8 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  - {err}", file=sys.stderr)
         return 1
 
-    if args.strict_duplicates and duplicates:
-        print("\nFAILED due to --strict-duplicates.", file=sys.stderr)
-        return 1
-
     print(
-        "OK: all skill frontmatter, code fences, JSON files, skill assets, and relative links are valid."
+        "OK: all skill frontmatter, worked examples, code fences, JSON files, skill assets, and relative links are valid."
     )
     return 0
 

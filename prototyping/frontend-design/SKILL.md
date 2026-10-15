@@ -1,64 +1,57 @@
 ---
 name: frontend-design
-description: Create flawless, production-grade frontend interfaces using strictly Google technologies and frameworks. Features a 3-phase rapid prototyping approach with a built-in Multi-Agent Design Council critique loop for 10x iteration.
+description: >
+  Build production-ready web UI prototypes and Material 3 / Angular / Lit components following
+  Google Design System tokens, an 8-point UI & accessibility verification checklist, and browser
+  validation. Trigger when asked to build a web prototype, design a frontend UI, or componentize
+  an interface using Google web technologies.
+metadata:
+  version: '2.0'
 ---
 
-# Frontend Design & Rapid Prototyping
+# Frontend Design & Rapid Prototyping (`frontend-design`)
 
-This skill guides the creation of distinctive, production-grade frontend interfaces that strictly avoid generic "AI slop" aesthetics. It enforces a strict **Google-ecosystem technology stack** (Angular, Lit, Material 3, Google Web Fonts, Firebase) and a rigorous three-phase execution methodology to prioritize rapid iteration.
+This skill builds clean, responsive web interfaces in three concrete phases: **Single-File HTML/CSS/JS Prototype → 8-Point UI & Accessibility Audit → Component Handoff (Angular / Lit)**.
 
-## The Three-Phase Execution Methodology
+---
 
-When the user asks to build a web interface, you MUST execute in three distinct phases:
+## Visual & Design System Tokens (Google Material 3 Baseline)
 
-### Phase 1: Rapid Conceptual Prototyping (Single-Page HTML)
-Before setting up a complex build system, you must prove the concept visually with a flawless, picture-perfect, single-page application.
-1. Create a single `index.html` file containing all HTML, CSS, and JS.
-2. Focus intensely on layout, aesthetics, typography, and micro-interactions. The bar is "better than what an Apple designer can design". It must be visually breathtaking.
+Use explicit CSS custom properties so every prototype is consistent and maintainable:
+- **Surfaces & Backgrounds:** `--bg-primary: #ffffff`, `--bg-secondary: #f8f9fa`, `--surface-border: #dadce0`
+- **Typography (`Roboto` / `Inter`):** `--text-primary: #202124` (contrast >= 12:1), `--text-secondary: #5f6368` (contrast >= 4.5:1), `--font-mono: 'Roboto Mono', monospace`
+- **Semantic Accents:**
+  - Primary Action: `#1a73e8` (hover `#1557b0`, subtle fill `#e8f0fe`)
+  - Success / Passed Gate: `#1e8e3e` (subtle fill `#e6f4ea`)
+  - Warning / HITL Review: `#f9ab00` (text `#b06000`, subtle fill `#fef7e0`)
+  - Error / Blocked: `#d93025` (subtle fill `#fce8e6`)
+- **Spacing Scale (8px grid):** `4px`, `8px`, `16px`, `24px`, `32px`, `48px`
 
-### Phase 2: The 8-Member Design Council Critique
-Before presenting the Phase 1 prototype to the user, you must summon the full Design Council to ruthlessly critique the code based on the persona files defined in `references/design-council/`:
-1. **[The Interaction Architect (UX Designer)](references/design-council/01-interaction-architect.md):** Critique user flow and accessibility.
-2. **[The Visual Mastery Expert (UI Designer)](references/design-council/02-visual-mastery-expert.md):** Critique typography scale, core colors, and spatial harmony.
-3. **[The Narrative Strategist (UX Writer)](references/design-council/03-narrative-strategist.md):** Critique copy hierarchy and conciseness.
-4. **[The Fluidity Expert (Motion Designer)](references/design-council/04-fluidity-expert.md):** Critique CSS physics, transitions, and easing curves.
-5. **[The Cognitive Analyst (UX Researcher)](references/design-council/05-cognitive-analyst.md):** Critique mental models and cognitive load.
-6. **[The Code Craftsman (UX Engineer)](references/design-council/06-code-craftsman.md):** Critique DOM structure and CSS modularity.
-7. **[The Fit & Finish Inspector (Production Designer)](references/design-council/07-fit-and-finish-inspector.md):** Perform the final sweep for mathematical alignment, SVGs, and edge-case rendering.
-8. **[The QA Automation Engineer (Browser Subagent)](references/design-council/08-qa-automation-engineer.md):** Launch the prototype physically in a Chrome browser, interact with buttons, capture layout discrepancies, and report JavaScript console errors.
-9. **The 10x Iteration:** Act on the 8 critiques to execute a massive iteration on the `index.html` file. **CRITICAL EXECUTION RULE: When extracting shared CSS based on council feedback, YOU MUST NEVER delete page-specific `.hero` padding, unique CSS grid layouts, or local width constraints.** Only extract generic tokens and nav/footer boilerplate. Destroying local layout grids is an unacceptable failure.
-*Only after this 10x iteration do you present the prototype to the user for sign-off.*
+---
 
-### Phase 3: Production Framework Componentization (Google Stack)
-Once the conceptual prototype is approved by the user, migrate the raw HTML/CSS/JS into robust, reusable components.
-- **Frameworks:** Angular or Lit (Web Components). *NEVER use React, Vue, or Svelte.*
-- **Styling:** CSS Modules, SCSS, or Material Design 3 guidelines.
-- **Hosting/Backend (if needed):** Firebase Hosting, Cloud Firestore, Cloud Functions.
+## Three-Phase Execution Procedure
 
-## Google Brand Standards & Aesthetics
+### Phase 1: Self-Contained Interactive Prototype (`index.html`)
+1. Build a single, runnable `index.html` containing semantic HTML5 (`<header>`, `<main>`, `<nav>`, `<section>`, `<dialog>`), scoped CSS variables, and interactive JavaScript state (tab switching, filtering, modal/drawer inspection, form validation).
+2. Populate the UI with realistic domain data from the engagement (`docs/PRD.md` or `docs/baseline_kpis.json`)—never use `Lorem ipsum` or `TODO` placeholders.
 
-Before writing any code, align the design with the Google Brand Checklist. Our vision is to be the most helpful company on the planet—our designs must reflect that.
+### Phase 2: 8-Point UI & Accessibility Verification
+Before presenting the prototype, audit and fix the code against all 8 checks in [ui-review-checklist.md](references/ui-review-checklist.md):
+1. **Task Flow & Primary CTA Hierarchy**
+2. **Typography Scale & Color Contrast (WCAG AA >= 4.5:1)**
+3. **Microcopy & Data Density**
+4. **Interactive States (`:hover`, `:focus-visible`, `:disabled`, loading/empty)**
+5. **Cognitive Load & Information Grouping**
+6. **DOM Semantics & Responsive Grid (`320px` to `1440px`)**
+7. **Alignment, Spacing & Icon Consistency**
+8. **Zero Runtime Console Errors & Keyboard Navigation**
 
-- **Personality**: We are Helpful, Optimistic, and Unconventional.
-- **Execution**: Avoid cliches and stereotypes. Relentlessly focus on polish, fit, and finish.
-- **Copy**: Use concise copy that gets straight to the point. Every word matters. Strike a human and optimistic tone.
+### Phase 3: Production Componentization (Angular or Lit)
+When the user approves the Phase 1/2 prototype, extract the verified layout and state into modular **Angular** or **Lit (Web Components)** with typed props/events and Material Design 3 tokens.
 
-### Visual Identity Guidelines
+---
 
-We must adhere strictly to Google's visual identity to ensure it looks and feels like Google:
+## References & Examples
 
-- **Backgrounds (Simplicity)**: Keep it simple. **Build from white.** Avoid complex gradient meshes, noise textures, dark mode defaults, or heavy glassmorphism unless explicitly requested. Use generous negative space.
-- **Color Palette**: Use the core Google color palette for accents, states, buttons, and visual hierarchy:
-  - Blue (500: `#4285F4`) - Primary actions
-  - Red (500: `#EA4335`) - Errors / Critical
-  - Yellow (500: `#FBBC04`) - Warnings
-  - Green (500: `#34A853`) - Success
-  - Gray (500: `#9AA0A6` for borders, 900: `#202124` for high-contrast typography)
-- **Typography**: Strictly use appropriate, highly legible sans-serif fonts from the Google Fonts API (e.g., standard *Roboto*, *Inter*, or *Open Sans* for clean utility, or *Outfit* for slightly more character). Pair them cleanly. Avoid chaotic or overly decorative typographic pairings.
-- **Motion**: Keep animations helpful and purposeful, not purely decorative. Use them to show how the product works or make the UI feel immediately responsive.
-- **Imagery**: Keep it real. Avoid AI-generated slop, stock photography stereotypes, or abstract 3D shapes. Cast real people and show the product in action.
-
-### The Anti-Slop Rule
-NEVER use generic AI-generated aesthetics like predictable SaaS dashboard layouts or overused gradients. However, DO NOT overcompensate with "maximalist chaos." 
-
-Your goal is **uncompromising aesthetic supremacy**. Your differentiation comes from executing the **Google Design Language** with absolute restraint, precision, and structural simplicity. The UX/UI must be flawless, picture-perfect, and out-compete top-tier consumer technology design (e.g., Apple). Elegance comes from executing the "helpful and optimistic" vision remarkably well. Show what can truly be accomplished through relentless polish and world-class fit and finish.
+- [8-Point UI & Accessibility Review Checklist](references/ui-review-checklist.md): Concrete engineering rubric for auditing HTML/CSS/JS prototypes before delivery.
+- [Worked Example: Commercial Claims HITL Review Console Prototype](examples/agent-ops-console-prototype.md): Complete runnable `index.html` prototype for the Acme Claims FNOL Adjuster Workbench plus its completed 8-point verification scorecard.

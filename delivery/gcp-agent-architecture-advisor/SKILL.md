@@ -8,7 +8,7 @@ description: >
   Triggers on "recommend an agent architecture on GCP", "which Google agent platform should
   we use", "no-code vs ADK", "PRD to GCP architecture". Do NOT use for non-agent workloads.
 metadata:
-  version: '1.0'
+  version: '1.1'
 ---
 
 # GCP Agent Architecture Advisor
@@ -32,7 +32,7 @@ so pick the lowest operational burden that meets the hard constraints.
 
 ### Step 1: Extract constraints from the inputs
 
-Read `docs/PRD.md` and the intake notes (from [workshop-intake](../../workshop-intake/SKILL.md)).
+Read `docs/PRD.md` and `docs/WORKSHOP_INTAKE.md` (from [workshop-intake](../../workshop-intake/SKILL.md)).
 Record each constraint with the source line it came from:
 
 - **Logic:** retrieval/Q&A only vs. tool calls vs. multi-step or multi-agent orchestration
@@ -73,7 +73,7 @@ connectors, eval tooling):
 
 ```markdown
 # Agent Architecture Recommendation
-Date: <YYYY-MM-DD>   Author: <name>   Inputs: docs/PRD.md, <intake notes path>
+Date: <YYYY-MM-DD>   Author: <name>   Inputs: docs/PRD.md, docs/WORKSHOP_INTAKE.md
 
 ## 1. Recommendation
 - Tier: <1 | 2 | 3>
@@ -122,3 +122,7 @@ IAM / service accounts, network perimeter, data residency, secrets, logging of p
 - Picking Tier 1 when the PRD needs write actions against custom systems.
 - Copying a maturity table from an older document instead of re-verifying.
 - Recommending without citing which PRD or intake lines drove the decision.
+
+## 5. Worked Example
+
+- [Worked Example: Commercial Auto Claims FNOL Architecture Recommendation](examples/architecture-recommendation-example.md): Complete `docs/ARCHITECTURE_RECOMMENDATION.md` showing constraint-to-tier traceability, Tier 1–3 comparison, verified GA launch stages, VPC-SC Mermaid topology, and least-privilege IAM specification.

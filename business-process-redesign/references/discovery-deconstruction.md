@@ -115,17 +115,21 @@ This is the formal layout for **Output 1**. Use this template to compile the fin
 - [High-level summary of the process, the primary business outcomes it delivers, and the core friction areas identified during intake.]
 
 ## 2. Current-State Workflow Deconstruction
-- [Insert the completed Task Decomposition Table mapping all baseline steps, systems, actors, and cycle times.]
-- [Insert the Autonomy Classification Analysis, detailing what tasks fall under L1, L2, and L3.]
+| Step # | Task Name | Actor / Role | System Used | Avg Cycle Time (min) | Error / Rework Rate (%) | Autonomy Candidate (L1/L2/L3) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | `<Task 1>` | `<Role>` | `<System>` | `<Min>` | `<% >` | `<L1 / L2 / L3>` |
 
 ## 3. Key Operational Friction Points & Bottlenecks
-- **Handoff Inefficiencies:** [Where delays, formatting gaps, or communication breakdowns occur during handoffs between actors/teams.]
-- **Manual Labor Blocks:** [Steps dominated by high-frequency copy-pasting, manual typing, or data replication.]
-- **Decision & Delay Points:** [Where the process stalls waiting for reviews, approvals, or database provisioning.]
-- **Error & Rework Analysis:** [Identify common error points, why they occur, and how long the correction loop takes.]
+- **Handoff Inefficiencies:** `<Where delays, formatting gaps, or communication breakdowns occur during handoffs between actors/teams.>`
+- **Manual Labor Blocks:** `<Steps dominated by high-frequency copy-pasting, manual typing, or data replication.>`
+- **Decision & Delay Points:** `<Where the process stalls waiting for reviews, approvals, or database provisioning.>`
+- **Error & Rework Analysis:** `<Common error points, root causes, and correction loop duration.>`
 
 ## 4. Process Baseline Scorecard
-- [Insert the formatted PROCESS BASELINE SCORECARD with annualized time, labor cost, and rework metrics.]
-- [List the specific cost assumptions used: annual volume, labor rates, error rates, and rework times.]
+| Baseline Metric | Annual Volume / Rate | Annual Hours | Annual Cost ($) |
+| :--- | :--- | :--- | :--- |
+| **Direct Labor** | `<Volume/yr @ $Rate/hr>` | `<Hours/yr>` | `$<Labor Cost>/yr` |
+| **Rework & Error Handling** | `<Error % × Rework min>` | `<Hours/yr>` | `$<Rework Cost>/yr` |
+| **Total Process Baseline** | — | **`<Total Hours>/yr`** | **`$<Total Cost>/yr`** |
 ```
 

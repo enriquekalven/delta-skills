@@ -3,12 +3,12 @@ name: synthetic-baseline-protocol
 description: >
   Establish a pre-deployment baseline by auditing 50 representative historical work items
   (tickets, claims, files, logs) with client SMEs to measure manual handling time, error
-  rate, escalation rate and unit cost, then freeze docs/baseline_kpis.json for the Phase 4
+  rate, escalation rate and unit cost, then freeze docs/baseline_kpis.json for the final read-out (weeks 11-12)
   ROI comparison. Triggers on "baseline audit", "baseline kpis", "create baseline_kpis.json",
   "measure the manual process before we build". Do NOT use for forward-looking market sizing
   (use ai-value-sizing).
 metadata:
-  version: '1.0'
+  version: '1.1'
 ---
 
 # Synthetic Baseline Protocol
@@ -48,7 +48,7 @@ For each item, capture:
 observed timing of SMEs redoing the item > SME recall. Record which source each value came
 from. SME recall routinely underestimates time; flag it when it is the only source.
 
-## Step 3: Compute unit cost
+## Step 3: Compute unit cost (via [`scripts/compute_baseline_stats.py`](scripts/compute_baseline_stats.py))
 
 ```
 C_unit = (T / 60) x blended_hourly_rate + infrastructure_overhead_per_unit
@@ -58,11 +58,10 @@ C_unit = (T / 60) x blended_hourly_rate + infrastructure_overhead_per_unit
 - `infrastructure_overhead_per_unit`: tooling or licence cost per item. Use `0` only if
   none exists, and write it as an explicit `0`.
 
-**Report the distribution, not only the mean:**
+Run [`scripts/compute_baseline_stats.py`](scripts/compute_baseline_stats.py) to compute the exact distribution and confidence intervals:
 - mean, median and p90 of T
-- a 95% confidence interval for mean T: `mean +/- 1.96 x (sd / sqrt(50))` (use a bootstrap if T
-  is heavily skewed)
-- E and X as proportions, with 95% CIs (e.g. Wilson interval)
+- a 95% confidence interval for mean T: `mean +/- 1.96 x (sd / sqrt(50))`
+- E and X as proportions, with 95% Wilson score CIs
 
 With N = 50, a 14% error rate has a CI of roughly +/-10 points. Say so, rather than implying
 false precision.
@@ -93,7 +92,7 @@ the baseline must change, add a new versioned file and explain why.
     "total_baseline_annual_cost_usd": 675000.00
   },
   "target_post_deployment_kpis": {
-    "_note": "Hypotheses. Phase 4 must replace these with measured values.",
+    "_note": "Hypotheses. The final read-out (weeks 11-12) must replace these with measured values.",
     "handling_time_minutes": 3.0,
     "error_rate_percent": 2.0,
     "infrastructure_overhead_per_unit_usd": 0.75,
@@ -111,7 +110,7 @@ Target `3/60 x 75 + 0.75 = 4.50`, `4.50 x 12000 = 54000`, and savings
 
 - [ai-value-sizing](../../ai-value-sizing/SKILL.md) uses `unit_cost_usd` and
   `annual_volume_units` as the cost-of-status-quo input for ROI/TCO.
-- In Phase 4, run the same metrics on a comparable post-deployment sample (same stratum
+- Before the final read-out (weeks 11-12), run the same metrics on a comparable post-deployment sample (same stratum
   mix) and report measured vs. baseline, with CIs.
 
 ## Gate checklist
@@ -121,4 +120,9 @@ Target `3/60 x 75 + 0.75 = 4.50`, `4.50 x 12000 = 54000`, and savings
 - [ ] Mean, median, p90 and 95% CI reported for handling time
 - [ ] Overhead field explicit (even if 0); arithmetic checks out
 - [ ] `docs/baseline_kpis.json` committed and its SHA recorded in `STATE.md`
-- [ ] Sponsor sign-off that this baseline is the Phase 4 comparison point
+- [ ] Sponsor sign-off that this baseline is the final read-out comparison point
+
+## Scripts & Worked Examples
+
+- [Baseline Statistics & Wilson CI Calculator](scripts/compute_baseline_stats.py): Zero-dependency CLI that computes mean, median, p90, 95% handling-time CI, 95% Wilson CIs for error/escalation rates, and unit/annual baseline cost.
+- [Worked Example: 50-Sample Commercial Auto Claims Baseline Audit](examples/claims-baseline-audit.md): Complete Phase 1 baseline audit walkthrough and frozen `docs/baseline_kpis.json`.

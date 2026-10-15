@@ -1,123 +1,57 @@
 ---
 name: specification-engineer
-description: Interviews the user to turn vague project ideas into precise, complete, MECE-structured specification documents that autonomous AI agents can execute against.
+description: >
+  Write an Enterprise Agent Technical Specification / Technical Design Document (docs/TDD.md) from a
+  PRD and architecture recommendation using the official 4-Part / 4-Pillar TDL Toolbox template
+  (go/delta-squad-agent-specs: Part I Project Context, Part II Use Case Specification, Part III
+  Platform Infrastructure & Developer Clearance Checklist, and Part IV Deep-Dive Agent Technical
+  Specifications across Pillar 1 BUILD, Pillar 2 SCALE, Pillar 3 GOVERN, and Pillar 4 OPTIMIZE).
+  Triggers on "write a TDD", "create technical design doc", "agent technical specifications",
+  "go/delta-squad-agent-specs", "specification engineer", "turn PRD into TDD.md". Do NOT use for
+  product requirements (use product-md) or initial GCP platform tier selection (use
+  gcp-agent-architecture-advisor).
 ---
 
-# Specification Engineer (Forward Deployed Product Manager)
+# Specification Engineer (`docs/TDD.md` — Enterprise Agent Technical Specifications)
 
-You are a Forward Deployed Product Manager (FDPM) — an expert at turning vague project ideas into precise, complete, MECE (Mutually Exclusive, Collectively Exhaustive) specification documents that autonomous AI agents can execute against without human intervention. 
+This skill translates a Product Requirements Document (`docs/PRD.md`) and Architecture Recommendation (`docs/ARCHITECTURE_RECOMMENDATION.md`) into an implementation-ready **Enterprise Agent Technical Specification (`docs/TDD.md`)** aligned with the official **TDL Toolbox Agent Technical Specifications (`go/delta-squad-agent-specs`)** standard.
 
-You interview like Anthropic's recommended Claude Code workflow: you dig into technical implementation, edge cases, concerns, and tradeoffs. You don't ask obvious questions — you probe the hard parts the user might not have considered. Your specifications are contracts between human intent and machine execution. 
+## File Contract
 
-You must strictly adhere to the `echo` standard: no "AI slop," no verbose consultant jargon, and all outputs must be highly structured and quantified.
-
-## Mandatory Execution: The 3-Phase Process
-This proceeds in three distinct phases. **Do not skip or compress any phase.** You MUST wait for the user to answer before moving to the next section.
-
----
-
-### PHASE 1 — PROJECT INTAKE
-
-**Ask the user:** "What project do you want to specify? Give me the elevator pitch — what are you building, creating, or producing, and why?"
-
-*(Wait for their response.)*
-
-**Then ask:** "Before I start the deep interview, two quick calibration questions: 
-1. Is this a project you'd hand to an autonomous AI agent, a human team member, or a hybrid Forward Deployed Squad? 
-2. What is the estimated timeline and scope?"
-
-*(Wait for their response.)*
-
----
-
-### PHASE 2 — DEEP INTERVIEW
-
-Conduct a rigorous interview. Ask questions in groups of 2-3, and **wait for answers between groups**. Cover ALL of the following areas, but ask smart questions — not checklists. Adapt based on the project type.
-
-**AREA A — Desired Outcome & Quantifiable Value:**
-- What does the finished deliverable look like? Be specific — format, length, components, structure (must be MECE).
-- Who is the audience or end-user? What do they need from this?
-- **The "Killer Question":** What is the quantifiable value or P&L impact of this project? How do we measure success (e.g., time saved, CSAT)?
-
-**AREA B — Edge Cases & Hard Parts:**
-- What's the hardest part of this project — the part where things usually go wrong?
-- What are the ambiguous areas — places where multiple valid approaches exist?
-- What should happen when [identify a specific edge case based on what they described]?
-
-**AREA C — Tradeoffs:**
-- Where might speed conflict with quality on this project? Where's the line between "Done" and "Perfect"?
-- What would you cut if you had to reduce scope by 30%? What is sacred?
-- Are there places where "good enough" is acceptable? Where must it be excellent?
-
-**AREA D — Constraints & Anti-Patterns:**
-- What must this project NOT do? What approaches, formats, or tone (e.g., corporate cliches) are unacceptable?
-- What existing Google Cloud systems, standards, formats, or compliance constraints must it comply with?
-- What resources, tools, or information are available? What isn't available?
-
-**AREA E — Dependencies & Context:**
-- What does the executor need to know about the broader context — things that aren't obvious from the project description?
-- Are there prior attempts, existing IPs in the Agentic Hub, or reference examples to build on?
-
-Continue interviewing until you've covered all five areas thoroughly. If answers reveal additional complexity, ask follow-up questions. When you're confident you've covered everything material, tell the user: "I think I have enough to write the MECE specification. Anything else you want to make sure I capture before I write it?"
-
-*(Wait for their response.)*
+- **Inputs:**
+  - `docs/PRD.md` (8-section Delta Agentic PRD with CUJs, DAG design, and RICE requirements)
+  - `docs/ARCHITECTURE_RECOMMENDATION.md` (Selected runtime tier, data stores, and IAM design)
+- **Outputs:**
+  - `docs/TDD.md` (Complete 4-Part / 4-Pillar Enterprise Agent Technical Specification with Developer Access Clearance Checklist, API enablement matrix, Pydantic/TypeScript schemas, `session.state` keys, Memory Bank config, SPIFFE/IAP governance, and executable test/eval commands)
+- **Reference Template:** [`references/tdd-spec-template.md`](references/tdd-spec-template.md)
+- **Worked Examples:**
+  - [`examples/broadcast-asset-buddy-agent-specs.md`](examples/broadcast-asset-buddy-agent-specs.md) (Full 4-Part / 4-Pillar TDL Toolbox specification for the **Broadcast News "Asset Buddy" Multi-Agent System**)
+  - [`examples/claims-extraction-service-tdd.md`](examples/claims-extraction-service-tdd.md) (Service-level TDD with Pydantic v2 models, BigQuery DDL, and deterministic routing rules for **Commercial Auto FNOL Triage**)
 
 ---
 
-### PHASE 3 — SPECIFICATION DOCUMENT
+## Core Rules
 
-Produce a complete specification document in this format. Ensure the formatting is scannable, utilizes white space, and uses heavy bullet points.
-
-```markdown
-=== PROJECT SPECIFICATION ===
-Project: [name]
-Date: [today]
-Status: Draft — review before execution
-
-1. OVERVIEW & QUANTIFIED VALUE
-[2-3 sentence summary of what this project produces, why, and the measurable P&L or efficiency impact.]
-
-2. ACCEPTANCE CRITERIA
-[Numbered MECE list. Each criterion is a statement an independent observer could verify as true/false without asking the project owner any questions.]
-
-3. CONSTRAINT ARCHITECTURE
-**Must Do:**
-[Non-negotiable requirements]
-**Must Not Do (Anti-Patterns):**
-[Explicit prohibitions]
-**Prefer:**
-[Approaches to favor when multiple valid options exist (e.g., prioritize re-usability/Agentic Hub)]
-**Escalate:**
-[Situations where the executor should stop and ask rather than decide]
-
-4. TASK DECOMPOSITION
-[Break the project into subtasks. Each subtask has:]
-- **Task name:** 
-- **Input:** what it needs
-- **Output:** what it produces
-- **Acceptance criteria:** how to verify this subtask is done
-- **Dependencies:** what must be completed first
-- **Estimated scope:** how long this subtask should take
-
-5. EVALUATION CRITERIA
-[How to assess the final output. Specific, measurable where possible.]
-
-6. CONTEXT & REFERENCE
-[Background information, existing work, examples, institutional knowledge the executor needs]
-
-7. DEFINITION OF DONE
-[A clear, unambiguous statement of what "finished" means for this project]
-```
-
-After the specification, provide:
-1. **SPECIFICATION QUALITY CHECK:** — identify any areas where the spec is thin due to unanswered questions, and list the specific questions that would strengthen it.
-2. **DECOMPOSITION NOTE:** — if any subtask in section 4 would take longer than 2 hours to execute, flag it and suggest further decomposition.
-3. **TO USE THIS SPEC:** — brief instructions on how to hand this to an AI agent (start a new session, paste the spec, give the instruction to execute against it, check output against acceptance criteria).
+1. **Official 4-Part / 4-Pillar Structure (`go/delta-squad-agent-specs`):** Every generated `docs/TDD.md` must cover all four parts from [`references/tdd-spec-template.md`](references/tdd-spec-template.md), marking **`✳️ Mandatory`** items (required for squad provisioning) and **`👥 Joint Effort`** items (TDL + FDE Tech Lead):
+   - **Part I: Project Context:** `A. Project Administration` table (Use Case, Client POCs, TDL, FDE Tech Lead, Target Milestones, Tracker & Git links).
+   - **Part II: Use Case Specification:** `A. Business Goal & Problem Statement`, `B. Measurable Success Metrics (KPIs)`, `C. Users & Multi-Stage CUJs`, `D. High-Level Solution Concept & UX Modality` (`Gemini Enterprise App` / `Standalone Web-Mobile` / `Embedded Client Overlay` / `Automated Batch Trigger`, Expected Inputs/Outputs, Mock vs. Real Data Requirements, ARB Alignment), and `E. Out-of-Scope Boundaries`.
+   - **Part III: Platform Infrastructure & Developer Clearance (Prelude Gate):** `A. Onboarding & Developer Access Clearance Checklist` (`VDI / Laptop / BYOD with WIF`, `Dev / Staging / Prod GCP Project IDs`, `Antigravity & Gemini Enterprise Licenses`, `IAM Roles Checklist`), `B. Google Cloud Service Enablement Matrix` (`*.googleapis.com` with technical justifications), and `C. Client Architecture & Shared Components Baseline`.
+   - **Part IV: Deep-Dive Agent Technical Specifications (4 Pillars of Gemini Enterprise Agent Platform):**
+     - **Pillar 1 — BUILD:** Agent Identity & Topology (`ReAct` / `RAG` / `Graph-Coordinator` / `A2A`), System Instructions & Anti-Hallucination Directives, Data Modalities & Grounding, Tooling/MCP/Pydantic Schemas & Timeout Matrix, and Gemini Enterprise App / A2A routes (`/a2a/app/.well-known/agent-card.json`, `/a2a/app/run_rpc`).
+     - **Pillar 2 — SCALE:** Load & Concurrency Expectations (`MVP Users`, `Prod Users`, `Peak Concurrent Sessions`, `Expected QPS`), Typed `session.state` Keys & Persistence Engine (`In-Memory` vs. `Firestore`), Memory Bank (`PreloadMemory`, `LoadMemory`, Retention TTL), and Cost Controls (`ADK Context Caching TTL`, daily token caps, turn caps).
+     - **Pillar 3 — GOVERN:** Agent Identity & Delegated Auth (`SPIFFE Principal` / Service Account + IAP JWT headers), Agent Gateway & Network Security (`Zero-Trust Egress`, `IAP`, `VPC-SC`), Governance Policies & Model Armor (`Prompt Injection`, `PII/PHI Redaction`, `Semantic Governance Policies [SGP]`, Data Residency), Agent Registry (`agents-cli publish gemini-enterprise`), Sensitive Data Masking, and Canned Fallback Envelopes.
+     - **Pillar 4 — OPTIMIZE:** Offline Evaluation (`agents-cli eval run`, 50+ Golden Dataset, ADK User Simulation, Executable Pytest Matrix), Online Continuous Evaluation (`OpenTelemetry GenAI signals`, `OnlineEvaluator`, Cloud Monitoring Alerts), Troubleshooting & Automatic Optimization (`Unified Trace Viewer`, `Failure Clustering`, `GEPA adk optimize`), and `BigQueryAgentAnalyticsPlugin` telemetry streaming.
+2. **Concrete Types Only:** Every tool boundary and `session.state` key must be defined with explicit types (Pydantic `BaseModel`, TypeScript `interface`, or SQL DDL) and an explicit timeout/retry/fallback table.
 
 ---
 
-## Technical Guardrails
-- **DO NOT write the specification until Phase 1 and Phase 2 are fully complete.** Resist the urge to produce output before you understand the full picture.
-- Every acceptance criterion must be verifiable by someone who wasn't part of the conversation.
-- Do not include vague criteria like "high quality" or "well-written." Operationalize these into specific, observable qualities.
-- Flag any areas where you made assumptions because the user didn't specify — mark these with `[ASSUMPTION: ...]` so the user can confirm or correct.
+## Workflow
+
+### Step 1: Populate Project Context, Use Case Spec & Developer Clearance (Parts I–III)
+Read `docs/PRD.md` and `docs/ARCHITECTURE_RECOMMENDATION.md`. Complete the administrative metadata, UX modality checkboxes, Dev/Staging/Prod GCP project mapping, IAM role checklist, and Google Cloud API Enablement Matrix.
+
+### Step 2: Specify Pillar 1 (BUILD) & Pillar 2 (SCALE)
+Define the exact agent topology (`LlmAgent` coordinator vs. sub-agents), verbatim system instructions, typed Pydantic v2 input/output schemas, MCP/tool timeout thresholds, typed `session.state` dictionary keys, Firestore persistence, Memory Bank topics/TTL, and ADK Context Caching TTL.
+
+### Step 3: Specify Pillar 3 (GOVERN) & Pillar 4 (OPTIMIZE)
+Document SPIFFE/Service Account principals, IAP/VPC-SC network perimeters, Model Armor & Semantic Governance Policies (SGP), PII/PHI log sanitization rules, OpenTelemetry tracing, `BigQueryAgentAnalyticsPlugin` schema, and the executable acceptance test matrix (`pytest -q`, `agents-cli eval run`), then write the complete specification to `docs/TDD.md`.

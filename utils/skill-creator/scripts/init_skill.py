@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Initialize a new skill directory with standard Agent Skills boilerplate."""
+"""Initialize a new skill directory with standard Agent Skills structure and a worked example."""
 
 from __future__ import annotations
 
@@ -28,52 +28,66 @@ def validate_skill_name(skill_name: str) -> str:
 
 
 def create_skill(skill_name: str, base_path: str = ".") -> Path:
-    """Initialize a new skill directory confined within base_path."""
+    """Initialize a new skill directory confined within base_path with SKILL.md and examples/."""
     valid_name = validate_skill_name(skill_name)
     real_base = os.path.realpath(base_path)
     skill_dir = os.path.realpath(os.path.join(real_base, valid_name))
     if not skill_dir.startswith(real_base + os.sep):
         raise ValueError(f"skill directory escapes base_path: {skill_name!r}")
 
-    directories = [
-        skill_dir,
-        os.path.join(skill_dir, "scripts"),
-        os.path.join(skill_dir, "references"),
-        os.path.join(skill_dir, "assets"),
-    ]
+    examples_dir = Path(skill_dir) / "examples"
+    os.makedirs(examples_dir, exist_ok=True)
 
-    for directory in directories:
-        os.makedirs(directory, exist_ok=True)
-        if directory != skill_dir:
-            gitkeep = Path(directory) / ".gitkeep"
-            if not gitkeep.exists():
-                gitkeep.write_text("", encoding="utf-8")
+    title = valid_name.replace("-", " ").title()
+    example_path = examples_dir / "worked-example.md"
+    if not example_path.exists():
+        example_path.write_text(
+            f"""# Worked Example: {title}
+
+## 1. Input Context
+Describe the exact input files, parameters, or prompt that triggers `{valid_name}`.
+- Input artifact: `docs/WORKSHOP_INTAKE.md`
+- Target output: `docs/{valid_name.upper().replace('-', '_')}.md`
+
+## 2. Step-by-Step Execution
+1. Parse and validate all required fields from the input artifact.
+2. Execute the domain logic or helper script and verify numerical outputs.
+3. Write the formatted markdown or JSON output to the target artifact path.
+
+## 3. Verified Output Artifact
+Provide a complete, realistic deliverable produced by `{valid_name}` that passes all validation checks.
+""",
+            encoding="utf-8",
+        )
 
     skill_md_path = Path(skill_dir) / "SKILL.md"
     if not skill_md_path.exists():
-        title = valid_name.replace("-", " ").title()
         skill_md_path.write_text(
             f"""---
 name: {valid_name}
 description: >
-  Describe what this skill does and when to use it.
+  Describe what {valid_name} produces, its required inputs, and its output file path.
   Triggers on: "<obvious trigger phrases>".
   Do NOT trigger when: "<negative trigger conditions>".
+metadata:
+  version: '1.0'
 ---
 
 # {title}
 
-Provide concise step-by-step instructions (under 5,000 words) using progressive disclosure.
-Move executable helpers to `scripts/` and detailed domain references to `references/`.
+State the concrete input files, execution steps, and output file path for `{valid_name}`.
 
 ## Execution Steps
-1. Inspect inputs and verify preconditions.
-2. Execute core workflow steps and reference files in `references/` on demand.
-3. Verify outputs against acceptance criteria before returning.
+1. Read required inputs and verify preconditions.
+2. Execute the workflow steps and write the target output artifact.
+3. Verify the deliverable against the Validation Checklist.
 
-## Mandatory Guidelines
-- **MUST**: Enforce deterministic verification and explicit user checkpoints where required.
-- **MUST NOT**: Fabricate outputs, skip validation steps, or hardcode credentials.
+## Validation Checklist
+- [ ] All required sections and metrics are populated with verified data.
+- [ ] Output passes `python3 scripts/validate_skills.py`.
+
+## Examples
+- [Worked Example: {title}](examples/worked-example.md)
 """,
             encoding="utf-8",
         )
