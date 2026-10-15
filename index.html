@@ -3,25 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TDL User Guide — Ford Engagement</title>
+  <title>TDL User Guide — 12-Week AI Agent Delivery</title>
   <style>
     :root {
       --bg-page: #f5f5f7;
       --bg-surface: #ffffff;
       --bg-elevated: rgba(255, 255, 255, 0.82);
-      --bg-dark-card: #1d1d1f;
+      --bg-dark-card: #0a0a0c;
       --text-primary: #1d1d1f;
       --text-secondary: #6e6e73;
       --text-tertiary: #86868b;
       --accent-blue: #0071e3;
       --accent-blue-hover: #0077ed;
       --accent-green: #28cd41;
-      --accent-orange: #ff9500;
-      --accent-purple: #af52de;
       --border-light: rgba(0, 0, 0, 0.06);
       --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.04);
-      --shadow-card-hover: 0 12px 36px rgba(0, 0, 0, 0.09);
-      --shadow-modal: 0 24px 80px rgba(0, 0, 0, 0.24);
+      --shadow-card-hover: 0 16px 40px rgba(0, 0, 0, 0.1);
+      --shadow-modal: 0 24px 80px rgba(0, 0, 0, 0.28);
       --radius-card: 28px;
       --radius-modal: 32px;
       --radius-pill: 980px;
@@ -34,7 +32,7 @@
       --bg-page: #000000;
       --bg-surface: #151516;
       --bg-elevated: rgba(29, 29, 31, 0.78);
-      --bg-dark-card: #1d1d1f;
+      --bg-dark-card: #111113;
       --text-primary: #f5f5f7;
       --text-secondary: #a1a1a6;
       --text-tertiary: #6e6e73;
@@ -101,7 +99,7 @@
       font-weight: 400;
     }
 
-    .nav-brand span.client-tag {
+    .nav-brand span.badge-tag {
       background: rgba(0, 113, 227, 0.12);
       color: var(--accent-blue);
       padding: 2px 10px;
@@ -166,7 +164,7 @@
     .hero {
       max-width: 980px;
       margin: 0 auto;
-      padding: 84px 24px 48px;
+      padding: 80px 24px 44px;
       text-align: center;
     }
 
@@ -179,7 +177,7 @@
     }
 
     .hero-title {
-      font-size: clamp(40px, 6vw, 68px);
+      font-size: clamp(42px, 6vw, 68px);
       font-weight: 700;
       line-height: 1.05;
       letter-spacing: -0.035em;
@@ -200,7 +198,7 @@
     .segmented-wrapper {
       display: flex;
       justify-content: center;
-      margin-bottom: 56px;
+      margin-bottom: 52px;
       padding: 0 16px;
     }
 
@@ -249,7 +247,7 @@
 
     /* Section Header */
     .phase-section {
-      margin-bottom: 72px;
+      margin-bottom: 76px;
       transition: opacity 0.3s ease;
     }
 
@@ -298,7 +296,7 @@
       grid-column: span 6;
       background: var(--bg-surface);
       border-radius: var(--radius-card);
-      padding: 36px;
+      padding: 34px;
       position: relative;
       cursor: pointer;
       box-shadow: var(--shadow-card);
@@ -306,15 +304,18 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 280px;
-      transition: transform 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-spring), border-color 0.3s ease;
+      min-height: 290px;
+      transition: transform 0.45s var(--ease-spring), box-shadow 0.45s var(--ease-spring), border-color 0.3s ease;
       overflow: hidden;
       user-select: none;
     }
 
+    .bento-card.has-visual {
+      min-height: 430px;
+    }
+
     .bento-card.span-4 {
       grid-column: span 4;
-      min-height: 270px;
     }
 
     .bento-card.span-8 {
@@ -323,7 +324,7 @@
 
     .bento-card.span-12 {
       grid-column: span 12;
-      min-height: 230px;
+      min-height: 340px;
     }
 
     .bento-card.dark-card {
@@ -337,12 +338,12 @@
     }
 
     .bento-card:hover {
-      transform: scale(1.015) translateY(-2px);
+      transform: scale(1.014) translateY(-3px);
       box-shadow: var(--shadow-card-hover);
     }
 
     .bento-card.completed {
-      border-color: rgba(40, 205, 65, 0.45);
+      border-color: rgba(40, 205, 65, 0.55);
     }
 
     @media (max-width: 860px) {
@@ -353,11 +354,39 @@
       }
     }
 
+    /* Card Visual Artwork */
+    .card-visual-wrap {
+      margin: 22px -34px -10px;
+      height: 215px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bento-card.span-12 .card-visual-wrap {
+      height: 245px;
+    }
+
+    .card-visual-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.65s var(--ease-spring);
+    }
+
+    .bento-card:hover .card-visual-img {
+      transform: scale(1.045);
+    }
+
     .card-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 2;
     }
 
     .card-eyebrow {
@@ -392,22 +421,28 @@
       font-weight: 700;
       line-height: 1.15;
       letter-spacing: -0.025em;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
     }
 
     .card-desc {
-      font-size: 16px;
+      font-size: 15.5px;
       color: var(--text-secondary);
       line-height: 1.45;
-      max-width: 90%;
+      max-width: 92%;
+      position: relative;
+      z-index: 2;
     }
 
     .card-footer {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      margin-top: 28px;
+      margin-top: 24px;
       gap: 12px;
+      position: relative;
+      z-index: 2;
     }
 
     .card-tags {
@@ -421,13 +456,14 @@
       font-size: 11px;
       padding: 5px 10px;
       border-radius: 8px;
-      background: rgba(134, 134, 139, 0.12);
+      background: rgba(134, 134, 139, 0.14);
       color: var(--text-secondary);
+      backdrop-filter: blur(8px);
     }
 
     .bento-card.dark-card .artifact-chip {
-      background: rgba(255, 255, 255, 0.12);
-      color: #d2d2d7;
+      background: rgba(255, 255, 255, 0.14);
+      color: #e5e5ea;
     }
 
     /* Apple Circular "+" Button */
@@ -435,17 +471,18 @@
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: rgba(134, 134, 139, 0.16);
+      background: rgba(134, 134, 139, 0.18);
       color: var(--text-primary);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       transition: background 0.25s ease, transform 0.25s var(--ease-spring);
+      backdrop-filter: blur(8px);
     }
 
     .bento-card.dark-card .plus-btn {
-      background: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.2);
       color: #ffffff;
     }
 
@@ -465,7 +502,7 @@
     .flow-ribbon {
       background: var(--bg-surface);
       border-radius: var(--radius-card);
-      padding: 28px 32px;
+      padding: 26px 32px;
       margin-bottom: 64px;
       border: 1px solid var(--border-light);
       box-shadow: var(--shadow-card);
@@ -516,9 +553,9 @@
       position: fixed;
       inset: 0;
       z-index: 200;
-      background: rgba(0, 0, 0, 0.48);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(0, 0, 0, 0.52);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -542,7 +579,7 @@
       box-shadow: var(--shadow-modal);
       border: 1px solid var(--border-light);
       overflow-y: auto;
-      padding: 48px;
+      padding: 44px;
       position: relative;
       transform: scale(0.94) translateY(20px);
       transition: transform 0.38s var(--ease-spring);
@@ -566,7 +603,7 @@
       height: 36px;
       border-radius: 50%;
       border: none;
-      background: rgba(134, 134, 139, 0.16);
+      background: rgba(134, 134, 139, 0.18);
       color: var(--text-primary);
       cursor: pointer;
       display: flex;
@@ -577,7 +614,23 @@
     }
 
     .modal-close:hover {
-      background: rgba(134, 134, 139, 0.28);
+      background: rgba(134, 134, 139, 0.3);
+    }
+
+    .modal-hero-banner {
+      width: 100%;
+      height: 220px;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      border: 1px solid var(--border-light);
+      display: none;
+    }
+
+    .modal-hero-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .modal-eyebrow {
@@ -594,14 +647,14 @@
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.1;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .modal-summary {
       font-size: 18px;
       color: var(--text-secondary);
       line-height: 1.5;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
 
     .modal-section {
@@ -662,7 +715,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 14px;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
 
     .meta-box {
@@ -759,7 +812,7 @@
       <a href="#" class="nav-brand">
         <span>TDL User Guide</span>
         <span class="divider">/</span>
-        <span class="client-tag">Ford Engagement</span>
+        <span class="badge-tag">12-Week Delivery Playbook</span>
       </a>
       <div class="nav-actions">
         <div class="progress-pill" title="Your saved onboarding & delivery progress">
@@ -777,9 +830,9 @@
   <!-- Minimalist Apple Hero -->
   <header class="hero">
     <div class="hero-eyebrow">Google Cloud Forward Deployed Engineering</div>
-    <h1 class="hero-title">From Day 1 to Production.<br>Built for Ford.</h1>
+    <h1 class="hero-title">From Day 1 to Production.<br>Engineered for Velocity.</h1>
     <p class="hero-subtitle">
-      Tap any card below to inspect the exact agent prompt, deterministic Python calculator, and file contract for that stage of the 12-week delivery.
+      Tap any card below to inspect the exact AI agent prompt, deterministic Python calculator, and file contract for each stage of the 12-week engagement.
     </p>
   </header>
 
@@ -835,6 +888,10 @@
       <h2 class="modal-title" id="modalTitle"></h2>
       <p class="modal-summary" id="modalSummary"></p>
 
+      <div class="modal-hero-banner" id="modalHeroBanner">
+        <img id="modalHeroImg" src="" alt="" />
+      </div>
+
       <div class="modal-meta-grid" id="modalMetaGrid"></div>
 
       <div class="modal-section" id="modalPromptSection">
@@ -870,13 +927,14 @@
         id: "step-1",
         phase: "day1",
         phaseTitle: "Day 1 Setup",
-        phaseSubtitle: "Before talking to Ford.",
+        phaseSubtitle: "Prepare your engineering environment.",
         phaseGate: "15-Minute Laptop Setup",
         eyebrow: "Step 01 · Install",
         title: "Install the 14 TDL Skills.",
         shortDesc: "Clone the TDL User Guide into your agent workspace so Claude Code, Gemini CLI, or Cursor knows the 12-week Delta methodology.",
-        span: "span-6",
+        span: "span-7",
         dark: true,
+        image: "ui/images/setup.jpg",
         skill: "All 14 TDL Skills",
         toolboxAsset: "TDL Field Guide + 18 Toolbox Assets",
         artifacts: ["~/.gemini/skills/tool-tdl-user-guide"],
@@ -893,13 +951,14 @@ python3 -B scripts/validate_skills.py`,
         id: "step-2",
         phase: "day1",
         phaseTitle: "Day 1 Setup",
-        phaseSubtitle: "Before talking to Ford.",
+        phaseSubtitle: "Prepare your engineering environment.",
         phaseGate: "15-Minute Laptop Setup",
         eyebrow: "Step 02 · Companion Ecosystem",
         title: "Add Upstream ADK & UI Skills.",
         shortDesc: "Pair the 14 TDL governance skills with official Google ADK, TDD, and React UI skills from skills.sh.",
-        span: "span-6",
+        span: "span-5",
         dark: false,
+        image: "",
         skill: "skills.sh + google/agents-cli",
         toolboxAsset: "Companion Engineering Stack",
         artifacts: ["google/agents-cli", "mattpocock/skills", "vercel-labs/agent-browser"],
@@ -919,18 +978,19 @@ npx skills add vercel-labs/agent-browser`,
         id: "step-3",
         phase: "day1",
         phaseTitle: "Day 1 Setup",
-        phaseSubtitle: "Before talking to Ford.",
+        phaseSubtitle: "Prepare your engineering environment.",
         phaseGate: "15-Minute Laptop Setup",
         eyebrow: "Step 03 · Workspace Init",
-        title: "Bootstrap the Ford Repo & STATE.md.",
+        title: "Bootstrap Project Repo & STATE.md.",
         shortDesc: "Enforce clean repo layout, .env separation across dev/staging/prod, and initialize STATE.md as your single source of truth.",
         span: "span-12",
         dark: false,
+        image: "",
         skill: "ecc-repo-conventions + codebase-onboarding-and-mapping",
         toolboxAsset: "Asset #11 · Delivery Guide",
         artifacts: ["STATE.md", "docs/ONBOARDING.md"],
-        promptLabel: "What to tell your AI Agent inside ford-agent-engagement/",
-        prompt: `Use the ecc-repo-conventions and tdl-field-guide skills to initialize this repository for the 12-week Ford engagement. Create STATE.md at Prelude (Week 0) and set up our docs/ folder structure. If Ford provided an existing repository, also run codebase-onboarding-and-mapping to generate docs/ONBOARDING.md.`,
+        promptLabel: "What to tell your AI Agent inside your project repo",
+        prompt: `Use the ecc-repo-conventions and tdl-field-guide skills to initialize this repository for a 12-week engagement. Create STATE.md at Prelude (Week 0) and set up our docs/ folder structure. If an existing codebase is present, also run codebase-onboarding-and-mapping to generate docs/ONBOARDING.md.`,
         cli: ""
       },
 
@@ -939,23 +999,19 @@ npx skills add vercel-labs/agent-browser`,
         id: "step-4",
         phase: "prelude",
         phaseTitle: "Prelude · Week 0",
-        phaseSubtitle: "Select and size the right Ford use case.",
+        phaseSubtitle: "Select and size the highest-impact use case.",
         phaseGate: "Gate 0 · Signed Use Case Alignment Summary",
         eyebrow: "Step 04 · Triage & Value Sizing",
-        title: "Score Ford’s Candidate Use Cases.",
+        title: "Score Candidate Use Cases.",
         shortDesc: "Filter candidate ideas through the 5 Hard Qualifiers and run the deterministic 3-Scenario ROI calculator.",
-        span: "span-6",
+        span: "span-7",
         dark: false,
+        image: "ui/images/prelude.jpg",
         skill: "ai-value-sizing",
         toolboxAsset: "Assets #4 & #10 · Use Case Selection & Alignment",
         artifacts: ["docs/USE_CASE_SCORECARD.md", "docs/VALUE_SIZING.md"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use the ai-value-sizing skill. Here are Ford's 3 candidate use cases from our intake call:
-1. Dealer Warranty Claims Triage Agent
-2. Connected Vehicle Diagnostic Log Summarizer
-3. Supplier Contract Compliance Checker
-
-Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE_CASE_SCORECARD.md, and draft the 1-page Use Case Alignment Summary for the winning use case.`,
+        prompt: `Use the ai-value-sizing skill to evaluate our candidate use cases from intake discovery. Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE_CASE_SCORECARD.md, and draft the 1-page Use Case Alignment Summary for the top-ranked candidate.`,
         cli: `python3 ~/.gemini/skills/tool-tdl-user-guide/product-management/ai-value-sizing/scripts/calculate_value.py \\
   --volume 250000 --handle-time-min 18 --hourly-rate 68 \\
   --error-rate 0.11 --cost-per-error 320 --annual-platform-cost 140000`
@@ -964,18 +1020,19 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         id: "step-5",
         phase: "prelude",
         phaseTitle: "Prelude · Week 0",
-        phaseSubtitle: "Select and size the right Ford use case.",
+        phaseSubtitle: "Select and size the highest-impact use case.",
         phaseGate: "Gate 0 · Signed Use Case Alignment Summary",
         eyebrow: "Step 05 · Kickoff Readiness",
         title: "Verify Tooling & Draft Kickoff Deck.",
-        shortDesc: "Audit your workspace capability slots and generate the slide-by-slide Ford Kickoff Deck with co-branded rules.",
-        span: "span-6",
+        shortDesc: "Audit your workspace capability slots and generate the slide-by-slide Kickoff Deck with co-branded rules.",
+        span: "span-5",
         dark: false,
+        image: "",
         skill: "skill-stocktake + exec-readout-generator",
         toolboxAsset: "Asset #6 · Example Kickoff Deck",
         artifacts: ["docs/KICKOFF_DECK.md"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Run skill-stocktake to verify our workspace has all capabilities for Phase 1, then use exec-readout-generator to create docs/KICKOFF_DECK.md for our Ford Dealer Warranty Claims Triage engagement.`,
+        prompt: `Run skill-stocktake to verify our workspace has all required capabilities for Phase 1, then use exec-readout-generator to create docs/KICKOFF_DECK.md for our engagement kickoff.`,
         cli: ""
       },
 
@@ -988,14 +1045,15 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
         eyebrow: "Step 06 · Onsite Workshop",
         title: "Run Discovery & Map Critical User Journeys.",
-        shortDesc: "Deconstruct Ford's legacy dealer workflow into atomic tasks and classify each as Automate, Augment, or Human-Only.",
-        span: "span-6",
+        shortDesc: "Deconstruct the legacy business process into atomic tasks and classify each as Automate, Augment, or Human-Only.",
+        span: "span-5",
         dark: false,
+        image: "",
         skill: "cuj-to-eval-pipeline",
         toolboxAsset: "Assets #1, #2 & #3 · Workshop, Process Reimagine & CUJ Templates",
         artifacts: ["docs/CUJ_SPEC.md"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use the cuj-to-eval-pipeline skill. Based on our Ford Onsite Discovery notes, deconstruct the Dealer Warranty Claims workflow into atomic tasks, classify each as Automate / Augment / Human-Only, and write docs/CUJ_SPEC.md with 10-column CUJ tables and latency/accuracy targets.`,
+        prompt: `Use the cuj-to-eval-pipeline skill. Based on our Onsite Discovery notes, deconstruct the legacy workflow into atomic tasks, classify each as Automate / Augment / Human-Only, and write docs/CUJ_SPEC.md with 10-column CUJ tables and latency/accuracy targets.`,
         cli: ""
       },
       {
@@ -1006,14 +1064,15 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
         eyebrow: "Step 07 · Product Spec",
         title: "Draft the Agent PRD & Golden Eval Seeds.",
-        shortDesc: "Generate the 10-section AI Agent PRD (modeled on Intel Ask IT) and convert CUJs into golden eval cases.",
-        span: "span-6",
-        dark: false,
+        shortDesc: "Generate the 10-section AI Agent PRD and convert Critical User Journeys into golden evaluation cases.",
+        span: "span-7",
+        dark: true,
+        image: "ui/images/foundations.jpg",
         skill: "agent-prd-template",
-        toolboxAsset: "Asset #5 · PRD Example (Intel Ask IT)",
+        toolboxAsset: "Asset #5 · AI Agent PRD Template",
         artifacts: ["docs/PRD.md", "evals/golden_dataset.json"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use the agent-prd-template skill to turn docs/CUJ_SPEC.md into a 10-section AI Agent PRD at docs/PRD.md for Ford. Include the human-in-the-loop escalation matrix for warranty claims over $2,500 and generate evals/golden_dataset.json.`,
+        prompt: `Use the agent-prd-template skill to turn docs/CUJ_SPEC.md into a 10-section AI Agent PRD at docs/PRD.md. Include the human-in-the-loop escalation matrix and generate evals/golden_dataset.json.`,
         cli: ""
       },
       {
@@ -1024,16 +1083,17 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
         eyebrow: "Step 08 · Pre-Build Benchmark",
         title: "Freeze the 50-Sample Baseline KPIs.",
-        shortDesc: "Audit 50 historical Ford warranty tickets to lock P50/P90 handle times and unit cost before writing any agent code.",
-        span: "span-6",
+        shortDesc: "Audit 50 historical work items to lock P50/P90 handle times and unit cost before writing any agent code.",
+        span: "span-7",
         dark: true,
+        image: "ui/images/baseline.jpg",
         skill: "synthetic-baseline-protocol",
         toolboxAsset: "Asset #11 · Baseline Governance Rule",
         artifacts: ["docs/baseline_kpis.json"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use the synthetic-baseline-protocol skill to audit data/ford_50_historical_claims.csv and freeze docs/baseline_kpis.json so we have an immutable pre-AI benchmark for our Week 12 ROI readout.`,
+        prompt: `Use the synthetic-baseline-protocol skill to audit data/historical_50_samples.csv and freeze docs/baseline_kpis.json so we have an immutable pre-AI benchmark for our Week 12 ROI readout.`,
         cli: `python3 ~/.gemini/skills/tool-tdl-user-guide/product-management/synthetic-baseline-protocol/scripts/calculate_baseline.py \\
-  --input data/ford_50_historical_claims.csv \\
+  --input data/historical_50_samples.csv \\
   --hourly-rate 68 \\
   --output docs/baseline_kpis.json`
       },
@@ -1046,13 +1106,14 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         eyebrow: "Step 09 · GCP Platform Tier",
         title: "Select the Google Cloud Agent Architecture.",
         shortDesc: "Compare Gemini Enterprise (no-code), ADK on Managed Agent Runtime, and ADK on Cloud Run/GKE with live GA/Preview verification.",
-        span: "span-6",
+        span: "span-5",
         dark: false,
+        image: "",
         skill: "gcp-agent-architecture-advisor",
         toolboxAsset: "Asset #11 + Model Economics Config",
         artifacts: ["docs/ARCHITECTURE_RECOMMENDATION.md"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use the gcp-agent-architecture-advisor skill to recommend a Google Cloud architecture for Ford in docs/ARCHITECTURE_RECOMMENDATION.md based on docs/PRD.md. Compare Gemini Enterprise, ADK on Agent Runtime, and ADK on Cloud Run, and include token cost estimates.`,
+        prompt: `Use the gcp-agent-architecture-advisor skill to recommend a Google Cloud architecture in docs/ARCHITECTURE_RECOMMENDATION.md based on docs/PRD.md. Compare Gemini Enterprise, ADK on Agent Runtime, and ADK on Cloud Run, and include token cost estimates.`,
         cli: ""
       },
 
@@ -1064,15 +1125,16 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         phaseSubtitle: "Weeks 3–10 · Prototype, Spec, Build, Eval & Load Test.",
         phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
         eyebrow: "Step 10 · 48-Hour UI Prototype",
-        title: "Build the Co-Branded Prototype in 48 Hours.",
-        shortDesc: "Validate UX flows with Ford dealers using Google Cloud Delta Brand palette (#4285F4, Google Sans) before backend investment.",
-        span: "span-4",
+        title: "Build the Interactive Prototype in 48 Hours.",
+        shortDesc: "Validate UX flows with end users using the Google Cloud Delta Brand palette (#4285F4, Google Sans) before backend investment.",
+        span: "span-6",
         dark: false,
+        image: "ui/images/prototype.jpg",
         skill: "stitch-design",
         toolboxAsset: "Assets #13 & #15 · Delta Brand & TDL Prototyping Guide",
         artifacts: ["docs/UI_SPEC.md"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use the stitch-design skill to generate a Google Cloud Delta × Ford co-branded dealer triage console spec in docs/UI_SPEC.md, following the 48-hour TDL Prototyping Guide and Delta Brand palette.`,
+        prompt: `Use the stitch-design skill to generate an interactive agent console specification in docs/UI_SPEC.md, following the 48-hour TDL Prototyping Guide and Delta Brand palette.`,
         cli: ""
       },
       {
@@ -1084,13 +1146,14 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         eyebrow: "Step 11 · Technical Blueprint",
         title: "Author the 9-Section Agent Technical Spec.",
         shortDesc: "Lock orchestration topology, MCP tool schemas, Vertex AI grounding, IAM guardrails, and OTel tracing.",
-        span: "span-8",
+        span: "span-6",
         dark: false,
+        image: "",
         skill: "agent-technical-spec",
         toolboxAsset: "Asset #14 · Agent Technical Specifications",
         artifacts: ["docs/AGENT_SPEC.md"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use the agent-technical-spec skill to write docs/AGENT_SPEC.md from docs/PRD.md and docs/ARCHITECTURE_RECOMMENDATION.md. Define the coordinator/specialist topology, MCP warranty lookup tool schemas, Model Armor guardrails, and Cloud Trace instrumentation.`,
+        prompt: `Use the agent-technical-spec skill to write docs/AGENT_SPEC.md from docs/PRD.md and docs/ARCHITECTURE_RECOMMENDATION.md. Define the coordinator/specialist topology, MCP tool schemas, Model Armor guardrails, and Cloud Trace instrumentation.`,
         cli: ""
       },
       {
@@ -1104,11 +1167,12 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         shortDesc: "Combine google/agents-cli with claude-agent-harness and agentic-engineering to iterate until pytest and ruff pass 100%.",
         span: "span-6",
         dark: true,
+        image: "ui/images/build.jpg",
         skill: "claude-agent-harness + agentic-engineering",
         toolboxAsset: "Asset #12 · Weekly Program Tracker",
         artifacts: ["src/", "tests/", "STATE.md"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use google-agents-cli-scaffold and claude-agent-harness to implement the Ford Warranty Triage Agent defined in docs/AGENT_SPEC.md. Run the goal contract verification loop until pytest -q and ruff check pass with zero errors, and update our weekly RAG status in STATE.md.`,
+        prompt: `Use google-agents-cli-scaffold and claude-agent-harness to implement the agent defined in docs/AGENT_SPEC.md. Run the goal contract verification loop until pytest -q and ruff check pass with zero errors, and update our weekly RAG status in STATE.md.`,
         cli: `python3 ~/.gemini/skills/tool-tdl-user-guide/ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \\
   --project "$VERTEX_PROJECT_ID" --goal-contract docs/goal_contract.json --workspace .`
       },
@@ -1123,11 +1187,12 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         shortDesc: "Run linguistic quality rubric checks and compute bias-corrected Rogan-Gladen accuracy with 95% bootstrap confidence intervals.",
         span: "span-6",
         dark: false,
+        image: "ui/images/eval.jpg",
         skill: "llm-judge-statistical-audit",
         toolboxAsset: "Assets #17 & #18 · Linguistic Quality & Statistical Auditing",
         artifacts: ["evals/judge_audit_report.json"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use the llm-judge-statistical-audit skill to audit our LLM-as-a-Judge results against Ford SME human labels. Verify our judge meets q0 + q1 - 1 >= 0.60 and compute the Rogan-Gladen corrected pass rate in evals/judge_audit_report.json.`,
+        prompt: `Use the llm-judge-statistical-audit skill to audit our LLM-as-a-Judge results against SME human labels. Verify our judge meets q0 + q1 - 1 >= 0.60 and compute the Rogan-Gladen corrected pass rate in evals/judge_audit_report.json.`,
         cli: `python3 ~/.gemini/skills/tool-tdl-user-guide/evals/llm-judge-statistical-audit/scripts/evaluate_judge.py \\
   --calibration evals/human_vs_judge_calibration.csv \\
   --production evals/production_judge_outcomes.csv \\
@@ -1140,15 +1205,16 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         phaseSubtitle: "Weeks 3–10 · Prototype, Spec, Build, Eval & Load Test.",
         phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
         eyebrow: "Step 14 · Concurrency & Rate Limits",
-        title: "Stress-Test Under Peak Dealer Load.",
+        title: "Stress-Test Under Peak Traffic Load.",
         shortDesc: "Run Locust traffic profiles across Baseline, 2x Peak, Soak, and Burst to catch HTTP 429 Vertex AI quota bottlenecks.",
         span: "span-12",
         dark: false,
+        image: "",
         skill: "agent-load-testing",
         toolboxAsset: "Asset #16 · Load Testing Guide",
         artifacts: ["docs/LOAD_TEST_REPORT.md"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use the agent-load-testing skill to generate a Locust load test suite simulating 150 concurrent Ford dealership service advisors. Run the 4 traffic profiles and write the TTFT, E2E p95/p99 latency, and token throughput results to docs/LOAD_TEST_REPORT.md.`,
+        prompt: `Use the agent-load-testing skill to generate a Locust load test suite simulating peak concurrent users. Run the 4 traffic profiles (Baseline, 2x Peak, Soak, Burst) and write the TTFT, E2E p95/p99 latency, and token throughput results to docs/LOAD_TEST_REPORT.md.`,
         cli: ""
       },
 
@@ -1158,26 +1224,38 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
         phase: "phase3",
         phaseTitle: "Phase 3 · Closeout & Launch",
         phaseSubtitle: "Weeks 11–12 · Executive Readout, Production Cutover & Retro.",
-        phaseGate: "Gate 3 · Executive Sign-off & Client Handoff",
+        phaseGate: "Gate 3 · Executive Sign-off & Production Handoff",
         eyebrow: "Step 15 · Executive Readout & Retro",
         title: "Deliver the Final ROI Readout & FDE Retro.",
         shortDesc: "Generate the Demo Frame-Up Deck, Before/After Executive Closeout Deck from frozen baseline KPIs, and internal FDE Retro.",
         span: "span-12",
         dark: true,
+        image: "ui/images/launch.jpg",
         skill: "exec-readout-generator + e2e-delivery-workflow",
         toolboxAsset: "Assets #7, #8 & #9 · Demo Frame-Up, Closeout & FDE Retro Decks",
         artifacts: ["docs/DEMO_FRAMEUP_DECK.md", "docs/EXEC_READOUT_DECK.md", "docs/FDE_RETRO.md"],
         promptLabel: "What to tell your AI Agent",
-        prompt: `Use the exec-readout-generator skill to produce our final Ford deliverables from docs/baseline_kpis.json, evals/judge_audit_report.json, and docs/LOAD_TEST_REPORT.md:
+        prompt: `Use the exec-readout-generator skill to produce our final closeout deliverables from docs/baseline_kpis.json, evals/judge_audit_report.json, and docs/LOAD_TEST_REPORT.md:
 1. docs/DEMO_FRAMEUP_DECK.md (live demo script & backup plan)
-2. docs/EXEC_READOUT_DECK.md (Before/After KPI table, 3-scenario realized ROI, and Ford ops runbook handoff)
+2. docs/EXEC_READOUT_DECK.md (Before/After KPI table, 3-scenario realized ROI, and ops runbook handoff)
 3. docs/FDE_RETRO.md (internal Google Cloud FDE retrospective & reusable asset extraction)`,
         cli: ""
       }
     ];
 
-    const STORAGE_KEY = "tdl_ford_apple_completed_v1";
-    const THEME_KEY = "tdl_ford_apple_theme_v1";
+    // Convert span-5 / span-7 classes safely on grid
+    const styleExtra = document.createElement("style");
+    styleExtra.textContent = `
+      .bento-card.span-5 { grid-column: span 5; }
+      .bento-card.span-7 { grid-column: span 7; }
+      @media (max-width: 860px) {
+        .bento-card.span-5, .bento-card.span-7 { grid-column: span 12; }
+      }
+    `;
+    document.head.appendChild(styleExtra);
+
+    const STORAGE_KEY = "tdl_apple_completed_v2";
+    const THEME_KEY = "tdl_apple_theme_v2";
     let completedSteps = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
     let activeStepIndex = 0;
 
@@ -1223,7 +1301,7 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
           </div>
           <div class="bento-grid">
             ${phaseSteps.map(step => `
-              <article class="bento-card ${step.span} ${step.dark ? 'dark-card' : ''} ${completedSteps.has(step.id) ? 'completed' : ''}" data-step-id="${step.id}">
+              <article class="bento-card ${step.span} ${step.dark ? 'dark-card' : ''} ${step.image ? 'has-visual' : ''} ${completedSteps.has(step.id) ? 'completed' : ''}" data-step-id="${step.id}">
                 <div>
                   <div class="card-top">
                     <span class="card-eyebrow">${step.eyebrow}</span>
@@ -1231,6 +1309,11 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
                   </div>
                   <h3 class="card-headline">${step.title}</h3>
                   <p class="card-desc">${step.shortDesc}</p>
+                  ${step.image ? `
+                    <div class="card-visual-wrap">
+                      <img class="card-visual-img" src="${step.image}" alt="${step.title}" loading="lazy" />
+                    </div>
+                  ` : ''}
                 </div>
                 <div class="card-footer">
                   <div class="card-tags">
@@ -1282,6 +1365,16 @@ Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE
       document.getElementById("modalEyebrow").textContent = `${step.phaseTitle} · ${step.eyebrow}`;
       document.getElementById("modalTitle").textContent = step.title;
       document.getElementById("modalSummary").textContent = step.shortDesc;
+
+      const banner = document.getElementById("modalHeroBanner");
+      const bannerImg = document.getElementById("modalHeroImg");
+      if (step.image) {
+        banner.style.display = "block";
+        bannerImg.src = step.image;
+        bannerImg.alt = step.title;
+      } else {
+        banner.style.display = "none";
+      }
 
       document.getElementById("modalMetaGrid").innerHTML = `
         <div class="meta-box">
