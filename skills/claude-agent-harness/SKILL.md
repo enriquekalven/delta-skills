@@ -82,7 +82,7 @@ Other entry points:
 - `--goal "<objective>"`: prompt-driven goal instead of or alongside `--spec`.
 - `--review src/module.py --goal "Harden for input validation and timeouts"`: harden a workspace file in place until acceptance passes.
 - `--dry-run`: validate the Goal Contract, spec files, and `--verify` command parsing offline before invoking Vertex AI. It reports `status: "dry_run_ok"` with `goal_met: false`, because no model call is made and no acceptance command is executed.
-- `--model` (default `claude-sonnet-5-5` or `CLAUDE_MODEL_NAME`), `--region` (default `global` or `CLOUD_ML_REGION`), `--project`, `--max-turns`, `--token-budget`, `--max-tokens`, `--verify-timeout`, `--temperature`.
+- `--model` (default `claude-sonnet-5-5` or `CLAUDE_MODEL_NAME`; also supports `claude-opus-5-5` / `claude-opus-5` on Vertex AI Model Garden), `--region` (default `global` or `CLOUD_ML_REGION`), `--project`, `--max-turns`, `--token-budget`, `--max-tokens`, `--verify-timeout`, `--temperature`.
 
 ---
 

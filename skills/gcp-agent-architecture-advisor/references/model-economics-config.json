@@ -1,136 +1,119 @@
 {
   "_meta": {
-    "description": "Centralized LLM pricing, capabilities, and unit economics data. All narrative references in this skill should derive calculations from this config rather than hardcoding values. Update this file when model pricing changes — the analysis files remain stable.",
-    "last_updated": "2026-03-10",
-    "update_frequency": "quarterly or on major pricing changes",
+    "description": "Google Cloud Vertex AI & Model Garden reference pricing, capabilities, and routing config for TDL architecture sizing (docs/ARCHITECTURE_RECOMMENDATION.md and docs/VALUE_SIZING.md). Always verify live regional rates and publisher model IDs in the GCP Console (Vertex AI -> Model Garden) and cloud.google.com/vertex-ai/generative-ai/pricing before locking a customer TCO table.",
+    "last_updated": "2026-10-15",
+    "update_frequency": "quarterly or on Vertex AI / Model Garden updates",
     "currency": "USD",
-    "token_unit": "per 1M tokens",
-    "notes": "Prices reflect publicly listed API rates. Self-hosted costs (Llama, Qwen, DeepSeek) are estimated hosting costs, not API fees."
+    "token_unit": "per 1M tokens"
   },
-
   "models": {
-    "gpt-5.2": {
-      "provider": "OpenAI",
-      "input_cost": 1.75,
-      "output_cost": 14.00,
-      "context_window": "200K",
-      "reasoning_quality": "Excellent",
-      "instruction_following": "Good",
-      "multimodal": ["image", "video"],
-      "latency_ms": "100-300",
-      "safety_rating": "Medium",
-      "availability": "Stable",
-      "lock_in_risk": "HIGH",
-      "production_maturity": "HIGH",
-      "open_source": false
+    "gemini-3.8-flash": {
+      "provider": "Google Cloud Vertex AI",
+      "input_cost": 0.25,
+      "output_cost": 2.00,
+      "cached_input_cost": 0.0625,
+      "context_window": "1M",
+      "typical_role": "Default low-latency agent execution, sub-agent tool calling, query decomposition, chunked RAG synthesis",
+      "multimodal": ["text", "image", "audio", "video", "pdf"],
+      "latency_tier": "Ultra-low"
     },
-    "claude-opus-4.6": {
-      "provider": "Anthropic",
+    "gemini-3.6-flash": {
+      "provider": "Google Cloud Vertex AI",
+      "input_cost": 0.25,
+      "output_cost": 2.00,
+      "cached_input_cost": 0.0625,
+      "context_window": "1M",
+      "typical_role": "High-throughput baseline execution, safety classification, intent routing, and entity extraction",
+      "multimodal": ["text", "image", "audio", "video", "pdf"],
+      "latency_tier": "Ultra-low"
+    },
+    "gemini-3-pro": {
+      "provider": "Google Cloud Vertex AI",
+      "input_cost": 1.25,
+      "output_cost": 10.00,
+      "cached_input_cost": 0.3125,
+      "context_window": "2M",
+      "typical_role": "Complex multi-step orchestration, final synthesis, policy/legal reasoning, CLA isolated judge",
+      "multimodal": ["text", "image", "audio", "video", "pdf"],
+      "latency_tier": "Medium"
+    },
+    "argon": {
+      "provider": "Google / Vertex AI",
+      "input_cost": 2.00,
+      "output_cost": 12.00,
+      "cached_input_cost": 0.50,
+      "context_window": "1M",
+      "typical_role": "Frontier reasoning, deep architectural synthesis, and hard multi-step agent planning",
+      "multimodal": ["text", "image", "audio", "video", "pdf"],
+      "latency_tier": "Medium"
+    },
+    "claude-sonnet-5-5": {
+      "provider": "Vertex AI Model Garden (Anthropic)",
+      "input_cost": 3.00,
+      "output_cost": 15.00,
+      "cached_input_cost": 0.30,
+      "context_window": "200K",
+      "typical_role": "Default goal-loop code generation harness (claude-agent-harness) and Pipeline 3 cross-family double-marking judge",
+      "multimodal": ["text", "image", "pdf"],
+      "latency_tier": "Low-Medium"
+    },
+    "claude-opus-5-5": {
+      "provider": "Vertex AI Model Garden (Anthropic)",
       "input_cost": 5.00,
       "output_cost": 25.00,
+      "cached_input_cost": 0.50,
       "context_window": "200K",
-      "reasoning_quality": "Excellent",
-      "instruction_following": "Excellent",
-      "multimodal": ["image"],
-      "latency_ms": "100-300",
-      "safety_rating": "High",
-      "availability": "Stable",
-      "lock_in_risk": "MEDIUM",
-      "production_maturity": "HIGH",
-      "open_source": false
+      "typical_role": "High-assurance ZDR peer review (claude-review), complex multi-file goal-loop refactoring, and formal verification",
+      "multimodal": ["text", "image", "pdf"],
+      "latency_tier": "Medium-High"
     },
-    "gemini-3": {
-      "provider": "Google",
-      "input_cost": 2.50,
+    "xai/grok-4.6": {
+      "provider": "Vertex AI Model Garden (xAI OpenAPI)",
+      "input_cost": 2.00,
       "output_cost": 10.00,
-      "context_window": "1M",
-      "reasoning_quality": "Good",
-      "instruction_following": "Good",
-      "multimodal": ["image", "video", "audio"],
-      "latency_ms": "50-200",
-      "safety_rating": "Medium",
-      "availability": "Stable",
-      "lock_in_risk": "MEDIUM",
-      "production_maturity": "HIGH",
-      "open_source": false
-    },
-    "llama-4-scout": {
-      "provider": "Meta (open-source)",
-      "input_cost": 0.40,
-      "output_cost": 0.40,
-      "context_window": "10M",
-      "reasoning_quality": "Emerging",
-      "instruction_following": "Good",
-      "multimodal": ["text"],
-      "latency_ms": "varies (self-hosted)",
-      "safety_rating": "Varies",
-      "availability": "Open-source",
-      "lock_in_risk": "NONE",
-      "production_maturity": "MEDIUM",
-      "open_source": true
-    },
-    "deepseek-r1": {
-      "provider": "DeepSeek",
-      "input_cost": 0.50,
-      "output_cost": 2.00,
       "context_window": "128K",
-      "reasoning_quality": "Strong",
-      "instruction_following": "Good",
-      "multimodal": ["text"],
-      "latency_ms": "100-300",
-      "safety_rating": "Medium",
-      "availability": "Stable",
-      "lock_in_risk": "MEDIUM",
-      "production_maturity": "MEDIUM",
-      "open_source": true
+      "typical_role": "Optional draft generation on Vertex AI Model Garden OpenAPI endpoint",
+      "multimodal": ["text", "image"],
+      "latency_tier": "Low-Medium"
     },
-    "qwen-3": {
-      "provider": "Alibaba",
+    "gemini-2.5-flash": {
+      "provider": "Google Cloud Vertex AI",
       "input_cost": 0.30,
-      "output_cost": 1.50,
-      "context_window": "128K",
-      "reasoning_quality": "Emerging",
-      "instruction_following": "Good",
+      "output_cost": 2.50,
+      "cached_input_cost": 0.075,
+      "context_window": "1M",
+      "typical_role": "Legacy GA baseline referenced in Toolbox Asset #16 (Nova Scotia Health load-testing guide)",
+      "multimodal": ["text", "image", "audio", "video", "pdf"],
+      "latency_tier": "Low"
+    },
+    "gemini-embedding-001": {
+      "provider": "Google Cloud Vertex AI",
+      "input_cost": 0.15,
+      "output_cost": 0.00,
+      "context_window": "8K",
+      "typical_role": "Dense vector retrieval embeddings (Matryoshka 768 / 1536 / 3072 dims)",
       "multimodal": ["text"],
-      "latency_ms": "100-200",
-      "safety_rating": "Medium",
-      "availability": "Stable",
-      "lock_in_risk": "NONE",
-      "production_maturity": "MEDIUM",
-      "open_source": true
+      "latency_tier": "Ultra-low"
     }
   },
-
-  "benchmarks": {
-    "workload_basis": "1M tokens/month",
-    "input_output_ratio": "80/20",
-    "notes": "Monthly cost examples assume 1M token workload with 80% input / 20% output split unless otherwise stated."
-  },
-
-  "blended_cost_strategies": {
-    "model_downsampling": {
-      "description": "Use cheaper models for simple tasks, expensive models for complex reasoning",
+  "routing_and_caching_patterns": {
+    "cascaded_agent_turn": {
+      "description": "Route high-volume sub-agent calls (safety, query decomposition, chunked extraction) to gemini-3.8-flash and reserve gemini-3-pro or argon for final synthesis or hard reasoning.",
       "example_split": {
-        "simple_pct": 70,
-        "simple_model": "llama-4-scout",
-        "complex_pct": 30,
-        "complex_model": "claude-opus-4.6"
-      },
-      "notes": "Blended cost derived from split percentages × respective input costs. Savings vs. all-premium typically 50-70%."
+        "flash_call_share_pct": 85,
+        "flash_model": "gemini-3.8-flash",
+        "frontier_call_share_pct": 15,
+        "frontier_model": "argon"
+      }
+    },
+    "goal_loop_and_peer_review": {
+      "description": "Use claude-sonnet-5-5 as the default fast goal-loop builder in claude-agent-harness, and route high-complexity builds or ZDR peer reviews to claude-opus-5-5.",
+      "default_builder": "claude-sonnet-5-5",
+      "reviewer_and_escalation": "claude-opus-5-5"
+    },
+    "vertex_context_caching": {
+      "description": "Cache static system instructions, schemas, and domain glossaries with a 1-hour TTL on Vertex AI (Toolbox Asset #16 Optimization #5).",
+      "typical_input_token_savings_pct": "50-70%"
     }
-  },
-
-  "margin_thresholds": {
-    "healthy_saas": "70%+",
-    "breakeven_warning": "Below 50%",
-    "notes": "Premium models (Claude, GPT-5.2) require $100K+ annual revenue per customer to maintain healthy margins at 1M tokens/month. Open-source models maintain 90%+ margins at any scale."
-  },
-
-  "framework_ecosystem": {
-    "langraph": { "provider": "LangChain", "github_stars": "35K", "maturity": "HIGH" },
-    "crewai": { "provider": "CrewAI", "github_stars": "25K", "maturity": "MEDIUM" },
-    "claude-agent-sdk": { "provider": "Anthropic", "github_stars": "12K", "maturity": "HIGH" },
-    "openai-agents-sdk": { "provider": "OpenAI", "github_stars": "18K", "maturity": "HIGH" },
-    "google-adk": { "provider": "Google", "github_stars": "8K", "maturity": "MEDIUM" }
   }
 }

@@ -3,7 +3,7 @@ Date: 2026-08-22 | Author: Lead TDL | Inputs: `docs/PRD.md`, `docs/WORKSHOP_INTA
 
 ## 1. Recommendation
 - **Tier:** **Tier 2 — Code-First ADK on Managed Vertex AI Agent Runtime**
-- **Stack:** Google Agent Development Kit (`google-adk` Python) deployed on **Vertex AI Agent Runtime** (`us-central1`), **Document AI Layout Parser** + **Gemini 3** (`gemini-3`) for multi-document page classification and 42-field extraction, **Cloud Pub/Sub** for storm-surge buffering, and **BigQuery** (`acme_claims_edw`) for audit logging and NHTSA VIN table lookups.
+- **Stack:** Google Agent Development Kit (`google-adk` Python) deployed on **Vertex AI Agent Runtime** (`us-central1`), **Document AI Layout Parser** + **Gemini 3.8 Flash** (`gemini-3.8-flash`, with **Argon** / **Gemini 3 Pro** for complex coverage synthesis) for multi-document page classification and 42-field extraction, **Cloud Pub/Sub** for storm-surge buffering, and **BigQuery** (`acme_claims_edw`) for audit logging and NHTSA VIN table lookups.
 - **Why:** The PRD requires deterministic multi-step orchestration across Document AI, custom REST calls (`GET`/`PUT`) against Guidewire ClaimCenter v2, and arithmetic confidence gates (`F-01`..`F-04`), which rules out Tier 1 (Gemini Enterprise no-code). None of the hard constraints require custom sidecars, WebSockets, or GKE node-pool customization, making Tier 2 the lowest-operational-burden choice over Tier 3.
 
 ---

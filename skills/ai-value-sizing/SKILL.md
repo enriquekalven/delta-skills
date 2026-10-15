@@ -31,7 +31,7 @@ This skill maps a proposed AI use case to measurable value pillars, narrows the 
 ## Operating Principles & Haircut Matrix
 
 1. **Size Before Math:** Establish the obtainable annual unit volume (`SOM / Q`) before computing dollar savings. Read baseline handling time, unit cost, and annual volume from `docs/as_is_report.md` and `docs/USE_CASE_CANVAS.md`.
-2. **Mandatory Haircuts (`VCR` & `SCDF`):** Never equate 1 hour of saved employee time to 1 hour of P&L cash flow (`The 1-to-1 Time Trap`). Always apply both haircuts:
+2. **Mandatory Haircuts (`VCR` & `SCDF`, repo convention):** Never equate 1 hour of saved employee time to 1 hour of P&L cash flow (`The 1-to-1 Time Trap`). Always apply both haircuts (use the customer CFO's hurdle rate and capture rules when provided; otherwise start from these repo-convention tiers):
 
 | Haircut Parameter | Tier / Value | When to Apply | Scenario Behavior in `calculate_roi.py` |
 | :--- | :---: | :--- | :--- |
