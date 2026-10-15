@@ -446,7 +446,7 @@ body.sso-locked .sso-gate { display: flex; }
           </select>
         </div>
         <div class="ppb-field">
-          <label class="ppb-label" for="paramPreset">50x Customer Use Case Preset</label>
+          <label class="ppb-label" for="paramPreset">Customer Use Case Preset</label>
           <select class="ppb-input" id="paramPreset" style="cursor:pointer;"></select>
         </div>
         <div class="ppb-field">
@@ -487,14 +487,12 @@ body.sso-locked .sso-gate { display: flex; }
       <div class="viewtabs" role="tablist">
         <button class="vtab active" id="tabBtnPlaybook" data-view="playbook">📋 Step Instructions &amp; Prompts</button>
         <button class="vtab" id="tabBtnContracts" data-view="contracts">🗂 All 13 Skills &amp; File Contracts</button>
-        <button class="vtab" id="tabBtnRubric" data-view="rubric">🏛 Customer Sign-Off Rubric &amp; 200x Audit</button>
       </div>
       <button class="btn" id="resetProgressBtn" style="padding:6px 13px;font-size:12px;">↺ Reset Mission Checkmarks</button>
     </div>
 
     <main id="mainPlaybook"></main>
     <section id="mainContracts" hidden></section>
-    <section id="mainRubric" hidden></section>
   </div>
 
   <!-- RIGHT RAIL: TROPHY SHELF & TELEMETRY SCOREBOARD -->
@@ -630,14 +628,14 @@ var STAGES = [
         lede: "Clone the TDL User Guide into your Antigravity plugins directory (or install via npx skills add) so Antigravity, Gemini CLI, and Claude Code auto-discover all 13 skills via plugin.json and skills/<skill-name>/SKILL.md.",
         whyItMatters: "Without these 13 skills installed, your coding agent will write generic boilerplate instead of enforcing the 12-week cap, Golden Dataset baseline evaluation metrics, and statistical LLM-judge evaluation gates.",
         promptType: "Terminal Command (Run Once on Your Laptop)",
-        promptTemplate: "# Option A: Install natively as an Antigravity (Jetski) Plugin\ngit clone https://github.com/delta-fde/tool-tdl-user-guide.git ~/.gemini/config/plugins/tool-tdl-user-guide\n\n# Option B: Install via AgentSkills CLI\nnpx skills add delta-fde/tool-tdl-user-guide\n\n# Verify all 13 skills, calculators, 200x perturbation benchmark, and 1,000x (50 Use Cases x 20 Personas) benchmark pass\ncd ~/.gemini/config/plugins/tool-tdl-user-guide\npython3 -B scripts/validate_skills.py\npython3 -B scripts/evaluate_200x_skills.py --strict\npython3 -B scripts/evaluate_1000x_personas.py --strict",
-        cliTemplate: "python3 -B scripts/validate_skills.py && python3 -B scripts/evaluate_200x_skills.py --strict && python3 -B scripts/evaluate_1000x_personas.py --strict && python3 -B -m unittest discover -s scripts -p 'test_*.py'",
+        promptTemplate: "# Option A: Install natively as an Antigravity (Jetski) Plugin\ngit clone https://github.com/delta-fde/tool-tdl-user-guide.git ~/.gemini/config/plugins/tool-tdl-user-guide\n\n# Option B: Install via AgentSkills CLI\nnpx skills add delta-fde/tool-tdl-user-guide\n\n# Verify all 13 skills and calculators\ncd ~/.gemini/config/plugins/tool-tdl-user-guide\npython3 -B scripts/validate_skills.py",
+        cliTemplate: "python3 -B scripts/validate_skills.py && python3 -B -m unittest discover -s scripts -p 'test_*.py'",
         checks: [
           "Repository cloned into ~/.gemini/config/plugins/tool-tdl-user-guide with root plugin.json and skills/<skill-name>/SKILL.md",
-          "python3 -B scripts/validate_skills.py, evaluate_200x_skills.py --strict, and evaluate_1000x_personas.py --strict pass at 100/100"
+          "python3 -B scripts/validate_skills.py passes with zero errors"
         ],
         customerPersona: "FDE Tech Lead",
-        customerApprove: "All 13 SKILL.md files, plugin.json manifest, 4 deterministic Python calculators, 200x benchmark, and 1,000x (50 Use Cases x 20 Personas) benchmark pass with exit code 0.",
+        customerApprove: "All 13 SKILL.md files, plugin.json manifest, and 4 deterministic Python calculators pass validation with exit code 0.",
         rejectIf: "Broken markdown links, missing plugin.json / skills/ directories, or unverified third-party pip dependencies.",
         rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
         axesBoost: { velocity: 10, baseline: 0, arch: 5, eval: 0, prod: 5 }
@@ -1498,182 +1496,6 @@ function renderContractsTab() {
   });
 }
 
-function renderRubricTab() {
-  var allSteps = getAllSteps();
-
-  var skillBenchmarkData = [
-    { name: "workshop-intake", phase: "Prelude (W0)", manual: 16.0, skill: 2.5, saved: 13.5, pct: "84.4%", valueLink: "33 Starter Qs + Available/Usable/Quality Data Yardstick" },
-    { name: "create-delta-ucc", phase: "Prelude (W0)", manual: 14.0, skill: 2.0, saved: 12.0, pct: "85.7%", valueLink: "Must-Haves vs. Slippage + Eval Round 1/2 Scope Lock" },
-    { name: "business-process-redesign", phase: "Phase 1 (W1-2)", manual: 32.0, skill: 5.0, saved: 27.0, pct: "84.4%", valueLink: "Annual Labor + Rework $ Baseline & L1/L2/L3 Autonomy" },
-    { name: "cuj-architect", phase: "Phase 1 (W1-2)", manual: 24.0, skill: 3.5, saved: 20.5, pct: "85.4%", valueLink: "0.60×Value + 0.40×Feasibility Touchpoint Priority" },
-    { name: "product-md", phase: "Phase 1 (W1-2)", manual: 40.0, skill: 6.0, saved: 34.0, pct: "85.0%", valueLink: "8-Section Agentic PRD + RICE Backlog ((R×I×C)/E)" },
-    { name: "gcp-agent-architecture-advisor", phase: "Phase 1 (W1-2)", manual: 20.0, skill: 3.0, saved: 17.0, pct: "85.0%", valueLink: "Tier 1/2/3 Selection + Verified GA Stage + Token Routing" },
-    { name: "specification-engineer", phase: "Phase 1 (W1-2)", manual: 48.0, skill: 7.0, saved: 41.0, pct: "85.4%", valueLink: "4-Part/4-Pillar TDD + Golden Dataset Baseline Evals" },
-    { name: "stitch-design", phase: "Phase 1-2 (W1-4)", manual: 28.0, skill: 3.5, saved: 24.5, pct: "87.5%", valueLink: "2-4h Discovery Spike + 10-30 Mini-Eval + Delta Brand #13" },
-    { name: "claude-agent-harness", phase: "Phase 2 (W3-10)", manual: 120.0, skill: 24.0, saved: 96.0, pct: "80.0%", valueLink: "4-Tier --verify Goal Loop on Vertex AI Model Garden" },
-    { name: "agent-load-testing", phase: "Phase 2 (W7-10)", manual: 36.0, skill: 4.5, saved: 31.5, pct: "87.5%", valueLink: "27-Call/Turn Fan-Out + 5× Vertex Quota + 50-70% Cache Save" },
-    { name: "agent-eval-statistical-auditing", phase: "Phase 2 (W7-10)", manual: 32.0, skill: 4.0, saved: 28.0, pct: "87.5%", valueLink: "27 CLA Criteria + 3-Pipeline AUA (d.R>=0.80, QWK>=0.60)" },
-    { name: "ai-value-sizing", phase: "Phase 1 & 3 (W12)", manual: 20.0, skill: 2.5, saved: 17.5, pct: "87.5%", valueLink: "TAM->SAM->SOM + VCR×SCDF Haircuts + 3-Yr NPV (Base/Bull/Bear)" },
-    { name: "tdl-field-guide", phase: "All Phases (W0-12)", manual: 40.0, skill: 6.0, saved: 34.0, pct: "85.0%", valueLink: "STATE.md Gates + 1-in/1-out RICE Swaps + Dual RAID Logs" }
-  ];
-
-  var skillBenchmarkRows = skillBenchmarkData.map(function(sk) {
-    return (
-      '<tr>' +
-        '<td><strong class="mono">' + sk.name + '</strong><br/><span style="font-size:11.5px;color:#64748b;">' + sk.phase + '</span></td>' +
-        '<td>' + sk.valueLink + '</td>' +
-        '<td class="mono" style="color:#137333;"><strong>100%</strong></td>' +
-        '<td class="mono" style="color:#137333;"><strong>100%</strong></td>' +
-        '<td class="mono" style="color:#137333;"><strong>100%</strong></td>' +
-        '<td class="mono">' + sk.manual.toFixed(1) + 'h → <strong>' + sk.skill.toFixed(1) + 'h</strong><br/><span style="font-size:11.5px;color:#137333;font-weight:700;">−' + sk.saved.toFixed(1) + 'h (' + sk.pct + ' faster)</span></td>' +
-        '<td class="mono"><span class="skill-chip" style="background:#e6f4ea;color:#137333;border-color:#b7e1c2;">100/100 (200/200 Runs)</span></td>' +
-      '</tr>'
-    );
-  }).join("");
-
-  var presetRows = CUSTOMER_PRESETS.map(function(c, idx) {
-    var roi = computeRoiPreview(c.volume, c.rate, c.hours);
-    var q = computeQuotaPreview(c.peakTurns);
-    return (
-      '<tr style="cursor:pointer;" data-preset-idx="' + idx + '">' +
-        '<td><strong>Use Case #' + (idx + 1) + ' (×20 Perturbations)</strong> · ' + escapeHtml(c.industry) + '</td>' +
-        '<td>' + escapeHtml(c.useCase) + '</td>' +
-        '<td class="mono">' + c.volume.toLocaleString() + '/yr · $' + c.rate + '/hr · ' + c.hours + 'h</td>' +
-        '<td class="mono"><strong>$' + roi.base.npv.toLocaleString() + '</strong> (' + roi.base.roiPct + '% ROI · ' + roi.base.payback + ')</td>' +
-        '<td class="mono">' + q.quotaRpm.toLocaleString() + ' RPM / ' + (q.quotaTpm / 1000000).toFixed(1) + 'M TPM</td>' +
-        '<td><span class="skill-chip" style="background:#e6f4ea;color:#137333;border-color:#b7e1c2;">✅ 20/20 PASS (100/100)</span></td>' +
-      '</tr>'
-    );
-  }).join("");
-
-  var stepRubricRows = allSteps.map(function(s) {
-    var num = s.id.replace("step-", "");
-    var sc = s.rubricScores;
-    var tot = (sc.value + sc.determinism + sc.lineage + sc.quality + sc.sre) * 4;
-    return (
-      '<tr style="cursor:pointer;" data-rubric-jump="' + s.id + '">' +
-        '<td><strong>Step ' + num + '</strong></td>' +
-        '<td>' + s.title + '<br/><span style="font-size:11.5px;color:#64748b;">Approver: ' + s.customerPersona + '</span></td>' +
-        '<td class="mono">' + sc.value + '/5</td>' +
-        '<td class="mono">' + sc.determinism + '/5</td>' +
-        '<td class="mono">' + sc.lineage + '/5</td>' +
-        '<td class="mono">' + sc.quality + '/5</td>' +
-        '<td class="mono">' + sc.sre + '/5</td>' +
-        '<td class="mono"><strong>' + tot + '/100</strong></td>' +
-      '</tr>'
-    );
-  }).join("");
-
-  document.getElementById("mainRubric").innerHTML =
-    '<div class="section-card">' +
-      '<div class="sec-head">' +
-        '<span class="eyebrow">1,000-Iteration Multi-Persona Stress Benchmark (50 Use Cases × 20 Personas = 13,000 Skill Evals)</span>' +
-        '<h2>Customer Sign-Off Rubric, 200x Skill Audit &amp; 1,000x Multi-Persona Portfolio Verdict</h2>' +
-        '<p class="lede">Every skill in the TDL User Guide is audited across <strong>1,000 full-lifecycle customer engagements</strong> (50 Enterprise Use Cases × 20 Customer Stakeholder Personas = 13,000 individual skill evaluations via <code>python3 scripts/evaluate_1000x_personas.py --strict</code>) plus <strong>200 operational perturbation runs</strong> (<code>python3 scripts/evaluate_200x_skills.py --strict</code>).</p>' +
-      '</div>' +
-
-      '<div class="card" style="margin-bottom:18px;border:1.5px solid #bfdbfe;background:#f8fafc;">' +
-        '<h3>🎯 Executive Verdict: "Is This Worth Using on a Customer Project?" (50 Use Cases × 20 Personas = 1,000 Runs)</h3>' +
-        '<div class="table-wrap" style="margin-bottom:0;">' +
-          '<table class="log">' +
-            '<thead>' +
-              '<tr><th>Engagement Archetype (50 Enterprise Use Cases)</th><th>Share of Portfolio</th><th>Recommended Execution Mode</th><th>Effort (Manual → Skill)</th><th>Mean Base 3-Yr NPV</th><th>Mean Bear 3-Yr NPV (SCDF=0.40)</th><th>20-Persona Steering Verdict</th></tr>' +
-            '</thead>' +
-            '<tbody>' +
-              '<tr><td><strong>1. Core Enterprise Multi-Agent Builds</strong><br/><span style="font-size:11.5px;color:#64748b;">Tier 2/3 ADK · SOM ≥ 10k/yr · Regulated (FinServ, Health, Insure, Telecom, Mfg, Gov, SaaS)</span></td><td class="mono"><strong>40 / 50 (80%)</strong></td><td><strong>Full 13-Skill 12-Week Delta Mode</strong></td><td class="mono">470.0h → <strong>73.5h</strong> (-84.4%)</td><td class="mono" style="color:#15803d;font-weight:700;">+$869,390 (5.7m payback)</td><td class="mono" style="color:#15803d;font-weight:700;">+$205,498 ($4.8k/yr token OpEx)</td><td><span class="verdict-pill pass">✓ 100% WORTH IT (All 20 Personas Approve)</span></td></tr>' +
-              '<tr><td><strong>2. Tactical Departmental / Tier-1 Connectors</strong><br/><span style="font-size:11.5px;color:#64748b;">Tier 1 Gemini Enterprise · SOM ~2.5k–4k/yr (Internal FAQ, Dept Policy Search, PR Digest)</span></td><td class="mono"><strong>6 / 50 (12%)</strong></td><td><strong>Fast-Track 5-Skill Lite Mode (2-Wk Sprint)</strong><br/><span style="font-size:11px;color:#475569;">(<code>workshop-intake</code> → <code>create-delta-ucc</code> → <code>gcp-arch</code> → <code>stitch</code> → <code>roi</code>)</span></td><td class="mono">110.0h → <strong>18.5h</strong> (-83.2%)</td><td class="mono" style="color:#15803d;font-weight:700;">+$62,410 (Lite Mode)</td><td class="mono" style="color:#15803d;font-weight:700;">-$228,092 (Full) → <strong>+$9,985 (Lite)</strong></td><td><span class="verdict-pill pass">⚡ USE 5-SKILL LITE MODE (Flips Bear NPV +)</span></td></tr>' +
-              '<tr><td><strong>3. Low-Maturity / Unindexed Data Traps</strong><br/><span style="font-size:11.5px;color:#64748b;">SCDF ≤ 0.20 or SOM &lt; 1k/yr (Handwritten Faxes, 1998 Air-Gapped PLC, Microfiche, 50-Doc M&amp;A)</span></td><td class="mono"><strong>4 / 50 (8%)</strong></td><td><strong>Prelude Gate-0 Kill / Fix Data First</strong><br/><span style="font-size:11px;color:#475569;">(Stop after <code>workshop-intake</code> + <code>ai-value-sizing</code> in Week 0)</span></td><td class="mono"><strong>4.5h</strong> (Fail-Fast in Wk 0)</td><td class="mono" style="color:#b91c1c;font-weight:700;">-$449,663</td><td class="mono" style="color:#b91c1c;font-weight:700;">-$481,120</td><td><span class="verdict-pill" style="background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;">🛑 KILLED AT GATE 0 (Saves $230k–$260k CapEx)</span></td></tr>' +
-            '</tbody>' +
-          '</table>' +
-        '</div>' +
-      '</div>' +
-
-      '<div class="grid-2">' +
-        '<div class="card">' +
-          '<h3>📏 5-Dimension Skill &amp; Customer Rubric (100-Pt Scale)</h3>' +
-          '<ul class="checklist">' +
-            '<li><span class="cbox">D1</span><span><strong>Ease of Use &amp; Plugin Ergonomics (20 pts):</strong> Native Antigravity plugin structure (<code>plugin.json</code> + <code>skills/&lt;skill&gt;/SKILL.md</code>), standardized <code>Quick-Start &amp; File Contract</code> table, and zero-config <code>--demo</code> CLI modes.</span></li>' +
-            '<li><span class="cbox">D2</span><span><strong>Value Realization &amp; P&amp;L Rigor (20 pts):</strong> Enforces TAM→SAM→SOM funnel, Labor + Rework $ baseline, <code>VCR × SCDF</code> haircuts, dynamic LLM token OpEx (with 60% context caching), and 3-Tier Project Worth Verdict.</span></li>' +
-            '<li><span class="cbox">D3</span><span><strong>Usefulness &amp; Signal Density (20 pts):</strong> High-density decision matrices, explicit <code>Customer Sign-Off &amp; Quality Gate (Approve When / Reject If)</code> tables inside every <code>SKILL.md</code>, and script-verified worked examples.</span></li>' +
-            '<li><span class="cbox">D4</span><span><strong>Time-to-Market (TTM) Compression (20 pts):</strong> Compresses full 12-week artifact &amp; engineering effort from <strong>470.0h manual to 73.5h skill-guided</strong> (or <strong>18.5h in Fast-Track 5-Skill Lite Mode</strong>).</span></li>' +
-            '<li><span class="cbox">D5</span><span><strong>20-Persona &amp; 20-Perturbation Resilience (20 pts):</strong> Audited across 20 stakeholder personas (Security/CISO, AI Governance, Architecture, DevOps/SRE, IT/IAM, FinOps/CFO, Business Sponsor, Domain Analyst, Product, UX, Data Eng, Legal, MRM Quant, Network Sec, Ops, Procurement, QA, Red-Team, Change Mgmt, CTO).</span></li>' +
-          '</ul>' +
-        '</div>' +
-        '<div class="card">' +
-          '<h3>👥 20 Customer Stakeholder Personas Audited (×50 Use Cases = 1,000 Runs)</h3>' +
-          '<ul class="checklist">' +
-            '<li><span class="cbox">🛡️</span><span><strong>Security, CISO, Legal, Red-Team &amp; Network (P01, P12, P14, P18):</strong> 100% pass on VPC-SC, CMEK, Cloud DLP PII/PHI redaction, Model Armor prompt-injection gates, and zero standing privileges.</span></li>' +
-            '<li><span class="cbox">⚖️</span><span><strong>AI Governance &amp; MRM Quant Validator (P02, P13):</strong> 100% pass on L1–L3 HITL autonomy boundaries and 3-pipeline AUA judge calibration (catching compressed/lenient judge traps where Cronbach\'s α = 0.992 masks QWK = 0.148).</span></li>' +
-            '<li><span class="cbox">🏗️</span><span><strong>Enterprise Architecture, DevOps/SRE, IT/IAM &amp; QA (P03, P04, P05, P17):</strong> 100% pass on Tier 1/2/3 selection, <code>1+1+Qt·Cq+1</code> fan-out math, 5× Vertex AI quota sizing, gRPC channel pool scaling (<code>75 → 5</code> waves), and <code>--verify</code> CI loops.</span></li>' +
-            '<li><span class="cbox">💰</span><span><strong>FinOps/CFO, Business Sponsor, Procurement &amp; CTO (P06, P07, P16, P20):</strong> 100% pass on <code>VCR × SCDF</code> haircuts, Bear-case NPV gating, routing 6 departmental bots to 5-Skill Lite Mode, and killing 4 unviable data traps at Gate 0.</span></li>' +
-            '<li><span class="cbox">🔬</span><span><strong>Domain Analyst, Product, UX, Data Eng, Ops &amp; Change Mgmt (P08–P11, P15, P19):</strong> 100% pass on 33 Starter Qs, 6-Dim Data Yardstick, L1–L5 CUJs, 8-section Agentic PRD, Stitch 3-stage prototype, and 30-60-90 rollout.</span></li>' +
-          '</ul>' +
-        '</div>' +
-      '</div>' +
-
-      '<div class="card" style="margin-bottom:18px;">' +
-        '<h3>⚡ Per-Skill 200-Iteration Benchmark Scorecard (All 13 Skills · 470.0h → 73.5h = 396.5h / 84.4% TTM Saved)</h3>' +
-        '<div class="table-wrap" style="margin-bottom:0;">' +
-          '<table class="log">' +
-            '<thead>' +
-              '<tr><th>Skill (<code>skills/&lt;name&gt;</code>)</th><th>Value Realization &amp; Formula Linkage</th><th>Ease of Use</th><th>Value</th><th>Usefulness</th><th>TTM Compression (Manual → Skill)</th><th>200x Score</th></tr>' +
-            '</thead>' +
-            '<tbody>' + skillBenchmarkRows + '</tbody>' +
-          '</table>' +
-        '</div>' +
-      '</div>' +
-
-      '<div class="card" style="margin-bottom:18px;">' +
-        '<h3>🚀 50 Enterprise Use Cases × 20 Stakeholder Personas = 1,000 Simulation Runs (Click Any Row to Load into Console)</h3>' +
-        '<div class="table-wrap" style="margin-bottom:0;">' +
-          '<table class="log">' +
-            '<thead>' +
-              '<tr><th>Use Case Cohort (×20 Runs)</th><th>Customer Use Case</th><th>Inputs (Vol · Rate · Hrs)</th><th>Base 3-Yr NPV &amp; Payback</th><th>5× Vertex AI Quota</th><th>200x Cohort Verdict</th></tr>' +
-            '</thead>' +
-            '<tbody>' + presetRows + '</tbody>' +
-          '</table>' +
-        '</div>' +
-      '</div>' +
-
-      '<div class="card">' +
-        '<h3>📋 Per-Step Customer Sign-Off Scorecard (All 15 Steps)</h3>' +
-        '<div class="table-wrap" style="margin-bottom:0;">' +
-          '<table class="log">' +
-            '<thead>' +
-              '<tr><th>Step</th><th>Mission Step &amp; Customer Approver</th><th>D1 Value</th><th>D2 CLI</th><th>D3 DAG</th><th>D4 Eval</th><th>D5 SRE</th><th>Total Score</th></tr>' +
-            '</thead>' +
-            '<tbody>' + stepRubricRows + '</tbody>' +
-          '</table>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-
-  document.querySelectorAll("[data-preset-idx]").forEach(function(tr) {
-    tr.addEventListener("click", function() {
-      var idx = parseInt(tr.getAttribute("data-preset-idx"), 10);
-      applyPresetIndex(idx);
-      switchViewTab("playbook");
-      renderAll();
-    });
-  });
-
-  document.querySelectorAll("[data-rubric-jump]").forEach(function(tr) {
-    tr.addEventListener("click", function() {
-      var targetId = tr.getAttribute("data-rubric-jump");
-      STAGES.forEach(function(st, sIdx) {
-        st.steps.forEach(function(sp, pIdx) {
-          if (sp.id === targetId) {
-            activeStageIdx = sIdx;
-            activeStepIdx = pIdx;
-          }
-        });
-      });
-      switchViewTab("playbook");
-      renderAll();
-    });
-  });
-}
-
 function renderRightRail() {
   var stage = STAGES[activeStageIdx];
   var doneInStage = stage.steps.filter(function(s) { return completedSet.has(s.id); }).length;
@@ -1789,10 +1611,8 @@ function showBadgeUnlock(name, cheer) {
 function switchViewTab(view) {
   document.getElementById("tabBtnPlaybook").classList.toggle("active", view === "playbook");
   document.getElementById("tabBtnContracts").classList.toggle("active", view === "contracts");
-  document.getElementById("tabBtnRubric").classList.toggle("active", view === "rubric");
   document.getElementById("mainPlaybook").hidden = view !== "playbook";
   document.getElementById("mainContracts").hidden = view !== "contracts";
-  document.getElementById("mainRubric").hidden = view !== "rubric";
 }
 
 function populatePresetSelect() {
@@ -1836,7 +1656,6 @@ if (skillJumpEl) {
 
 document.getElementById("tabBtnPlaybook").addEventListener("click", function() { switchViewTab("playbook"); });
 document.getElementById("tabBtnContracts").addEventListener("click", function() { switchViewTab("contracts"); });
-document.getElementById("tabBtnRubric").addEventListener("click", function() { switchViewTab("rubric"); });
 
 document.getElementById("resetProgressBtn").addEventListener("click", function() {
   completedSet.clear();
@@ -1861,7 +1680,6 @@ function renderAll() {
   renderLeftStepper();
   renderCenterPlaybook();
   renderContractsTab();
-  renderRubricTab();
   renderRightRail();
 }
 
