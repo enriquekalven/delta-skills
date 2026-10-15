@@ -294,5 +294,46 @@ class AuditLlmJudgeTests(unittest.TestCase):
                 self.assertIn(line, example, f"example drifted from script output: {line!r}")
 
 
+class IndexHtmlContractTests(unittest.TestCase):
+    INDEX_HTML = REPO_ROOT / "index.html"
+
+    def test_index_html_has_13_skills_15_steps_and_valid_cli_contracts(self) -> None:
+        html = self.INDEX_HTML.read_text(encoding="utf-8")
+        self.assertNotIn("14 Skills", html)
+        self.assertNotIn("synthetic-baseline-protocol", html)
+        self.assertIn("All 13 Skills", html)
+        self.assertIn("CUSTOMER_PRESETS", html)
+        for step_num in range(1, 16):
+            self.assertIn(f'"step-{step_num}"', html)
+            self.assertIn("customerApprove:", html)
+            self.assertIn("rejectIf:", html)
+
+    def test_quota_cli_supports_both_canonical_and_short_flags(self) -> None:
+        out1 = io.StringIO()
+        with redirect_stdout(out1):
+            rc1 = calculate_agent_quotas.main([
+                "--sub-questions", "6",
+                "--chunks-per-subquestion", "4",
+                "--tokens-per-call", "20000",
+                "--peak-turns-per-min", "12",
+                "--peak-multiplier", "5.0",
+                "--json",
+            ])
+        out2 = io.StringIO()
+        with redirect_stdout(out2):
+            rc2 = calculate_agent_quotas.main([
+                "--qt", "6",
+                "--cq", "4",
+                "--tokens-per-call", "20000",
+                "--peak-turns-per-min", "12",
+                "--safety-multiplier", "5.0",
+                "--json",
+            ])
+        self.assertEqual(rc1, 0)
+        self.assertEqual(rc2, 0)
+        self.assertEqual(json.loads(out1.getvalue()), json.loads(out2.getvalue()))
+
+
 if __name__ == "__main__":
     unittest.main()
+

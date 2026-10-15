@@ -643,13 +643,15 @@ def build_goal_text(args: argparse.Namespace, workspace: str) -> str:
         objective = sys.stdin.read()
     parts = [objective.strip()] if objective.strip() else []
     if args.spec:
+        spec_list = [args.spec] if isinstance(args.spec, str) else list(args.spec)
         if not parts:
             parts.append(
                 "Implement the specification below completely inside the workspace."
             )
-        parts.append(
-            f'<specification path="{args.spec}">\n{_read_text(args.spec)}\n</specification>'
-        )
+        for spec_path in spec_list:
+            parts.append(
+                f'<specification path="{spec_path}">\n{_read_text(spec_path)}\n</specification>'
+            )
     if args.review:
         review_abs = os.path.realpath(args.review)
         root = os.path.realpath(workspace)
@@ -683,7 +685,9 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-s",
         "--spec",
-        help="Specification or PRD file to implement (inlined into the goal)",
+        action="append",
+        default=[],
+        help="Specification or PRD file to implement (repeatable; inlined into the goal)",
     )
     parser.add_argument(
         "-r", "--review", help="Workspace file to review and harden in place"
@@ -748,6 +752,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Model Garden model ID (default: claude-sonnet-5-5 or CLAUDE_MODEL_NAME)",
     )
     parser.add_argument("--report", help="Also write the JSON report to this path")
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Validate specs, workspace, and --verify commands without calling Vertex AI",
+    )
     return parser
 
 
@@ -772,6 +781,26 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     project_id = args.project or discover_project_id()
+    if args.dry_run:
+        spec_list = [args.spec] if isinstance(args.spec, str) else list(args.spec)
+        dry_report = {
+            "status": "dry_run_ok",
+            "goal_met": True,
+            "project": project_id or "dry-run-project",
+            "region": args.region,
+            "model": args.model,
+            "workspace": os.path.realpath(args.workspace),
+            "specs_loaded": spec_list,
+            "verify_commands": list(args.verify),
+            "goal_chars": len(goal),
+        }
+        rendered = json.dumps(dry_report, indent=2)
+        print(rendered)
+        if args.report:
+            with open(args.report, "w", encoding="utf-8") as handle:
+                handle.write(rendered + "\n")
+        return 0
+
     if not project_id:
         print(
             "Error: set GOOGLE_CLOUD_PROJECT or pass --project <id>.", file=sys.stderr

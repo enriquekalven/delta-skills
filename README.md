@@ -156,17 +156,17 @@ Execute four 2-week sprints (**Sprint 1 [W3–4]**, **Sprint 2 [W5–6]**, **Spr
    - **Output:** `docs/STITCH_PROTOTYPE.md` (see examples: [`stitch-claims-portal-walkthrough.md`](prototyping/stitch-design/examples/stitch-claims-portal-walkthrough.md), [`agent-ops-console-prototype.md`](prototyping/stitch-design/examples/agent-ops-console-prototype.md)).
 2. **Run Goal-Driven Implementation Loops (`claude-agent-harness`):**
    - **Read:** [`ai-coding/claude-agent-harness/SKILL.md`](ai-coding/claude-agent-harness/SKILL.md)
-   - **Action:** Run [`call_opus_model_garden.py`](ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py) against `docs/PRD.md` and `docs/TDD.md` with deterministic `--verify-cmd` acceptance gates (unit tests, linter, typecheck) until all commands exit `0`.
+   - **Action:** Run [`call_opus_model_garden.py`](ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py) against `docs/PRD.md` and `docs/TDD.md` with deterministic `--verify` acceptance gates (unit tests, linter, typecheck) until all commands exit `0`.
    - **Output:** Verified `src/`, `tests/`, and `.harness/last_run_report.json`.
 3. **Sprints 3–4 Production Load Testing & Quota Sizing (`agent-load-testing`):**
    - **Read:** [`delivery/agent-load-testing/SKILL.md`](delivery/agent-load-testing/SKILL.md)
-   - **Action:** Run [`calculate_agent_quotas.py`](delivery/agent-load-testing/scripts/calculate_agent_quotas.py) to calculate recursive fan-out calls per turn (`1 + Qt + Qt·Cq + 1`), peak RPM/TPM, and **5x safety-margin Vertex AI quota requests**, then execute Locust SSE streaming load tests and apply context/payload optimizations.
+   - **Action:** Run [`calculate_agent_quotas.py`](delivery/agent-load-testing/scripts/calculate_agent_quotas.py) to calculate recursive fan-out calls per turn (`1 safety + 1 decomp + Qt·Cq chunked + 1 final = 27 calls/turn` for `Qt=6, Cq=4`), peak RPM/TPM, and **5x safety-margin Vertex AI quota requests**, then execute Locust SSE streaming load tests and apply context/payload optimizations.
    - **Output:** `docs/LOAD_TEST_REPORT.md` (see example: [`clinical-search-load-test-report.md`](delivery/agent-load-testing/examples/clinical-search-load-test-report.md)).
 4. **Sprints 3–4 Linguistic Quality (CLA) & Statistical Judge Auditing (`agent-eval-statistical-auditing`):**
    - **Read:** [`delivery/agent-eval-statistical-auditing/SKILL.md`](delivery/agent-eval-statistical-auditing/SKILL.md)
-   - **Action:** Evaluate agent outputs against the **27 Communication & Linguistic Assessment (CLA) criteria** and audit your LLM-as-a-Judge against human SME consensus across all 3 pipelines using [`audit_llm_judge.py`](delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py) (`Pearson r ≥ 0.80`, `ICC(2,1) ≥ 0.75`, `Krippendorff's α ≥ 0.67`, `Quadratic Weighted Kappa ≥ 0.70`, `|Bias| ≤ 0.15`, `Compression Ratio ≥ 0.80`).
+   - **Action:** Evaluate agent outputs against the **27 Communication & Linguistic Assessment (CLA) criteria** and audit your LLM-as-a-Judge against human SME consensus across all 3 pipelines using [`audit_llm_judge.py`](delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py) (`Disattenuated d_r ≥ 0.80`, `QWK ≥ 0.60`, `PRMSE > 0`, `Wilcoxon Signed-Rank p > 0.05`, `SD Ratio ≥ 0.80`, `Cronbach's α ≥ 0.80`, `ICC(3,k) ≥ 0.80`).
    - **Output:** `docs/EVAL_AUDIT_REPORT.md` (see example: [`enterprise-analyst-aua-certification.md`](delivery/agent-eval-statistical-auditing/examples/enterprise-analyst-aua-certification.md)).
-5. **Pass Phase Gate 2 (`tdl-field-guide`):** Frame up each bi-weekly demo in `docs/DEMO_FRAME_UP.md` (`Pillar | Feature ID | Demo 1/2/3 | Status`) and enforce the **1-in-1-out scope swap rule** in `STATE.md`.
+5. **Pass Phase Gate 2 (`tdl-field-guide`):** Frame up each bi-weekly demo in `docs/DEMO_FRAME_UP.md` (`Pillar / Feature ID / Demo 1-2-3 / Status`) and enforce the **1-in-1-out scope swap rule** in `STATE.md`.
 
 ---
 
@@ -188,19 +188,19 @@ Quantify post-launch value against the Phase 1 operational baseline, deliver the
 All calculators use **only the Python 3 standard library** (except `call_opus_model_garden.py`, which calls Vertex AI Model Garden when executed live) and expose all assumptions via CLI flags.
 
 ### 1. Multi-Agent Fan-Out & Vertex AI 5x Quota Calculator (`calculate_agent_quotas.py`)
-Implements Said Kuwel's recursive tool fan-out formula (`Total Calls = 1 + Qt + (Qt × Cq) + 1`) and 5x safety-margin quota sizing from the TDL Load Testing Guide (`Toolbox #16`).
+Implements Said Kuwel's recursive tool fan-out formula (`Total Calls = 1 safety + 1 decomp + (Qt × Cq) + 1 final`) and 5x safety-margin quota sizing from the TDL Load Testing Guide (`Toolbox #16`).
 
 ```bash
 python3 delivery/agent-load-testing/scripts/calculate_agent_quotas.py \
-  --qt 6 \
-  --cq 4 \
+  --sub-questions 6 \
+  --chunks-per-subquestion 4 \
   --tokens-per-call 20000 \
   --peak-turns-per-min 10 \
-  --safety-multiplier 5.0
+  --peak-multiplier 5.0
 ```
 
 ### 2. LLM-as-a-Judge Statistical Auditor (`audit_llm_judge.py`)
-Runs Héctor González's 3-pipeline Agreement & Uncertainty Analysis (AUA) certification (`Pearson r`, `Spearman ρ`, `ICC(2,1)`, `Krippendorff's α`, `Quadratic Weighted Kappa`, `Mean Bias`, `Compression Ratio`, `Flip Rate`, and `Mean Entropy`) on paired human SME and LLM judge ratings (`Toolbox #18`).
+Runs Héctor González's 3-pipeline Assessment Use Argument (AUA) certification (`Pearson r`, `Disattenuated d_r`, `Quadratic Weighted Kappa`, `PRMSE`, `Wilcoxon Signed-Rank`, `Scale Compression SD Ratio`, `Cronbach's α` with `±2 SEM`, and `ICC(3,k)` with confidence routing) on paired human SME and LLM judge ratings (`Toolbox #18`).
 
 ```bash
 # Audit the bundled calibrated judge fixture (PASS)
