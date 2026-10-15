@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "project-maui"
+  },
+  "targets": {
+    "project-maui": {
+      "hosting": {
+        "tdl-user-guide": [
+          "tdl-user-guide"
+        ]
+      }
+    }
   }
 }
