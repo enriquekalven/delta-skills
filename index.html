@@ -3,25 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TDL User Guide — 12-Week AI Agent Delivery</title>
+  <title>TDL User Guide — 12-Week Mission to Mars</title>
   <style>
     :root {
       --bg-page: #f5f5f7;
       --bg-surface: #ffffff;
-      --bg-elevated: rgba(255, 255, 255, 0.82);
-      --bg-dark-card: #0a0a0c;
+      --bg-subtle: #ebebf0;
+      --bg-elevated: rgba(255, 255, 255, 0.86);
       --text-primary: #1d1d1f;
-      --text-secondary: #6e6e73;
+      --text-secondary: #515154;
       --text-tertiary: #86868b;
       --accent-blue: #0071e3;
-      --accent-blue-hover: #0077ed;
+      --accent-blue-soft: rgba(0, 113, 227, 0.1);
       --accent-green: #28cd41;
-      --border-light: rgba(0, 0, 0, 0.06);
-      --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.04);
-      --shadow-card-hover: 0 16px 40px rgba(0, 0, 0, 0.1);
-      --shadow-modal: 0 24px 80px rgba(0, 0, 0, 0.28);
-      --radius-card: 28px;
-      --radius-modal: 32px;
+      --accent-green-soft: rgba(40, 205, 65, 0.14);
+      --border-light: rgba(0, 0, 0, 0.08);
+      --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.07);
+      --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.12);
+      --shadow-modal: 0 28px 90px rgba(0, 0, 0, 0.32);
+      --radius-lg: 24px;
+      --radius-md: 18px;
       --radius-pill: 980px;
       --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
       --font-mono: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
@@ -29,16 +31,19 @@
     }
 
     [data-theme="dark"] {
-      --bg-page: #000000;
-      --bg-surface: #151516;
-      --bg-elevated: rgba(29, 29, 31, 0.78);
-      --bg-dark-card: #111113;
+      --bg-page: #0b0b0e;
+      --bg-surface: #16161a;
+      --bg-subtle: #222228;
+      --bg-elevated: rgba(22, 22, 26, 0.85);
       --text-primary: #f5f5f7;
       --text-secondary: #a1a1a6;
       --text-tertiary: #6e6e73;
+      --accent-blue: #2997ff;
+      --accent-blue-soft: rgba(41, 151, 255, 0.15);
       --border-light: rgba(255, 255, 255, 0.1);
-      --shadow-card: 0 8px 28px rgba(0, 0, 0, 0.45);
-      --shadow-card-hover: 0 16px 42px rgba(0, 0, 0, 0.65);
+      --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 12px 34px rgba(0, 0, 0, 0.55);
+      --shadow-hover: 0 18px 46px rgba(0, 0, 0, 0.7);
     }
 
     * {
@@ -53,18 +58,17 @@
       font-family: var(--font-sans);
       background-color: var(--bg-page);
       color: var(--text-primary);
-      line-height: 1.47059;
-      letter-spacing: -0.022em;
-      transition: background-color 0.35s ease, color 0.35s ease;
-      overflow-x: hidden;
+      line-height: 1.5;
+      letter-spacing: -0.015em;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* Sticky Frosted Glass Global Nav */
+    /* 1. STICKY TOP NAV */
     .global-nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      height: 52px;
+      height: 56px;
       background: var(--bg-elevated);
       backdrop-filter: saturate(180%) blur(20px);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -77,7 +81,7 @@
 
     .nav-content {
       width: 100%;
-      max-width: 1080px;
+      max-width: 1120px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -87,22 +91,16 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
-      letter-spacing: -0.01em;
       color: var(--text-primary);
       text-decoration: none;
     }
 
-    .nav-brand span.divider {
-      color: var(--text-tertiary);
-      font-weight: 400;
-    }
-
-    .nav-brand span.badge-tag {
-      background: rgba(0, 113, 227, 0.12);
+    .nav-brand .badge-tag {
+      background: var(--accent-blue-soft);
       color: var(--accent-blue);
-      padding: 2px 10px;
+      padding: 3px 10px;
       border-radius: var(--radius-pill);
       font-size: 12px;
       font-weight: 600;
@@ -111,26 +109,26 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
     .progress-pill {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      font-weight: 500;
+      gap: 10px;
+      font-size: 12.5px;
+      font-weight: 600;
       color: var(--text-secondary);
       background: var(--bg-surface);
-      padding: 4px 12px;
+      padding: 5px 14px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--border-light);
     }
 
     .progress-ring-bar {
-      width: 56px;
+      width: 64px;
       height: 6px;
-      background: rgba(134, 134, 139, 0.2);
+      background: var(--bg-subtle);
       border-radius: 3px;
       overflow: hidden;
     }
@@ -143,417 +141,525 @@
       transition: width 0.4s var(--ease-spring);
     }
 
-    .icon-btn {
-      background: none;
-      border: none;
+    .nav-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
       cursor: pointer;
       color: var(--text-secondary);
-      font-size: 13px;
-      font-weight: 500;
-      padding: 6px 10px;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 6px 12px;
       border-radius: var(--radius-pill);
-      transition: color 0.2s, background 0.2s;
+      transition: all 0.2s;
     }
 
-    .icon-btn:hover {
+    .nav-btn:hover {
       color: var(--text-primary);
-      background: rgba(134, 134, 139, 0.12);
+      border-color: var(--text-tertiary);
     }
 
-    /* Apple Hero Section */
+    /* 2. COMPACT HERO & INTERACTIVE SOLAR SYSTEM FLIGHT TRACK */
     .hero {
-      max-width: 980px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 80px 24px 44px;
+      padding: 44px 24px 28px;
       text-align: center;
     }
 
     .hero-eyebrow {
-      font-size: 17px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       color: var(--accent-blue);
-      letter-spacing: -0.01em;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .hero-title {
-      font-size: clamp(42px, 6vw, 68px);
+      font-size: clamp(32px, 4.5vw, 52px);
       font-weight: 700;
-      line-height: 1.05;
-      letter-spacing: -0.035em;
-      margin-bottom: 20px;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
     }
 
     .hero-subtitle {
-      font-size: clamp(19px, 2.4vw, 24px);
-      font-weight: 400;
+      font-size: 18px;
       color: var(--text-secondary);
-      max-width: 680px;
+      max-width: 660px;
+      margin: 0 auto 32px;
+    }
+
+    /* Interactive Solar System Stepper */
+    .mission-track-wrap {
+      max-width: 1120px;
       margin: 0 auto 36px;
-      line-height: 1.38;
-      letter-spacing: -0.015em;
+      padding: 0 24px;
     }
 
-    /* Apple Segmented Filter Control */
-    .segmented-wrapper {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 52px;
-      padding: 0 16px;
+    .mission-track {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
     }
 
-    .segmented-control {
-      display: inline-flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 4px;
-      background: rgba(134, 134, 139, 0.12);
-      padding: 5px;
-      border-radius: var(--radius-pill);
-      backdrop-filter: blur(12px);
+    @media (max-width: 860px) {
+      .mission-track {
+        grid-template-columns: 1fr;
+      }
     }
 
-    .seg-btn {
-      border: none;
+    .waypoint-btn {
       background: transparent;
-      color: var(--text-secondary);
-      font-family: var(--font-sans);
-      font-size: 14px;
-      font-weight: 500;
-      padding: 8px 18px;
-      border-radius: var(--radius-pill);
+      border: 1.5px solid transparent;
+      border-radius: 16px;
+      padding: 14px 16px;
+      text-align: left;
       cursor: pointer;
       transition: all 0.25s var(--ease-spring);
-      white-space: nowrap;
-    }
-
-    .seg-btn:hover {
-      color: var(--text-primary);
-    }
-
-    .seg-btn.active {
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      font-weight: 600;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    }
-
-    /* Main Container */
-    .container {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 24px 110px;
-    }
-
-    /* Section Header */
-    .phase-section {
-      margin-bottom: 76px;
-      transition: opacity 0.3s ease;
-    }
-
-    .phase-section.hidden {
-      display: none;
-    }
-
-    .phase-header {
-      margin-bottom: 28px;
       display: flex;
-      align-items: baseline;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+    }
+
+    .waypoint-btn:hover {
+      background: var(--bg-page);
+    }
+
+    .waypoint-btn.active {
+      background: var(--accent-blue-soft);
+      border-color: var(--accent-blue);
+    }
+
+    .waypoint-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+    }
+
+    .waypoint-btn.active .waypoint-top {
+      color: var(--accent-blue);
+    }
+
+    .waypoint-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .waypoint-meta {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    .waypoint-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+    }
+
+    .waypoint-btn.active .waypoint-count {
+      background: var(--accent-blue);
+      color: #ffffff;
+    }
+
+    /* View Mode Bar */
+    .view-bar {
+      max-width: 1120px;
+      margin: 0 auto 24px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
     }
 
-    .phase-title {
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: -0.028em;
-    }
-
-    .phase-title span {
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
-
-    .phase-gate-badge {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      background: var(--bg-surface);
-      padding: 6px 14px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-light);
-    }
-
-    /* Bento Grid */
-    .bento-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 20px;
-    }
-
-    .bento-card {
-      grid-column: span 6;
-      background: var(--bg-surface);
-      border-radius: var(--radius-card);
-      padding: 34px;
-      position: relative;
-      cursor: pointer;
-      box-shadow: var(--shadow-card);
-      border: 1px solid var(--border-light);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 290px;
-      transition: transform 0.45s var(--ease-spring), box-shadow 0.45s var(--ease-spring), border-color 0.3s ease;
-      overflow: hidden;
-      user-select: none;
-    }
-
-    .bento-card.has-visual {
-      min-height: 430px;
-    }
-
-    .bento-card.span-4 {
-      grid-column: span 4;
-    }
-
-    .bento-card.span-8 {
-      grid-column: span 8;
-    }
-
-    .bento-card.span-12 {
-      grid-column: span 12;
-      min-height: 340px;
-    }
-
-    .bento-card.dark-card {
-      background: var(--bg-dark-card);
-      color: #f5f5f7;
-    }
-
-    .bento-card.dark-card .card-eyebrow,
-    .bento-card.dark-card .card-desc {
-      color: #a1a1a6;
-    }
-
-    .bento-card:hover {
-      transform: scale(1.014) translateY(-3px);
-      box-shadow: var(--shadow-card-hover);
-    }
-
-    .bento-card.completed {
-      border-color: rgba(40, 205, 65, 0.55);
-    }
-
-    @media (max-width: 860px) {
-      .bento-card,
-      .bento-card.span-4,
-      .bento-card.span-8 {
-        grid-column: span 12;
-      }
-    }
-
-    /* Card Visual Artwork */
-    .card-visual-wrap {
-      margin: 22px -34px -10px;
-      height: 215px;
-      overflow: hidden;
-      position: relative;
+    .view-bar-left {
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .bento-card.span-12 .card-visual-wrap {
-      height: 245px;
-    }
-
-    .card-visual-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.65s var(--ease-spring);
-    }
-
-    .bento-card:hover .card-visual-img {
-      transform: scale(1.045);
-    }
-
-    .card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .card-eyebrow {
+    .view-bar-label {
       font-size: 12px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--text-tertiary);
+      margin-right: 4px;
     }
 
-    .status-dot {
-      width: 24px;
-      height: 24px;
+    .artifact-pill {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      padding: 5px 11px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .artifact-pill:hover {
+      background: var(--accent-blue);
+      color: #ffffff;
+      border-color: var(--accent-blue);
+    }
+
+    .toggle-all-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .toggle-all-btn.active {
+      background: var(--text-primary);
+      color: var(--bg-surface);
+    }
+
+    /* 3. MAIN STAGE CONTAINER */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    .stage-block {
+      margin-bottom: 64px;
+      animation: fadeIn 0.35s var(--ease-spring);
+    }
+
+    .stage-block.hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Stage Hero Banner (Left Text + Gate, Right Cartoon Space Artwork) */
+    .stage-banner {
+      background: #111116;
+      color: #f5f5f7;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: 820px) {
+      .stage-banner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stage-banner-content {
+      padding: 40px 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .stage-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #64d2ff;
+      margin-bottom: 8px;
+    }
+
+    .stage-headline {
+      font-size: clamp(26px, 3.2vw, 34px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .stage-summary {
+      font-size: 16px;
+      color: #b0b0b8;
+      line-height: 1.5;
+    }
+
+    .stage-gate-box {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stage-gate-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #ffd60a;
+    }
+
+    .stage-gate-text {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .stage-banner-art {
+      position: relative;
+      min-height: 260px;
+      background: #09090d;
+    }
+
+    .stage-banner-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Clean, Scannable Step Cards Grid */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 18px;
+    }
+
+    .step-card {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease-spring), border-color 0.2s ease;
+    }
+
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--accent-blue);
+    }
+
+    .step-card.completed {
+      border-color: rgba(40, 205, 65, 0.6);
+    }
+
+    .step-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .step-num-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-blue);
+      background: var(--accent-blue-soft);
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+    }
+
+    .check-circle {
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
-      border: 1.5px solid var(--text-tertiary);
+      border: 1.5px solid var(--border-light);
+      background: var(--bg-page);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 13px;
+      font-weight: 700;
       color: transparent;
-      transition: all 0.25s ease;
+      transition: all 0.2s;
     }
 
-    .bento-card.completed .status-dot {
+    .step-card.completed .check-circle {
       background: var(--accent-green);
       border-color: var(--accent-green);
       color: #ffffff;
     }
 
-    .card-headline {
-      font-size: 26px;
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.025em;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .card-desc {
-      font-size: 15.5px;
-      color: var(--text-secondary);
-      line-height: 1.45;
-      max-width: 92%;
-      position: relative;
-      z-index: 2;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-top: 24px;
-      gap: 12px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .card-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .artifact-chip {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      padding: 5px 10px;
-      border-radius: 8px;
-      background: rgba(134, 134, 139, 0.14);
-      color: var(--text-secondary);
-      backdrop-filter: blur(8px);
-    }
-
-    .bento-card.dark-card .artifact-chip {
-      background: rgba(255, 255, 255, 0.14);
-      color: #e5e5ea;
-    }
-
-    /* Apple Circular "+" Button */
-    .plus-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(134, 134, 139, 0.18);
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.25s ease, transform 0.25s var(--ease-spring);
-      backdrop-filter: blur(8px);
-    }
-
-    .bento-card.dark-card .plus-btn {
-      background: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-    }
-
-    .bento-card:hover .plus-btn {
-      background: var(--accent-blue);
-      color: #ffffff;
-      transform: scale(1.08);
-    }
-
-    .plus-btn svg {
-      width: 16px;
-      height: 16px;
-      stroke-width: 2.5;
-    }
-
-    /* Minimal Artifact Flow Ribbon */
-    .flow-ribbon {
-      background: var(--bg-surface);
-      border-radius: var(--radius-card);
-      padding: 26px 32px;
-      margin-bottom: 64px;
+    .step-thumb {
+      width: 100%;
+      height: 140px;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 16px;
       border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-card);
     }
 
-    .flow-ribbon-label {
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-tertiary);
-      margin-bottom: 14px;
+    .step-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s var(--ease-spring);
     }
 
-    .flow-pills {
+    .step-card:hover .step-thumb img {
+      transform: scale(1.05);
+    }
+
+    .step-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .step-desc {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    /* Scannable Metadata List Inside Card */
+    .step-meta-list {
+      border-top: 1px solid var(--border-light);
+      padding-top: 14px;
+      margin-bottom: 18px;
       display: flex;
-      align-items: center;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12.5px;
+    }
+
+    .step-meta-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
       gap: 8px;
     }
 
-    .flow-pill {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      padding: 8px 14px;
-      border-radius: var(--radius-pill);
-      background: var(--bg-page);
-      color: var(--text-primary);
-      border: 1px solid var(--border-light);
-      cursor: pointer;
-      transition: all 0.2s ease;
+    .step-meta-key {
+      color: var(--text-tertiary);
+      font-weight: 600;
+      flex-shrink: 0;
     }
 
-    .flow-pill:hover {
+    .step-meta-val {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--text-primary);
+      text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .step-cta-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--accent-blue);
+    }
+
+    .step-cta-arrow {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent-blue-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s, color 0.2s;
+    }
+
+    .step-card:hover .step-cta-arrow {
       background: var(--accent-blue);
       color: #ffffff;
-      border-color: var(--accent-blue);
-      transform: translateY(-1px);
+      transform: translateX(3px);
     }
 
-    .flow-arrow {
-      color: var(--text-tertiary);
-      font-size: 13px;
+    /*Stage Footer Navigation (Next Mission Stage Button)*/
+    .stage-next-bar {
+      margin-top: 28px;
+      display: flex;
+      justify-content: flex-end;
     }
 
-    /* Apple Sheet Modal */
+    .next-stage-btn {
+      background: var(--text-primary);
+      color: var(--bg-surface);
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 13px 24px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .next-stage-btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.92;
+    }
+
+    /* 4. APPLE FROSTED MODAL SHEET */
     .modal-backdrop {
       position: fixed;
       inset: 0;
       z-index: 200;
-      background: rgba(0, 0, 0, 0.52);
+      background: rgba(0, 0, 0, 0.54);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       display: flex;
@@ -562,7 +668,7 @@
       padding: 24px;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.32s var(--ease-spring);
+      transition: opacity 0.28s var(--ease-spring);
     }
 
     .modal-backdrop.open {
@@ -575,24 +681,18 @@
       max-width: 780px;
       max-height: 88vh;
       background: var(--bg-surface);
-      border-radius: var(--radius-modal);
+      border-radius: 28px;
       box-shadow: var(--shadow-modal);
       border: 1px solid var(--border-light);
       overflow-y: auto;
-      padding: 44px;
+      padding: 40px;
       position: relative;
-      transform: scale(0.94) translateY(20px);
-      transition: transform 0.38s var(--ease-spring);
+      transform: scale(0.95) translateY(16px);
+      transition: transform 0.34s var(--ease-spring);
     }
 
     .modal-backdrop.open .modal-sheet {
       transform: scale(1) translateY(0);
-    }
-
-    @media (max-width: 640px) {
-      .modal-sheet {
-        padding: 32px 24px;
-      }
     }
 
     .modal-close {
@@ -603,26 +703,45 @@
       height: 36px;
       border-radius: 50%;
       border: none;
-      background: rgba(134, 134, 139, 0.18);
+      background: var(--bg-subtle);
       color: var(--text-primary);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s;
       z-index: 10;
     }
 
-    .modal-close:hover {
-      background: rgba(134, 134, 139, 0.3);
+    .modal-eyebrow {
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-blue);
+      margin-bottom: 6px;
+    }
+
+    .modal-title {
+      font-size: clamp(24px, 3.5vw, 34px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .modal-summary {
+      font-size: 16.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 24px;
     }
 
     .modal-hero-banner {
       width: 100%;
-      height: 220px;
-      border-radius: 20px;
+      height: 210px;
+      border-radius: 18px;
       overflow: hidden;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       border: 1px solid var(--border-light);
       display: none;
     }
@@ -633,63 +752,68 @@
       object-fit: cover;
     }
 
-    .modal-eyebrow {
+    .modal-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .meta-box {
+      background: var(--bg-page);
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border-light);
+    }
+
+    .meta-box-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .meta-box-value {
       font-size: 13px;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--accent-blue);
-      margin-bottom: 8px;
-    }
-
-    .modal-title {
-      font-size: clamp(28px, 4vw, 38px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 14px;
-    }
-
-    .modal-summary {
-      font-size: 18px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin-bottom: 28px;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
     }
 
     .modal-section {
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .modal-section-label {
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--text-tertiary);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
     .code-card {
-      background: #1d1d1f;
+      background: #141418;
       color: #f5f5f7;
-      border-radius: 18px;
-      padding: 22px 24px;
+      border-radius: 16px;
+      padding: 20px 22px;
       font-family: var(--font-mono);
-      font-size: 13.5px;
+      font-size: 13px;
       line-height: 1.6;
       overflow-x: auto;
       white-space: pre-wrap;
       word-break: break-word;
-      position: relative;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .copy-pill {
-      background: rgba(0, 113, 227, 0.14);
+      background: var(--accent-blue-soft);
       color: var(--accent-blue);
       border: none;
       padding: 5px 12px;
@@ -711,41 +835,11 @@
       color: #ffffff;
     }
 
-    .modal-meta-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 14px;
-      margin-bottom: 28px;
-    }
-
-    .meta-box {
-      background: var(--bg-page);
-      padding: 16px 18px;
-      border-radius: 16px;
-      border: 1px solid var(--border-light);
-    }
-
-    .meta-box-label {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-tertiary);
-      margin-bottom: 6px;
-    }
-
-    .meta-box-value {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      font-family: var(--font-mono);
-    }
-
     .modal-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 24px;
+      padding-top: 20px;
       border-top: 1px solid var(--border-light);
       flex-wrap: wrap;
       gap: 12px;
@@ -755,11 +849,11 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 22px;
+      padding: 11px 20px;
       border-radius: var(--radius-pill);
       border: none;
       font-family: var(--font-sans);
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 600;
       cursor: pointer;
       background: var(--accent-blue);
@@ -768,8 +862,8 @@
     }
 
     .complete-toggle-btn.is-done {
-      background: rgba(40, 205, 65, 0.16);
-      color: #1d832d;
+      background: var(--accent-green-soft);
+      color: #19872b;
     }
 
     [data-theme="dark"] .complete-toggle-btn.is-done {
@@ -789,13 +883,8 @@
       color: var(--text-primary);
       font-family: var(--font-sans);
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .step-nav-btn:hover:not(:disabled) {
-      background: rgba(134, 134, 139, 0.15);
     }
 
     .step-nav-btn:disabled {
@@ -806,83 +895,108 @@
 </head>
 <body>
 
-  <!-- Frosted Glass Apple Global Header -->
+  <!-- 1. STICKY HEADER -->
   <nav class="global-nav">
     <div class="nav-content">
       <a href="#" class="nav-brand">
         <span>TDL User Guide</span>
-        <span class="divider">/</span>
         <span class="badge-tag">🚀 12-Week Mission to Mars</span>
       </a>
       <div class="nav-actions">
-        <div class="progress-pill" title="Your saved onboarding & delivery progress">
-          <span id="progressText">0 of 15 completed</span>
+        <div class="progress-pill" title="Your saved mission checklist">
+          <span id="progressText">0 / 15 completed</span>
           <div class="progress-ring-bar">
             <div class="progress-ring-fill" id="progressBar"></div>
           </div>
         </div>
-        <button class="icon-btn" id="resetBtn" title="Reset checkmarks">Reset</button>
-        <button class="icon-btn" id="themeBtn" title="Toggle Dark/Light Appearance">Dark Mode</button>
+        <button class="nav-btn" id="resetBtn">Reset</button>
+        <button class="nav-btn" id="themeBtn">Dark Mode</button>
       </div>
     </div>
   </nav>
 
-  <!-- Minimalist Apple Hero -->
+  <!-- 2. COMPACT HERO -->
   <header class="hero">
     <div class="hero-eyebrow">Google Cloud Forward Deployed Engineering</div>
-    <h1 class="hero-title">From Earth Launchpad<br>to Mars Touchdown in 12 Weeks.</h1>
+    <h1 class="hero-title">From Earth Launchpad to Mars Touchdown.</h1>
     <p class="hero-subtitle">
-      Your playful, step-by-step flight plan for a 12-week AI Agent engagement. Tap any mission card below to unlock its AI agent prompt, deterministic Python calculator, and file contract.
+      Select a mission stage on the flight track below to focus on what matters right now—or view all 15 steps at once.
     </p>
   </header>
 
-  <!-- Segmented Pill Switcher -->
-  <div class="segmented-wrapper">
-    <div class="segmented-control" id="phaseFilter">
-      <button class="seg-btn active" data-filter="all">Full Trajectory</button>
-      <button class="seg-btn" data-filter="day1">🛠 Hangar Prep (Day 1)</button>
-      <button class="seg-btn" data-filter="prelude">🌍 Pre-Launch (Wk 0)</button>
-      <button class="seg-btn" data-filter="phase1">🚀 Liftoff from Earth (Wk 1–2)</button>
-      <button class="seg-btn" data-filter="phase2">🪐 Deep Space Transit (Wk 3–10)</button>
-      <button class="seg-btn" data-filter="phase3">🔴 Mars Touchdown (Wk 11–12)</button>
+  <!-- 3. INTERACTIVE 5-STAGE SOLAR SYSTEM STEPPER -->
+  <section class="mission-track-wrap" aria-label="Mission Stages">
+    <div class="mission-track" id="missionTrack">
+      <button class="waypoint-btn active" data-stage="day1">
+        <div class="waypoint-top">
+          <span>Stage 1 · Day 1</span>
+          <span class="waypoint-count">3 Steps</span>
+        </div>
+        <div class="waypoint-name">🛠 Hangar Prep</div>
+        <div class="waypoint-meta">Install skills & init repo</div>
+      </button>
+
+      <button class="waypoint-btn" data-stage="prelude">
+        <div class="waypoint-top">
+          <span>Stage 2 · Week 0</span>
+          <span class="waypoint-count">2 Steps</span>
+        </div>
+        <div class="waypoint-name">🌍 Pre-Launch Pad</div>
+        <div class="waypoint-meta">Size ROI & kickoff deck</div>
+      </button>
+
+      <button class="waypoint-btn" data-stage="phase1">
+        <div class="waypoint-top">
+          <span>Stage 3 · Weeks 1–2</span>
+          <span class="waypoint-count">4 Steps</span>
+        </div>
+        <div class="waypoint-name">🚀 Liftoff from Earth</div>
+        <div class="waypoint-meta">CUJs, PRD & 50-sample lock</div>
+      </button>
+
+      <button class="waypoint-btn" data-stage="phase2">
+        <div class="waypoint-top">
+          <span>Stage 4 · Weeks 3–10</span>
+          <span class="waypoint-count">5 Steps</span>
+        </div>
+        <div class="waypoint-name">🪐 Deep Space Transit</div>
+        <div class="waypoint-meta">Prototype, ADK build & evals</div>
+      </button>
+
+      <button class="waypoint-btn" data-stage="phase3">
+        <div class="waypoint-top">
+          <span>Stage 5 · Weeks 11–12</span>
+          <span class="waypoint-count">1 Step</span>
+        </div>
+        <div class="waypoint-name">🔴 Mars Touchdown</div>
+        <div class="waypoint-meta">Exec ROI readout & handoff</div>
+      </button>
     </div>
+  </section>
+
+  <!-- 4. QUICK ARTIFACT JUMP & SHOW ALL TOGGLE -->
+  <div class="view-bar">
+    <div class="view-bar-left">
+      <span class="view-bar-label">Jump to File Contract:</span>
+      <span class="artifact-pill" data-open-step="step-3">STATE.md</span>
+      <span class="artifact-pill" data-open-step="step-4">USE_CASE_SCORECARD.md</span>
+      <span class="artifact-pill" data-open-step="step-6">CUJ_SPEC.md</span>
+      <span class="artifact-pill" data-open-step="step-7">PRD.md</span>
+      <span class="artifact-pill" data-open-step="step-8">baseline_kpis.json</span>
+      <span class="artifact-pill" data-open-step="step-9">ARCHITECTURE.md</span>
+      <span class="artifact-pill" data-open-step="step-11">AGENT_SPEC.md</span>
+      <span class="artifact-pill" data-open-step="step-15">EXEC_READOUT_DECK.md</span>
+    </div>
+    <button class="toggle-all-btn" id="toggleAllBtn">Show All 5 Stages</button>
   </div>
 
-  <main class="container">
-    <!-- Interactive Artifact Ribbon -->
-    <div class="flow-ribbon">
-      <div class="flow-ribbon-label">Mission Flight Telemetry Pipeline — Tap any artifact to open its stage</div>
-      <div class="flow-pills">
-        <span class="flow-pill" data-open-step="step-3">STATE.md</span>
-        <span class="flow-arrow">→</span>
-        <span class="flow-pill" data-open-step="step-4">docs/USE_CASE_SCORECARD.md</span>
-        <span class="flow-arrow">→</span>
-        <span class="flow-pill" data-open-step="step-6">docs/CUJ_SPEC.md</span>
-        <span class="flow-arrow">→</span>
-        <span class="flow-pill" data-open-step="step-7">docs/PRD.md</span>
-        <span class="flow-arrow">→</span>
-        <span class="flow-pill" data-open-step="step-8">docs/baseline_kpis.json</span>
-        <span class="flow-arrow">→</span>
-        <span class="flow-pill" data-open-step="step-9">docs/ARCHITECTURE_RECOMMENDATION.md</span>
-        <span class="flow-arrow">→</span>
-        <span class="flow-pill" data-open-step="step-11">docs/AGENT_SPEC.md</span>
-        <span class="flow-arrow">→</span>
-        <span class="flow-pill" data-open-step="step-15">docs/EXEC_READOUT_DECK.md</span>
-      </div>
-    </div>
+  <!-- 5. FOCUSED STAGE VIEW -->
+  <main class="container" id="stagesContainer"></main>
 
-    <!-- Dynamic Bento Sections Container -->
-    <div id="sectionsContainer"></div>
-  </main>
-
-  <!-- Apple Frosted Detail Modal Sheet -->
+  <!-- 6. STEP INSPECTOR MODAL -->
   <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
     <div class="modal-sheet" role="dialog" aria-modal="true">
-      <button class="modal-close" id="modalCloseBtn" aria-label="Close">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M1 1l12 12M13 1L1 13"/>
-        </svg>
-      </button>
+      <button class="modal-close" id="modalCloseBtn" aria-label="Close">✕</button>
 
       <div class="modal-eyebrow" id="modalEyebrow"></div>
       <h2 class="modal-title" id="modalTitle"></h2>
@@ -894,9 +1008,9 @@
 
       <div class="modal-meta-grid" id="modalMetaGrid"></div>
 
-      <div class="modal-section" id="modalPromptSection">
+      <div class="modal-section">
         <div class="modal-section-label">
-          <span id="modalPromptLabel">What to tell your AI Agent</span>
+          <span id="modalPromptLabel">1. Copy & Paste into your AI Agent</span>
           <button class="copy-pill" id="copyPromptBtn">Copy Prompt</button>
         </div>
         <div class="code-card" id="modalPromptCode"></div>
@@ -904,7 +1018,7 @@
 
       <div class="modal-section" id="modalCliSection" style="display:none;">
         <div class="modal-section-label">
-          <span>Deterministic CLI Verification</span>
+          <span>2. Run Deterministic Python Verification</span>
           <button class="copy-pill" id="copyCliBtn">Copy Command</button>
         </div>
         <div class="code-card" id="modalCliCode"></div>
@@ -913,30 +1027,78 @@
       <div class="modal-footer">
         <button class="complete-toggle-btn" id="modalCompleteBtn">Mark Step Complete</button>
         <div class="modal-step-nav">
-          <button class="step-nav-btn" id="prevStepBtn">← Previous</button>
-          <button class="step-nav-btn" id="nextStepBtn">Next →</button>
+          <button class="step-nav-btn" id="prevStepBtn">← Previous Step</button>
+          <button class="step-nav-btn" id="nextStepBtn">Next Step →</button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
+    const STAGES_META = {
+      day1: {
+        order: 1,
+        eyebrow: "Stage 1 · Day 1 Hangar Prep",
+        title: "Suit Up & Assemble Your Flight Computer.",
+        summary: "Before talking to stakeholders, install the 14 TDL skills and companion ADK/UI packages, then initialize STATE.md in your project repository.",
+        gate: "15-Minute Laptop & Repo Readiness Check",
+        bannerImage: "ui/images/setup.jpg",
+        nextStage: "prelude",
+        nextLabel: "Continue to Stage 2: Pre-Launch Pad (Week 0) →"
+      },
+      prelude: {
+        order: 2,
+        eyebrow: "Stage 2 · Week 0 Pre-Launch on Earth",
+        title: "Roll to the Launchpad & Lock Coordinates.",
+        summary: "Filter candidate ideas through the 5 Hard Qualifiers, size 3-Scenario ROI with the Python calculator, and prepare your Kickoff Deck.",
+        gate: "Gate 0 · Signed 1-Page Use Case Alignment Summary",
+        bannerImage: "ui/images/prelude.jpg",
+        nextStage: "phase1",
+        nextLabel: "Continue to Stage 3: Liftoff from Earth (Weeks 1–2) →"
+      },
+      phase1: {
+        order: 3,
+        eyebrow: "Stage 3 · Weeks 1–2 Liftoff from Earth",
+        title: "Clear the Tower & Lock Orbital Telemetry.",
+        summary: "Run the Onsite Discovery Workshop, author the 10-section AI Agent PRD, freeze the 50-sample historical baseline, and select your GCP platform tier.",
+        gate: "Gate 1 · PRD Sign-off + Frozen docs/baseline_kpis.json",
+        bannerImage: "ui/images/foundations.jpg",
+        nextStage: "phase2",
+        nextLabel: "Continue to Stage 4: Deep Space Transit (Weeks 3–10) →"
+      },
+      phase2: {
+        order: 4,
+        eyebrow: "Stage 4 · Weeks 3–10 Deep Space Transit",
+        title: "Cruise Toward Mars: Prototype, Build, Eval & Stress-Test.",
+        summary: "Ship a 48-hour interactive UI prototype, lock the 9-section Technical Spec, run the autonomous ADK build loop, calibrate your LLM Judge, and load test.",
+        gate: "Gate 2 · ≥85% Rogan-Gladen CI Pass Rate + Locust Load SLA",
+        bannerImage: "ui/images/build.jpg",
+        nextStage: "phase3",
+        nextLabel: "Continue to Stage 5: Mars Touchdown (Weeks 11–12) →"
+      },
+      phase3: {
+        order: 5,
+        eyebrow: "Stage 5 · Weeks 11–12 Touchdown on Mars",
+        title: "Land on the Red Planet & Hand Over Mission Control.",
+        summary: "Generate the Demo Frame-Up Deck, prove realized ROI against your Week 2 baseline in the Executive Closeout Deck, and run the internal FDE Retro.",
+        gate: "Gate 3 · Executive Sign-off & Production Operations Handoff",
+        bannerImage: "ui/images/launch.jpg",
+        nextStage: "",
+        nextLabel: ""
+      }
+    };
+
     const STEPS = [
-      // DAY 1 SETUP
+      // STAGE 1: DAY 1 SETUP
       {
         id: "step-1",
+        num: "01",
         phase: "day1",
-        phaseTitle: "Hangar Prep · Day 1",
-        phaseSubtitle: "Suit up and assemble your flight computer.",
-        phaseGate: "15-Minute Hangar Check",
-        eyebrow: "Step 01 · Flight Computer",
-        title: "Install the 14 TDL Skills.",
+        title: "Install the 14 TDL Skills",
         shortDesc: "Clone the TDL User Guide into your agent workspace so Claude Code, Gemini CLI, or Cursor knows the 12-week mission playbook.",
-        span: "span-7",
-        dark: true,
-        image: "ui/images/setup.jpg",
+        image: "",
         skill: "All 14 TDL Skills",
-        toolboxAsset: "TDL Field Guide + 18 Toolbox Assets",
+        toolboxAsset: "TDL Field Guide + 18 Assets",
         artifacts: ["~/.gemini/skills/tool-tdl-user-guide"],
         promptLabel: "Terminal Command (Run Once)",
         prompt: `# Clone the TDL User Guide into your AI agent's skill directory
@@ -949,19 +1111,14 @@ python3 -B scripts/validate_skills.py`,
       },
       {
         id: "step-2",
+        num: "02",
         phase: "day1",
-        phaseTitle: "Hangar Prep · Day 1",
-        phaseSubtitle: "Suit up and assemble your flight computer.",
-        phaseGate: "15-Minute Hangar Check",
-        eyebrow: "Step 02 · Booster Modules",
-        title: "Add Upstream ADK & UI Skills.",
+        title: "Add Companion ADK & UI Skills",
         shortDesc: "Pair the 14 TDL governance skills with official Google ADK, TDD, and React UI skills from skills.sh.",
-        span: "span-5",
-        dark: false,
         image: "",
         skill: "skills.sh + google/agents-cli",
-        toolboxAsset: "Companion Engineering Stack",
-        artifacts: ["google/agents-cli", "mattpocock/skills", "vercel-labs/agent-browser"],
+        toolboxAsset: "Companion Stack",
+        artifacts: ["google/agents-cli", "mattpocock/skills"],
         promptLabel: "One-Line Companion Installs",
         prompt: `# 1. Official Google Cloud ADK Scaffold, Eval & Deploy
 npx skills add google/agents-cli
@@ -976,17 +1133,12 @@ npx skills add vercel-labs/agent-browser`,
       },
       {
         id: "step-3",
+        num: "03",
         phase: "day1",
-        phaseTitle: "Hangar Prep · Day 1",
-        phaseSubtitle: "Suit up and assemble your flight computer.",
-        phaseGate: "15-Minute Hangar Check",
-        eyebrow: "Step 03 · Flight Log Init",
-        title: "Bootstrap Project Repo & STATE.md.",
+        title: "Bootstrap Project Repo & STATE.md",
         shortDesc: "Enforce clean repo layout, .env separation across dev/staging/prod, and initialize STATE.md as your mission flight log.",
-        span: "span-12",
-        dark: false,
         image: "",
-        skill: "ecc-repo-conventions + codebase-onboarding-and-mapping",
+        skill: "ecc-repo-conventions",
         toolboxAsset: "Asset #11 · Delivery Guide",
         artifacts: ["STATE.md", "docs/ONBOARDING.md"],
         promptLabel: "What to tell your AI Agent inside your project repo",
@@ -994,21 +1146,16 @@ npx skills add vercel-labs/agent-browser`,
         cli: ""
       },
 
-      // PRELUDE (WEEK 0)
+      // STAGE 2: PRELUDE (WEEK 0)
       {
         id: "step-4",
+        num: "04",
         phase: "prelude",
-        phaseTitle: "Pre-Launch on Earth · Week 0",
-        phaseSubtitle: "Roll the rocket to the pad and lock the mission coordinates.",
-        phaseGate: "Gate 0 · Signed Use Case Alignment Summary",
-        eyebrow: "Step 04 · Target Selection",
-        title: "Score Candidate Use Cases.",
+        title: "Score & Size Candidate Use Cases",
         shortDesc: "Filter candidate ideas through the 5 Hard Qualifiers and run the deterministic 3-Scenario ROI calculator.",
-        span: "span-7",
-        dark: false,
-        image: "ui/images/prelude.jpg",
+        image: "",
         skill: "ai-value-sizing",
-        toolboxAsset: "Assets #4 & #10 · Use Case Selection & Alignment",
+        toolboxAsset: "Assets #4 & #10 · Selection & Alignment",
         artifacts: ["docs/USE_CASE_SCORECARD.md", "docs/VALUE_SIZING.md"],
         promptLabel: "What to tell your AI Agent",
         prompt: `Use the ai-value-sizing skill to evaluate our candidate use cases from intake discovery. Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE_CASE_SCORECARD.md, and draft the 1-page Use Case Alignment Summary for the top-ranked candidate.`,
@@ -1018,15 +1165,10 @@ npx skills add vercel-labs/agent-browser`,
       },
       {
         id: "step-5",
+        num: "05",
         phase: "prelude",
-        phaseTitle: "Pre-Launch on Earth · Week 0",
-        phaseSubtitle: "Roll the rocket to the pad and lock the mission coordinates.",
-        phaseGate: "Gate 0 · Signed Use Case Alignment Summary",
-        eyebrow: "Step 05 · Countdown Check",
-        title: "Verify Tooling & Draft Kickoff Deck.",
+        title: "Verify Tooling & Draft Kickoff Deck",
         shortDesc: "Audit your workspace capability slots and generate the slide-by-slide Kickoff Deck before ignition.",
-        span: "span-5",
-        dark: false,
         image: "",
         skill: "skill-stocktake + exec-readout-generator",
         toolboxAsset: "Asset #6 · Example Kickoff Deck",
@@ -1036,21 +1178,16 @@ npx skills add vercel-labs/agent-browser`,
         cli: ""
       },
 
-      // PHASE 1: FOUNDATIONS (WEEKS 1-2)
+      // STAGE 3: PHASE 1 FOUNDATIONS (WEEKS 1-2)
       {
         id: "step-6",
+        num: "06",
         phase: "phase1",
-        phaseTitle: "Liftoff from Earth · Weeks 1–2",
-        phaseSubtitle: "Kickoff, clear the tower, and lock orbital telemetry.",
-        phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
-        eyebrow: "Step 06 · Onsite Workshop",
-        title: "Run Discovery & Map Critical User Journeys.",
+        title: "Run Discovery & Map CUJs",
         shortDesc: "Deconstruct the legacy business process into atomic tasks and classify each as Automate, Augment, or Human-Only.",
-        span: "span-5",
-        dark: false,
         image: "",
         skill: "cuj-to-eval-pipeline",
-        toolboxAsset: "Assets #1, #2 & #3 · Workshop, Process Reimagine & CUJ Templates",
+        toolboxAsset: "Assets #1, #2 & #3 · Workshop & CUJ",
         artifacts: ["docs/CUJ_SPEC.md"],
         promptLabel: "What to tell your AI Agent",
         prompt: `Use the cuj-to-eval-pipeline skill. Based on our Onsite Discovery notes, deconstruct the legacy workflow into atomic tasks, classify each as Automate / Augment / Human-Only, and write docs/CUJ_SPEC.md with 10-column CUJ tables and latency/accuracy targets.`,
@@ -1058,18 +1195,13 @@ npx skills add vercel-labs/agent-browser`,
       },
       {
         id: "step-7",
+        num: "07",
         phase: "phase1",
-        phaseTitle: "Liftoff from Earth · Weeks 1–2",
-        phaseSubtitle: "Kickoff, clear the tower, and lock orbital telemetry.",
-        phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
-        eyebrow: "Step 07 · Ignition & Flight Plan",
-        title: "Draft the Agent PRD & Golden Eval Seeds.",
-        shortDesc: "Blast off from Earth with a 10-section AI Agent PRD and convert Critical User Journeys into golden evaluation cases.",
-        span: "span-7",
-        dark: true,
-        image: "ui/images/foundations.jpg",
+        title: "Draft Agent PRD & Golden Evals",
+        shortDesc: "Author the 10-section AI Agent PRD and convert Critical User Journeys into golden evaluation cases.",
+        image: "",
         skill: "agent-prd-template",
-        toolboxAsset: "Asset #5 · AI Agent PRD Template",
+        toolboxAsset: "Asset #5 · AI Agent PRD",
         artifacts: ["docs/PRD.md", "evals/golden_dataset.json"],
         promptLabel: "What to tell your AI Agent",
         prompt: `Use the agent-prd-template skill to turn docs/CUJ_SPEC.md into a 10-section AI Agent PRD at docs/PRD.md. Include the human-in-the-loop escalation matrix and generate evals/golden_dataset.json.`,
@@ -1077,18 +1209,13 @@ npx skills add vercel-labs/agent-browser`,
       },
       {
         id: "step-8",
+        num: "08",
         phase: "phase1",
-        phaseTitle: "Liftoff from Earth · Weeks 1–2",
-        phaseSubtitle: "Kickoff, clear the tower, and lock orbital telemetry.",
-        phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
-        eyebrow: "Step 08 · Lunar Telemetry Lock",
-        title: "Freeze the 50-Sample Baseline KPIs.",
-        shortDesc: "Audit 50 historical work items to lock P50/P90 handle times and unit cost before firing the deep-space engines.",
-        span: "span-7",
-        dark: true,
+        title: "Freeze 50-Sample Baseline KPIs",
+        shortDesc: "Audit 50 historical work items around Lunar orbit to lock P50/P90 handle times and unit cost before writing agent code.",
         image: "ui/images/baseline.jpg",
         skill: "synthetic-baseline-protocol",
-        toolboxAsset: "Asset #11 · Baseline Governance Rule",
+        toolboxAsset: "Asset #11 · 50-Sample Rule",
         artifacts: ["docs/baseline_kpis.json"],
         promptLabel: "What to tell your AI Agent",
         prompt: `Use the synthetic-baseline-protocol skill to audit data/historical_50_samples.csv and freeze docs/baseline_kpis.json so we have an immutable pre-AI benchmark for our Week 12 ROI readout.`,
@@ -1099,39 +1226,29 @@ npx skills add vercel-labs/agent-browser`,
       },
       {
         id: "step-9",
+        num: "09",
         phase: "phase1",
-        phaseTitle: "Liftoff from Earth · Weeks 1–2",
-        phaseSubtitle: "Kickoff, clear the tower, and lock orbital telemetry.",
-        phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
-        eyebrow: "Step 09 · Propulsion Selection",
-        title: "Select the Google Cloud Agent Architecture.",
+        title: "Select GCP Agent Architecture",
         shortDesc: "Compare Gemini Enterprise (no-code), ADK on Managed Agent Runtime, and ADK on Cloud Run/GKE with live GA/Preview verification.",
-        span: "span-5",
-        dark: false,
         image: "",
         skill: "gcp-agent-architecture-advisor",
-        toolboxAsset: "Asset #11 + Model Economics Config",
+        toolboxAsset: "Asset #11 + Model Economics",
         artifacts: ["docs/ARCHITECTURE_RECOMMENDATION.md"],
         promptLabel: "What to tell your AI Agent",
         prompt: `Use the gcp-agent-architecture-advisor skill to recommend a Google Cloud architecture in docs/ARCHITECTURE_RECOMMENDATION.md based on docs/PRD.md. Compare Gemini Enterprise, ADK on Agent Runtime, and ADK on Cloud Run, and include token cost estimates.`,
         cli: ""
       },
 
-      // PHASE 2: CORE BUILD & SPRINTS (WEEKS 3-10)
+      // STAGE 4: PHASE 2 CORE BUILD (WEEKS 3-10)
       {
         id: "step-10",
+        num: "10",
         phase: "phase2",
-        phaseTitle: "Deep Space Transit · Weeks 3–10",
-        phaseSubtitle: "Cruise past the Moon toward Mars: Prototype, Build, Eval & Stress-Test.",
-        phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
-        eyebrow: "Step 10 · Cockpit Holograms",
-        title: "Build the Interactive Prototype in 48 Hours.",
+        title: "Build 48-Hour UI Prototype",
         shortDesc: "Validate UX flows in zero-G using the Google Cloud Delta Brand palette (#4285F4, Google Sans) before backend investment.",
-        span: "span-6",
-        dark: true,
         image: "ui/images/prototype.jpg",
         skill: "stitch-design",
-        toolboxAsset: "Assets #13 & #15 · Delta Brand & TDL Prototyping Guide",
+        toolboxAsset: "Assets #13 & #15 · Brand & Prototyping",
         artifacts: ["docs/UI_SPEC.md"],
         promptLabel: "What to tell your AI Agent",
         prompt: `Use the stitch-design skill to generate an interactive agent console specification in docs/UI_SPEC.md, following the 48-hour TDL Prototyping Guide and Delta Brand palette.`,
@@ -1139,18 +1256,13 @@ npx skills add vercel-labs/agent-browser`,
       },
       {
         id: "step-11",
+        num: "11",
         phase: "phase2",
-        phaseTitle: "Deep Space Transit · Weeks 3–10",
-        phaseSubtitle: "Cruise past the Moon toward Mars: Prototype, Build, Eval & Stress-Test.",
-        phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
-        eyebrow: "Step 11 · Spacecraft Schematics",
-        title: "Author the 9-Section Agent Technical Spec.",
+        title: "Author 9-Section Technical Spec",
         shortDesc: "Lock orchestration topology, MCP tool schemas, Vertex AI grounding, IAM guardrails, and OTel tracing.",
-        span: "span-6",
-        dark: false,
         image: "",
         skill: "agent-technical-spec",
-        toolboxAsset: "Asset #14 · Agent Technical Specifications",
+        toolboxAsset: "Asset #14 · Agent Tech Spec",
         artifacts: ["docs/AGENT_SPEC.md"],
         promptLabel: "What to tell your AI Agent",
         prompt: `Use the agent-technical-spec skill to write docs/AGENT_SPEC.md from docs/PRD.md and docs/ARCHITECTURE_RECOMMENDATION.md. Define the coordinator/specialist topology, MCP tool schemas, Model Armor guardrails, and Cloud Trace instrumentation.`,
@@ -1158,18 +1270,13 @@ npx skills add vercel-labs/agent-browser`,
       },
       {
         id: "step-12",
+        num: "12",
         phase: "phase2",
-        phaseTitle: "Deep Space Transit · Weeks 3–10",
-        phaseSubtitle: "Cruise past the Moon toward Mars: Prototype, Build, Eval & Stress-Test.",
-        phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
-        eyebrow: "Step 12 · In-Flight Engineering",
-        title: "Scaffold ADK & Run the Goal Contract Loop.",
+        title: "Scaffold ADK & Goal Contract Loop",
         shortDesc: "Combine google/agents-cli with claude-agent-harness and agentic-engineering to iterate until pytest and ruff pass 100%.",
-        span: "span-6",
-        dark: true,
-        image: "ui/images/build.jpg",
-        skill: "claude-agent-harness + agentic-engineering",
-        toolboxAsset: "Asset #12 · Weekly Program Tracker",
+        image: "",
+        skill: "claude-agent-harness",
+        toolboxAsset: "Asset #12 · Program Tracker",
         artifacts: ["src/", "tests/", "STATE.md"],
         promptLabel: "What to tell your AI Agent",
         prompt: `Use google-agents-cli-scaffold and claude-agent-harness to implement the agent defined in docs/AGENT_SPEC.md. Run the goal contract verification loop until pytest -q and ruff check pass with zero errors, and update our weekly RAG status in STATE.md.`,
@@ -1178,18 +1285,13 @@ npx skills add vercel-labs/agent-browser`,
       },
       {
         id: "step-13",
+        num: "13",
         phase: "phase2",
-        phaseTitle: "Deep Space Transit · Weeks 3–10",
-        phaseSubtitle: "Cruise past the Moon toward Mars: Prototype, Build, Eval & Stress-Test.",
-        phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
-        eyebrow: "Step 13 · Mars Trajectory Lock",
-        title: "Calibrate the LLM Judge (Rogan-Gladen CI).",
+        title: "Calibrate LLM Judge (Rogan-Gladen)",
         shortDesc: "Run linguistic quality rubric checks and compute bias-corrected Rogan-Gladen accuracy with 95% bootstrap confidence intervals.",
-        span: "span-6",
-        dark: true,
         image: "ui/images/eval.jpg",
         skill: "llm-judge-statistical-audit",
-        toolboxAsset: "Assets #17 & #18 · Linguistic Quality & Statistical Auditing",
+        toolboxAsset: "Assets #17 & #18 · Statistical Eval",
         artifacts: ["evals/judge_audit_report.json"],
         promptLabel: "What to tell your AI Agent",
         prompt: `Use the llm-judge-statistical-audit skill to audit our LLM-as-a-Judge results against SME human labels. Verify our judge meets q0 + q1 - 1 >= 0.60 and compute the Rogan-Gladen corrected pass rate in evals/judge_audit_report.json.`,
@@ -1200,15 +1302,10 @@ npx skills add vercel-labs/agent-browser`,
       },
       {
         id: "step-14",
+        num: "14",
         phase: "phase2",
-        phaseTitle: "Deep Space Transit · Weeks 3–10",
-        phaseSubtitle: "Cruise past the Moon toward Mars: Prototype, Build, Eval & Stress-Test.",
-        phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
-        eyebrow: "Step 14 · Atmospheric Entry Burn",
-        title: "Stress-Test Under Peak Traffic Load.",
+        title: "Stress-Test Under Peak Traffic",
         shortDesc: "Run Locust traffic profiles across Baseline, 2x Peak, Soak, and Burst to catch HTTP 429 Vertex AI quota bottlenecks before entry.",
-        span: "span-12",
-        dark: false,
         image: "",
         skill: "agent-load-testing",
         toolboxAsset: "Asset #16 · Load Testing Guide",
@@ -1218,21 +1315,16 @@ npx skills add vercel-labs/agent-browser`,
         cli: ""
       },
 
-      // PHASE 3: CLOSEOUT & ROI (WEEKS 11-12)
+      // STAGE 5: PHASE 3 CLOSEOUT (WEEKS 11-12)
       {
         id: "step-15",
+        num: "15",
         phase: "phase3",
-        phaseTitle: "Touchdown on Mars · Weeks 11–12",
-        phaseSubtitle: "Land on the Red Planet, plant the flag, and hand over Mission Control.",
-        phaseGate: "Gate 3 · Executive Sign-off & Production Handoff",
-        eyebrow: "Step 15 · Mars Base Operations",
-        title: "Deliver the Final ROI Readout & FDE Retro.",
+        title: "Deliver Final ROI Readout & FDE Retro",
         shortDesc: "Generate the Demo Frame-Up Deck, Before/After Executive Closeout Deck from frozen baseline KPIs, and internal FDE Retro.",
-        span: "span-12",
-        dark: true,
-        image: "ui/images/launch.jpg",
-        skill: "exec-readout-generator + e2e-delivery-workflow",
-        toolboxAsset: "Assets #7, #8 & #9 · Demo Frame-Up, Closeout & FDE Retro Decks",
+        image: "",
+        skill: "exec-readout-generator",
+        toolboxAsset: "Assets #7, #8 & #9 · Closeout & Retro",
         artifacts: ["docs/DEMO_FRAMEUP_DECK.md", "docs/EXEC_READOUT_DECK.md", "docs/FDE_RETRO.md"],
         promptLabel: "What to tell your AI Agent",
         prompt: `Use the exec-readout-generator skill to produce our final closeout deliverables from docs/baseline_kpis.json, evals/judge_audit_report.json, and docs/LOAD_TEST_REPORT.md:
@@ -1243,20 +1335,11 @@ npx skills add vercel-labs/agent-browser`,
       }
     ];
 
-    // Convert span-5 / span-7 classes safely on grid
-    const styleExtra = document.createElement("style");
-    styleExtra.textContent = `
-      .bento-card.span-5 { grid-column: span 5; }
-      .bento-card.span-7 { grid-column: span 7; }
-      @media (max-width: 860px) {
-        .bento-card.span-5, .bento-card.span-7 { grid-column: span 12; }
-      }
-    `;
-    document.head.appendChild(styleExtra);
-
-    const STORAGE_KEY = "tdl_apple_completed_v2";
-    const THEME_KEY = "tdl_apple_theme_v2";
+    const STORAGE_KEY = "tdl_mars_ux_completed_v1";
+    const THEME_KEY = "tdl_mars_ux_theme_v1";
     let completedSteps = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+    let currentStage = "day1";
+    let showAllStages = false;
     let activeStepIndex = 0;
 
     function saveCompleted() {
@@ -1267,76 +1350,122 @@ npx skills add vercel-labs/agent-browser`,
     function updateProgressUI() {
       const total = STEPS.length;
       const done = completedSteps.size;
-      document.getElementById("progressText").textContent = `${done} of ${total} completed`;
+      document.getElementById("progressText").textContent = `${done} / ${total} completed`;
       document.getElementById("progressBar").style.width = `${Math.round((done / total) * 100)}%`;
 
-      document.querySelectorAll(".bento-card").forEach(card => {
+      document.querySelectorAll(".step-card").forEach(card => {
         const stepId = card.getAttribute("data-step-id");
-        if (completedSteps.has(stepId)) {
-          card.classList.add("completed");
-        } else {
-          card.classList.remove("completed");
-        }
+        card.classList.toggle("completed", completedSteps.has(stepId));
       });
     }
 
-    function renderSections() {
-      const container = document.getElementById("sectionsContainer");
+    function selectStage(stageKey) {
+      currentStage = stageKey;
+      showAllStages = false;
+      document.getElementById("toggleAllBtn").classList.remove("active");
+      document.getElementById("toggleAllBtn").textContent = "Show All 5 Stages";
+
+      document.querySelectorAll(".waypoint-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-stage") === stageKey);
+      });
+
+      document.querySelectorAll(".stage-block").forEach(block => {
+        block.classList.toggle("hidden", block.getAttribute("data-stage") !== stageKey);
+      });
+    }
+
+    function renderStages() {
+      const container = document.getElementById("stagesContainer");
       container.innerHTML = "";
 
-      const phasesOrder = ["day1", "prelude", "phase1", "phase2", "phase3"];
-      phasesOrder.forEach(phaseKey => {
-        const phaseSteps = STEPS.filter(s => s.phase === phaseKey);
-        if (!phaseSteps.length) return;
+      Object.keys(STAGES_META).forEach(stageKey => {
+        const meta = STAGES_META[stageKey];
+        const stageSteps = STEPS.filter(s => s.phase === stageKey);
 
-        const first = phaseSteps[0];
         const section = document.createElement("section");
-        section.className = "phase-section";
-        section.setAttribute("data-phase", phaseKey);
+        section.className = `stage-block ${(!showAllStages && stageKey !== currentStage) ? "hidden" : ""}`;
+        section.setAttribute("data-stage", stageKey);
 
         section.innerHTML = `
-          <div class="phase-header">
-            <h2 class="phase-title">${first.phaseTitle}. <span>${first.phaseSubtitle}</span></h2>
-            <div class="phase-gate-badge">${first.phaseGate}</div>
+          <!-- Stage Banner with Cartoon Space Art -->
+          <div class="stage-banner">
+            <div class="stage-banner-content">
+              <div>
+                <div class="stage-eyebrow">${meta.eyebrow}</div>
+                <h2 class="stage-headline">${meta.title}</h2>
+                <p class="stage-summary">${meta.summary}</p>
+              </div>
+              <div class="stage-gate-box">
+                <span class="stage-gate-label">Mission Gate</span>
+                <span class="stage-gate-text">${meta.gate}</span>
+              </div>
+            </div>
+            <div class="stage-banner-art">
+              <img src="${meta.bannerImage}" alt="${meta.title}" />
+            </div>
           </div>
-          <div class="bento-grid">
-            ${phaseSteps.map(step => `
-              <article class="bento-card ${step.span} ${step.dark ? 'dark-card' : ''} ${step.image ? 'has-visual' : ''} ${completedSteps.has(step.id) ? 'completed' : ''}" data-step-id="${step.id}">
+
+          <!-- Uniform Scannable Step Cards -->
+          <div class="steps-grid">
+            ${stageSteps.map(step => `
+              <article class="step-card ${completedSteps.has(step.id) ? "completed" : ""}" data-step-id="${step.id}">
                 <div>
-                  <div class="card-top">
-                    <span class="card-eyebrow">${step.eyebrow}</span>
-                    <div class="status-dot" title="Completed status">✓</div>
+                  <div class="step-card-header">
+                    <span class="step-num-badge">Step ${step.num}</span>
+                    <div class="check-circle" title="Completed status">✓</div>
                   </div>
-                  <h3 class="card-headline">${step.title}</h3>
-                  <p class="card-desc">${step.shortDesc}</p>
                   ${step.image ? `
-                    <div class="card-visual-wrap">
-                      <img class="card-visual-img" src="${step.image}" alt="${step.title}" loading="lazy" />
+                    <div class="step-thumb">
+                      <img src="${step.image}" alt="${step.title}" loading="lazy" />
                     </div>
-                  ` : ''}
+                  ` : ""}
+                  <h3 class="step-title">${step.title}</h3>
+                  <p class="step-desc">${step.shortDesc}</p>
                 </div>
-                <div class="card-footer">
-                  <div class="card-tags">
-                    ${step.artifacts.map(a => `<span class="artifact-chip">${a}</span>`).join("")}
+
+                <div>
+                  <div class="step-meta-list">
+                    <div class="step-meta-row">
+                      <span class="step-meta-key">Skill</span>
+                      <span class="step-meta-val">${step.skill}</span>
+                    </div>
+                    <div class="step-meta-row">
+                      <span class="step-meta-key">Output</span>
+                      <span class="step-meta-val">${step.artifacts[0]}</span>
+                    </div>
                   </div>
-                  <div class="plus-btn" aria-label="View step details">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="12" y1="5" x2="12" y2="19"></line>
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
+                  <div class="step-cta-bar">
+                    <span>Open Prompt & CLI</span>
+                    <span class="step-cta-arrow">→</span>
                   </div>
                 </div>
               </article>
             `).join("")}
           </div>
+
+          ${meta.nextStage ? `
+            <div class="stage-next-bar">
+              <button class="next-stage-btn" data-next-stage="${meta.nextStage}">
+                ${meta.nextLabel}
+              </button>
+            </div>
+          ` : ""}
         `;
+
         container.appendChild(section);
       });
 
-      document.querySelectorAll(".bento-card").forEach(card => {
+      document.querySelectorAll(".step-card").forEach(card => {
         card.addEventListener("click", () => {
-          const stepId = card.getAttribute("data-step-id");
-          openModalByStepId(stepId);
+          openModalByStepId(card.getAttribute("data-step-id"));
+        });
+      });
+
+      document.querySelectorAll(".next-stage-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const next = btn.getAttribute("data-next-stage");
+          selectStage(next);
+          window.scrollTo({ top: 220, behavior: "smooth" });
         });
       });
 
@@ -1362,15 +1491,17 @@ npx skills add vercel-labs/agent-browser`,
     }
 
     function populateModal(step) {
-      document.getElementById("modalEyebrow").textContent = `${step.phaseTitle} · ${step.eyebrow}`;
+      const stageMeta = STAGES_META[step.phase];
+      document.getElementById("modalEyebrow").textContent = `${stageMeta.eyebrow} · Step ${step.num}`;
       document.getElementById("modalTitle").textContent = step.title;
       document.getElementById("modalSummary").textContent = step.shortDesc;
 
       const banner = document.getElementById("modalHeroBanner");
       const bannerImg = document.getElementById("modalHeroImg");
-      if (step.image) {
+      const imgSrc = step.image || stageMeta.bannerImage;
+      if (imgSrc) {
         banner.style.display = "block";
-        bannerImg.src = step.image;
+        bannerImg.src = imgSrc;
         bannerImg.alt = step.title;
       } else {
         banner.style.display = "none";
@@ -1391,7 +1522,7 @@ npx skills add vercel-labs/agent-browser`,
         </div>
       `;
 
-      document.getElementById("modalPromptLabel").textContent = step.promptLabel;
+      document.getElementById("modalPromptLabel").textContent = `1. ${step.promptLabel}`;
       document.getElementById("modalPromptCode").textContent = step.prompt;
 
       const cliSection = document.getElementById("modalCliSection");
@@ -1411,7 +1542,6 @@ npx skills add vercel-labs/agent-browser`,
       document.getElementById("nextStepBtn").disabled = activeStepIndex === STEPS.length - 1;
     }
 
-    // Copy buttons
     function setupCopyButton(btnId, codeId, defaultLabel) {
       const btn = document.getElementById(btnId);
       btn.addEventListener("click", () => {
@@ -1422,7 +1552,7 @@ npx skills add vercel-labs/agent-browser`,
           setTimeout(() => {
             btn.textContent = defaultLabel;
             btn.classList.remove("copied");
-          }, 1600);
+          }, 1500);
         });
       });
     }
@@ -1430,7 +1560,38 @@ npx skills add vercel-labs/agent-browser`,
     setupCopyButton("copyPromptBtn", "modalPromptCode", "Copy Prompt");
     setupCopyButton("copyCliBtn", "modalCliCode", "Copy Command");
 
-    // Modal Actions
+    // Event Listeners
+    document.querySelectorAll(".waypoint-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectStage(btn.getAttribute("data-stage"));
+      });
+    });
+
+    document.getElementById("toggleAllBtn").addEventListener("click", (e) => {
+      showAllStages = !showAllStages;
+      const btn = e.currentTarget;
+      btn.classList.toggle("active", showAllStages);
+      btn.textContent = showAllStages ? "Focus 1 Stage at a Time" : "Show All 5 Stages";
+
+      if (showAllStages) {
+        document.querySelectorAll(".waypoint-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".stage-block").forEach(b => b.classList.remove("hidden"));
+      } else {
+        selectStage(currentStage);
+      }
+    });
+
+    document.querySelectorAll(".artifact-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        const stepId = pill.getAttribute("data-open-step");
+        const step = STEPS.find(s => s.id === stepId);
+        if (step && !showAllStages) {
+          selectStage(step.phase);
+        }
+        openModalByStepId(stepId);
+      });
+    });
+
     document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
     document.getElementById("modalBackdrop").addEventListener("click", (e) => {
       if (e.target.id === "modalBackdrop") closeModal();
@@ -1475,31 +1636,6 @@ npx skills add vercel-labs/agent-browser`,
       populateModal(step);
     });
 
-    // Segmented Filter
-    document.querySelectorAll("#phaseFilter .seg-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll("#phaseFilter .seg-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const filter = btn.getAttribute("data-filter");
-        document.querySelectorAll(".phase-section").forEach(sec => {
-          if (filter === "all" || sec.getAttribute("data-phase") === filter) {
-            sec.classList.remove("hidden");
-          } else {
-            sec.classList.add("hidden");
-          }
-        });
-      });
-    });
-
-    // Artifact Flow Ribbon Clicks
-    document.querySelectorAll(".flow-pill").forEach(pill => {
-      pill.addEventListener("click", () => {
-        const stepId = pill.getAttribute("data-open-step");
-        openModalByStepId(stepId);
-      });
-    });
-
-    // Reset & Theme Toggle
     document.getElementById("resetBtn").addEventListener("click", () => {
       completedSteps.clear();
       saveCompleted();
@@ -1523,7 +1659,7 @@ npx skills add vercel-labs/agent-browser`,
       applyTheme(current === "dark" ? "light" : "dark");
     });
 
-    renderSections();
+    renderStages();
   </script>
 </body>
 </html>
