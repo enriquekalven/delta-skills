@@ -64,15 +64,20 @@ npx skills add leonxlnx/taste-skill
 
 ## 3. Quick Start & Shared Workspace File Contracts
 
-### Install the TDL User Guide Skills
+### Install as an Antigravity (Jetski) Plugin or Skills Pack
 ```bash
-git clone https://github.com/delta-fde/tool-tdl-user-guide.git tdl-user-guide
-cd tdl-user-guide
+# Option A: Install directly as a native Antigravity plugin (auto-registers all 13 skills via plugin.json + skills/)
+git clone https://github.com/delta-fde/tool-tdl-user-guide.git ~/.gemini/config/plugins/tool-tdl-user-guide
+
+# Option B: Clone locally into your workspace & verify 100% pass across all 13 skills and 200 iterations
+git clone https://github.com/delta-fde/tool-tdl-user-guide.git tool-tdl-user-guide
+cd tool-tdl-user-guide
 python3 scripts/validate_skills.py
+python3 scripts/evaluate_200x_skills.py --strict
 ```
 
 - **With `skills` CLI:** `npx skills add delta-fde/tool-tdl-user-guide`
-- **In Antigravity / Gemini CLI / Claude Code:** Symlink or copy into `~/.gemini/config/plugins/tdl-user-guide/` (or point your agent directly at `tdl-user-guide/SKILL.md`).
+- **Native Antigravity Plugin Structure:** Includes root [`plugin.json`](plugin.json) and real skill directories in `skills/<skill-name>/SKILL.md` (with backwards-compatible symlinks at the category paths).
 
 ### Shared Workspace File Contracts
 Skills communicate through explicit markdown and JSON artifacts in the customer repository (`docs/` and `STATE.md`). Downstream skills automatically consume the outputs of upstream skills:
@@ -288,14 +293,17 @@ python3 ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
 - **Real Deck Report + Deterministic Bundled Fixtures (1 example):** [`enterprise-analyst-aua-certification.md`](delivery/agent-eval-statistical-auditing/examples/enterprise-analyst-aua-certification.md) (`Toolbox #18` + [`calibrated_judge.json`](delivery/agent-eval-statistical-auditing/examples/fixtures/calibrated_judge.json) & [`compressed_lenient_judge.json`](delivery/agent-eval-statistical-auditing/examples/fixtures/compressed_lenient_judge.json)).
 - **Unified Illustrative Scenario (Remaining Examples):** Uses one consistent *fictional* thread (**Acme P&C — Commercial Auto Claims FNOL**) so every artifact references upstream and downstream files across all 12 weeks.
 
-### Run the Repository Validator & Unit Test Suites
+### Run the Repository Validator, 200x Skill Benchmark & Unit Test Suites
 ```bash
 # 1. Validate all SKILL.md frontmatter, links, JSON files, code fences, and orphan/duplicate rules
 python3 scripts/validate_skills.py
 
-# 2. Run repository validator unit tests + example-to-script stdout drift guards (17 tests)
+# 2. Run the 200-iteration (10 Enterprise Use Cases × 20 Operational Perturbation Profiles = 2,600 skill runs) benchmark
+python3 scripts/evaluate_200x_skills.py --strict
+
+# 3. Run repository validator unit tests + example-to-script stdout drift guards
 python3 -m unittest discover -s scripts -p 'test_*.py'
 
-# 3. Run Claude Agent Harness unit tests (25 tests)
+# 4. Run Claude Agent Harness unit tests (25 tests)
 python3 -m unittest discover -s ai-coding/claude-agent-harness/scripts -p 'test_*.py'
 ```

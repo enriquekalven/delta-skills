@@ -333,7 +333,47 @@ class IndexHtmlContractTests(unittest.TestCase):
         self.assertEqual(rc2, 0)
         self.assertEqual(json.loads(out1.getvalue()), json.loads(out2.getvalue()))
 
+    def test_antigravity_plugin_layout_and_200x_evaluation(self) -> None:
+        import evaluate_200x_skills
+
+        plugin_json = REPO_ROOT / "plugin.json"
+        self.assertTrue(plugin_json.is_file(), "Missing root plugin.json for Antigravity")
+        plugin_meta = json.loads(plugin_json.read_text(encoding="utf-8"))
+        self.assertEqual(plugin_meta.get("name"), "tool-tdl-user-guide")
+
+        skills_dir = REPO_ROOT / "skills"
+        self.assertTrue(skills_dir.is_dir(), "Missing root skills/ directory for Antigravity")
+        real_skill_dirs = [
+            p for p in skills_dir.iterdir()
+            if p.is_dir() and not p.is_symlink() and (p / "SKILL.md").is_file()
+        ]
+        self.assertEqual(len(real_skill_dirs), 13, "Expected 13 real skill directories in skills/")
+
+        summary = evaluate_200x_skills.run_200_iterations()
+        self.assertEqual(summary["total_iterations"], 200)
+        self.assertEqual(summary["total_skill_executions"], 2600)
+        self.assertEqual(summary["overall_mean_score"], 100.0)
+        for skill_id, sdata in summary["skills"].items():
+            self.assertEqual(sdata["overall_score"], 100.0, f"{skill_id} did not score 100.0")
+            self.assertEqual(sdata["deficiencies"], [], f"{skill_id} had deficiencies: {sdata['deficiencies']}")
+
+    def test_calculate_roi_supports_demo_and_markdown_flags(self) -> None:
+        out_json = io.StringIO()
+        with redirect_stdout(out_json):
+            rc_json = calculate_roi.main(["--demo"])
+        self.assertEqual(rc_json, 0)
+        parsed = json.loads(out_json.getvalue())
+        self.assertIn("scenarios", parsed)
+
+        out_md = io.StringIO()
+        with redirect_stdout(out_md):
+            rc_md = calculate_roi.main(["--demo", "--markdown"])
+        self.assertEqual(rc_md, 0)
+        self.assertIn("| Scenario |", out_md.getvalue())
+        self.assertIn("3-Year NPV", out_md.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()
+
 

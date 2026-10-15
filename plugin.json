@@ -1,0 +1,24 @@
+{
+  "name": "tool-tdl-user-guide",
+  "version": "1.0.0",
+  "description": "Google Cloud TDL User Guide: 13 TDL-exclusive skills and 4 deterministic CLI calculators for executing the 12-week AI/Agent Delta engagement (go/delta-delivery-guide).",
+  "author": {
+    "name": "Google Cloud Delta Squad",
+    "url": "https://github.com/delta-fde"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/delta-fde/tool-tdl-user-guide.git"
+  },
+  "keywords": [
+    "google-cloud",
+    "delta-squad",
+    "tdl",
+    "adk",
+    "agent-evaluation",
+    "load-testing",
+    "value-sizing"
+  ],
+  "license": "Apache-2.0",
+  "disabled": false
+}
