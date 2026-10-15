@@ -301,9 +301,12 @@ python3 scripts/validate_skills.py
 # 2. Run the 200-iteration (10 Enterprise Use Cases × 20 Operational Perturbation Profiles = 2,600 skill runs) benchmark
 python3 scripts/evaluate_200x_skills.py --strict
 
-# 3. Run repository validator unit tests + example-to-script stdout drift guards
+# 3. Run the 1,000-iteration (50 Enterprise Use Cases × 20 Customer Stakeholder Personas = 13,000 skill runs) portfolio benchmark
+python3 scripts/evaluate_1000x_personas.py --strict
+
+# 4. Run repository validator unit tests + example-to-script stdout drift guards
 python3 -m unittest discover -s scripts -p 'test_*.py'
 
-# 4. Run Claude Agent Harness unit tests (25 tests)
+# 5. Run Claude Agent Harness unit tests (25 tests)
 python3 -m unittest discover -s ai-coding/claude-agent-harness/scripts -p 'test_*.py'
 ```

@@ -504,14 +504,14 @@ var STAGES = [
         lede: "Clone the TDL User Guide into your Antigravity plugins directory (or install via npx skills add) so Antigravity, Gemini CLI, and Claude Code auto-discover all 13 skills via plugin.json and skills/<skill-name>/SKILL.md.",
         whyItMatters: "Without these 13 skills installed, your coding agent will write generic boilerplate instead of enforcing the 12-week cap, Golden Dataset baseline evaluation metrics, and statistical LLM-judge evaluation gates.",
         promptType: "Terminal Command (Run Once on Your Laptop)",
-        promptTemplate: "# Option A: Install natively as an Antigravity (Jetski) Plugin\ngit clone https://github.com/delta-fde/tool-tdl-user-guide.git ~/.gemini/config/plugins/tool-tdl-user-guide\n\n# Option B: Install via AgentSkills CLI\nnpx skills add delta-fde/tool-tdl-user-guide\n\n# Verify all 13 skills, calculators, and the 200-iteration benchmark pass\ncd ~/.gemini/config/plugins/tool-tdl-user-guide\npython3 -B scripts/validate_skills.py\npython3 -B scripts/evaluate_200x_skills.py --strict",
-        cliTemplate: "python3 -B scripts/validate_skills.py && python3 -B scripts/evaluate_200x_skills.py --strict && python3 -B -m unittest discover -s scripts -p 'test_*.py'",
+        promptTemplate: "# Option A: Install natively as an Antigravity (Jetski) Plugin\ngit clone https://github.com/delta-fde/tool-tdl-user-guide.git ~/.gemini/config/plugins/tool-tdl-user-guide\n\n# Option B: Install via AgentSkills CLI\nnpx skills add delta-fde/tool-tdl-user-guide\n\n# Verify all 13 skills, calculators, 200x perturbation benchmark, and 1,000x (50 Use Cases x 20 Personas) benchmark pass\ncd ~/.gemini/config/plugins/tool-tdl-user-guide\npython3 -B scripts/validate_skills.py\npython3 -B scripts/evaluate_200x_skills.py --strict\npython3 -B scripts/evaluate_1000x_personas.py --strict",
+        cliTemplate: "python3 -B scripts/validate_skills.py && python3 -B scripts/evaluate_200x_skills.py --strict && python3 -B scripts/evaluate_1000x_personas.py --strict && python3 -B -m unittest discover -s scripts -p 'test_*.py'",
         checks: [
           "Repository cloned into ~/.gemini/config/plugins/tool-tdl-user-guide with root plugin.json and skills/<skill-name>/SKILL.md",
-          "python3 -B scripts/validate_skills.py and python3 -B scripts/evaluate_200x_skills.py --strict pass with 100/100 across 200 runs"
+          "python3 -B scripts/validate_skills.py, evaluate_200x_skills.py --strict, and evaluate_1000x_personas.py --strict pass at 100/100"
         ],
         customerPersona: "FDE Tech Lead",
-        customerApprove: "All 13 SKILL.md files, plugin.json manifest, 4 deterministic Python calculators, and 200x benchmark pass with exit code 0.",
+        customerApprove: "All 13 SKILL.md files, plugin.json manifest, 4 deterministic Python calculators, 200x benchmark, and 1,000x (50 Use Cases x 20 Personas) benchmark pass with exit code 0.",
         rejectIf: "Broken markdown links, missing plugin.json / skills/ directories, or unverified third-party pip dependencies.",
         rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
         axesBoost: { velocity: 10, baseline: 0, arch: 5, eval: 0, prod: 5 }
@@ -1441,9 +1441,25 @@ function renderRubricTab() {
   document.getElementById("mainRubric").innerHTML =
     '<div class="section-card">' +
       '<div class="sec-head">' +
-        '<span class="eyebrow">200-Iteration × 13-Skill Stress Test (2,600 Skill Executions)</span>' +
-        '<h2>Customer Sign-Off Rubric &amp; 200x Skill Benchmark</h2>' +
-        '<p class="lede">Every skill in the TDL User Guide is audited across <strong>200 full-lifecycle iterations</strong> (10 Enterprise Use Cases × 20 Operational Perturbation Profiles = 2,600 skill executions) via <code>python3 scripts/evaluate_200x_skills.py --strict</code> across Ease of Use, Value Realization, Usefulness, Time-to-Market (TTM) Velocity, and Contract Resilience.</p>' +
+        '<span class="eyebrow">1,000-Iteration Multi-Persona Stress Benchmark (50 Use Cases × 20 Personas = 13,000 Skill Evals)</span>' +
+        '<h2>Customer Sign-Off Rubric, 200x Skill Audit &amp; 1,000x Multi-Persona Portfolio Verdict</h2>' +
+        '<p class="lede">Every skill in the TDL User Guide is audited across <strong>1,000 full-lifecycle customer engagements</strong> (50 Enterprise Use Cases × 20 Customer Stakeholder Personas = 13,000 individual skill evaluations via <code>python3 scripts/evaluate_1000x_personas.py --strict</code>) plus <strong>200 operational perturbation runs</strong> (<code>python3 scripts/evaluate_200x_skills.py --strict</code>).</p>' +
+      '</div>' +
+
+      '<div class="card" style="margin-bottom:18px;border:1.5px solid #bfdbfe;background:#f8fafc;">' +
+        '<h3>🎯 Executive Verdict: "Is This Worth Using on a Customer Project?" (50 Use Cases × 20 Personas = 1,000 Runs)</h3>' +
+        '<div class="table-wrap" style="margin-bottom:0;">' +
+          '<table class="log">' +
+            '<thead>' +
+              '<tr><th>Engagement Archetype (50 Enterprise Use Cases)</th><th>Share of Portfolio</th><th>Recommended Execution Mode</th><th>Effort (Manual → Skill)</th><th>Mean Base 3-Yr NPV</th><th>Mean Bear 3-Yr NPV (SCDF=0.40)</th><th>20-Persona Steering Verdict</th></tr>' +
+            '</thead>' +
+            '<tbody>' +
+              '<tr><td><strong>1. Core Enterprise Multi-Agent Builds</strong><br/><span style="font-size:11.5px;color:#64748b;">Tier 2/3 ADK · SOM ≥ 10k/yr · Regulated (FinServ, Health, Insure, Telecom, Mfg, Gov, SaaS)</span></td><td class="mono"><strong>40 / 50 (80%)</strong></td><td><strong>Full 13-Skill 12-Week Delta Mode</strong></td><td class="mono">470.0h → <strong>73.5h</strong> (-84.4%)</td><td class="mono" style="color:#15803d;font-weight:700;">+$869,390 (5.7m payback)</td><td class="mono" style="color:#15803d;font-weight:700;">+$205,498 ($4.8k/yr token OpEx)</td><td><span class="verdict-pill pass">✓ 100% WORTH IT (All 20 Personas Approve)</span></td></tr>' +
+              '<tr><td><strong>2. Tactical Departmental / Tier-1 Connectors</strong><br/><span style="font-size:11.5px;color:#64748b;">Tier 1 Gemini Enterprise · SOM ~2.5k–4k/yr (Internal FAQ, Dept Policy Search, PR Digest)</span></td><td class="mono"><strong>6 / 50 (12%)</strong></td><td><strong>Fast-Track 5-Skill Lite Mode (2-Wk Sprint)</strong><br/><span style="font-size:11px;color:#475569;">(<code>workshop-intake</code> → <code>create-delta-ucc</code> → <code>gcp-arch</code> → <code>stitch</code> → <code>roi</code>)</span></td><td class="mono">110.0h → <strong>18.5h</strong> (-83.2%)</td><td class="mono" style="color:#15803d;font-weight:700;">+$62,410 (Lite Mode)</td><td class="mono" style="color:#15803d;font-weight:700;">-$228,092 (Full) → <strong>+$9,985 (Lite)</strong></td><td><span class="verdict-pill pass">⚡ USE 5-SKILL LITE MODE (Flips Bear NPV +)</span></td></tr>' +
+              '<tr><td><strong>3. Low-Maturity / Unindexed Data Traps</strong><br/><span style="font-size:11.5px;color:#64748b;">SCDF ≤ 0.20 or SOM &lt; 1k/yr (Handwritten Faxes, 1998 Air-Gapped PLC, Microfiche, 50-Doc M&amp;A)</span></td><td class="mono"><strong>4 / 50 (8%)</strong></td><td><strong>Prelude Gate-0 Kill / Fix Data First</strong><br/><span style="font-size:11px;color:#475569;">(Stop after <code>workshop-intake</code> + <code>ai-value-sizing</code> in Week 0)</span></td><td class="mono"><strong>4.5h</strong> (Fail-Fast in Wk 0)</td><td class="mono" style="color:#b91c1c;font-weight:700;">-$449,663</td><td class="mono" style="color:#b91c1c;font-weight:700;">-$481,120</td><td><span class="verdict-pill" style="background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;">🛑 KILLED AT GATE 0 (Saves $230k–$260k CapEx)</span></td></tr>' +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
       '</div>' +
 
       '<div class="grid-2">' +
@@ -1451,20 +1467,20 @@ function renderRubricTab() {
           '<h3>📏 5-Dimension Skill &amp; Customer Rubric (100-Pt Scale)</h3>' +
           '<ul class="checklist">' +
             '<li><span class="cbox">D1</span><span><strong>Ease of Use &amp; Plugin Ergonomics (20 pts):</strong> Native Antigravity plugin structure (<code>plugin.json</code> + <code>skills/&lt;skill&gt;/SKILL.md</code>), standardized <code>Quick-Start &amp; File Contract</code> table, and zero-config <code>--demo</code> CLI modes.</span></li>' +
-            '<li><span class="cbox">D2</span><span><strong>Value Realization &amp; P&amp;L Rigor (20 pts):</strong> Enforces TAM→SAM→SOM funnel, Labor + Rework $ baseline, <code>VCR × SCDF</code> haircuts (avoiding the 1-to-1 time trap), RICE scoring, and 3-Yr NPV sensitivity.</span></li>' +
+            '<li><span class="cbox">D2</span><span><strong>Value Realization &amp; P&amp;L Rigor (20 pts):</strong> Enforces TAM→SAM→SOM funnel, Labor + Rework $ baseline, <code>VCR × SCDF</code> haircuts, dynamic LLM token OpEx (with 60% context caching), and 3-Tier Project Worth Verdict.</span></li>' +
             '<li><span class="cbox">D3</span><span><strong>Usefulness &amp; Signal Density (20 pts):</strong> High-density decision matrices, explicit <code>Customer Sign-Off &amp; Quality Gate (Approve When / Reject If)</code> tables inside every <code>SKILL.md</code>, and script-verified worked examples.</span></li>' +
-            '<li><span class="cbox">D4</span><span><strong>Time-to-Market (TTM) Compression (20 pts):</strong> Compresses full 12-week artifact &amp; engineering effort from <strong>470.0h manual to 73.5h skill-guided</strong> (saving <strong>396.5h / 84.4% TTM compression</strong> per engagement).</span></li>' +
-            '<li><span class="cbox">D5</span><span><strong>Contract &amp; Perturbation Resilience (20 pts):</strong> Survives 20 operational stress profiles (3× traffic surge, Qt=8/Cq=5 deep fan-out, Week-7 rollback, uncalibrated LLM judge trap, 15% CFO WACC hurdle, and 1-in-1-out RICE swaps).</span></li>' +
+            '<li><span class="cbox">D4</span><span><strong>Time-to-Market (TTM) Compression (20 pts):</strong> Compresses full 12-week artifact &amp; engineering effort from <strong>470.0h manual to 73.5h skill-guided</strong> (or <strong>18.5h in Fast-Track 5-Skill Lite Mode</strong>).</span></li>' +
+            '<li><span class="cbox">D5</span><span><strong>20-Persona &amp; 20-Perturbation Resilience (20 pts):</strong> Audited across 20 stakeholder personas (Security/CISO, AI Governance, Architecture, DevOps/SRE, IT/IAM, FinOps/CFO, Business Sponsor, Domain Analyst, Product, UX, Data Eng, Legal, MRM Quant, Network Sec, Ops, Procurement, QA, Red-Team, Change Mgmt, CTO).</span></li>' +
           '</ul>' +
         '</div>' +
         '<div class="card">' +
-          '<h3>🛠 Upgrades Iterated via the 200x Benchmark (77.3 → 100.0)</h3>' +
+          '<h3>👥 20 Customer Stakeholder Personas Audited (×50 Use Cases = 1,000 Runs)</h3>' +
           '<ul class="checklist">' +
-            '<li><span class="cbox">✓</span><span><strong>Native Antigravity Plugin Packaging:</strong> Added root <code>plugin.json</code> and moved all 13 skills into real directories under <code>skills/&lt;skill-name&gt;/SKILL.md</code> (with backwards-compatible category symlinks) so Go\'s <code>os.ReadDir</code> auto-discovers every skill.</span></li>' +
-            '<li><span class="cbox">✓</span><span><strong>Standardized Quick-Start &amp; TTM Headers Across All 13 Skills:</strong> Added <code>Quick-Start &amp; File Contract</code> tables specifying Phase, Timebox, TTM Hours Saved, Reads, Writes, and Value Realization Linkage.</span></li>' +
-            '<li><span class="cbox">✓</span><span><strong>Embedded Customer Sign-Off Gates in All 13 <code>SKILL.md</code> Files:</strong> Added explicit <code>Approve When</code> / <code>Reject If</code> tables directly inside every skill so agents enforce executive quality bars automatically.</span></li>' +
-            '<li><span class="cbox">✓</span><span><strong>Upgraded <code>calculate_roi.py</code> with <code>--demo</code> &amp; <code>--markdown</code>:</strong> Added zero-config <code>--demo</code> and ready-to-paste <code>--markdown</code> scenario table output alongside full JSON output.</span></li>' +
-            '<li><span class="cbox">✓</span><span><strong>Converted Prose Lists to Decision Matrices:</strong> Upgraded 6 skills (<code>workshop-intake</code>, <code>create-delta-ucc</code>, <code>cuj-architect</code>, <code>product-md</code>, <code>specification-engineer</code>, <code>ai-value-sizing</code>) with high-signal scoring tables.</span></li>' +
+            '<li><span class="cbox">🛡️</span><span><strong>Security, CISO, Legal, Red-Team &amp; Network (P01, P12, P14, P18):</strong> 100% pass on VPC-SC, CMEK, Cloud DLP PII/PHI redaction, Model Armor prompt-injection gates, and zero standing privileges.</span></li>' +
+            '<li><span class="cbox">⚖️</span><span><strong>AI Governance &amp; MRM Quant Validator (P02, P13):</strong> 100% pass on L1–L3 HITL autonomy boundaries and 3-pipeline AUA judge calibration (catching compressed/lenient judge traps where Cronbach\'s α = 0.992 masks QWK = 0.148).</span></li>' +
+            '<li><span class="cbox">🏗️</span><span><strong>Enterprise Architecture, DevOps/SRE, IT/IAM &amp; QA (P03, P04, P05, P17):</strong> 100% pass on Tier 1/2/3 selection, <code>1+1+Qt·Cq+1</code> fan-out math, 5× Vertex AI quota sizing, gRPC channel pool scaling (<code>75 → 5</code> waves), and <code>--verify</code> CI loops.</span></li>' +
+            '<li><span class="cbox">💰</span><span><strong>FinOps/CFO, Business Sponsor, Procurement &amp; CTO (P06, P07, P16, P20):</strong> 100% pass on <code>VCR × SCDF</code> haircuts, Bear-case NPV gating, routing 6 departmental bots to 5-Skill Lite Mode, and killing 4 unviable data traps at Gate 0.</span></li>' +
+            '<li><span class="cbox">🔬</span><span><strong>Domain Analyst, Product, UX, Data Eng, Ops &amp; Change Mgmt (P08–P11, P15, P19):</strong> 100% pass on 33 Starter Qs, 6-Dim Data Yardstick, L1–L5 CUJs, 8-section Agentic PRD, Stitch 3-stage prototype, and 30-60-90 rollout.</span></li>' +
           '</ul>' +
         '</div>' +
       '</div>' +

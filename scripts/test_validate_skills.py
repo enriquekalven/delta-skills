@@ -372,8 +372,23 @@ class IndexHtmlContractTests(unittest.TestCase):
         self.assertIn("| Scenario |", out_md.getvalue())
         self.assertIn("3-Year NPV", out_md.getvalue())
 
+    def test_1000x_multi_persona_portfolio_benchmark(self) -> None:
+        import evaluate_1000x_personas
+
+        rep = evaluate_1000x_personas.run_1000x_persona_benchmark()
+        self.assertEqual(rep["total_use_cases"], 50)
+        self.assertEqual(rep["total_personas"], 20)
+        self.assertEqual(rep["total_engagements"], 1000)
+        self.assertEqual(rep["total_skill_evaluations"], 13000)
+        self.assertEqual(rep["overall_mean_approval_score"], 100.0)
+        w = rep["worth_it_portfolio_analysis"]
+        self.assertEqual(w["core_enterprise_40_use_cases"]["count"], 40)
+        self.assertEqual(w["tactical_departmental_6_use_cases"]["count"], 6)
+        self.assertEqual(w["unviable_trap_4_use_cases"]["count"], 4)
+
 
 if __name__ == "__main__":
     unittest.main()
+
 
 
