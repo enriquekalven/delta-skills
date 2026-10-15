@@ -5,6 +5,7 @@ from __future__ import annotations
 import io
 import json
 import os
+import re
 import sys
 import tempfile
 import unittest
@@ -307,6 +308,36 @@ class IndexHtmlContractTests(unittest.TestCase):
             self.assertIn(f'"step-{step_num}"', html)
             self.assertIn("customerApprove:", html)
             self.assertIn("rejectIf:", html)
+
+    def test_xp_rank_ladder_top_rank_reachable_only_at_full_completion(self) -> None:
+        html = self.INDEX_HTML.read_text(encoding="utf-8")
+
+        # Steps per stage: count step ids declared between consecutive stage ids in STAGES.
+        stages_block = html[html.index("var STAGES = ["):html.index("var STORAGE_KEY")]
+        stage_marks = [(m.group(1), m.start()) for m in re.finditer(r'\bid: "(?!step-)([a-z0-9]+)"', stages_block)]
+        step_counts = {}
+        for i, (stage_id, start) in enumerate(stage_marks):
+            end = stage_marks[i + 1][1] if i + 1 < len(stage_marks) else len(stages_block)
+            step_counts[stage_id] = len(re.findall(r'\bid: "step-\d+"', stages_block[start:end]))
+        self.assertEqual(sum(step_counts.values()), 15)
+
+        xp_block = html[html.index("var XP_TABLE = {"):html.index("var RANKS = [")]
+        xp_table = {
+            m.group(1): (int(m.group(2)), int(m.group(3)))
+            for m in re.finditer(r"(\w+):\s*\{\s*perStep:\s*(\d+),\s*gateBonus:\s*(\d+)", xp_block)
+        }
+        self.assertEqual(set(xp_table), set(step_counts), "every stage needs an XP_TABLE entry")
+
+        ranks_start = html.index("var RANKS = [")
+        ranks_block = html[ranks_start:html.index("];", ranks_start)]
+        thresholds = [int(x) for x in re.findall(r"minXp:\s*(\d+)", ranks_block)]
+        titles = re.findall(r'title:\s*"([^"]+)"', ranks_block)
+        self.assertEqual(thresholds[0], 0)
+        self.assertEqual(thresholds, sorted(set(thresholds)), "rank thresholds must strictly increase")
+
+        max_xp = sum(count * xp_table[sid][0] + xp_table[sid][1] for sid, count in step_counts.items())
+        self.assertEqual(thresholds[-1], max_xp, "top rank must equal the max attainable XP")
+        self.assertEqual(titles[-1], "Mars Mission Commander")
 
     def test_quota_cli_supports_both_canonical_and_short_flags(self) -> None:
         out1 = io.StringIO()

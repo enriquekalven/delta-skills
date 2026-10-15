@@ -45,32 +45,91 @@ svg { display: block; }
 /* ---- Top bar ---- */
 .topbar {
   position: sticky; top: 0; z-index: 40;
-  display: flex; align-items: center; gap: 16px;
-  height: 62px; padding: 0 24px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
+  min-height: 62px; padding: 8px 24px;
   background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--elev-1);
 }
-.brand { display: flex; align-items: center; gap: 11px; }
+/* Brand shrinks to its title width first (subtitle ellipsizes) before anything wraps. */
+.brand { display: flex; align-items: center; gap: 11px; flex: 1 1 0%; max-width: 400px; }
+.brand .brand-text { flex: 1 1 auto; }
 .brand .logo { width: 32px; height: 32px; color: var(--accent); flex: 0 0 auto; background: var(--accent-050); border-radius: 8px; display: grid; place-items: center; font-size: 18px; }
-.brand .title { font-size: 16px; font-weight: 600; color: var(--ink); line-height: 1.15; }
-.brand .sub { font-size: 11.5px; color: var(--muted); letter-spacing: .01em; }
-.topbar .spacer { flex: 1; }
-.mission-chip {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--accent-050); color: var(--accent-ink); border: 1px solid var(--accent-border);
-  padding: 6px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 600; white-space: nowrap;
-}
-.mission-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+.brand .title { font-size: 16px; font-weight: 600; color: var(--ink); line-height: 1.15; white-space: nowrap; }
+.brand .sub { font-size: 11.5px; color: var(--muted); letter-spacing: .01em; width: 0; min-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar .spacer { flex: 0 0 0px; margin-left: auto; }
 
 /* ---- Mission Stage switcher (segmented tabs) ---- */
-.switcher { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px; background: var(--surface-2); border: 1px solid var(--border-2); border-radius: 999px; padding: 3px; }
+.switcher-row { display: flex; flex: 0 0 auto; min-width: 0; }
+.switcher { display: inline-flex; flex-wrap: nowrap; align-items: center; gap: 3px; background: var(--surface-2); border: 1px solid var(--border-2); border-radius: 999px; padding: 3px; }
 .mtab {
   appearance: none; border: none; background: transparent; cursor: pointer;
   font-family: var(--font); font-size: 12.5px; font-weight: 500; color: var(--muted);
   padding: 6px 12px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px;
-  transition: background .15s ease, color .15s ease;
+  white-space: nowrap; transition: background .15s ease, color .15s ease;
 }
 .mtab:hover { color: var(--ink-2); }
 .mtab.active { background: var(--surface); color: var(--accent-ink); font-weight: 600; box-shadow: var(--elev-1); }
+
+/* ---- XP & Rank HUD (header) ---- */
+.xp-hud { position: relative; flex: 0 0 auto; }
+.xp-hud-btn {
+  appearance: none; font: inherit; cursor: pointer; text-align: left; color: var(--ink);
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 5px 14px 5px 5px; border-radius: 999px;
+  background: var(--yellow-050); border: 1px solid var(--yellow-100);
+  transition: box-shadow .15s ease;
+}
+.xp-hud-btn:hover { box-shadow: var(--elev-1); }
+.xp-hud-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.xp-rank-icon {
+  position: relative; width: 34px; height: 34px; flex: 0 0 auto; border-radius: 50%;
+  display: grid; place-items: center; font-size: 17px;
+  background: linear-gradient(150deg, #fddc78, #f6b73c); box-shadow: 0 2px 6px rgba(246,183,60,.45);
+}
+.xp-level-bubble {
+  position: absolute; right: -4px; bottom: -3px; min-width: 17px; height: 17px; padding: 0 4px;
+  border-radius: 999px; background: var(--ink); color: #fff; border: 2px solid var(--yellow-050);
+  font-size: 9.5px; font-weight: 800; line-height: 13px; text-align: center;
+}
+.xp-hud-text { display: flex; flex-direction: column; gap: 3px; width: 162px; }
+.xp-rank-title { font-size: 12.5px; font-weight: 700; color: #7a4b00; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.xp-bar { display: block; height: 5px; border-radius: 99px; background: rgba(176,96,0,.16); overflow: hidden; }
+.xp-bar-fill { display: block; height: 100%; width: 0%; border-radius: 99px; background: linear-gradient(90deg, #f6b73c, #e37400); transition: width .6s cubic-bezier(.2,.7,.2,1); }
+.xp-meta { font-size: 10.5px; font-weight: 600; color: #8a5300; line-height: 1.15; white-space: nowrap; }
+.xp-gain {
+  position: absolute; right: 16px; top: calc(100% + 2px); pointer-events: none; opacity: 0;
+  font-size: 13px; font-weight: 800; color: #e37400; text-shadow: 0 1px 0 #fff; white-space: nowrap;
+}
+.xp-gain.show { animation: xpFloat 1.6s ease-out forwards; }
+@keyframes xpFloat { 0% { opacity: 0; transform: translateY(-6px); } 15% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; transform: translateY(8px); } }
+.xp-hud-btn.pulse { animation: xpPulse 1.2s ease-out; }
+@keyframes xpPulse { 0% { box-shadow: 0 0 0 0 rgba(246,183,60,.6); } 100% { box-shadow: 0 0 0 12px rgba(246,183,60,0); } }
+
+/* Rank ladder popover */
+.xp-ladder {
+  position: absolute; right: 0; top: calc(100% + 10px); z-index: 60;
+  width: 352px; max-width: calc(100vw - 32px);
+  background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--radius);
+  box-shadow: var(--elev-3); padding: 14px 16px 12px;
+}
+.xp-ladder[hidden] { display: none; }
+.xp-ladder-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.xp-ladder-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+.xp-ladder-total { font-family: var(--mono); font-size: 11.5px; font-weight: 600; color: #8a5300; }
+.xp-ladder-list { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.xp-rung { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: var(--radius-sm); border: 1px solid transparent; }
+.xp-rung .r-icon { width: 26px; height: 26px; flex: 0 0 auto; border-radius: 50%; display: grid; place-items: center; font-size: 13px; background: #eceef1; filter: grayscale(1); opacity: .7; }
+.xp-rung .r-name { flex: 1; min-width: 0; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.xp-rung .r-xp { font-family: var(--mono); font-size: 11px; color: var(--muted-2); white-space: nowrap; }
+.xp-rung.achieved .r-icon { filter: none; opacity: 1; background: linear-gradient(150deg, #fddc78, #f6b73c); }
+.xp-rung.achieved .r-name { color: var(--ink-2); }
+.xp-rung.current { background: var(--yellow-050); border-color: var(--yellow-100); }
+.xp-rung.current .r-name, .xp-rung.current .r-xp { color: #7a4b00; font-weight: 700; }
+.xp-rung.next .r-xp { color: #b06000; font-weight: 600; }
+.xp-how { border-top: 1px solid var(--border-2); padding-top: 10px; }
+.xp-how-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 6px; }
+.xp-how ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.xp-how li { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; color: var(--ink-2); }
+.xp-how .x { font-family: var(--mono); font-size: 11px; font-weight: 600; color: #8a5300; white-space: nowrap; }
 
 /* ---- 3-Column Cloud Console App Grid ---- */
 .app {
@@ -79,8 +138,8 @@ svg { display: block; }
   grid-template-areas: "nav main score";
   gap: 22px; max-width: 1540px; margin: 0 auto; padding: 22px 24px 64px; align-items: start;
 }
-.rail-left  { grid-area: nav; position: sticky; top: 84px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-.rail-right { grid-area: score; position: sticky; top: 84px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.rail-left  { grid-area: nav; position: sticky; top: calc(var(--topbar-h, 62px) + 22px); display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.rail-right { grid-area: score; position: sticky; top: calc(var(--topbar-h, 62px) + 22px); display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .main-col   { grid-area: main; min-width: 0; }
 
 /* ---- View Tabs (Instructions | File Contracts & Context) ---- */
@@ -286,8 +345,14 @@ table.log .mono { font-family: var(--mono); font-size: 12px; color: var(--accent
 .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
 .btn.primary:hover:not(:disabled) { background: var(--accent-ink); box-shadow: var(--elev-2); }
 .btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn.armed { background: var(--red-050); border-color: var(--red-100); color: #c5221f; }
 .main-footer .fspacer { flex: 1; }
 .footer-count { font-size: 12.5px; color: var(--muted); font-weight: 500; }
+
+/* ---- XP reward chip (step header) & gate bonus tag (hero) ---- */
+.sec-head .xp-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; color: #8a5300; background: var(--yellow-050); border: 1px solid var(--yellow-100); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.sec-head .xp-chip.earned { color: #137333; background: var(--green-050); border-color: var(--green-100); }
+.mars-gate-pill .gate-xp { margin-left: 2px; padding-left: 8px; border-left: 1px solid rgba(251,191,36,.35); font-weight: 700; color: #fcd34d; white-space: nowrap; }
 
 /* ---- Toast & Badge Unlock Pop ---- */
 .toast {
@@ -299,7 +364,7 @@ table.log .mono { font-family: var(--mono); font-size: 12px; color: var(--accent
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 .badge-pop {
-  position: fixed; top: 74px; left: 50%; transform: translateX(-50%) translateY(-16px) scale(.96);
+  position: fixed; top: calc(var(--topbar-h, 62px) + 12px); left: 50%; transform: translateX(-50%) translateY(-16px) scale(.96);
   z-index: 95; display: flex; align-items: center; gap: 12px; background: var(--surface);
   border: 1px solid var(--yellow-100); border-left: 4px solid var(--yellow); border-radius: var(--radius);
   box-shadow: var(--elev-3); padding: 12px 18px; opacity: 0; pointer-events: none;
@@ -310,6 +375,9 @@ table.log .mono { font-family: var(--mono); font-size: 12px; color: var(--accent
 .badge-pop .bp-kick { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #b06000; }
 .badge-pop .bp-name { font-size: 14.5px; font-weight: 600; color: var(--ink); }
 .badge-pop .bp-cheer { font-size: 12px; color: var(--muted); }
+.badge-pop.rank-up { border-left-color: #e37400; }
+.badge-pop.rank-up .bp-kick { color: #e37400; }
+.badge-pop.rank-up .bp-disc { width: 48px; height: 48px; font-size: 24px; box-shadow: 0 0 0 4px rgba(246,183,60,.25); }
 
 /* ---- Google Workspace (@google.com) Zero-Trust SSO Gate ---- */
 body.sso-locked { overflow: hidden; }
@@ -361,11 +429,31 @@ body.sso-locked .sso-gate { display: flex; }
   border: none; background: transparent; color: #137333; font-size: 11px;
   font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0 2px;
 }
+.sso-top-badge[hidden] { display: none; }
+
+/* Header breakpoints: full stage labels at >=1800px, compact labels at 1420-1799px,
+   and below 1420px the stage switcher drops to its own row under the brand/XP/SSO row. */
+@media (min-width: 1420px) and (max-width: 1799px) {
+  .mtab-code, .mtab-week { display: none; }
+  .mtab { padding: 6px 10px; }
+}
+@media (max-width: 1419px) {
+  .switcher-row { order: 99; flex: 1 0 100%; }
+}
 
 @media (max-width: 1120px) {
   .app { grid-template-columns: 1fr; grid-template-areas: "nav" "main" "score"; }
   .rail-left, .rail-right { position: static; }
-  .topbar { height: auto; padding: 12px 16px; flex-wrap: wrap; }
+  .topbar { padding: 10px 16px; }
+  .switcher { flex-wrap: wrap; }
+}
+@media (max-width: 640px) {
+  .xp-ladder { position: fixed; left: 16px; right: 16px; top: calc(var(--topbar-h, 62px) + 8px); width: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .xp-gain.show { animation: none; opacity: 1; }
+  .xp-hud-btn.pulse { animation: none; }
+  .xp-bar-fill { transition: none; }
 }
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -387,17 +475,41 @@ body.sso-locked .sso-gate { display: flex; }
 </div>
 
 <!-- TOP STICKY BAR -->
-<header class="topbar">
+<header class="topbar" id="topbar">
   <div class="brand">
     <span class="logo">🚀</span>
-    <div>
+    <div class="brand-text">
       <div class="title">TDL User Guide · Mission to Mars</div>
       <div class="sub">12-Week Forward Deployed Engineering Console &amp; Flight Playbook</div>
     </div>
   </div>
   <div class="spacer"></div>
-  <div class="switcher" id="switcher" role="tablist" aria-label="Mission stage switcher"></div>
-  <span class="mission-chip" id="missionChip"><span class="dot"></span> <span id="missionChipText">Stage 1 · Hangar Prep</span></span>
+  <div class="switcher-row">
+    <div class="switcher" id="switcher" role="tablist" aria-label="Mission stage switcher"></div>
+  </div>
+  <!-- XP & RANK HUD (values filled in by renderXpHud) -->
+  <div class="xp-hud" id="xpHud">
+    <button type="button" class="xp-hud-btn" id="xpHudBtn" aria-expanded="false" aria-controls="xpLadder">
+      <span class="xp-rank-icon" aria-hidden="true"><span id="xpRankIcon">🧑‍🚀</span><span class="xp-level-bubble" id="xpLevelBubble">1</span></span>
+      <span class="xp-hud-text" aria-hidden="true">
+        <span class="xp-rank-title" id="xpRankTitle">Cadet</span>
+        <span class="xp-bar"><span class="xp-bar-fill" id="xpBarFill"></span></span>
+        <span class="xp-meta" id="xpMeta">Lv 1 · 0 XP</span>
+      </span>
+    </button>
+    <span class="xp-gain" id="xpGain" aria-hidden="true"></span>
+    <div class="xp-ladder" id="xpLadder" role="region" aria-labelledby="xpLadderTitle" hidden>
+      <div class="xp-ladder-head">
+        <span class="xp-ladder-title" id="xpLadderTitle">🏆 Rank Ladder</span>
+        <span class="xp-ladder-total" id="xpLadderTotal"></span>
+      </div>
+      <ol class="xp-ladder-list" id="xpLadderList"></ol>
+      <div class="xp-how">
+        <div class="xp-how-title">How to earn XP</div>
+        <ul id="xpHowList"></ul>
+      </div>
+    </div>
+  </div>
   <span class="sso-top-badge" id="ssoUserBadge" hidden>
     <span id="ssoUserEmailText"></span>
     <button type="button" class="sso-signout-btn" id="ssoSignOutBtn">Sign out</button>
@@ -532,7 +644,7 @@ body.sso-locked .sso-gate { display: flex; }
 <div class="badge-pop" id="badgePop" role="status" aria-live="polite">
   <div class="bp-disc" id="bpDisc">🏅</div>
   <div>
-    <div class="bp-kick">Mission Milestone Unlocked</div>
+    <div class="bp-kick" id="bpKick">Mission Milestone Unlocked</div>
     <div class="bp-name" id="bpName">Step Completed</div>
     <div class="bp-cheer" id="bpCheer">Telemetry updated</div>
   </div>
@@ -1076,6 +1188,146 @@ function saveProgress() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(completedSet)));
 }
 
+// ---- XP & Rank Ladder ----
+// XP is always derived from completedSet (never stored on its own), so it can't drift
+// from the checkmarks, resets with them, and only counts step ids that exist in STAGES.
+// Steps are worth more as the mission gets harder; finishing every step in a stage
+// clears that stage's gate for a bonus. RANKS' top threshold must equal the max
+// attainable XP (enforced by scripts/test_validate_skills.py).
+var XP_TABLE = {
+  day1:    { perStep: 50,  gateBonus: 100, gateName: "Readiness Gate" },
+  prelude: { perStep: 100, gateBonus: 200, gateName: "Gate 0" },
+  phase1:  { perStep: 150, gateBonus: 300, gateName: "Gate 1" },
+  phase2:  { perStep: 200, gateBonus: 400, gateName: "Gate 2" },
+  phase3:  { perStep: 300, gateBonus: 500, gateName: "Gate 3" }
+};
+
+var RANKS = [
+  { level: 1, title: "Cadet", icon: "🧑‍🚀", minXp: 0 },
+  { level: 2, title: "Launch Technician", icon: "🔧", minXp: 100 },
+  { level: 3, title: "Flight Engineer", icon: "🧰", minXp: 350 },
+  { level: 4, title: "Mission Specialist", icon: "🛰️", minXp: 800 },
+  { level: 5, title: "Pilot", icon: "🕹️", minXp: 1550 },
+  { level: 6, title: "Flight Commander", icon: "🎖️", minXp: 2350 },
+  { level: 7, title: "Mars Mission Commander", icon: "🔴", minXp: 3750 }
+];
+
+function formatXp(n) {
+  return Number(n).toLocaleString("en-US");
+}
+
+function isStageCleared(stage, doneSet) {
+  return stage.steps.every(function(s) { return doneSet.has(s.id); });
+}
+
+function computeXp(doneSet) {
+  var xp = 0;
+  STAGES.forEach(function(st) {
+    var cfg = XP_TABLE[st.id];
+    var done = st.steps.filter(function(s) { return doneSet.has(s.id); }).length;
+    xp += done * cfg.perStep;
+    if (done === st.steps.length) xp += cfg.gateBonus;
+  });
+  return xp;
+}
+
+function getMaxXp() {
+  return STAGES.reduce(function(sum, st) {
+    var cfg = XP_TABLE[st.id];
+    return sum + st.steps.length * cfg.perStep + cfg.gateBonus;
+  }, 0);
+}
+
+function getRankInfo(xp) {
+  var idx = 0;
+  RANKS.forEach(function(r, i) { if (xp >= r.minXp) idx = i; });
+  var rank = RANKS[idx];
+  var next = RANKS[idx + 1] || null;
+  var pct = next ? Math.round(((xp - rank.minXp) / (next.minXp - rank.minXp)) * 100) : 100;
+  return { idx: idx, rank: rank, next: next, pct: pct };
+}
+
+// XP the given open step would award right now (+ the gate bonus if it's the stage's last open step).
+function getStepReward(stage, step) {
+  var cfg = XP_TABLE[stage.id];
+  if (completedSet.has(step.id)) return { stepXp: 0, gateXp: 0 };
+  var openSteps = stage.steps.filter(function(s) { return !completedSet.has(s.id); }).length;
+  return { stepXp: cfg.perStep, gateXp: openSteps === 1 ? cfg.gateBonus : 0 };
+}
+
+function makeEl(tag, className, text) {
+  var el = document.createElement(tag);
+  if (className) el.className = className;
+  if (text !== undefined) el.textContent = text;
+  return el;
+}
+
+function renderXpHud() {
+  var xp = computeXp(completedSet);
+  var info = getRankInfo(xp);
+  document.getElementById("xpRankIcon").textContent = info.rank.icon;
+  document.getElementById("xpLevelBubble").textContent = String(info.rank.level);
+  document.getElementById("xpRankTitle").textContent = info.rank.title;
+  document.getElementById("xpBarFill").style.width = info.pct + "%";
+  document.getElementById("xpMeta").textContent = info.next
+    ? "Lv " + info.rank.level + " · " + formatXp(xp) + " / " + formatXp(info.next.minXp) + " XP"
+    : "Lv " + info.rank.level + " · " + formatXp(xp) + " XP · Max rank";
+
+  var toNext = info.next ? formatXp(info.next.minXp - xp) + " XP to " + info.next.title : "Max rank reached";
+  var btn = document.getElementById("xpHudBtn");
+  btn.title = toNext;
+  btn.setAttribute("aria-label",
+    "Rank: " + info.rank.title + ", level " + info.rank.level + ", " + formatXp(xp) + " XP. " + toNext + ". Show rank ladder");
+
+  document.getElementById("xpLadderTotal").textContent = formatXp(xp) + " / " + formatXp(getMaxXp()) + " XP";
+  var list = document.getElementById("xpLadderList");
+  list.replaceChildren();
+  RANKS.forEach(function(r, i) {
+    var state = i < info.idx ? "achieved" : (i === info.idx ? "achieved current" : (i === info.idx + 1 ? "next" : "locked"));
+    var li = makeEl("li", "xp-rung " + state);
+    var icon = makeEl("span", "r-icon", r.icon);
+    icon.setAttribute("aria-hidden", "true");
+    var xpText;
+    if (i === info.idx) xpText = "Current";
+    else if (i < info.idx) xpText = "✓ " + formatXp(r.minXp) + " XP";
+    else if (i === info.idx + 1) xpText = formatXp(r.minXp - xp) + " XP to go";
+    else xpText = formatXp(r.minXp) + " XP";
+    li.append(icon, makeEl("span", "r-name", "Lv " + r.level + " · " + r.title), makeEl("span", "r-xp", xpText));
+    list.appendChild(li);
+  });
+}
+
+function renderXpHowList() {
+  var how = document.getElementById("xpHowList");
+  how.replaceChildren();
+  STAGES.forEach(function(st) {
+    var cfg = XP_TABLE[st.id];
+    var li = makeEl("li");
+    li.append(
+      makeEl("span", "", st.icon + " " + st.name),
+      makeEl("span", "x", "+" + cfg.perStep + "/step · +" + cfg.gateBonus + " " + cfg.gateName)
+    );
+    how.appendChild(li);
+  });
+}
+
+var xpGainTimer = null;
+function showXpGain(amount) {
+  var el = document.getElementById("xpGain");
+  var btn = document.getElementById("xpHudBtn");
+  el.textContent = "+" + formatXp(amount) + " XP";
+  el.classList.remove("show");
+  btn.classList.remove("pulse");
+  void el.offsetWidth; // restart the CSS animations if they are already running
+  el.classList.add("show");
+  btn.classList.add("pulse");
+  clearTimeout(xpGainTimer);
+  xpGainTimer = setTimeout(function() {
+    el.classList.remove("show");
+    btn.classList.remove("pulse");
+  }, 1800);
+}
+
 function applyAccent(stage) {
   var r = document.documentElement.style;
   r.setProperty("--accent", stage.accent);
@@ -1231,20 +1483,28 @@ function escapeHtml(s) {
 
 function renderTopSwitcher() {
   var sw = document.getElementById("switcher");
-  sw.innerHTML = STAGES.map(function(st, i) {
-    return '<button class="mtab ' + (i === activeStageIdx ? 'active' : '') + '" data-stage-idx="' + i + '">' + st.shortTab + '</button>';
-  }).join("");
-
-  sw.querySelectorAll(".mtab").forEach(function(btn) {
+  sw.replaceChildren();
+  STAGES.forEach(function(st, i) {
+    var btn = makeEl("button", "mtab" + (i === activeStageIdx ? " active" : ""));
+    btn.type = "button";
+    btn.setAttribute("role", "tab");
+    btn.setAttribute("aria-selected", i === activeStageIdx ? "true" : "false");
+    btn.title = st.shortTab;
+    // "🛠 M1 · Hangar Prep (Wk 0)" -> icon / code / name / week, so CSS can drop code + week on medium screens.
+    var m = /^(\S+)\s+(M\d+)\s+·\s+(.+?)(?:\s+\(([^)]+)\))?$/.exec(st.shortTab);
+    if (m) {
+      btn.append(makeEl("span", "mtab-icon", m[1]), makeEl("span", "mtab-code", m[2] + " ·"), makeEl("span", "mtab-name", m[3]));
+      if (m[4]) btn.appendChild(makeEl("span", "mtab-week", "(" + m[4] + ")"));
+    } else {
+      btn.textContent = st.shortTab;
+    }
     btn.addEventListener("click", function() {
-      activeStageIdx = parseInt(btn.getAttribute("data-stage-idx"), 10);
+      activeStageIdx = i;
       activeStepIdx = 0;
       renderAll();
     });
+    sw.appendChild(btn);
   });
-
-  var curStage = STAGES[activeStageIdx];
-  document.getElementById("missionChipText").textContent = curStage.chip;
 }
 
 function renderLeftStepper() {
@@ -1279,6 +1539,31 @@ function renderLeftStepper() {
       renderAll();
     });
   });
+}
+
+function decorateStepWithXp(container, stage, step, isDone) {
+  var cfg = XP_TABLE[stage.id];
+  var reward = getStepReward(stage, step);
+
+  var eyebrowRow = container.querySelector(".eyebrow-row");
+  if (eyebrowRow) {
+    eyebrowRow.appendChild(isDone
+      ? makeEl("span", "xp-chip earned", "🏆 " + formatXp(cfg.perStep) + " XP earned")
+      : makeEl("span", "xp-chip", "🏆 +" + formatXp(reward.stepXp) + " XP" +
+          (reward.gateXp ? " · +" + formatXp(reward.gateXp) + " " + cfg.gateName + " bonus" : "")));
+  }
+
+  var gatePill = container.querySelector(".mars-gate-pill");
+  if (gatePill) {
+    gatePill.appendChild(makeEl("span", "gate-xp", isStageCleared(stage, completedSet)
+      ? "✓ Cleared · +" + formatXp(cfg.gateBonus) + " XP"
+      : "+" + formatXp(cfg.gateBonus) + " XP bonus"));
+  }
+
+  var completeBtn = document.getElementById("completeNextBtn");
+  if (completeBtn && !isDone) {
+    completeBtn.textContent = "Complete Step & Continue · +" + formatXp(reward.stepXp + reward.gateXp) + " XP →";
+  }
 }
 
 function renderCenterPlaybook() {
@@ -1402,6 +1687,9 @@ function renderCenterPlaybook() {
   var container = document.getElementById("mainPlaybook");
   container.innerHTML = html;
 
+  // XP reward chip, gate bonus tag, and Complete-button reward (DOM APIs only)
+  decorateStepWithXp(container, stage, step, isDone);
+
   // Bind Copy Buttons
   var copyPromptBtn = document.getElementById("copyPromptBtn");
   if (copyPromptBtn) {
@@ -1430,10 +1718,24 @@ function renderCenterPlaybook() {
 
   document.getElementById("completeNextBtn").addEventListener("click", function() {
     var wasDone = completedSet.has(step.id);
+    var xpBefore = computeXp(completedSet);
+    var rankBefore = getRankInfo(xpBefore);
     completedSet.add(step.id);
     saveProgress();
     if (!wasDone) {
-      showBadgeUnlock(step.badgeName, "Step " + globalNum + " telemetry locked!");
+      var xpAfter = computeXp(completedSet);
+      var rankAfter = getRankInfo(xpAfter);
+      var cfg = XP_TABLE[stage.id];
+      var xpText = "+" + formatXp(cfg.perStep) + " XP" +
+        (isStageCleared(stage, completedSet) ? " · +" + formatXp(cfg.gateBonus) + " " + cfg.gateName + " bonus" : "");
+      if (rankAfter.idx > rankBefore.idx) {
+        showBadgeUnlock("Lv " + rankAfter.rank.level + " · " + rankAfter.rank.title,
+          xpText + " · " + step.badgeName + " badge earned",
+          { kicker: "Rank Up!", icon: rankAfter.rank.icon, rankUp: true });
+      } else {
+        showBadgeUnlock(step.badgeName, xpText + " · Step " + globalNum + " telemetry locked!");
+      }
+      showXpGain(xpAfter - xpBefore);
     }
     if (activeStepIdx < stage.steps.length - 1) {
       activeStepIdx++;
@@ -1598,14 +1900,20 @@ function copyToClipboard(text, btn) {
   });
 }
 
-function showBadgeUnlock(name, cheer) {
+var badgePopTimer = null;
+function showBadgeUnlock(name, cheer, opts) {
+  opts = opts || {};
   var pop = document.getElementById("badgePop");
+  document.getElementById("bpKick").textContent = opts.kicker || "Mission Milestone Unlocked";
+  document.getElementById("bpDisc").textContent = opts.icon || "🏅";
   document.getElementById("bpName").textContent = name;
   document.getElementById("bpCheer").textContent = cheer;
+  pop.classList.toggle("rank-up", !!opts.rankUp);
   pop.classList.add("show");
-  setTimeout(function() {
+  clearTimeout(badgePopTimer);
+  badgePopTimer = setTimeout(function() {
     pop.classList.remove("show");
-  }, 2600);
+  }, opts.rankUp ? 3400 : 2600);
 }
 
 function switchViewTab(view) {
@@ -1657,11 +1965,61 @@ if (skillJumpEl) {
 document.getElementById("tabBtnPlaybook").addEventListener("click", function() { switchViewTab("playbook"); });
 document.getElementById("tabBtnContracts").addEventListener("click", function() { switchViewTab("contracts"); });
 
-document.getElementById("resetProgressBtn").addEventListener("click", function() {
-  completedSet.clear();
-  saveProgress();
-  renderAll();
-});
+// Reset wipes checkmarks AND XP/rank, so it needs a second click within 4s (inline confirm, no native dialog).
+(function initResetButton() {
+  var btn = document.getElementById("resetProgressBtn");
+  var idleLabel = btn.textContent;
+  var armTimer = null;
+  function disarm() {
+    clearTimeout(armTimer);
+    btn.classList.remove("armed");
+    btn.textContent = idleLabel;
+  }
+  btn.addEventListener("click", function() {
+    if (!btn.classList.contains("armed")) {
+      btn.classList.add("armed");
+      btn.textContent = "Click again to reset all checkmarks & XP";
+      armTimer = setTimeout(disarm, 4000);
+      return;
+    }
+    disarm();
+    completedSet.clear();
+    saveProgress();
+    renderAll();
+  });
+})();
+
+(function initXpHud() {
+  var hud = document.getElementById("xpHud");
+  var btn = document.getElementById("xpHudBtn");
+  var panel = document.getElementById("xpLadder");
+  function setOpen(open) {
+    panel.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  btn.addEventListener("click", function() { setOpen(panel.hidden); });
+  document.addEventListener("click", function(e) {
+    if (!panel.hidden && !hud.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape" && !panel.hidden) {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+  renderXpHowList();
+})();
+
+// The header can wrap to two rows on narrower screens; keep sticky rails and pops just below it.
+(function syncTopbarHeight() {
+  var bar = document.getElementById("topbar");
+  function apply() {
+    if (bar.offsetHeight) document.documentElement.style.setProperty("--topbar-h", bar.offsetHeight + "px");
+  }
+  apply();
+  if (window.ResizeObserver) new ResizeObserver(apply).observe(bar);
+  else window.addEventListener("resize", apply);
+})();
 
 document.getElementById("paramPreset").addEventListener("change", function(e) {
   applyPresetIndex(parseInt(e.target.value, 10));
@@ -1681,6 +2039,7 @@ function renderAll() {
   renderCenterPlaybook();
   renderContractsTab();
   renderRightRail();
+  renderXpHud();
 }
 
 function maskGoogleEmail(email) {
