@@ -386,9 +386,18 @@ class IndexHtmlContractTests(unittest.TestCase):
         self.assertEqual(w["tactical_departmental_6_use_cases"]["count"], 6)
         self.assertEqual(w["unviable_trap_4_use_cases"]["count"], 4)
 
+    def test_10000x_montecarlo_and_workspace_bootstrapper(self) -> None:
+        import evaluate_10000x_montecarlo
+
+        out_json = io.StringIO()
+        with redirect_stdout(out_json):
+            rc = evaluate_10000x_montecarlo.main(["--strict", "--json"])
+        self.assertEqual(rc, 0)
+        rep = json.loads(out_json.getvalue())
+        self.assertEqual(rep["total_simulations"], 10000)
+        self.assertEqual(rep["total_failures"], 0)
+        self.assertEqual(rep["pass_rate_pct"], 100.0)
+
 
 if __name__ == "__main__":
     unittest.main()
-
-
-

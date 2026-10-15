@@ -308,14 +308,84 @@ table.log .mono { font-family: var(--mono); font-size: 12px; color: var(--accent
 .badge-pop .bp-name { font-size: 14.5px; font-weight: 600; color: var(--ink); }
 .badge-pop .bp-cheer { font-size: 12px; color: var(--muted); }
 
+/* ---- Google Workspace (@google.com) Zero-Trust SSO Gate ---- */
+body.sso-locked { overflow: hidden; }
+body.sso-locked .topbar,
+body.sso-locked .app { display: none !important; }
+.sso-gate {
+  position: fixed; inset: 0; z-index: 9999;
+  display: none; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 20% 20%, #1e293b 0%, #0f172a 70%);
+  padding: 24px;
+}
+body.sso-locked .sso-gate { display: flex; }
+.sso-card {
+  width: 100%; max-width: 460px; background: #ffffff; color: var(--ink);
+  border-radius: 18px; border: 1px solid var(--border);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.45); padding: 32px 28px; text-align: center;
+}
+.sso-logo {
+  width: 56px; height: 56px; border-radius: 16px; margin: 0 auto 16px;
+  display: grid; place-items: center; font-size: 28px;
+  background: linear-gradient(135deg, #1a73e8, #185abc); color: #fff;
+  box-shadow: 0 8px 20px rgba(26,115,232,0.35);
+}
+.sso-title { font-size: 20px; font-weight: 700; color: var(--ink); margin: 0 0 6px; }
+.sso-sub { font-size: 13.5px; color: var(--muted); margin: 0 0 20px; line-height: 1.5; }
+.sso-btn {
+  width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 12px 18px; border-radius: 999px; border: 1px solid #dadce0;
+  background: #1a73e8; color: #ffffff; font-family: var(--font-sans);
+  font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s ease;
+  box-shadow: 0 2px 6px rgba(26,115,232,0.3);
+}
+.sso-btn:hover { background: #1557b0; box-shadow: 0 4px 12px rgba(26,115,232,0.4); }
+.sso-error {
+  margin-top: 14px; padding: 10px 12px; border-radius: 8px;
+  background: #fce8e6; border: 1px solid #fad2cf; color: #c5221f;
+  font-size: 12.5px; font-weight: 500; display: none;
+}
+.sso-meta {
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
+  font-size: 11.5px; color: var(--subtle); display: flex; flex-direction: column; gap: 4px;
+}
+.sso-top-badge {
+  display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px;
+  border-radius: 999px; background: #e6f4ea; border: 1px solid #b7e1c2;
+  color: #137333; font-size: 11.5px; font-weight: 600;
+}
+.sso-signout-btn {
+  border: none; background: transparent; color: #137333; font-size: 11px;
+  font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0 2px;
+}
+
 @media (max-width: 1120px) {
   .app { grid-template-columns: 1fr; grid-template-areas: "nav" "main" "score"; }
   .rail-left, .rail-right { position: static; }
   .topbar { height: auto; padding: 12px 16px; flex-wrap: wrap; }
 }
 </style>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
+
+<!-- GOOGLE WORKSPACE (@google.com ONLY) SSO GATE OVERLAY -->
+<div class="sso-gate" id="googleSsoGate" role="dialog" aria-modal="true" aria-labelledby="ssoGateTitle">
+  <div class="sso-card">
+    <div class="sso-logo">🚀</div>
+    <h1 class="sso-title" id="ssoGateTitle">TDL User Guide · Google SSO</h1>
+    <p class="sso-sub">This console is restricted to internal <strong>@google.com</strong> Workspace accounts on GCP project <code>project-maui</code>.</p>
+    <button type="button" class="sso-btn" id="googleSsoBtn">
+      <span>🔐 Sign in with Google (@google.com)</span>
+    </button>
+    <div id="gsiButtonContainer" style="margin-top:10px;display:flex;justify-content:center;"></div>
+    <div class="sso-error" id="googleSsoError" role="alert"></div>
+    <div class="sso-meta">
+      <span>🔒 OAuth 2.0 Brand: <code>orgInternalOnly</code> (project-maui)</span>
+      <span>🛡️ Enforced Policy: <code>hd=google.com</code> &amp; <code>email_verified=true</code></span>
+    </div>
+  </div>
+</div>
 
 <!-- TOP STICKY BAR -->
 <header class="topbar">
@@ -329,6 +399,10 @@ table.log .mono { font-family: var(--mono); font-size: 12px; color: var(--accent
   <div class="spacer"></div>
   <div class="switcher" id="switcher" role="tablist" aria-label="Mission stage switcher"></div>
   <span class="mission-chip" id="missionChip"><span class="dot"></span> <span id="missionChipText">Stage 1 · Hangar Prep</span></span>
+  <span class="sso-top-badge" id="ssoUserBadge" hidden>
+    <span id="ssoUserEmailText"></span>
+    <button type="button" class="sso-signout-btn" id="ssoSignOutBtn">Sign out</button>
+  </span>
 </header>
 
 <!-- 3-COLUMN CLOUD CONSOLE LAYOUT -->
@@ -466,15 +540,15 @@ table.log .mono { font-family: var(--mono); font-size: 12px; color: var(--accent
 
 var CUSTOMER_PRESETS = [
   { industry: "P&C Insurance", useCase: "Commercial Auto FNOL Triage Agent", volume: 250000, rate: 68, hours: 0.30, peakTurns: 12, project: "insure-fnol-prod-01" },
-  { industry: "Retail Banking", useCase: "AML SAR Narrative Investigation Agent", volume: 45000, rate: 95, hours: 0.75, peakTurns: 8, project: "bank-aml-sar-prod" },
+  { industry: "Retail Banking", useCase: "AML SAR Narrative Investigation Agent", volume: 75000, rate: 95, hours: 0.75, peakTurns: 8, project: "bank-aml-sar-prod" },
   { industry: "Healthcare Provider", useCase: "Prior Authorization Clinical Packet Reviewer", volume: 180000, rate: 82, hours: 0.40, peakTurns: 15, project: "health-prior-auth-01" },
   { industry: "Enterprise IT", useCase: "AskIT Tier-2 Ticket Resolution & IAM Provisioner", volume: 600000, rate: 58, hours: 0.20, peakTurns: 25, project: "corp-askit-agent-prod" },
-  { industry: "Automotive Mfg", useCase: "Supplier Warranty Chargeback & Part Defect Auditor", volume: 120000, rate: 74, hours: 0.45, peakTurns: 10, project: "auto-warranty-audit-01" },
+  { industry: "Automotive Mfg", useCase: "Supplier Warranty Chargeback & Part Defect Auditor", volume: 150000, rate: 74, hours: 0.45, peakTurns: 10, project: "auto-warranty-audit-01" },
   { industry: "Telecommunications", useCase: "B2B Fiber Order Fallout & Circuit Dispatch Agent", volume: 320000, rate: 64, hours: 0.25, peakTurns: 20, project: "telco-fiber-fallout-01" },
   { industry: "Global Logistics", useCase: "Customs Tariff Classification & Broker Hold Resolver", volume: 410000, rate: 62, hours: 0.22, peakTurns: 18, project: "freight-customs-agent" },
-  { industry: "Pharmaceutical R&D", useCase: "FDA CMC Regulatory Submission Cross-Check Agent", volume: 18000, rate: 135, hours: 1.50, peakTurns: 6, project: "pharma-cmc-reg-prod" },
-  { industry: "Commercial Aviation", useCase: "IROPS Crew Re-Pairing & Maintenance MEL Advisor", volume: 85000, rate: 110, hours: 0.50, peakTurns: 14, project: "air-irops-recovery-01" },
-  { industry: "B2B SaaS Legal Ops", useCase: "Enterprise DPA & Vendor Security Addendum Redliner", volume: 30000, rate: 145, hours: 0.85, peakTurns: 8, project: "saas-dpa-redline-01" }
+  { industry: "Pharmaceutical R&D", useCase: "FDA CMC Regulatory Submission Cross-Check Agent", volume: 32000, rate: 135, hours: 1.25, peakTurns: 6, project: "pharma-cmc-reg-prod" },
+  { industry: "Commercial Aviation", useCase: "IROPS Crew Re-Pairing & Maintenance MEL Advisor", volume: 95000, rate: 110, hours: 0.50, peakTurns: 14, project: "air-irops-recovery-01" },
+  { industry: "B2B SaaS Legal Ops", useCase: "Enterprise DPA & Vendor Security Addendum Redliner", volume: 42000, rate: 145, hours: 0.85, peakTurns: 8, project: "saas-dpa-redline-01" }
 ];
 
 var STAGES = [
@@ -595,7 +669,7 @@ var STAGES = [
         whyItMatters: "Prevents wasting 12 weeks on a science project with no data access, no executive sponsor, or negative net annual impact.",
         promptType: "What to Paste into Your AI Agent",
         promptTemplate: "Use workshop-intake, create-delta-ucc, and ai-value-sizing to evaluate our candidate use cases, starting with {{USE_CASE}} ({{VOLUME}} annual cases, ${{RATE}}/hr loaded rate, {{HOURS_SAVED}} hrs saved/case). Score the 6-Dimension Data Yardstick in docs/WORKSHOP_INTAKE.md, draft the 1-page Use Case Alignment Summary in docs/USE_CASE_CANVAS.md, and compute Base/Bull/Bear ROI in docs/VALUE_SIZING.md.",
-        cliTemplate: "python3 ~/.gemini/skills/tool-tdl-user-guide/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --vcr 0.50 --scdf 0.85 --wacc 0.10",
+        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --vcr 0.50 --scdf 0.85 --wacc 0.10",
         livePreview: "roi",
         checks: [
           "Data Yardstick (Available / Accessible / Quality / Coverage / Privacy / Latency) & 1-Page Alignment Summary signed",
@@ -736,7 +810,7 @@ var STAGES = [
         whyItMatters: "Per the official Delivery Guide (Phase 1, Action #5): defining baseline evaluation metrics on the curated Golden Dataset in Week 2 serves as the north star guiding every subsequent agentic implementation cycle.",
         promptType: "What to Paste into Your AI Agent",
         promptTemplate: "Use specification-engineer (Part IV) and agent-eval-statistical-auditing to curate our Golden Dataset at evals/golden_dataset.json for {{USE_CASE}} from docs/PRD.md and docs/CUJ_MAP.md, and lock our baseline evaluation metrics and target thresholds (multi_turn_task_success, multi_turn_tool_use_quality, hallucination, safety, and p95 latency) in tests/eval/eval_config.yaml.",
-        cliTemplate: "# Verify the statistical judge calibration pipeline on the bundled reference fixtures\npython3 ~/.gemini/skills/tool-tdl-user-guide/delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --demo",
+        cliTemplate: "# Verify the statistical judge calibration pipeline on the bundled reference fixtures\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --demo",
         livePreview: "aua",
         checks: [
           "Curated Golden Dataset of real-world test cases committed at evals/golden_dataset.json",
@@ -827,7 +901,7 @@ var STAGES = [
         whyItMatters: "Runs a deterministic verification loop where code is only accepted when all unit tests and linters pass, tracking Demo 1/2/3 feature completion.",
         promptType: "What to Paste into Your AI Agent",
         promptTemplate: "Use google-agents-cli-scaffold and claude-agent-harness to implement {{USE_CASE}} defined in docs/PRD.md and docs/TDD.md for GCP project {{PROJECT}}. Run the goal verification loop until unit tests pass with zero errors, run agents-cli eval against evals/golden_dataset.json, and update docs/DEMO_FRAME_UP.md and STATE.md.",
-        cliTemplate: "python3 ~/.gemini/skills/tool-tdl-user-guide/ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \\\n  --project \"{{PROJECT}}\" --workspace . --goal \"Implement {{USE_CASE}} per docs/TDD.md\" \\\n  --spec docs/PRD.md --spec docs/TDD.md --verify \"python3 -m unittest discover -s tests -p 'test_*.py'\" --dry-run",
+        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/claude-agent-harness/scripts/call_opus_model_garden.py \\\n  --project \"{{PROJECT}}\" --workspace . --goal \"Implement {{USE_CASE}} per docs/TDD.md\" \\\n  --spec docs/PRD.md --spec docs/TDD.md --verify \"python3 -m unittest discover -s tests -p 'test_*.py'\" --dry-run",
         checks: [
           "ADK agent and MCP tools implemented with 100% passing test suite & zero TODO/FIXME stubs",
           "Bi-weekly Demo 1/2/3 Frame-Up and RAID logs updated in docs/DEMO_FRAME_UP.md & STATE.md"
@@ -852,7 +926,7 @@ var STAGES = [
         whyItMatters: "Detects scale compression and leniency bias (the 'illusion of accuracy') using disattenuated correlation (d_r), Quadratic Weighted Kappa (QWK), PRMSE, Cronbach's alpha, ICC(3,k), and Wilcoxon tests.",
         promptType: "What to Paste into Your AI Agent",
         promptTemplate: "Use the agent-eval-statistical-auditing skill to evaluate {{USE_CASE}} against the 27 CLA criteria and run audit_llm_judge.py on our paired human SME vs. LLM judge ratings to generate docs/EVAL_AUDIT_REPORT.md.",
-        cliTemplate: "python3 ~/.gemini/skills/tool-tdl-user-guide/delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py \\\n  --input ~/.gemini/skills/tool-tdl-user-guide/delivery/agent-eval-statistical-auditing/examples/fixtures/calibrated_judge.json",
+        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-eval-statistical-auditing/scripts/audit_llm_judge.py \\\n  --input ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-eval-statistical-auditing/examples/fixtures/calibrated_judge.json",
         livePreview: "aua",
         checks: [
           "Pipeline 1 (d_r >= 0.80, QWK >= 0.60, SD ratio >= 0.80, PRMSE > 0, Wilcoxon p > 0.05) and Pipelines 2/3 passed",
@@ -878,7 +952,7 @@ var STAGES = [
         whyItMatters: "Multi-step agents amplify token RPM/TPM by 20–30× per user turn; sizing quotas at 5× peak and tuning gRPC pools (8 -> 128 channels) prevents HTTP 429 outages.",
         promptType: "What to Paste into Your AI Agent",
         promptTemplate: "Use the agent-load-testing skill to run calculate_agent_quotas.py for {{USE_CASE}} at {{PEAK_TURNS}} peak turns/min, generate a Locust SSE streaming load test suite, and write the fan-out math, 5x quota table, and p50/p95 latency results to docs/LOAD_TEST_REPORT.md.",
-        cliTemplate: "python3 ~/.gemini/skills/tool-tdl-user-guide/delivery/agent-load-testing/scripts/calculate_agent_quotas.py \\\n  --sub-questions 6 --chunks-per-subquestion 4 --tokens-per-call 20000 \\\n  --peak-turns-per-min {{PEAK_TURNS}} --peak-multiplier 5.0",
+        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-load-testing/scripts/calculate_agent_quotas.py \\\n  --sub-questions 6 --chunks-per-subquestion 4 --tokens-per-call 20000 \\\n  --peak-turns-per-min {{PEAK_TURNS}} --peak-multiplier 5.0",
         livePreview: "quota",
         checks: [
           "Recursive fan-out RPM/TPM (27 calls/turn) and 5× safety-margin Vertex AI quotas calculated",
@@ -919,7 +993,7 @@ var STAGES = [
         whyItMatters: "Proves measured latency, quality lift on the Golden Dataset, and dollar savings side-by-side against your Phase 1 baseline and transitions ownership cleanly.",
         promptType: "What to Paste into Your AI Agent",
         promptTemplate: "Use ai-value-sizing and tdl-field-guide to produce our final closeout deliverables for {{USE_CASE}} from docs/as_is_report.md, docs/EVAL_AUDIT_REPORT.md, and docs/LOAD_TEST_REPORT.md:\n1. Updated docs/VALUE_SIZING.md with measured post-launch KPIs\n2. Executive Closeout Deck in docs/CLOSEOUT_DECK.md (The Challenge/Vision/Experience, The Architecture/Tech, The Value/Future)\n3. Final STATE.md Gate 3 sign-off and FDE Blameless Retro notes",
-        cliTemplate: "python3 ~/.gemini/skills/tool-tdl-user-guide/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --vcr 0.50 --scdf 0.85 --wacc 0.10",
+        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --vcr 0.50 --scdf 0.85 --wacc 0.10",
         livePreview: "roi",
         checks: [
           "docs/CLOSEOUT_DECK.md & docs/VALUE_SIZING.md signed off by Executive Sponsor with measured KPIs",
@@ -1029,7 +1103,7 @@ function renderLivePreviewWidget(step) {
             '<tbody>' +
               '<tr><td><strong>Base Case</strong></td><td class="mono">0.50 × 0.85</td><td class="mono"><strong>$' + r.base.netAnn.toLocaleString() + '/yr</strong></td><td class="mono"><strong>$' + r.base.npv.toLocaleString() + '</strong></td><td class="mono">' + r.base.roiPct + '%</td><td class="mono">' + r.base.payback + '</td><td>' + (r.base.npv > 0 ? '✅ CFO Approved' : '⚠️ Tune Scope/Vol') + '</td></tr>' +
               '<tr><td><strong>Bull Case</strong></td><td class="mono">0.75 × 1.02</td><td class="mono">$' + r.bull.netAnn.toLocaleString() + '/yr</td><td class="mono">$' + r.bull.npv.toLocaleString() + '</td><td class="mono">' + r.bull.roiPct + '%</td><td class="mono">' + r.bull.payback + '</td><td>✅ Upside</td></tr>' +
-              '<tr><td><strong>Bear Case</strong></td><td class="mono">0.50 × 0.40</td><td class="mono">$' + r.bear.netAnn.toLocaleString() + '/yr</td><td class="mono">$' + r.bear.npv.toLocaleString() + '</td><td class="mono">' + r.bear.roiPct + '%</td><td class="mono">' + r.bear.payback + '</td><td>' + (r.bear.netAnn > 68000 ? '✅ Downside Safe' : 'ℹ️ OpEx Sensitivity') + '</td></tr>' +
+              '<tr><td><strong>Bear Case</strong></td><td class="mono">0.50 × 0.40</td><td class="mono">$' + r.bear.netAnn.toLocaleString() + '/yr</td><td class="mono">$' + r.bear.npv.toLocaleString() + '</td><td class="mono">' + r.bear.roiPct + '%</td><td class="mono">' + r.bear.payback + '</td><td>' + (r.bear.npv > 0 ? '✅ Downside Safe' : 'ℹ️ OpEx Sensitivity') + '</td></tr>' +
             '</tbody>' +
           '</table>' +
         '</div>' +
@@ -1711,6 +1785,135 @@ function renderAll() {
   renderRubricTab();
   renderRightRail();
 }
+
+function maskGoogleEmail(email) {
+  var parts = String(email || "").split("@");
+  if (parts.length !== 2) return "***@google.com";
+  var local = parts[0];
+  var prefix = local.length > 2 ? local.slice(0, 2) : local.slice(0, 1);
+  return prefix + "***@" + parts[1];
+}
+
+(function initGoogleDomainSso() {
+  var MAUI_OAUTH_CLIENT_ID = "697625214430-l415khqv5cj478l1nap9d8m41m73d2q8.apps.googleusercontent.com";
+  var ALLOWED_DOMAIN = "google.com";
+  var activeAccessToken = null;
+  var tokenClient = null;
+
+  var isRemoteHttps = window.location.protocol === "https:";
+  if (isRemoteHttps) {
+    document.body.classList.add("sso-locked");
+  }
+
+  var errBox = document.getElementById("googleSsoError");
+  var ssoBtn = document.getElementById("googleSsoBtn");
+  var badge = document.getElementById("ssoUserBadge");
+  var emailSpan = document.getElementById("ssoUserEmailText");
+  var signOutBtn = document.getElementById("ssoSignOutBtn");
+
+  function showSsoError(msg) {
+    if (!errBox) return;
+    errBox.textContent = msg;
+    errBox.style.display = "block";
+  }
+
+  function clearSsoError() {
+    if (!errBox) return;
+    errBox.textContent = "";
+    errBox.style.display = "none";
+  }
+
+  function unlockForVerifiedGoogleUser(email) {
+    clearSsoError();
+    document.body.classList.remove("sso-locked");
+    if (emailSpan && badge) {
+      emailSpan.textContent = "🟢 " + maskGoogleEmail(email);
+      badge.hidden = false;
+    }
+  }
+
+  function handleAccessTokenResponse(tokenResponse) {
+    if (!tokenResponse || !tokenResponse.access_token) {
+      showSsoError("Authentication cancelled or did not return an OAuth token.");
+      return;
+    }
+    var accessToken = tokenResponse.access_token;
+    Promise.all([
+      fetch("https://oauth2.googleapis.com/tokeninfo?access_token=" + encodeURIComponent(accessToken)).then(function(r) {
+        if (!r.ok) throw new Error("Token validation failed");
+        return r.json();
+      }),
+      fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: { Authorization: "Bearer " + accessToken }
+      }).then(function(r) {
+        if (!r.ok) throw new Error("Userinfo lookup failed");
+        return r.json();
+      })
+    ]).then(function(results) {
+      var tokenInfo = results[0] || {};
+      var userInfo = results[1] || {};
+      var email = String(userInfo.email || tokenInfo.email || "").toLowerCase();
+      var hd = String(userInfo.hd || "").toLowerCase();
+      var verified = userInfo.email_verified === true || tokenInfo.email_verified === "true";
+      var audOk = tokenInfo.aud === MAUI_OAUTH_CLIENT_ID || tokenInfo.azp === MAUI_OAUTH_CLIENT_ID;
+
+      if (!audOk || !verified || hd !== ALLOWED_DOMAIN || !email.endsWith("@" + ALLOWED_DOMAIN)) {
+        if (window.google && window.google.accounts && window.google.accounts.oauth2) {
+          window.google.accounts.oauth2.revoke(accessToken, function() {});
+        }
+        document.body.classList.add("sso-locked");
+        showSsoError("Access Denied: Only verified @google.com Workspace accounts are authorized.");
+        return;
+      }
+      activeAccessToken = accessToken;
+      unlockForVerifiedGoogleUser(email);
+    }).catch(function() {
+      document.body.classList.add("sso-locked");
+      showSsoError("Unable to verify @google.com session with Google OAuth. Please try again.");
+    });
+  }
+
+  function ensureTokenClient() {
+    if (tokenClient) return tokenClient;
+    if (window.google && window.google.accounts && window.google.accounts.oauth2) {
+      tokenClient = window.google.accounts.oauth2.initTokenClient({
+        client_id: MAUI_OAUTH_CLIENT_ID,
+        scope: "openid email profile",
+        hosted_domain: ALLOWED_DOMAIN,
+        prompt: "select_account",
+        callback: handleAccessTokenResponse
+      });
+    }
+    return tokenClient;
+  }
+
+  if (ssoBtn) {
+    ssoBtn.addEventListener("click", function() {
+      clearSsoError();
+      var client = ensureTokenClient();
+      if (!client) {
+        showSsoError("Google Identity Services is still loading. Please wait a moment and click Sign in again.");
+        return;
+      }
+      client.requestAccessToken({ prompt: "select_account" });
+    });
+  }
+
+  if (signOutBtn) {
+    signOutBtn.addEventListener("click", function() {
+      if (activeAccessToken && window.google && window.google.accounts && window.google.accounts.oauth2) {
+        var tok = activeAccessToken;
+        activeAccessToken = null;
+        window.google.accounts.oauth2.revoke(tok, function() {
+          window.location.reload();
+        });
+      } else {
+        activeAccessToken = null;
+        window.location.reload();
+      }
+    });
+  }
+})();
 
 renderAll();
 </script>

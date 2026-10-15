@@ -117,7 +117,9 @@ def quadratic_weighted_kappa(a: Sequence[int], b: Sequence[int], lo: int, hi: in
             w = ((i - j) ** 2) / denom
             num_o += w * obs[i][j] / n
             num_e += w * (ha[i] * hb[j]) / (n * n)
-    return 1.0 if num_e == 0.0 else 1.0 - num_o / num_e
+    if num_e == 0.0:
+        return 1.0 if num_o == 0.0 else 0.0
+    return 1.0 - num_o / num_e
 
 
 def wilcoxon_signed_rank(x: Sequence[float], y: Sequence[float]) -> Tuple[float, float, float]:
@@ -177,7 +179,7 @@ def cronbach_alpha(matrix: Sequence[Sequence[float]]) -> float:
     totals = [sum(row) for row in matrix]
     vt = _variance(totals)
     if vt == 0.0:
-        return 1.0
+        return 0.0
     return (k / (k - 1.0)) * (1.0 - sum(_variance(c) for c in cols) / vt)
 
 
@@ -193,7 +195,7 @@ def icc_3k(matrix: Sequence[Sequence[float]]) -> float:
     ss_err = max(0.0, ss_total - ss_rows - ss_cols)
     ms_rows = ss_rows / (n - 1)
     ms_err = ss_err / ((n - 1) * (k - 1))
-    return 1.0 if ms_rows == 0.0 else (ms_rows - ms_err) / ms_rows
+    return 0.0 if ms_rows == 0.0 else (ms_rows - ms_err) / ms_rows
 
 
 # ----------------------------------------------------------------------------
@@ -223,7 +225,7 @@ def pipeline_1_calibration(
     sd_ratio = (sd_l / sd_h) if sd_h > 0 else None
 
     gates = {
-        "d_r_ge_0.80": d_r is not None and d_r >= 0.80,
+        "d_r_ge_0.80": d_r is not None and d_r >= 0.80 and r >= 0.50 and r_hh >= 0.50,
         "qwk_ge_0.60": qwk >= 0.60,
         "sd_ratio_ge_0.80": sd_ratio is not None and sd_ratio >= 0.80,
         "prmse_gt_0 (repo convention)": pr is not None and pr > 0.0,
