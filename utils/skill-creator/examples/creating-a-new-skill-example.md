@@ -1,6 +1,6 @@
 # Worked Example: Creating & Validating a New Skill (`bq-cost-auditor`)
 
-This example walks through creating a compliant skill in `delta-skills` using [`scripts/init_skill.py`](../scripts/init_skill.py) and verifying it with `python3 scripts/validate_skills.py`.
+This example walks through creating a compliant skill in the TDL User Guide repository using [`scripts/init_skill.py`](../scripts/init_skill.py) and verifying it with `python3 scripts/validate_skills.py`.
 
 ---
 

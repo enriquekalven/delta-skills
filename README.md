@@ -1,4 +1,4 @@
-# Delta Skills (`delta-skills`)
+# TDL User Guide
 
 An operational collection of **22 agentic skills** and **6 deterministic Python CLI tools** for executing a **12-week Google Cloud AI / Agent Delta engagement** (`go/delta-delivery-guide`)—from **Week 0 qualification and onsite discovery** through **As-Is ethnography, 50-sample baseline auditing, CUJ & Agentic PRD authoring, 4-pillar technical specification, Stitch/M3 prototyping, goal-driven code generation, recursive fan-out load testing, LLM-as-a-Judge statistical auditing (CLA + AUA), and Phase 3 ROI closeout**.
 
@@ -40,13 +40,13 @@ All legacy scaffolds, duplicate persona files, and unreferenced templates have b
 Clone this repository and register it as a skill directory or open it alongside your customer engagement workspace:
 
 ```bash
-git clone <repo-url> delta-skills
-cd delta-skills
+git clone https://github.com/delta-fde/tool-tdl-user-guide.git tdl-user-guide
+cd tdl-user-guide
 python3 scripts/validate_skills.py
 ```
 
-- **In Antigravity / Gemini CLI:** Symlink or copy individual skill folders (or the repo as a plugin) into `~/.gemini/config/skills/` or `~/.gemini/config/plugins/delta-skills/`.
-- **In a Customer Engagement Repo:** Point your coding agent at `delta-skills/SKILL.md` or invoke a specific skill by path (for example: *"Read `delta-skills/workshop-intake/SKILL.md` and generate `docs/WORKSHOP_INTAKE.md` from our discovery notes"*).
+- **In Antigravity / Gemini CLI:** Symlink or copy individual skill folders (or the repo as a plugin) into `~/.gemini/config/skills/` or `~/.gemini/config/plugins/tdl-user-guide/`.
+- **In a Customer Engagement Repo:** Point your coding agent at `tdl-user-guide/SKILL.md` or invoke a specific skill by path (for example: *"Read `tdl-user-guide/workshop-intake/SKILL.md` and generate `docs/WORKSHOP_INTAKE.md` from our discovery notes"*).
 
 ### Option B: How Skills Chain Together via Shared File Contracts
 Skills communicate through explicit markdown and JSON artifacts in the customer repository (`docs/` and `STATE.md`). You do not need to copy-paste context between prompts—each downstream skill reads the files produced by upstream skills:
@@ -302,7 +302,7 @@ python3 utils/skill-creator/scripts/init_skill.py my-new-skill --path delivery
 | **[`strategy-partner-orchestrator`](strategy-agent/strategy-partner-orchestrator/SKILL.md)** | Executive Strategy | `docs/STRATEGY_BRIEF.md` | [`mece-issue-tree.md`](strategy-agent/strategy-partner-orchestrator/references/mece-issue-tree.md) · [`cloud-migration-strategy-brief.md`](strategy-agent/strategy-partner-orchestrator/examples/cloud-migration-strategy-brief.md) |
 | **[`ai-native-strategy`](strategy-agent/ai-native-strategy/SKILL.md)** | Executive Strategy | `docs/AI_STRATEGY.md` | [`model-economics-config.json`](strategy-agent/ai-native-strategy/references/model-economics-config.json) · [`enterprise-agent-platform-strategy.md`](strategy-agent/ai-native-strategy/examples/enterprise-agent-platform-strategy.md) |
 | **[`financial-strategy`](strategy-agent/financial-strategy/SKILL.md)** | Executive Strategy | `docs/FINANCIAL_CASE.md` | [`business-case-builder.md`](strategy-agent/financial-strategy/references/business-case-builder.md) · [`saas-margin-and-ai-capex-plan.md`](strategy-agent/financial-strategy/examples/saas-margin-and-ai-capex-plan.md) |
-| **[`delta-skills-directory`](SKILL.md)** *(root index)* | Workspace Registry | Navigation & artifact routing | [`SKILL.md`](SKILL.md) |
+| **[`tdl-user-guide`](SKILL.md)** *(root index)* | Workspace Registry | Navigation & artifact routing | [`SKILL.md`](SKILL.md) |
 
 ---
 

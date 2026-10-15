@@ -1,9 +1,9 @@
 ---
-name: delta-skills-directory
-description: Master registry and navigation index for the 22 skills in the delta-skills repository (9 codify the 18 TDL Toolbox assets behind go/delta-delivery-guide; 13 are repo-native). Maps each skill to its source, input files, output artifacts, scripts, and worked examples across the 12-week Delta engagement. Triggers on "list available skills", "find a skill", "which skill should I use", "tdl toolbox mapping", or "understand the capabilities of this workspace".
+name: tdl-user-guide
+description: Master registry and navigation index for the 22 skills in the TDL User Guide repository (9 codify the 18 TDL Toolbox assets behind go/delta-delivery-guide; 13 are repo-native). Maps each skill to its source, input files, output artifacts, scripts, and worked examples across the 12-week Delta engagement. Triggers on "tdl user guide", "list available skills", "find a skill", "which skill should I use", "tdl toolbox mapping", or "understand the capabilities of this workspace".
 ---
 
-# Delta Skills Directory (22 skills)
+# TDL User Guide (22 skills)
 
 22 skills for an end-to-end Google Cloud AI / agent engagement: discovery, process ethnography and baseline measurement → CUJ, PRD, architecture and technical spec → prototyping and goal-driven build → load testing and LLM-judge auditing → value realization and closeout. **9 skills codify the 18 TDL Toolbox assets** (`go/delta-delivery-guide` and linked docs); **13 are repo-native** — see the `Source` column and [README.md](README.md).
 

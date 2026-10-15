@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Validate SKILL.md frontmatter, worked examples, code fences, JSON files, scaffolds, and relative links.
 
-Stdlib-only validator enforcing the Delta Skills repository standards:
+Stdlib-only validator enforcing the TDL User Guide repository standards:
 - Every SKILL.md has YAML frontmatter with required `name` and `description`.
 - `name` is 1..64 chars, lowercase alphanumeric + single hyphens, and matches
   the parent directory name (except the root index SKILL.md).
