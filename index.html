@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TDL User Guide — 12-Week FDE Engagement Playbook (Ford)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --google-blue: #4285F4;
+      --google-blue-dark: #1967D2;
+      --google-blue-subtle: #E8F0FE;
+      --google-green: #34A853;
+      --google-green-dark: #188038;
+      --google-green-subtle: #E6F4EA;
+      --google-yellow: #FBBC04;
+      --google-yellow-dark: #B06000;
+      --google-yellow-subtle: #FEF7E0;
+      --google-red: #EA4335;
+      --google-red-dark: #C5221F;
+      --google-red-subtle: #FCE8E6;
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F8F9FA;
+      --border: #DADCE0;
+      --text-primary: #202124;
+      --text-secondary: #5F6368;
+      --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Roboto Mono', monospace;
+      --shadow-sm: 0 1px 2px rgba(60,64,67,0.08), 0 1px 3px 1px rgba(60,64,67,0.04);
+      --shadow-md: 0 4px 12px rgba(60,64,67,0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      line-height: 1.55;
+      padding-bottom: 64px;
+    }
+
+    /* Top Co-Branded Header (Toolbox #13) */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .google-dots {
+      display: inline-flex;
+      gap: 4px;
+    }
+    .google-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-blue { background: var(--google-blue); }
+    .dot-red { background: var(--google-red); }
+    .dot-yellow { background: var(--google-yellow); }
+    .dot-green { background: var(--google-green); }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+    }
+
+    .customer-pill {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--google-blue-subtle);
+      color: var(--google-blue-dark);
+      border: 1px solid rgba(25, 103, 210, 0.2);
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .progress-bar-outer {
+      width: 96px;
+      height: 8px;
+      background: #E8EAED;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-inner {
+      height: 100%;
+      width: 0%;
+      background: var(--google-green);
+      transition: width 0.25s ease;
+    }
+
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 28px 24px 0;
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      max-width: 780px;
+    }
+
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .kpi-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .kpi-val {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 2px;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Visual Artifact Pipeline */
+    .pipeline-box {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pipeline-title {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .pipeline-track {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .pipe-node {
+      flex-shrink: 0;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+
+    .pipe-node.blue { border-left: 4px solid var(--google-blue); }
+    .pipe-node.yellow { border-left: 4px solid var(--google-yellow); }
+    .pipe-node.green { border-left: 4px solid var(--google-green); }
+    .pipe-node.red { border-left: 4px solid var(--google-red); }
+
+    .pipe-node strong {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-primary);
+    }
+
+    .pipe-node span {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .pipe-arrow {
+      color: var(--text-secondary);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Filter Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--google-blue);
+      color: var(--google-blue-dark);
+    }
+
+    .tab-btn.active {
+      background: var(--google-blue-dark);
+      color: #FFFFFF;
+      border-color: var(--google-blue-dark);
+    }
+
+    /* Phase Sections */
+    .phase-section {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .phase-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .phase-header.blue { background: linear-gradient(90deg, var(--google-blue-subtle) 0%, #FFFFFF 100%); border-left: 5px solid var(--google-blue); }
+    .phase-header.yellow { background: linear-gradient(90deg, var(--google-yellow-subtle) 0%, #FFFFFF 100%); border-left: 5px solid var(--google-yellow); }
+    .phase-header.green { background: linear-gradient(90deg, var(--google-green-subtle) 0%, #FFFFFF 100%); border-left: 5px solid var(--google-green); }
+    .phase-header.red { background: linear-gradient(90deg, var(--google-red-subtle) 0%, #FFFFFF 100%); border-left: 5px solid var(--google-red); }
+
+    .phase-title-group h2 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .phase-title-group p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .phase-badge {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .steps-grid {
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .step-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      background: var(--bg-primary);
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .step-card.completed {
+      background: #FAFFFB;
+      border-color: #A8DAB5;
+    }
+
+    .step-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .step-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .step-check-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-primary);
+    }
+
+    .step-check-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--google-green-dark);
+      cursor: pointer;
+    }
+
+    .badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .badge-skill {
+      background: var(--google-blue-subtle);
+      color: var(--google-blue-dark);
+    }
+
+    .badge-toolbox {
+      background: var(--google-yellow-subtle);
+      color: var(--google-yellow-dark);
+    }
+
+    .badge-output {
+      background: var(--google-green-subtle);
+      color: var(--google-green-dark);
+    }
+
+    .step-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      padding-left: 28px;
+    }
+
+    /* Code / Prompt Block */
+    .code-box {
+      margin-left: 28px;
+      background: #1E1F22;
+      color: #E8EAED;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      position: relative;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    .code-box pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      padding-right: 68px;
+    }
+
+    .code-kind {
+      display: inline-block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #8AB4F8;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.12);
+      color: #FFFFFF;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.22);
+    }
+
+    .copy-btn.copied {
+      background: var(--google-green);
+      border-color: var(--google-green);
+    }
+
+    /* Gate Banner */
+    .gate-banner {
+      margin: 0 24px 20px;
+      padding: 14px 18px;
+      border-radius: 8px;
+      background: var(--google-green-subtle);
+      border: 1px solid #A8DAB5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .gate-banner strong {
+      font-family: var(--font-display);
+      color: var(--google-green-dark);
+      font-size: 14px;
+    }
+
+    .gate-banner span {
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+
+    /* Companion Table */
+    table.companion-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    table.companion-table th,
+    table.companion-table td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    table.companion-table th {
+      background: var(--bg-secondary);
+      font-family: var(--font-display);
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    table.companion-table code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: var(--bg-secondary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 680px) {
+      .step-desc, .code-box {
+        margin-left: 0;
+        padding-left: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Co-Branded Header (Toolbox Asset #13) -->
+  <header>
+    <div class="brand-lockup">
+      <div class="google-dots" aria-hidden="true">
+        <span class="dot-blue"></span>
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+      </div>
+      <span class="brand-title">Google Cloud Delta</span>
+      <div class="brand-divider"></div>
+      <span class="customer-pill">× Ford (FDE Onboarding Playbook)</span>
+    </div>
+
+    <div class="header-meta">
+      <div class="progress-wrap">
+        <span>Checklist: <strong id="done-count">0</strong>/<span id="total-count">16</span></span>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progress-bar"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Hero Summary -->
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <h1>TDL User Guide — 12-Week Ford Engagement Map</h1>
+          <p>Interactive step-by-step operator guide for a new Google Cloud FDE/TDL joining the Ford project. Check off steps as you complete them, filter by phase, and click <strong>Copy</strong> on any prompt or CLI command.</p>
+        </div>
+      </div>
+      <div class="kpi-strip">
+        <div class="kpi-card">
+          <div class="kpi-label">TDL-Exclusive Skills</div>
+          <div class="kpi-val">14 Skills</div>
+          <div class="kpi-sub">10 Toolbox + 4 GCP Accelerators</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Official TDL Toolbox</div>
+          <div class="kpi-val">18 / 18 Assets</div>
+          <div class="kpi-sub">100% codified (`go/delta-delivery-guide`)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Deterministic Calculators</div>
+          <div class="kpi-val">5 CLI Scripts</div>
+          <div class="kpi-sub">Baseline, Fan-Out Quota, Judge AUA, ROI, Harness</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Engagement Cap</div>
+          <div class="kpi-val">12 Weeks</div>
+          <div class="kpi-sub">Prelude → W1–2 → W3–10 (4 Sprints) → W11–12</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual Artifact Dependency Pipeline -->
+    <section class="pipeline-box" aria-label="Artifact Dependency Chain">
+      <div class="pipeline-title">Shared Workspace File Contract (`~/projects/ford-agent/`) — Each Skill Reads Upstream & Writes Downstream</div>
+      <div class="pipeline-track">
+        <div class="pipe-node blue">
+          <strong>WORKSHOP_INTAKE.md</strong>
+          <span>Week 0 · 33 Qs + Yardstick</span>
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node blue">
+          <strong>USE_CASE_CANVAS.md</strong>
+          <span>Week 0 · 1-Page MVP Lock</span>
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node yellow">
+          <strong>CUJ_MAP.md + as_is</strong>
+          <span>Week 1 · 0.6V + 0.4F Matrix</span>
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node yellow">
+          <strong>baseline_kpis.json</strong>
+          <span>Week 1 · 50-Sample Freeze</span>
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node yellow">
+          <strong>PRD.md + TDD.md</strong>
+          <span>Week 2 · Gate 1 Sign-off</span>
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node green">
+          <strong>STITCH_PROTOTYPE.md</strong>
+          <span>Sprints 1–2 · UI + Code</span>
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node green">
+          <strong>LOAD_TEST + EVAL_AUDIT</strong>
+          <span>Sprints 3–4 · 5x Quota & AUA</span>
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node red">
+          <strong>VALUE_SIZING + STATE.md</strong>
+          <span>Weeks 11–12 · Closeout ROI</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phase Filter Tabs -->
+    <nav class="nav-tabs" aria-label="Phase filter">
+      <button class="tab-btn active" data-filter="all">All Steps (Day 1 → Week 12)</button>
+      <button class="tab-btn" data-filter="setup">0. Day 1 Setup</button>
+      <button class="tab-btn" data-filter="prelude">1. Prelude (Week 0)</button>
+      <button class="tab-btn" data-filter="phase1">2. Phase 1: Foundations (W1–2)</button>
+      <button class="tab-btn" data-filter="phase2">3. Phase 2: Build Sprints (W3–10)</button>
+      <button class="tab-btn" data-filter="phase3">4. Phase 3: Closeout (W11–12)</button>
+      <button class="tab-btn" data-filter="companions">5. Companion `skills.sh`</button>
+    </nav>
+
+    <!-- SECTION 0: DAY 1 SETUP -->
+    <section class="phase-section" data-phase="setup">
+      <div class="phase-header blue">
+        <div class="phase-title-group">
+          <h2>Step 0: Day 1 Laptop & Workspace Setup (10 Minutes)</h2>
+          <p>Install the 14 TDL-exclusive skills, add the upstream Google ADK / engineering companion skills, and initialize your Ford repo.</p>
+        </div>
+        <span class="phase-badge">Day 1 Onboarding</span>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s0-1" />
+              <span>0.1 Install `tool-tdl-user-guide` + Upstream Companion Skills</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">tdl-user-guide</span>
+              <span class="badge badge-toolbox">npx skills add</span>
+            </div>
+          </div>
+          <p class="step-desc">Run once in your terminal to equip Antigravity / Gemini CLI / Claude Code with the 14 TDL skills plus official Google ADK, TDD, and UI packs.</p>
+          <div class="code-box">
+            <div class="code-kind">Terminal Command</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>npx skills add delta-fde/tool-tdl-user-guide
+npx skills add google/agents-cli
+npx skills add mattpocock/skills
+npx skills add vercel-labs/agent-skills
+npx skills add vercel-labs/agent-browser
+npx skills add anthropics/skills
+npx skills add leonxlnx/taste-skill</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s0-2" />
+              <span>0.2 Create Your Local Ford Engagement Workspace</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-output">~/projects/ford-agent/</span>
+            </div>
+          </div>
+          <p class="step-desc">Drop any raw Ford kickoff notes, SOWs, architecture diagrams, or sample CSV tickets into <code>raw-notes/</code>.</p>
+          <div class="code-box">
+            <div class="code-kind">Terminal Command</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>mkdir -p ~/projects/ford-agent/docs ~/projects/ford-agent/raw-notes
+cd ~/projects/ford-agent
+git init</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: PRELUDE (WEEK 0) -->
+    <section class="phase-section" data-phase="prelude">
+      <div class="phase-header blue">
+        <div class="phase-title-group">
+          <h2>Prelude: Qualification, MVP Alignment & Access Clearance (Before Week 1)</h2>
+          <p>Do not start the 12-week clock until the use case passes the Data Yardstick and Ford Cloud Admin signs Developer Clearance.</p>
+        </div>
+        <span class="phase-badge">Week 0 · Gate 0</span>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s1-1" />
+              <span>1.1 Run the 33 Starter Questions & Data Yardstick</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">workshop-intake</span>
+              <span class="badge badge-toolbox">Toolbox #01 & #10</span>
+              <span class="badge badge-output">docs/WORKSHOP_INTAKE.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Qualifies Ford's candidate use case (`Idea → Good → Ready`) across the 6-dimension Data Yardstick (`Available / Usable / Quality`).</p>
+          <div class="code-box">
+            <div class="code-kind">Prompt to Your Coding Agent</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>Use workshop-intake to analyze the Ford discovery notes in raw-notes/. Score the 33 Starter Questions and the 6-Dimension Data Yardstick, list open blockers to ask Ford SMEs tomorrow, and write docs/WORKSHOP_INTAKE.md.</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s1-2" />
+              <span>1.2 Generate the 4-Tab UCC & 1-Page MVP Alignment Summary</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">create-delta-ucc</span>
+              <span class="badge badge-toolbox">Toolbox #04 & #10</span>
+              <span class="badge badge-output">docs/USE_CASE_CANVAS.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Locks the 1-page MVP contract (`Problem, Target Users, In-Scope MVP, Out-of-Scope, Success Metrics, Key Dependencies`).</p>
+          <div class="code-box">
+            <div class="code-kind">Prompt to Your Coding Agent</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>Use create-delta-ucc on docs/WORKSHOP_INTAKE.md to generate the 4-Tab Use Case Canvas and the 1-Page Use Case Alignment Summary for Ford at docs/USE_CASE_CANVAS.md.</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s1-3" />
+              <span>1.3 Initialize `STATE.md` & Part III Developer Access Clearance</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">tdl-field-guide + specification-engineer</span>
+              <span class="badge badge-toolbox">Toolbox #11, #12, #14</span>
+              <span class="badge badge-output">STATE.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Sets up the 7-tab Program Tracker structure (`Timeline, Use Cases, Staffing, Use Case RAID, Program RAID, Meetings, OOO`) and the cloud clearance checklist.</p>
+          <div class="code-box">
+            <div class="code-kind">Prompt to Your Coding Agent</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>Use tdl-field-guide to initialize STATE.md for the Ford engagement at phase: 0 (Prelude) with dual RAID logs, and use specification-engineer Part III to generate the Developer Access & Golden Dataset Clearance checklist for Ford's cloud admin.</pre>
+          </div>
+        </div>
+      </div>
+      <div class="gate-banner">
+        <strong>Gate 0 Exit Criteria:</strong>
+        <span>Ford Cloud Admin signs Developer Clearance + 50-item Golden Dataset reachable in sandbox → set <code>phase: 1</code> in <code>STATE.md</code>.</span>
+      </div>
+    </section>
+
+    <!-- SECTION 2: PHASE 1 FOUNDATIONS (WEEKS 1-2) -->
+    <section class="phase-section" data-phase="phase1">
+      <div class="phase-header yellow">
+        <div class="phase-title-group">
+          <h2>Phase 1: Foundations — Ethnography, Baseline, PRD & Tech Spec (Weeks 1–2)</h2>
+          <p>Shadow Ford SMEs, freeze the 50-sample statistical baseline, lock the 8-section Agentic PRD, and write the 4-part Technical Spec.</p>
+        </div>
+        <span class="phase-badge">Weeks 1–2 · Gate 1</span>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s2-1" />
+              <span>2.1 Deconstruct "As-Is" Process & Map L1–L5 CUJs (`0.6·Value + 0.4·Feasibility`)</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">business-process-redesign + cuj-architect</span>
+              <span class="badge badge-toolbox">Toolbox #02 & #03</span>
+              <span class="badge badge-output">docs/CUJ_MAP.md + docs/to_be_designs.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Turns SME shadowing notes into task decomposition tables, L1/L2/L3 autonomy boundaries, HITL gates, and the scored 4-tab CUJ matrix.</p>
+          <div class="code-box">
+            <div class="code-kind">Prompt to Your Coding Agent</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>Use business-process-redesign and cuj-architect on our Ford shadowing notes to produce docs/as_is_report.md, docs/to_be_designs.md, docs/human_agent_roles.md, and docs/CUJ_MAP.md (scoring each AI touchpoint with 0.6*Value + 0.4*Feasibility).</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s2-2" />
+              <span>2.2 Freeze the 50-Sample Historical Baseline (`compute_baseline_stats.py`)</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">synthetic-baseline-protocol</span>
+              <span class="badge badge-output">docs/baseline_kpis.json</span>
+            </div>
+          </div>
+          <p class="step-desc">Computes mean, median, P90 handling time, 95% confidence intervals, error rate, escalation rate, and annual baseline cost across 50 historical Ford items.</p>
+          <div class="code-box">
+            <div class="code-kind">Terminal Command</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>python3 ~/.gemini/config/plugins/tdl-user-guide/delivery/synthetic-baseline-protocol/scripts/compute_baseline_stats.py \
+  --times-json "[16,18,18,19,20,21,22,23,24,25,26,28,30,32,34,35,36,37,37,38,38,38,38,38,38,38,38,39,40,41,42,43,44,45,46,50,53,56,59,62,66,70,74,78,82,84,88,91,95,97]" \
+  --errors 7 --escalations 4 --hourly-rate 68.00 --annual-volume 50000 > docs/baseline_kpis.json</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s2-3" />
+              <span>2.3 Author the 8-Section Agentic PRD (`go/delta-prd-template`)</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">product-md</span>
+              <span class="badge badge-toolbox">Toolbox #05</span>
+              <span class="badge badge-output">docs/PRD.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Generates the complete Agentic PRD (including Section 5 System Prompt Architecture and Section 6 Golden Dataset Evaluation Rubric, modeled on Intel AskIT).</p>
+          <div class="code-box">
+            <div class="code-kind">Prompt to Your Coding Agent</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>Use product-md to write docs/PRD.md for Ford from docs/CUJ_MAP.md and docs/baseline_kpis.json following go/delta-prd-template.</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s2-4" />
+              <span>2.4 Select GCP Architecture Tier & Write the 4-Pillar Tech Spec</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">gcp-agent-architecture-advisor + specification-engineer</span>
+              <span class="badge badge-toolbox">Toolbox #14</span>
+              <span class="badge badge-output">docs/ARCHITECTURE_RECOMMENDATION.md + docs/TDD.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Compares Tier 1 (Gemini Enterprise), Tier 2 (ADK on Agent Runtime), and Tier 3 (ADK on Cloud Run/GKE) with verified GA/Preview stages, then writes Parts I–IV of `go/delta-squad-agent-specs`.</p>
+          <div class="code-box">
+            <div class="code-kind">Prompt to Your Coding Agent</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>First use gcp-agent-architecture-advisor on docs/PRD.md to select Tier 1, 2, or 3, verify current GCP launch stages, and write docs/ARCHITECTURE_RECOMMENDATION.md. Then use specification-engineer to write the 4-part Agent Technical Specification at docs/TDD.md.</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s2-5" />
+              <span>2.5 Run Stage 1/2 Prototype & 10–30 Item Feasibility Mini-Eval</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">stitch-design</span>
+              <span class="badge badge-toolbox">Toolbox #13 & #15</span>
+              <span class="badge badge-output">docs/STITCH_PROTOTYPE.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Applies the 7-step hypothesis loop and official Google Cloud × Ford co-branding (`#4285F4`, `#34A853`, `#FBBC04`, `#EA4335`, Google Sans / Roboto).</p>
+          <div class="code-box">
+            <div class="code-kind">Prompt to Your Coding Agent</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>Use stitch-design to build an interactive HTML/Stitch prototype of the Ford operator workbench using the Google Cloud x Ford co-branding lockup and Material 3 tokens, verify it against ui-review-checklist.md, and document the mini-eval in docs/STITCH_PROTOTYPE.md.</pre>
+          </div>
+        </div>
+      </div>
+      <div class="gate-banner">
+        <strong>Gate 1 Exit Criteria (End of Week 2):</strong>
+        <span>Ford Sponsor + TDL sign off on <code>docs/PRD.md</code>, <code>docs/TDD.md</code>, and <code>docs/baseline_kpis.json</code> → set <code>phase: 2</code> in <code>STATE.md</code>.</span>
+      </div>
+    </section>
+
+    <!-- SECTION 3: PHASE 2 CORE BUILD & DEMO SPRINTS (WEEKS 3-10) -->
+    <section class="phase-section" data-phase="phase2">
+      <div class="phase-header green">
+        <div class="phase-title-group">
+          <h2>Phase 2: Core Build & Four 2-Week Demo Sprints (Weeks 3–10)</h2>
+          <p>Four 2-week sprints delivering Demo 1 (Core UX), Demo 2 (Enterprise Integrations), and Demo 3 (Full Scope + 5x Quota & Judge Audit).</p>
+        </div>
+        <span class="phase-badge">Weeks 3–10 · Sprints 1–4 · Gate 2</span>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s3-1" />
+              <span>3.1 Sprints 1–2: Scaffold ADK Agent & Run Goal-Driven Build Loop (Demo 1)</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">claude-agent-harness + google-agents-cli</span>
+              <span class="badge badge-output">src/ + tests/ + .harness/last_run_report.json</span>
+            </div>
+          </div>
+          <p class="step-desc">Iterates against `docs/PRD.md` and `docs/TDD.md` until all acceptance unit tests and linters exit `0`.</p>
+          <div class="code-box">
+            <div class="code-kind">Terminal Command</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>python3 ~/.gemini/config/plugins/tdl-user-guide/ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
+  --project "$GOOGLE_CLOUD_PROJECT" \
+  --workspace . \
+  --goal "Implement the Ford ADK agent and tools per docs/TDD.md" \
+  --spec docs/PRD.md --spec docs/TDD.md \
+  --verify "python3 -m unittest discover -s tests -p 'test_*.py'"</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s3-2" />
+              <span>3.2 Frame Up Bi-Weekly Customer Demos & Enforce 1-in-1-Out Scope Swaps</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">tdl-field-guide</span>
+              <span class="badge badge-toolbox">Toolbox #07 & #12</span>
+              <span class="badge badge-output">docs/DEMO_FRAME_UP.md + STATE.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Maps every PRD feature ID across Demo 1, Demo 2, and Demo 3 and logs any scope swap in the Use Case RAID log.</p>
+          <div class="code-box">
+            <div class="code-kind">Prompt to Your Coding Agent</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>Use tdl-field-guide to generate docs/DEMO_FRAME_UP.md mapping all committed features in docs/PRD.md across Demo 1, Demo 2, and Demo 3, and update STATE.md for our current sprint.</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s3-3" />
+              <span>3.3 Sprints 3–4: Recursive Fan-Out Math, 5x Vertex Quota & Locust SSE Load Test</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">agent-load-testing</span>
+              <span class="badge badge-toolbox">Toolbox #16</span>
+              <span class="badge badge-output">docs/LOAD_TEST_REPORT.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Calculates `1 + Qt + (Qt × Cq) + 1` calls per turn, sizes Vertex AI RPM/TPM quotas at 5x peak, and generates the Locust SSE load test report.</p>
+          <div class="code-box">
+            <div class="code-kind">Terminal Command</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>python3 ~/.gemini/config/plugins/tdl-user-guide/delivery/agent-load-testing/scripts/calculate_agent_quotas.py \
+  --qt 6 --cq 4 --tokens-per-call 20000 --peak-turns-per-min 10 --safety-multiplier 5.0</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s3-4" />
+              <span>3.4 Sprints 3–4: 27-Criterion CLA Eval & 3-Pipeline LLM-as-a-Judge Statistical Audit</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">agent-eval-statistical-auditing</span>
+              <span class="badge badge-toolbox">Toolbox #17 & #18</span>
+              <span class="badge badge-output">docs/EVAL_AUDIT_REPORT.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Audits your LLM Judge against Ford SMEs across Pipeline 1 (`Pearson r`, `ICC(2,1)`, `Krippendorff α`, `QWK`), Pipeline 2 (`Bias`, `Compression Ratio`), and Pipeline 3 (`Flip Rate`, `Entropy`).</p>
+          <div class="code-box">
+            <div class="code-kind">Terminal Command</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>python3 ~/.gemini/config/plugins/tdl-user-guide/delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py \
+  --input ~/.gemini/config/plugins/tdl-user-guide/delivery/agent-eval-statistical-auditing/examples/fixtures/calibrated_judge.json</pre>
+          </div>
+        </div>
+      </div>
+      <div class="gate-banner">
+        <strong>Gate 2 Exit Criteria (End of Week 10):</strong>
+        <span>Demo 3 accepted + Vertex quotas provisioned at 5x peak + Judge AUA certified (`PASS`) → set <code>phase: 3</code> in <code>STATE.md</code>.</span>
+      </div>
+    </section>
+
+    <!-- SECTION 4: PHASE 3 CLOSEOUT & ROI (WEEKS 11-12) -->
+    <section class="phase-section" data-phase="phase3">
+      <div class="phase-header red">
+        <div class="phase-title-group">
+          <h2>Phase 3: Final Read-Out, Measured ROI & Closeout (Weeks 11–12)</h2>
+          <p>Compare measured production telemetry against the frozen Week 1 baseline, deliver the Executive Closeout Deck, and run the FDE Blameless Retro.</p>
+        </div>
+        <span class="phase-badge">Weeks 11–12 · Gate 3</span>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s4-1" />
+              <span>4.1 Calculate Measured Post-Launch ROI vs. Frozen Baseline (`calculate_roi.py`)</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">ai-value-sizing</span>
+              <span class="badge badge-output">docs/VALUE_SIZING.md</span>
+            </div>
+          </div>
+          <p class="step-desc">Computes 3-year NPV, ROI %, payback months, and net annual value across Base, Bull, and Bear scenarios.</p>
+          <div class="code-box">
+            <div class="code-kind">Terminal Command</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>python3 ~/.gemini/config/plugins/tdl-user-guide/ai-value-sizing/scripts/calculate_roi.py \
+  --tam-units 50000 --sam-share 0.80 --adoption-rate 0.50 --tech-compat 0.90 \
+  --hours-saved 0.55 --hourly-rate 68.0 --capex 200000 --annual-opex 55000 \
+  --vcr 0.60 --scdf 0.85 --wacc 0.10</pre>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-top">
+            <label class="step-check-label">
+              <input type="checkbox" class="step-check" data-step="s4-2" />
+              <span>4.2 Deliver Executive Closeout Deck, TDD Hand-Over & FDE Blameless Retro</span>
+            </label>
+            <div class="badges">
+              <span class="badge badge-skill">tdl-field-guide</span>
+              <span class="badge badge-toolbox">Toolbox #08 & #09</span>
+              <span class="badge badge-output">STATE.md + Closeout & Retro</span>
+            </div>
+          </div>
+          <p class="step-desc">Generates the Closeout Deck (`The Challenge | The Vision | The Experience | The Architecture | The Value`), finalizes the `docs/TDD.md` runbook, and harvests reusable patterns.</p>
+          <div class="code-box">
+            <div class="code-kind">Prompt to Your Coding Agent</div>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>Use tdl-field-guide to compile our Ford Executive Closeout Deck outline from docs/VALUE_SIZING.md and docs/PRD.md, close out the dual RAID logs in STATE.md, and draft our FDE Blameless Retrospective notes.</pre>
+          </div>
+        </div>
+      </div>
+      <div class="gate-banner">
+        <strong>Gate 3 Exit Criteria (Week 12 Close):</strong>
+        <span>Agent live in Ford production with monitoring + Executive Read-Out delivered with measured KPIs + Runbook signed off.</span>
+      </div>
+    </section>
+
+    <!-- SECTION 5: COMPANION SKILLS MATRIX -->
+    <section class="phase-section" data-phase="companions">
+      <div class="phase-header blue">
+        <div class="phase-title-group">
+          <h2>Companion Skills Pairing Matrix (`tool-tdl-user-guide` + `skills.sh`)</h2>
+          <p>How the 14 TDL-exclusive skills in this repo pair with the top-trending upstream skills on `skills.sh`.</p>
+        </div>
+        <span class="phase-badge">Ecosystem Pairing</span>
+      </div>
+      <div class="steps-grid">
+        <table class="companion-table">
+          <thead>
+            <tr>
+              <th>Engagement Task</th>
+              <th>Use From This Repo (`tool-tdl-user-guide`)</th>
+              <th>Pair With Companion Skill (`npx skills add`)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Discovery & Scope Stress-Testing</strong></td>
+              <td><code>workshop-intake</code>, <code>create-delta-ucc</code>, <code>cuj-architect</code>, <code>business-process-redesign</code></td>
+              <td><code>mattpocock/skills/grill-me</code> (1.4M) & <code>grill-with-docs</code> (1.2M)</td>
+            </tr>
+            <tr>
+              <td><strong>Agentic PRD, Tech Spec & Tickets</strong></td>
+              <td><code>product-md</code> (Toolbox #05), <code>specification-engineer</code> (Toolbox #14)</td>
+              <td><code>mattpocock/skills/to-tickets</code> & <code>domain-modeling</code></td>
+            </tr>
+            <tr>
+              <td><strong>Stitch Prototyping & Web UI</strong></td>
+              <td><code>stitch-design</code> (TDL Prototyping Guide #15 + Delta Brand #13)</td>
+              <td><code>leonxlnx/taste-skill/stitch-design-taste</code>, <code>anthropics/skills/frontend-design</code>, <code>vercel-labs/agent-skills</code></td>
+            </tr>
+            <tr>
+              <td><strong>ADK Agent Implementation & TDD</strong></td>
+              <td><code>gcp-agent-architecture-advisor</code>, <code>claude-agent-harness</code></td>
+              <td><code>google/agents-cli</code> (<code>adk-code</code>, <code>scaffold</code>, <code>deploy</code>), <code>mattpocock/skills/tdd</code></td>
+            </tr>
+            <tr>
+              <td><strong>Browser E2E & Load/Judge Certification</strong></td>
+              <td><code>agent-load-testing</code> (Toolbox #16), <code>agent-eval-statistical-auditing</code> (Toolbox #17–18)</td>
+              <td><code>vercel-labs/agent-browser</code> (1.1M), <code>google-agents-cli-eval</code> & <code>observability</code></td>
+            </tr>
+            <tr>
+              <td><strong>Executive Slide Decks & Workbooks</strong></td>
+              <td><code>tdl-field-guide</code> (Kickoff/Demo/Closeout/Retro + 7-tab Program Tracker)</td>
+              <td><code>anthropics/skills/pptx</code> & <code>anthropics/skills/xlsx</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Copy button handler
+    function copyCode(btn) {
+      const pre = btn.parentElement.querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerText = orig;
+          btn.classList.remove('copied');
+        }, 1600);
+      });
+    }
+
+    // Filter tabs
+    const tabs = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.phase-section');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const filter = tab.getAttribute('data-filter');
+        sections.forEach(sec => {
+          if (filter === 'all' || sec.getAttribute('data-phase') === filter) {
+            sec.classList.remove('hidden');
+          } else {
+            sec.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Checklist state persistence in localStorage
+    const checks = document.querySelectorAll('.step-check');
+    const doneEl = document.getElementById('done-count');
+    const totalEl = document.getElementById('total-count');
+    const barEl = document.getElementById('progress-bar');
+    const STORAGE_KEY = 'tdl_ford_onboarding_checks_v1';
+
+    function loadChecks() {
+      totalEl.textContent = checks.length;
+      let saved = {};
+      try {
+        saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      } catch (e) {}
+      checks.forEach(ch => {
+        const id = ch.getAttribute('data-step');
+        if (saved[id]) {
+          ch.checked = true;
+          ch.closest('.step-card').classList.add('completed');
+        }
+      });
+      updateProgress();
+    }
+
+    function updateProgress() {
+      let done = 0;
+      const saved = {};
+      checks.forEach(ch => {
+        const id = ch.getAttribute('data-step');
+        const card = ch.closest('.step-card');
+        if (ch.checked) {
+          done++;
+          saved[id] = true;
+          card.classList.add('completed');
+        } else {
+          card.classList.remove('completed');
+        }
+      });
+      doneEl.textContent = done;
+      const pct = checks.length ? Math.round((done / checks.length) * 100) : 0;
+      barEl.style.width = pct + '%';
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+      } catch (e) {}
+    }
+
+    checks.forEach(ch => ch.addEventListener('change', updateProgress));
+    loadChecks();
+  </script>
+</body>
+</html>
