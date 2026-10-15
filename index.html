@@ -424,23 +424,30 @@ body.sso-locked .sso-gate { display: flex; }
     <div class="nav-card">
       <div class="nav-head" style="padding-bottom:8px;">
         <div class="kicker">Live Prompt &amp; CLI Customizer</div>
-        <div class="h" style="font-size:13.5px;">Inject Customer Telemetry</div>
+        <div class="h" style="font-size:13.5px;">13 Skills &amp; 50 Customer Presets</div>
       </div>
       <div class="ppb-fields" style="grid-template-columns:minmax(0, 1fr);">
         <div class="ppb-field">
-          <label class="ppb-label" for="paramPreset">10x Customer Preset</label>
-          <select class="ppb-input" id="paramPreset" style="cursor:pointer;">
-            <option value="0">1. P&amp;C Insurance · FNOL Triage</option>
-            <option value="1">2. Retail Banking · AML SAR Investigation</option>
-            <option value="2">3. Healthcare · Prior Auth Clinical Review</option>
-            <option value="3">4. Enterprise IT · AskIT Tier-2 Resolution</option>
-            <option value="4">5. Automotive · Warranty Chargeback Audit</option>
-            <option value="5">6. Telecom · B2B Fiber Order Fallout</option>
-            <option value="6">7. Global Logistics · Customs Hold Resolver</option>
-            <option value="7">8. Pharma R&amp;D · FDA CMC Regulatory Check</option>
-            <option value="8">9. Commercial Aviation · IROPS Recovery</option>
-            <option value="9">10. B2B SaaS Legal · DPA Security Redliner</option>
+          <label class="ppb-label" for="skillJumpSelect">Jump to TDL Skill (All 13 Skills)</label>
+          <select class="ppb-input" id="skillJumpSelect" style="cursor:pointer;">
+            <option value="step-3">1. tdl-field-guide (Wk 0–12 Governance)</option>
+            <option value="step-4">2. workshop-intake (33 Qs &amp; Yardstick)</option>
+            <option value="step-4">3. create-delta-ucc (1-Page MVP Alignment)</option>
+            <option value="step-4">4. ai-value-sizing (3-Scenario ROI &amp; NPV)</option>
+            <option value="step-6">5. business-process-redesign (As-Is/To-Be)</option>
+            <option value="step-6">6. cuj-architect (4-Tab L1–L5 CUJ Map)</option>
+            <option value="step-7">7. product-md (8-Section Agentic PRD)</option>
+            <option value="step-8">8. gcp-agent-architecture-advisor (Tier 1–3)</option>
+            <option value="step-11">9. specification-engineer (4-Part TDD Spec)</option>
+            <option value="step-10">10. stitch-design (3-Stage UI Prototype)</option>
+            <option value="step-12">11. claude-agent-harness (--verify Goal Loop)</option>
+            <option value="step-13">12. agent-eval-statistical-auditing (AUA/CLA)</option>
+            <option value="step-14">13. agent-load-testing (5× Quota &amp; Locust)</option>
           </select>
+        </div>
+        <div class="ppb-field">
+          <label class="ppb-label" for="paramPreset">50x Customer Use Case Preset</label>
+          <select class="ppb-input" id="paramPreset" style="cursor:pointer;"></select>
         </div>
         <div class="ppb-field">
           <label class="ppb-label" for="paramUseCase">Use Case Name</label>
@@ -538,16 +545,62 @@ body.sso-locked .sso-gate { display: flex; }
 "use strict";
 
 var CUSTOMER_PRESETS = [
-  { industry: "P&C Insurance", useCase: "Commercial Auto FNOL Triage Agent", volume: 250000, rate: 68, hours: 0.30, peakTurns: 12, project: "insure-fnol-prod-01" },
-  { industry: "Retail Banking", useCase: "AML SAR Narrative Investigation Agent", volume: 75000, rate: 95, hours: 0.75, peakTurns: 8, project: "bank-aml-sar-prod" },
-  { industry: "Healthcare Provider", useCase: "Prior Authorization Clinical Packet Reviewer", volume: 180000, rate: 82, hours: 0.40, peakTurns: 15, project: "health-prior-auth-01" },
-  { industry: "Enterprise IT", useCase: "AskIT Tier-2 Ticket Resolution & IAM Provisioner", volume: 600000, rate: 58, hours: 0.20, peakTurns: 25, project: "corp-askit-agent-prod" },
-  { industry: "Automotive Mfg", useCase: "Supplier Warranty Chargeback & Part Defect Auditor", volume: 150000, rate: 74, hours: 0.45, peakTurns: 10, project: "auto-warranty-audit-01" },
-  { industry: "Telecommunications", useCase: "B2B Fiber Order Fallout & Circuit Dispatch Agent", volume: 320000, rate: 64, hours: 0.25, peakTurns: 20, project: "telco-fiber-fallout-01" },
-  { industry: "Global Logistics", useCase: "Customs Tariff Classification & Broker Hold Resolver", volume: 410000, rate: 62, hours: 0.22, peakTurns: 18, project: "freight-customs-agent" },
-  { industry: "Pharmaceutical R&D", useCase: "FDA CMC Regulatory Submission Cross-Check Agent", volume: 32000, rate: 135, hours: 1.25, peakTurns: 6, project: "pharma-cmc-reg-prod" },
-  { industry: "Commercial Aviation", useCase: "IROPS Crew Re-Pairing & Maintenance MEL Advisor", volume: 95000, rate: 110, hours: 0.50, peakTurns: 14, project: "air-irops-recovery-01" },
-  { industry: "B2B SaaS Legal Ops", useCase: "Enterprise DPA & Vendor Security Addendum Redliner", volume: 42000, rate: 145, hours: 0.85, peakTurns: 8, project: "saas-dpa-redline-01" }
+  // Featured Top 10 Presets (1–10)
+  { industry: "P&C Insurance", useCase: "Commercial Auto FNOL Triage Agent", volume: 250000, rate: 68, hours: 0.30, peakTurns: 12, project: "insure-fnol-prod-01", archetype: "FULL_13_SKILL" },
+  { industry: "Retail Banking", useCase: "AML SAR Narrative Investigation Agent", volume: 75000, rate: 95, hours: 0.75, peakTurns: 8, project: "bank-aml-sar-prod", archetype: "FULL_13_SKILL" },
+  { industry: "Healthcare Provider", useCase: "Prior Authorization Clinical Packet Reviewer", volume: 180000, rate: 82, hours: 0.40, peakTurns: 15, project: "health-prior-auth-01", archetype: "FULL_13_SKILL" },
+  { industry: "Enterprise IT", useCase: "AskIT Tier-2 Ticket Resolution & IAM Provisioner", volume: 600000, rate: 58, hours: 0.20, peakTurns: 25, project: "corp-askit-agent-prod", archetype: "FULL_13_SKILL" },
+  { industry: "Automotive Mfg", useCase: "Supplier Warranty Chargeback & Part Defect Auditor", volume: 150000, rate: 74, hours: 0.45, peakTurns: 10, project: "auto-warranty-audit-01", archetype: "FULL_13_SKILL" },
+  { industry: "Telecommunications", useCase: "B2B Fiber Order Fallout & Circuit Dispatch Agent", volume: 320000, rate: 64, hours: 0.25, peakTurns: 20, project: "telco-fiber-fallout-01", archetype: "FULL_13_SKILL" },
+  { industry: "Global Logistics", useCase: "Customs Tariff Classification & Broker Hold Resolver", volume: 410000, rate: 62, hours: 0.22, peakTurns: 18, project: "freight-customs-agent", archetype: "FULL_13_SKILL" },
+  { industry: "Pharmaceutical R&D", useCase: "FDA CMC Regulatory Submission Cross-Check Agent", volume: 32000, rate: 135, hours: 1.25, peakTurns: 6, project: "pharma-cmc-reg-prod", archetype: "FULL_13_SKILL" },
+  { industry: "Commercial Aviation", useCase: "IROPS Crew Re-Pairing & Maintenance MEL Advisor", volume: 95000, rate: 110, hours: 0.50, peakTurns: 14, project: "air-irops-recovery-01", archetype: "FULL_13_SKILL" },
+  { industry: "B2B SaaS Legal Ops", useCase: "Enterprise DPA & Vendor Security Addendum Redliner", volume: 42000, rate: 145, hours: 0.85, peakTurns: 8, project: "saas-dpa-redline-01", archetype: "FULL_13_SKILL" },
+  // Financial Services & Insurance (11–18)
+  { industry: "Financial Services", useCase: "Commercial KYC Entity Onboarding & UBO Verification", volume: 85000, rate: 90, hours: 0.75, peakTurns: 10, project: "fin-kyc-ubo-prod", archetype: "FULL_13_SKILL" },
+  { industry: "Financial Services", useCase: "Residential Mortgage Income & Tax Return Underwriter", volume: 110000, rate: 85, hours: 0.65, peakTurns: 12, project: "fin-mortgage-uw-01", archetype: "FULL_13_SKILL" },
+  { industry: "Financial Services", useCase: "Private Wealth Advisor Pre-Meeting Portfolio Synthesizer", volume: 95000, rate: 115, hours: 0.50, peakTurns: 15, project: "fin-wealth-brief-01", archetype: "FULL_13_SKILL" },
+  { industry: "Financial Services", useCase: "Small Regional Branch Policy Lookup Bot (Lite Mode)", volume: 18000, rate: 72, hours: 0.45, peakTurns: 3, project: "fin-branch-faq-lite", archetype: "FAST_TRACK_5_SKILL" },
+  { industry: "Insurance", useCase: "Property Subrogation Demand Package Recovery Agent", volume: 72000, rate: 82, hours: 0.80, peakTurns: 9, project: "ins-prop-subro-01", archetype: "FULL_13_SKILL" },
+  { industry: "Insurance", useCase: "Excess & Surplus (E&S) Broker Submission Intake Triage", volume: 90000, rate: 88, hours: 0.65, peakTurns: 11, project: "ins-es-broker-01", archetype: "FULL_13_SKILL" },
+  { industry: "Insurance", useCase: "Workers Comp Medical Bill Chronology Summarizer", volume: 68000, rate: 78, hours: 0.75, peakTurns: 10, project: "ins-workers-comp-01", archetype: "FULL_13_SKILL" },
+  { industry: "Insurance", useCase: "Departmental Reinsurance Treaty Clause Search (Lite Mode)", volume: 16000, rate: 85, hours: 0.50, peakTurns: 3, project: "ins-treaty-search-lite", archetype: "FAST_TRACK_5_SKILL" },
+  // Healthcare, Life Sciences & Telecom/Media (19–26)
+  { industry: "Healthcare & Life Sciences", useCase: "Inpatient Clinical Documentation Integrity (CDI) DRG Auditor", volume: 120000, rate: 84, hours: 0.55, peakTurns: 14, project: "hlt-cdi-drg-prod", archetype: "FULL_13_SKILL" },
+  { industry: "Healthcare & Life Sciences", useCase: "BioPharma FDA CMC Module 3 Regulatory Dossier Drafter", volume: 55000, rate: 110, hours: 0.95, peakTurns: 8, project: "hlt-cmc-dossier-01", archetype: "FULL_13_SKILL" },
+  { industry: "Healthcare & Life Sciences", useCase: "Adverse Event Case Intake & MedDRA Coding Agent", volume: 105000, rate: 86, hours: 0.60, peakTurns: 12, project: "hlt-meddra-pv-01", archetype: "FULL_13_SKILL" },
+  { industry: "Telecom & Media", useCase: "Autonomous 5G NOC Alarm Correlation & Dispatch Agent", volume: 220000, rate: 82, hours: 0.35, peakTurns: 20, project: "tel-5g-noc-triage", archetype: "FULL_13_SKILL" },
+  { industry: "Telecom & Media", useCase: "Multi-Modal Archive Rights & Clip Discovery ('Asset Buddy')", volume: 125000, rate: 80, hours: 0.50, peakTurns: 16, project: "med-asset-buddy-01", archetype: "FULL_13_SKILL" },
+  { industry: "Telecom & Media", useCase: "Enterprise Fiber & SD-WAN Solution Architecture RFP Responder", volume: 65000, rate: 92, hours: 0.85, peakTurns: 9, project: "tel-sdwan-rfp-01", archetype: "FULL_13_SKILL" },
+  { industry: "Telecom & Media", useCase: "Broadcast Commercial Clearance & Regional Ad Compliance Agent", volume: 88000, rate: 78, hours: 0.60, peakTurns: 11, project: "med-ad-clearance-01", archetype: "FULL_13_SKILL" },
+  { industry: "Telecom & Media", useCase: "Internal PR Team Press Mention Digest (Lite Mode)", volume: 15000, rate: 75, hours: 0.50, peakTurns: 2, project: "med-pr-digest-lite", archetype: "FAST_TRACK_5_SKILL" },
+  // Manufacturing, Retail/CPG & Energy/Utilities (27–38)
+  { industry: "Manufacturing & Auto", useCase: "Supplier Rate Variance Audit & Part Shortage Recovery", volume: 64000, rate: 78, hours: 0.85, peakTurns: 8, project: "mfg-supplier-var-01", archetype: "FULL_13_SKILL" },
+  { industry: "Manufacturing & Auto", useCase: "Aerospace MRO Airworthiness Directive & Fault Isolation Co-Pilot", volume: 70000, rate: 94, hours: 0.80, peakTurns: 10, project: "mfg-aero-mro-01", archetype: "FULL_13_SKILL" },
+  { industry: "Manufacturing & Auto", useCase: "Dealer Warranty Claim Telemetry & Technician Notes Triage", volume: 135000, rate: 76, hours: 0.50, peakTurns: 14, project: "mfg-warranty-tel-01", archetype: "FULL_13_SKILL" },
+  { industry: "Manufacturing & Auto", useCase: "Plant EHS Safety Incident CAPA Investigation Drafter", volume: 62000, rate: 84, hours: 0.85, peakTurns: 8, project: "mfg-ehs-capa-01", archetype: "FULL_13_SKILL" },
+  { industry: "Retail & CPG", useCase: "Promotional Margin & Vendor Co-Op Audit Agent", volume: 110000, rate: 74, hours: 0.55, peakTurns: 12, project: "ret-promo-coop-01", archetype: "FULL_13_SKILL" },
+  { industry: "Retail & CPG", useCase: "Omni-Channel Category Assortment & Localized Planogram Agent", volume: 95000, rate: 78, hours: 0.65, peakTurns: 11, project: "ret-planogram-opt-01", archetype: "FULL_13_SKILL" },
+  { industry: "Retail & CPG", useCase: "Private-Label Supplier Food Safety & GS1 Spec Validator", volume: 78000, rate: 76, hours: 0.70, peakTurns: 9, project: "ret-gs1-safety-01", archetype: "FULL_13_SKILL" },
+  { industry: "Retail & CPG", useCase: "CPG Retailer OTIF Deduction & Chargeback Dispute Resolver", volume: 115000, rate: 72, hours: 0.55, peakTurns: 13, project: "ret-otif-dispute-01", archetype: "FULL_13_SKILL" },
+  { industry: "Retail & CPG", useCase: "Regional Store Manager Dress-Code & Shift Policy Search (Lite Mode)", volume: 20000, rate: 68, hours: 0.40, peakTurns: 3, project: "ret-store-hr-lite", archetype: "FAST_TRACK_5_SKILL" },
+  { industry: "Energy & Utilities", useCase: "Substation Work-Order & NERC CIP Compliance Triage", volume: 52000, rate: 92, hours: 0.90, peakTurns: 9, project: "ene-nerc-cip-01", archetype: "FULL_13_SKILL" },
+  { industry: "Energy & Utilities", useCase: "Solar/Battery Grid Interconnection Study Packet Reviewer", volume: 58000, rate: 98, hours: 0.95, peakTurns: 8, project: "ene-ferc-grid-01", archetype: "FULL_13_SKILL" },
+  { industry: "Energy & Utilities", useCase: "Severe Weather Vegetation & Transformer Outage Triage Agent", volume: 92000, rate: 88, hours: 0.65, peakTurns: 14, project: "ene-outage-triage-01", archetype: "FULL_13_SKILL" },
+  // Energy, Public Sector, Cloud/SaaS & Logistics (39–46)
+  { industry: "Energy & Utilities", useCase: "PHMSA Inline Inspection (ILI) Anomaly Corrosion Analyst", volume: 60000, rate: 96, hours: 0.85, peakTurns: 8, project: "ene-phmsa-ili-01", archetype: "FULL_13_SKILL" },
+  { industry: "Energy & Utilities", useCase: "Utility Fleet EV Charging Etiquette FAQ Bot (Lite Mode)", volume: 14000, rate: 78, hours: 0.50, peakTurns: 2, project: "ene-fleet-faq-lite", archetype: "FAST_TRACK_5_SKILL" },
+  { industry: "Public Sector", useCase: "Medicaid & SNAP Eligibility Renewal Verification Co-Pilot", volume: 180000, rate: 68, hours: 0.50, peakTurns: 15, project: "pub-medicaid-snap-01", archetype: "FULL_13_SKILL" },
+  { industry: "Public Sector", useCase: "FOIA / Public Records Request Discovery & PII Redaction Agent", volume: 95000, rate: 74, hours: 0.70, peakTurns: 11, project: "pub-foia-redact-01", archetype: "FULL_13_SKILL" },
+  { industry: "Public Sector", useCase: "Federal Infrastructure Grant Sub-Recipient Audit Co-Pilot", volume: 68000, rate: 80, hours: 0.80, peakTurns: 9, project: "pub-grant-audit-01", archetype: "FULL_13_SKILL" },
+  { industry: "Public Sector", useCase: "Municipal Commercial Building Permit & Zoning Code Reviewer", volume: 82000, rate: 76, hours: 0.70, peakTurns: 10, project: "pub-permit-zoning-01", archetype: "FULL_13_SKILL" },
+  { industry: "Cloud & B2B SaaS", useCase: "SecOps CVE Reachability & Customer Security Questionnaire Agent", volume: 75000, rate: 110, hours: 0.65, peakTurns: 11, project: "tech-secops-cve-01", archetype: "FULL_13_SKILL" },
+  { industry: "Cloud & B2B SaaS", useCase: "Cloud Infrastructure L3 Escalation Log & Trace RCA Agent", volume: 88000, rate: 115, hours: 0.70, peakTurns: 12, project: "tech-l3-rca-prod", archetype: "FULL_13_SKILL" },
+  // Cloud/SaaS, Global Ops & Gate-0 Data Traps (47–50)
+  { industry: "Cloud & B2B SaaS", useCase: "Multi-Cloud FinOps CUD & Idle GKE Node Rightsizing Advisor", volume: 64000, rate: 105, hours: 0.75, peakTurns: 9, project: "tech-finops-cud-01", archetype: "FULL_13_SKILL" },
+  { industry: "Cloud & B2B SaaS", useCase: "Single-Team Frontend Styleguide Search Assistant (Lite Mode)", volume: 14000, rate: 95, hours: 0.45, peakTurns: 2, project: "tech-wiki-lite-01", archetype: "FAST_TRACK_5_SKILL" },
+  { industry: "Logistics & Legal Ops", useCase: "Global AskHR Leave, Mobility & Total Rewards Case Agent", volume: 155000, rate: 75, hours: 0.45, peakTurns: 16, project: "hr-global-askhr-01", archetype: "FULL_13_SKILL" },
+  { industry: "Logistics & Legal Ops", useCase: "Cold-Chain Excursion IoT Alert & Carrier Claim Recovery Agent", volume: 74000, rate: 84, hours: 0.75, peakTurns: 10, project: "log-coldchain-sla-01", archetype: "FULL_13_SKILL" }
 ];
 
 var STAGES = [
@@ -1571,7 +1624,7 @@ function renderRubricTab() {
       '</div>' +
 
       '<div class="card" style="margin-bottom:18px;">' +
-        '<h3>🚀 10 Enterprise Use Cases × 20 Perturbation Profiles = 200 Simulation Runs (Click Any Row to Load into Console)</h3>' +
+        '<h3>🚀 50 Enterprise Use Cases × 20 Stakeholder Personas = 1,000 Simulation Runs (Click Any Row to Load into Console)</h3>' +
         '<div class="table-wrap" style="margin-bottom:0;">' +
           '<table class="log">' +
             '<thead>' +
@@ -1742,6 +1795,14 @@ function switchViewTab(view) {
   document.getElementById("mainRubric").hidden = view !== "rubric";
 }
 
+function populatePresetSelect() {
+  var sel = document.getElementById("paramPreset");
+  if (!sel) return;
+  sel.innerHTML = CUSTOMER_PRESETS.map(function(c, idx) {
+    return '<option value="' + idx + '">' + (idx + 1) + '. ' + escapeHtml(c.industry) + ' · ' + escapeHtml(c.useCase) + '</option>';
+  }).join("");
+}
+
 function applyPresetIndex(idx) {
   var c = CUSTOMER_PRESETS[idx];
   if (!c) return;
@@ -1752,6 +1813,25 @@ function applyPresetIndex(idx) {
   document.getElementById("paramHours").value = String(c.hours);
   document.getElementById("paramPeakTurns").value = String(c.peakTurns);
   document.getElementById("paramProject").value = c.project;
+}
+
+populatePresetSelect();
+
+var skillJumpEl = document.getElementById("skillJumpSelect");
+if (skillJumpEl) {
+  skillJumpEl.addEventListener("change", function(e) {
+    var targetId = e.target.value;
+    STAGES.forEach(function(st, sIdx) {
+      st.steps.forEach(function(sp, pIdx) {
+        if (sp.id === targetId) {
+          activeStageIdx = sIdx;
+          activeStepIdx = pIdx;
+        }
+      });
+    });
+    switchViewTab("playbook");
+    renderAll();
+  });
 }
 
 document.getElementById("tabBtnPlaybook").addEventListener("click", function() { switchViewTab("playbook"); });
