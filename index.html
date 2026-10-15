@@ -3,1232 +3,1434 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TDL User Guide — 12-Week FDE Engagement Playbook (Ford)</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>TDL User Guide — Ford Engagement</title>
   <style>
     :root {
-      --google-blue: #4285F4;
-      --google-blue-dark: #1967D2;
-      --google-blue-subtle: #E8F0FE;
-      --google-green: #34A853;
-      --google-green-dark: #188038;
-      --google-green-subtle: #E6F4EA;
-      --google-yellow: #FBBC04;
-      --google-yellow-dark: #B06000;
-      --google-yellow-subtle: #FEF7E0;
-      --google-red: #EA4335;
-      --google-red-dark: #C5221F;
-      --google-red-subtle: #FCE8E6;
-      --bg-primary: #FFFFFF;
-      --bg-secondary: #F8F9FA;
-      --border: #DADCE0;
-      --text-primary: #202124;
-      --text-secondary: #5F6368;
-      --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-body: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Roboto Mono', monospace;
-      --shadow-sm: 0 1px 2px rgba(60,64,67,0.08), 0 1px 3px 1px rgba(60,64,67,0.04);
-      --shadow-md: 0 4px 12px rgba(60,64,67,0.10);
+      --bg-page: #f5f5f7;
+      --bg-surface: #ffffff;
+      --bg-elevated: rgba(255, 255, 255, 0.82);
+      --bg-dark-card: #1d1d1f;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #86868b;
+      --accent-blue: #0071e3;
+      --accent-blue-hover: #0077ed;
+      --accent-green: #28cd41;
+      --accent-orange: #ff9500;
+      --accent-purple: #af52de;
+      --border-light: rgba(0, 0, 0, 0.06);
+      --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.04);
+      --shadow-card-hover: 0 12px 36px rgba(0, 0, 0, 0.09);
+      --shadow-modal: 0 24px 80px rgba(0, 0, 0, 0.24);
+      --radius-card: 28px;
+      --radius-modal: 32px;
+      --radius-pill: 980px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #000000;
+      --bg-surface: #151516;
+      --bg-elevated: rgba(29, 29, 31, 0.78);
+      --bg-dark-card: #1d1d1f;
+      --text-primary: #f5f5f7;
+      --text-secondary: #a1a1a6;
+      --text-tertiary: #6e6e73;
+      --border-light: rgba(255, 255, 255, 0.1);
+      --shadow-card: 0 8px 28px rgba(0, 0, 0, 0.45);
+      --shadow-card-hover: 0 16px 42px rgba(0, 0, 0, 0.65);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     body {
-      font-family: var(--font-body);
-      background-color: var(--bg-secondary);
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
       color: var(--text-primary);
-      line-height: 1.55;
-      padding-bottom: 64px;
+      line-height: 1.47059;
+      letter-spacing: -0.022em;
+      transition: background-color 0.35s ease, color 0.35s ease;
+      overflow-x: hidden;
     }
 
-    /* Top Co-Branded Header (Toolbox #13) */
-    header {
+    /* Sticky Frosted Glass Global Nav */
+    .global-nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: var(--bg-primary);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 24px;
+      height: 52px;
+      background: var(--bg-elevated);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+    }
+
+    .nav-content {
+      width: 100%;
+      max-width: 1080px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      box-shadow: var(--shadow-sm);
     }
 
-    .brand-lockup {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .google-dots {
-      display: inline-flex;
-      gap: 4px;
-    }
-    .google-dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    .dot-blue { background: var(--google-blue); }
-    .dot-red { background: var(--google-red); }
-    .dot-yellow { background: var(--google-yellow); }
-    .dot-green { background: var(--google-green); }
-
-    .brand-title {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-    }
-
-    .brand-divider {
-      width: 1px;
-      height: 22px;
-      background: var(--border);
-    }
-
-    .customer-pill {
-      font-family: var(--font-display);
-      font-weight: 600;
-      font-size: 13px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: var(--google-blue-subtle);
-      color: var(--google-blue-dark);
-      border: 1px solid rgba(25, 103, 210, 0.2);
-    }
-
-    .header-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-
-    .progress-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-    }
-
-    .progress-bar-outer {
-      width: 96px;
-      height: 8px;
-      background: #E8EAED;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress-bar-inner {
-      height: 100%;
-      width: 0%;
-      background: var(--google-green);
-      transition: width 0.25s ease;
-    }
-
-    .container {
-      max-width: 1220px;
-      margin: 0 auto;
-      padding: 28px 24px 0;
-    }
-
-    /* Hero Banner */
-    .hero {
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px 28px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .hero-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: var(--text-primary);
-    }
-
-    .hero p {
-      color: var(--text-secondary);
-      font-size: 14px;
-      max-width: 780px;
-    }
-
-    .kpi-strip {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-    }
-
-    .kpi-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-    }
-
-    .kpi-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
-
-    .kpi-val {
-      font-family: var(--font-display);
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-top: 2px;
-    }
-
-    .kpi-sub {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-
-    /* Visual Artifact Pipeline */
-    .pipeline-box {
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 22px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .pipeline-title {
-      font-family: var(--font-display);
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
-      margin-bottom: 12px;
-    }
-
-    .pipeline-track {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 6px;
-    }
-
-    .pipe-node {
-      flex-shrink: 0;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 12px;
-    }
-
-    .pipe-node.blue { border-left: 4px solid var(--google-blue); }
-    .pipe-node.yellow { border-left: 4px solid var(--google-yellow); }
-    .pipe-node.green { border-left: 4px solid var(--google-green); }
-    .pipe-node.red { border-left: 4px solid var(--google-red); }
-
-    .pipe-node strong {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-primary);
-    }
-
-    .pipe-node span {
-      font-size: 11px;
-      color: var(--text-secondary);
-    }
-
-    .pipe-arrow {
-      color: var(--text-secondary);
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    /* Filter Navigation Tabs */
-    .nav-tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-
-    .tab-btn {
-      font-family: var(--font-display);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--bg-primary);
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .tab-btn:hover {
-      border-color: var(--google-blue);
-      color: var(--google-blue-dark);
-    }
-
-    .tab-btn.active {
-      background: var(--google-blue-dark);
-      color: #FFFFFF;
-      border-color: var(--google-blue-dark);
-    }
-
-    /* Phase Sections */
-    .phase-section {
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 24px;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .phase-header {
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .phase-header.blue { background: linear-gradient(90deg, var(--google-blue-subtle) 0%, #FFFFFF 100%); border-left: 5px solid var(--google-blue); }
-    .phase-header.yellow { background: linear-gradient(90deg, var(--google-yellow-subtle) 0%, #FFFFFF 100%); border-left: 5px solid var(--google-yellow); }
-    .phase-header.green { background: linear-gradient(90deg, var(--google-green-subtle) 0%, #FFFFFF 100%); border-left: 5px solid var(--google-green); }
-    .phase-header.red { background: linear-gradient(90deg, var(--google-red-subtle) 0%, #FFFFFF 100%); border-left: 5px solid var(--google-red); }
-
-    .phase-title-group h2 {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .phase-title-group p {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-top: 2px;
-    }
-
-    .phase-badge {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-    }
-
-    .steps-grid {
-      padding: 20px 24px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    .step-card {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 18px;
-      background: var(--bg-primary);
-      transition: box-shadow 0.15s ease, border-color 0.15s ease;
-    }
-
-    .step-card.completed {
-      background: #FAFFFB;
-      border-color: #A8DAB5;
-    }
-
-    .step-card:hover {
-      box-shadow: var(--shadow-md);
-    }
-
-    .step-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 8px;
-    }
-
-    .step-check-label {
+    .nav-brand {
       display: flex;
       align-items: center;
       gap: 10px;
-      cursor: pointer;
-      font-family: var(--font-display);
+      font-size: 14px;
       font-weight: 600;
-      font-size: 15px;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .nav-brand span.divider {
+      color: var(--text-tertiary);
+      font-weight: 400;
+    }
+
+    .nav-brand span.client-tag {
+      background: rgba(0, 113, 227, 0.12);
+      color: var(--accent-blue);
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .progress-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--bg-surface);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-light);
+    }
+
+    .progress-ring-bar {
+      width: 56px;
+      height: 6px;
+      background: rgba(134, 134, 139, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-ring-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent-green);
+      border-radius: 3px;
+      transition: width 0.4s var(--ease-spring);
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: var(--radius-pill);
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .icon-btn:hover {
+      color: var(--text-primary);
+      background: rgba(134, 134, 139, 0.12);
+    }
+
+    /* Apple Hero Section */
+    .hero {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 84px 24px 48px;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-size: clamp(40px, 6vw, 68px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(19px, 2.4vw, 24px);
+      font-weight: 400;
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin: 0 auto 36px;
+      line-height: 1.38;
+      letter-spacing: -0.015em;
+    }
+
+    /* Apple Segmented Filter Control */
+    .segmented-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 56px;
+      padding: 0 16px;
+    }
+
+    .segmented-control {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+      background: rgba(134, 134, 139, 0.12);
+      padding: 5px;
+      border-radius: var(--radius-pill);
+      backdrop-filter: blur(12px);
+    }
+
+    .seg-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      white-space: nowrap;
+    }
+
+    .seg-btn:hover {
       color: var(--text-primary);
     }
 
-    .step-check-label input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--google-green-dark);
-      cursor: pointer;
-    }
-
-    .badges {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-weight: 500;
-    }
-
-    .badge-skill {
-      background: var(--google-blue-subtle);
-      color: var(--google-blue-dark);
-    }
-
-    .badge-toolbox {
-      background: var(--google-yellow-subtle);
-      color: var(--google-yellow-dark);
-    }
-
-    .badge-output {
-      background: var(--google-green-subtle);
-      color: var(--google-green-dark);
-    }
-
-    .step-desc {
-      font-size: 13.5px;
-      color: var(--text-secondary);
-      margin-bottom: 12px;
-      padding-left: 28px;
-    }
-
-    /* Code / Prompt Block */
-    .code-box {
-      margin-left: 28px;
-      background: #1E1F22;
-      color: #E8EAED;
-      border-radius: 8px;
-      padding: 12px 14px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      position: relative;
-      overflow-x: auto;
-      line-height: 1.5;
-    }
-
-    .code-box pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      padding-right: 68px;
-    }
-
-    .code-kind {
-      display: inline-block;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #8AB4F8;
-      margin-bottom: 4px;
+    .seg-btn.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
       font-weight: 600;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     }
 
-    .copy-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(255,255,255,0.12);
-      color: #FFFFFF;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 5px;
-      padding: 4px 10px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      cursor: pointer;
-      transition: background 0.15s ease;
+    /* Main Container */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px 110px;
     }
 
-    .copy-btn:hover {
-      background: rgba(255,255,255,0.22);
+    /* Section Header */
+    .phase-section {
+      margin-bottom: 72px;
+      transition: opacity 0.3s ease;
     }
 
-    .copy-btn.copied {
-      background: var(--google-green);
-      border-color: var(--google-green);
+    .phase-section.hidden {
+      display: none;
     }
 
-    /* Gate Banner */
-    .gate-banner {
-      margin: 0 24px 20px;
-      padding: 14px 18px;
-      border-radius: 8px;
-      background: var(--google-green-subtle);
-      border: 1px solid #A8DAB5;
+    .phase-header {
+      margin-bottom: 28px;
       display: flex;
-      align-items: center;
+      align-items: baseline;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
     }
 
-    .gate-banner strong {
-      font-family: var(--font-display);
-      color: var(--google-green-dark);
-      font-size: 14px;
+    .phase-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.028em;
     }
 
-    .gate-banner span {
+    .phase-title span {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .phase-gate-badge {
       font-size: 13px;
-      color: var(--text-primary);
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--bg-surface);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-light);
     }
 
-    /* Companion Table */
-    table.companion-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
+    /* Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
     }
 
-    table.companion-table th,
-    table.companion-table td {
-      text-align: left;
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
+    .bento-card {
+      grid-column: span 6;
+      background: var(--bg-surface);
+      border-radius: var(--radius-card);
+      padding: 36px;
+      position: relative;
+      cursor: pointer;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 280px;
+      transition: transform 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-spring), border-color 0.3s ease;
+      overflow: hidden;
+      user-select: none;
     }
 
-    table.companion-table th {
-      background: var(--bg-secondary);
-      font-family: var(--font-display);
+    .bento-card.span-4 {
+      grid-column: span 4;
+      min-height: 270px;
+    }
+
+    .bento-card.span-8 {
+      grid-column: span 8;
+    }
+
+    .bento-card.span-12 {
+      grid-column: span 12;
+      min-height: 230px;
+    }
+
+    .bento-card.dark-card {
+      background: var(--bg-dark-card);
+      color: #f5f5f7;
+    }
+
+    .bento-card.dark-card .card-eyebrow,
+    .bento-card.dark-card .card-desc {
+      color: #a1a1a6;
+    }
+
+    .bento-card:hover {
+      transform: scale(1.015) translateY(-2px);
+      box-shadow: var(--shadow-card-hover);
+    }
+
+    .bento-card.completed {
+      border-color: rgba(40, 205, 65, 0.45);
+    }
+
+    @media (max-width: 860px) {
+      .bento-card,
+      .bento-card.span-4,
+      .bento-card.span-8 {
+        grid-column: span 12;
+      }
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .card-eyebrow {
       font-size: 12px;
+      font-weight: 600;
       text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+    }
+
+    .status-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1.5px solid var(--text-tertiary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: transparent;
+      transition: all 0.25s ease;
+    }
+
+    .bento-card.completed .status-dot {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      color: #ffffff;
+    }
+
+    .card-headline {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      max-width: 90%;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: 28px;
+      gap: 12px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .artifact-chip {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      background: rgba(134, 134, 139, 0.12);
       color: var(--text-secondary);
     }
 
-    table.companion-table code {
+    .bento-card.dark-card .artifact-chip {
+      background: rgba(255, 255, 255, 0.12);
+      color: #d2d2d7;
+    }
+
+    /* Apple Circular "+" Button */
+    .plus-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(134, 134, 139, 0.16);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.25s ease, transform 0.25s var(--ease-spring);
+    }
+
+    .bento-card.dark-card .plus-btn {
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+    }
+
+    .bento-card:hover .plus-btn {
+      background: var(--accent-blue);
+      color: #ffffff;
+      transform: scale(1.08);
+    }
+
+    .plus-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.5;
+    }
+
+    /* Minimal Artifact Flow Ribbon */
+    .flow-ribbon {
+      background: var(--bg-surface);
+      border-radius: var(--radius-card);
+      padding: 28px 32px;
+      margin-bottom: 64px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-card);
+    }
+
+    .flow-ribbon-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      margin-bottom: 14px;
+    }
+
+    .flow-pills {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .flow-pill {
       font-family: var(--font-mono);
       font-size: 12px;
-      background: var(--bg-secondary);
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-page);
+      color: var(--text-primary);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .hidden {
-      display: none !important;
+    .flow-pill:hover {
+      background: var(--accent-blue);
+      color: #ffffff;
+      border-color: var(--accent-blue);
+      transform: translateY(-1px);
     }
 
-    @media (max-width: 680px) {
-      .step-desc, .code-box {
-        margin-left: 0;
-        padding-left: 12px;
+    .flow-arrow {
+      color: var(--text-tertiary);
+      font-size: 13px;
+    }
+
+    /* Apple Sheet Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.48);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.32s var(--ease-spring);
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-width: 780px;
+      max-height: 88vh;
+      background: var(--bg-surface);
+      border-radius: var(--radius-modal);
+      box-shadow: var(--shadow-modal);
+      border: 1px solid var(--border-light);
+      overflow-y: auto;
+      padding: 48px;
+      position: relative;
+      transform: scale(0.94) translateY(20px);
+      transition: transform 0.38s var(--ease-spring);
+    }
+
+    .modal-backdrop.open .modal-sheet {
+      transform: scale(1) translateY(0);
+    }
+
+    @media (max-width: 640px) {
+      .modal-sheet {
+        padding: 32px 24px;
       }
+    }
+
+    .modal-close {
+      position: sticky;
+      top: 0;
+      float: right;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(134, 134, 139, 0.16);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+
+    .modal-close:hover {
+      background: rgba(134, 134, 139, 0.28);
+    }
+
+    .modal-eyebrow {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-blue);
+      margin-bottom: 8px;
+    }
+
+    .modal-title {
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .modal-summary {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+
+    .modal-section {
+      margin-bottom: 28px;
+    }
+
+    .modal-section-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .code-card {
+      background: #1d1d1f;
+      color: #f5f5f7;
+      border-radius: 18px;
+      padding: 22px 24px;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .copy-pill {
+      background: rgba(0, 113, 227, 0.14);
+      color: var(--accent-blue);
+      border: none;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-pill:hover {
+      background: var(--accent-blue);
+      color: #ffffff;
+    }
+
+    .copy-pill.copied {
+      background: var(--accent-green);
+      color: #ffffff;
+    }
+
+    .modal-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .meta-box {
+      background: var(--bg-page);
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border-light);
+    }
+
+    .meta-box-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-bottom: 6px;
+    }
+
+    .meta-box-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+    }
+
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-light);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .complete-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: var(--radius-pill);
+      border: none;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--accent-blue);
+      color: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .complete-toggle-btn.is-done {
+      background: rgba(40, 205, 65, 0.16);
+      color: #1d832d;
+    }
+
+    [data-theme="dark"] .complete-toggle-btn.is-done {
+      color: #4be160;
+    }
+
+    .modal-step-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .step-nav-btn {
+      padding: 10px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-light);
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .step-nav-btn:hover:not(:disabled) {
+      background: rgba(134, 134, 139, 0.15);
+    }
+
+    .step-nav-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Co-Branded Header (Toolbox Asset #13) -->
-  <header>
-    <div class="brand-lockup">
-      <div class="google-dots" aria-hidden="true">
-        <span class="dot-blue"></span>
-        <span class="dot-red"></span>
-        <span class="dot-yellow"></span>
-        <span class="dot-green"></span>
-      </div>
-      <span class="brand-title">Google Cloud Delta</span>
-      <div class="brand-divider"></div>
-      <span class="customer-pill">× Ford (FDE Onboarding Playbook)</span>
-    </div>
-
-    <div class="header-meta">
-      <div class="progress-wrap">
-        <span>Checklist: <strong id="done-count">0</strong>/<span id="total-count">16</span></span>
-        <div class="progress-bar-outer">
-          <div class="progress-bar-inner" id="progress-bar"></div>
+  <!-- Frosted Glass Apple Global Header -->
+  <nav class="global-nav">
+    <div class="nav-content">
+      <a href="#" class="nav-brand">
+        <span>TDL User Guide</span>
+        <span class="divider">/</span>
+        <span class="client-tag">Ford Engagement</span>
+      </a>
+      <div class="nav-actions">
+        <div class="progress-pill" title="Your saved onboarding & delivery progress">
+          <span id="progressText">0 of 15 completed</span>
+          <div class="progress-ring-bar">
+            <div class="progress-ring-fill" id="progressBar"></div>
+          </div>
         </div>
+        <button class="icon-btn" id="resetBtn" title="Reset checkmarks">Reset</button>
+        <button class="icon-btn" id="themeBtn" title="Toggle Dark/Light Appearance">Dark Mode</button>
       </div>
     </div>
+  </nav>
+
+  <!-- Minimalist Apple Hero -->
+  <header class="hero">
+    <div class="hero-eyebrow">Google Cloud Forward Deployed Engineering</div>
+    <h1 class="hero-title">From Day 1 to Production.<br>Built for Ford.</h1>
+    <p class="hero-subtitle">
+      Tap any card below to inspect the exact agent prompt, deterministic Python calculator, and file contract for that stage of the 12-week delivery.
+    </p>
   </header>
 
-  <div class="container">
-    <!-- Hero Summary -->
-    <section class="hero">
-      <div class="hero-top">
-        <div>
-          <h1>TDL User Guide — 12-Week Ford Engagement Map</h1>
-          <p>Interactive step-by-step operator guide for a new Google Cloud FDE/TDL joining the Ford project. Check off steps as you complete them, filter by phase, and click <strong>Copy</strong> on any prompt or CLI command.</p>
+  <!-- Segmented Pill Switcher -->
+  <div class="segmented-wrapper">
+    <div class="segmented-control" id="phaseFilter">
+      <button class="seg-btn active" data-filter="all">All Stages</button>
+      <button class="seg-btn" data-filter="day1">Day 1 Setup</button>
+      <button class="seg-btn" data-filter="prelude">Wk 0 · Prelude</button>
+      <button class="seg-btn" data-filter="phase1">Wk 1–2 · Foundations</button>
+      <button class="seg-btn" data-filter="phase2">Wk 3–10 · Core Build</button>
+      <button class="seg-btn" data-filter="phase3">Wk 11–12 · Launch</button>
+    </div>
+  </div>
+
+  <main class="container">
+    <!-- Interactive Artifact Ribbon -->
+    <div class="flow-ribbon">
+      <div class="flow-ribbon-label">Shared File Contract Pipeline — Tap any artifact to open its stage</div>
+      <div class="flow-pills">
+        <span class="flow-pill" data-open-step="step-3">STATE.md</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill" data-open-step="step-4">docs/USE_CASE_SCORECARD.md</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill" data-open-step="step-6">docs/CUJ_SPEC.md</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill" data-open-step="step-7">docs/PRD.md</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill" data-open-step="step-8">docs/baseline_kpis.json</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill" data-open-step="step-9">docs/ARCHITECTURE_RECOMMENDATION.md</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill" data-open-step="step-11">docs/AGENT_SPEC.md</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill" data-open-step="step-15">docs/EXEC_READOUT_DECK.md</span>
+      </div>
+    </div>
+
+    <!-- Dynamic Bento Sections Container -->
+    <div id="sectionsContainer"></div>
+  </main>
+
+  <!-- Apple Frosted Detail Modal Sheet -->
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal-sheet" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M1 1l12 12M13 1L1 13"/>
+        </svg>
+      </button>
+
+      <div class="modal-eyebrow" id="modalEyebrow"></div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <p class="modal-summary" id="modalSummary"></p>
+
+      <div class="modal-meta-grid" id="modalMetaGrid"></div>
+
+      <div class="modal-section" id="modalPromptSection">
+        <div class="modal-section-label">
+          <span id="modalPromptLabel">What to tell your AI Agent</span>
+          <button class="copy-pill" id="copyPromptBtn">Copy Prompt</button>
+        </div>
+        <div class="code-card" id="modalPromptCode"></div>
+      </div>
+
+      <div class="modal-section" id="modalCliSection" style="display:none;">
+        <div class="modal-section-label">
+          <span>Deterministic CLI Verification</span>
+          <button class="copy-pill" id="copyCliBtn">Copy Command</button>
+        </div>
+        <div class="code-card" id="modalCliCode"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="complete-toggle-btn" id="modalCompleteBtn">Mark Step Complete</button>
+        <div class="modal-step-nav">
+          <button class="step-nav-btn" id="prevStepBtn">← Previous</button>
+          <button class="step-nav-btn" id="nextStepBtn">Next →</button>
         </div>
       </div>
-      <div class="kpi-strip">
-        <div class="kpi-card">
-          <div class="kpi-label">TDL-Exclusive Skills</div>
-          <div class="kpi-val">14 Skills</div>
-          <div class="kpi-sub">10 Toolbox + 4 GCP Accelerators</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Official TDL Toolbox</div>
-          <div class="kpi-val">18 / 18 Assets</div>
-          <div class="kpi-sub">100% codified (`go/delta-delivery-guide`)</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Deterministic Calculators</div>
-          <div class="kpi-val">5 CLI Scripts</div>
-          <div class="kpi-sub">Baseline, Fan-Out Quota, Judge AUA, ROI, Harness</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Engagement Cap</div>
-          <div class="kpi-val">12 Weeks</div>
-          <div class="kpi-sub">Prelude → W1–2 → W3–10 (4 Sprints) → W11–12</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Visual Artifact Dependency Pipeline -->
-    <section class="pipeline-box" aria-label="Artifact Dependency Chain">
-      <div class="pipeline-title">Shared Workspace File Contract (`~/projects/ford-agent/`) — Each Skill Reads Upstream & Writes Downstream</div>
-      <div class="pipeline-track">
-        <div class="pipe-node blue">
-          <strong>WORKSHOP_INTAKE.md</strong>
-          <span>Week 0 · 33 Qs + Yardstick</span>
-        </div>
-        <span class="pipe-arrow">→</span>
-        <div class="pipe-node blue">
-          <strong>USE_CASE_CANVAS.md</strong>
-          <span>Week 0 · 1-Page MVP Lock</span>
-        </div>
-        <span class="pipe-arrow">→</span>
-        <div class="pipe-node yellow">
-          <strong>CUJ_MAP.md + as_is</strong>
-          <span>Week 1 · 0.6V + 0.4F Matrix</span>
-        </div>
-        <span class="pipe-arrow">→</span>
-        <div class="pipe-node yellow">
-          <strong>baseline_kpis.json</strong>
-          <span>Week 1 · 50-Sample Freeze</span>
-        </div>
-        <span class="pipe-arrow">→</span>
-        <div class="pipe-node yellow">
-          <strong>PRD.md + TDD.md</strong>
-          <span>Week 2 · Gate 1 Sign-off</span>
-        </div>
-        <span class="pipe-arrow">→</span>
-        <div class="pipe-node green">
-          <strong>STITCH_PROTOTYPE.md</strong>
-          <span>Sprints 1–2 · UI + Code</span>
-        </div>
-        <span class="pipe-arrow">→</span>
-        <div class="pipe-node green">
-          <strong>LOAD_TEST + EVAL_AUDIT</strong>
-          <span>Sprints 3–4 · 5x Quota & AUA</span>
-        </div>
-        <span class="pipe-arrow">→</span>
-        <div class="pipe-node red">
-          <strong>VALUE_SIZING + STATE.md</strong>
-          <span>Weeks 11–12 · Closeout ROI</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Phase Filter Tabs -->
-    <nav class="nav-tabs" aria-label="Phase filter">
-      <button class="tab-btn active" data-filter="all">All Steps (Day 1 → Week 12)</button>
-      <button class="tab-btn" data-filter="setup">0. Day 1 Setup</button>
-      <button class="tab-btn" data-filter="prelude">1. Prelude (Week 0)</button>
-      <button class="tab-btn" data-filter="phase1">2. Phase 1: Foundations (W1–2)</button>
-      <button class="tab-btn" data-filter="phase2">3. Phase 2: Build Sprints (W3–10)</button>
-      <button class="tab-btn" data-filter="phase3">4. Phase 3: Closeout (W11–12)</button>
-      <button class="tab-btn" data-filter="companions">5. Companion `skills.sh`</button>
-    </nav>
-
-    <!-- SECTION 0: DAY 1 SETUP -->
-    <section class="phase-section" data-phase="setup">
-      <div class="phase-header blue">
-        <div class="phase-title-group">
-          <h2>Step 0: Day 1 Laptop & Workspace Setup (10 Minutes)</h2>
-          <p>Install the 14 TDL-exclusive skills, add the upstream Google ADK / engineering companion skills, and initialize your Ford repo.</p>
-        </div>
-        <span class="phase-badge">Day 1 Onboarding</span>
-      </div>
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s0-1" />
-              <span>0.1 Install `tool-tdl-user-guide` + Upstream Companion Skills</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">tdl-user-guide</span>
-              <span class="badge badge-toolbox">npx skills add</span>
-            </div>
-          </div>
-          <p class="step-desc">Run once in your terminal to equip Antigravity / Gemini CLI / Claude Code with the 14 TDL skills plus official Google ADK, TDD, and UI packs.</p>
-          <div class="code-box">
-            <div class="code-kind">Terminal Command</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>npx skills add delta-fde/tool-tdl-user-guide
-npx skills add google/agents-cli
-npx skills add mattpocock/skills
-npx skills add vercel-labs/agent-skills
-npx skills add vercel-labs/agent-browser
-npx skills add anthropics/skills
-npx skills add leonxlnx/taste-skill</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s0-2" />
-              <span>0.2 Create Your Local Ford Engagement Workspace</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-output">~/projects/ford-agent/</span>
-            </div>
-          </div>
-          <p class="step-desc">Drop any raw Ford kickoff notes, SOWs, architecture diagrams, or sample CSV tickets into <code>raw-notes/</code>.</p>
-          <div class="code-box">
-            <div class="code-kind">Terminal Command</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>mkdir -p ~/projects/ford-agent/docs ~/projects/ford-agent/raw-notes
-cd ~/projects/ford-agent
-git init</pre>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 1: PRELUDE (WEEK 0) -->
-    <section class="phase-section" data-phase="prelude">
-      <div class="phase-header blue">
-        <div class="phase-title-group">
-          <h2>Prelude: Qualification, MVP Alignment & Access Clearance (Before Week 1)</h2>
-          <p>Do not start the 12-week clock until the use case passes the Data Yardstick and Ford Cloud Admin signs Developer Clearance.</p>
-        </div>
-        <span class="phase-badge">Week 0 · Gate 0</span>
-      </div>
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s1-1" />
-              <span>1.1 Run the 33 Starter Questions & Data Yardstick</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">workshop-intake</span>
-              <span class="badge badge-toolbox">Toolbox #01 & #10</span>
-              <span class="badge badge-output">docs/WORKSHOP_INTAKE.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Qualifies Ford's candidate use case (`Idea → Good → Ready`) across the 6-dimension Data Yardstick (`Available / Usable / Quality`).</p>
-          <div class="code-box">
-            <div class="code-kind">Prompt to Your Coding Agent</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>Use workshop-intake to analyze the Ford discovery notes in raw-notes/. Score the 33 Starter Questions and the 6-Dimension Data Yardstick, list open blockers to ask Ford SMEs tomorrow, and write docs/WORKSHOP_INTAKE.md.</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s1-2" />
-              <span>1.2 Generate the 4-Tab UCC & 1-Page MVP Alignment Summary</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">create-delta-ucc</span>
-              <span class="badge badge-toolbox">Toolbox #04 & #10</span>
-              <span class="badge badge-output">docs/USE_CASE_CANVAS.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Locks the 1-page MVP contract (`Problem, Target Users, In-Scope MVP, Out-of-Scope, Success Metrics, Key Dependencies`).</p>
-          <div class="code-box">
-            <div class="code-kind">Prompt to Your Coding Agent</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>Use create-delta-ucc on docs/WORKSHOP_INTAKE.md to generate the 4-Tab Use Case Canvas and the 1-Page Use Case Alignment Summary for Ford at docs/USE_CASE_CANVAS.md.</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s1-3" />
-              <span>1.3 Initialize `STATE.md` & Part III Developer Access Clearance</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">tdl-field-guide + specification-engineer</span>
-              <span class="badge badge-toolbox">Toolbox #11, #12, #14</span>
-              <span class="badge badge-output">STATE.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Sets up the 7-tab Program Tracker structure (`Timeline, Use Cases, Staffing, Use Case RAID, Program RAID, Meetings, OOO`) and the cloud clearance checklist.</p>
-          <div class="code-box">
-            <div class="code-kind">Prompt to Your Coding Agent</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>Use tdl-field-guide to initialize STATE.md for the Ford engagement at phase: 0 (Prelude) with dual RAID logs, and use specification-engineer Part III to generate the Developer Access & Golden Dataset Clearance checklist for Ford's cloud admin.</pre>
-          </div>
-        </div>
-      </div>
-      <div class="gate-banner">
-        <strong>Gate 0 Exit Criteria:</strong>
-        <span>Ford Cloud Admin signs Developer Clearance + 50-item Golden Dataset reachable in sandbox → set <code>phase: 1</code> in <code>STATE.md</code>.</span>
-      </div>
-    </section>
-
-    <!-- SECTION 2: PHASE 1 FOUNDATIONS (WEEKS 1-2) -->
-    <section class="phase-section" data-phase="phase1">
-      <div class="phase-header yellow">
-        <div class="phase-title-group">
-          <h2>Phase 1: Foundations — Ethnography, Baseline, PRD & Tech Spec (Weeks 1–2)</h2>
-          <p>Shadow Ford SMEs, freeze the 50-sample statistical baseline, lock the 8-section Agentic PRD, and write the 4-part Technical Spec.</p>
-        </div>
-        <span class="phase-badge">Weeks 1–2 · Gate 1</span>
-      </div>
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s2-1" />
-              <span>2.1 Deconstruct "As-Is" Process & Map L1–L5 CUJs (`0.6·Value + 0.4·Feasibility`)</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">business-process-redesign + cuj-architect</span>
-              <span class="badge badge-toolbox">Toolbox #02 & #03</span>
-              <span class="badge badge-output">docs/CUJ_MAP.md + docs/to_be_designs.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Turns SME shadowing notes into task decomposition tables, L1/L2/L3 autonomy boundaries, HITL gates, and the scored 4-tab CUJ matrix.</p>
-          <div class="code-box">
-            <div class="code-kind">Prompt to Your Coding Agent</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>Use business-process-redesign and cuj-architect on our Ford shadowing notes to produce docs/as_is_report.md, docs/to_be_designs.md, docs/human_agent_roles.md, and docs/CUJ_MAP.md (scoring each AI touchpoint with 0.6*Value + 0.4*Feasibility).</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s2-2" />
-              <span>2.2 Freeze the 50-Sample Historical Baseline (`compute_baseline_stats.py`)</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">synthetic-baseline-protocol</span>
-              <span class="badge badge-output">docs/baseline_kpis.json</span>
-            </div>
-          </div>
-          <p class="step-desc">Computes mean, median, P90 handling time, 95% confidence intervals, error rate, escalation rate, and annual baseline cost across 50 historical Ford items.</p>
-          <div class="code-box">
-            <div class="code-kind">Terminal Command</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>python3 ~/.gemini/config/plugins/tdl-user-guide/delivery/synthetic-baseline-protocol/scripts/compute_baseline_stats.py \
-  --times-json "[16,18,18,19,20,21,22,23,24,25,26,28,30,32,34,35,36,37,37,38,38,38,38,38,38,38,38,39,40,41,42,43,44,45,46,50,53,56,59,62,66,70,74,78,82,84,88,91,95,97]" \
-  --errors 7 --escalations 4 --hourly-rate 68.00 --annual-volume 50000 > docs/baseline_kpis.json</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s2-3" />
-              <span>2.3 Author the 8-Section Agentic PRD (`go/delta-prd-template`)</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">product-md</span>
-              <span class="badge badge-toolbox">Toolbox #05</span>
-              <span class="badge badge-output">docs/PRD.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Generates the complete Agentic PRD (including Section 5 System Prompt Architecture and Section 6 Golden Dataset Evaluation Rubric, modeled on Intel AskIT).</p>
-          <div class="code-box">
-            <div class="code-kind">Prompt to Your Coding Agent</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>Use product-md to write docs/PRD.md for Ford from docs/CUJ_MAP.md and docs/baseline_kpis.json following go/delta-prd-template.</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s2-4" />
-              <span>2.4 Select GCP Architecture Tier & Write the 4-Pillar Tech Spec</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">gcp-agent-architecture-advisor + specification-engineer</span>
-              <span class="badge badge-toolbox">Toolbox #14</span>
-              <span class="badge badge-output">docs/ARCHITECTURE_RECOMMENDATION.md + docs/TDD.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Compares Tier 1 (Gemini Enterprise), Tier 2 (ADK on Agent Runtime), and Tier 3 (ADK on Cloud Run/GKE) with verified GA/Preview stages, then writes Parts I–IV of `go/delta-squad-agent-specs`.</p>
-          <div class="code-box">
-            <div class="code-kind">Prompt to Your Coding Agent</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>First use gcp-agent-architecture-advisor on docs/PRD.md to select Tier 1, 2, or 3, verify current GCP launch stages, and write docs/ARCHITECTURE_RECOMMENDATION.md. Then use specification-engineer to write the 4-part Agent Technical Specification at docs/TDD.md.</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s2-5" />
-              <span>2.5 Run Stage 1/2 Prototype & 10–30 Item Feasibility Mini-Eval</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">stitch-design</span>
-              <span class="badge badge-toolbox">Toolbox #13 & #15</span>
-              <span class="badge badge-output">docs/STITCH_PROTOTYPE.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Applies the 7-step hypothesis loop and official Google Cloud × Ford co-branding (`#4285F4`, `#34A853`, `#FBBC04`, `#EA4335`, Google Sans / Roboto).</p>
-          <div class="code-box">
-            <div class="code-kind">Prompt to Your Coding Agent</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>Use stitch-design to build an interactive HTML/Stitch prototype of the Ford operator workbench using the Google Cloud x Ford co-branding lockup and Material 3 tokens, verify it against ui-review-checklist.md, and document the mini-eval in docs/STITCH_PROTOTYPE.md.</pre>
-          </div>
-        </div>
-      </div>
-      <div class="gate-banner">
-        <strong>Gate 1 Exit Criteria (End of Week 2):</strong>
-        <span>Ford Sponsor + TDL sign off on <code>docs/PRD.md</code>, <code>docs/TDD.md</code>, and <code>docs/baseline_kpis.json</code> → set <code>phase: 2</code> in <code>STATE.md</code>.</span>
-      </div>
-    </section>
-
-    <!-- SECTION 3: PHASE 2 CORE BUILD & DEMO SPRINTS (WEEKS 3-10) -->
-    <section class="phase-section" data-phase="phase2">
-      <div class="phase-header green">
-        <div class="phase-title-group">
-          <h2>Phase 2: Core Build & Four 2-Week Demo Sprints (Weeks 3–10)</h2>
-          <p>Four 2-week sprints delivering Demo 1 (Core UX), Demo 2 (Enterprise Integrations), and Demo 3 (Full Scope + 5x Quota & Judge Audit).</p>
-        </div>
-        <span class="phase-badge">Weeks 3–10 · Sprints 1–4 · Gate 2</span>
-      </div>
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s3-1" />
-              <span>3.1 Sprints 1–2: Scaffold ADK Agent & Run Goal-Driven Build Loop (Demo 1)</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">claude-agent-harness + google-agents-cli</span>
-              <span class="badge badge-output">src/ + tests/ + .harness/last_run_report.json</span>
-            </div>
-          </div>
-          <p class="step-desc">Iterates against `docs/PRD.md` and `docs/TDD.md` until all acceptance unit tests and linters exit `0`.</p>
-          <div class="code-box">
-            <div class="code-kind">Terminal Command</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>python3 ~/.gemini/config/plugins/tdl-user-guide/ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
-  --project "$GOOGLE_CLOUD_PROJECT" \
-  --workspace . \
-  --goal "Implement the Ford ADK agent and tools per docs/TDD.md" \
-  --spec docs/PRD.md --spec docs/TDD.md \
-  --verify "python3 -m unittest discover -s tests -p 'test_*.py'"</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s3-2" />
-              <span>3.2 Frame Up Bi-Weekly Customer Demos & Enforce 1-in-1-Out Scope Swaps</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">tdl-field-guide</span>
-              <span class="badge badge-toolbox">Toolbox #07 & #12</span>
-              <span class="badge badge-output">docs/DEMO_FRAME_UP.md + STATE.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Maps every PRD feature ID across Demo 1, Demo 2, and Demo 3 and logs any scope swap in the Use Case RAID log.</p>
-          <div class="code-box">
-            <div class="code-kind">Prompt to Your Coding Agent</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>Use tdl-field-guide to generate docs/DEMO_FRAME_UP.md mapping all committed features in docs/PRD.md across Demo 1, Demo 2, and Demo 3, and update STATE.md for our current sprint.</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s3-3" />
-              <span>3.3 Sprints 3–4: Recursive Fan-Out Math, 5x Vertex Quota & Locust SSE Load Test</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">agent-load-testing</span>
-              <span class="badge badge-toolbox">Toolbox #16</span>
-              <span class="badge badge-output">docs/LOAD_TEST_REPORT.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Calculates `1 + Qt + (Qt × Cq) + 1` calls per turn, sizes Vertex AI RPM/TPM quotas at 5x peak, and generates the Locust SSE load test report.</p>
-          <div class="code-box">
-            <div class="code-kind">Terminal Command</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>python3 ~/.gemini/config/plugins/tdl-user-guide/delivery/agent-load-testing/scripts/calculate_agent_quotas.py \
-  --qt 6 --cq 4 --tokens-per-call 20000 --peak-turns-per-min 10 --safety-multiplier 5.0</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s3-4" />
-              <span>3.4 Sprints 3–4: 27-Criterion CLA Eval & 3-Pipeline LLM-as-a-Judge Statistical Audit</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">agent-eval-statistical-auditing</span>
-              <span class="badge badge-toolbox">Toolbox #17 & #18</span>
-              <span class="badge badge-output">docs/EVAL_AUDIT_REPORT.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Audits your LLM Judge against Ford SMEs across Pipeline 1 (`Pearson r`, `ICC(2,1)`, `Krippendorff α`, `QWK`), Pipeline 2 (`Bias`, `Compression Ratio`), and Pipeline 3 (`Flip Rate`, `Entropy`).</p>
-          <div class="code-box">
-            <div class="code-kind">Terminal Command</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>python3 ~/.gemini/config/plugins/tdl-user-guide/delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py \
-  --input ~/.gemini/config/plugins/tdl-user-guide/delivery/agent-eval-statistical-auditing/examples/fixtures/calibrated_judge.json</pre>
-          </div>
-        </div>
-      </div>
-      <div class="gate-banner">
-        <strong>Gate 2 Exit Criteria (End of Week 10):</strong>
-        <span>Demo 3 accepted + Vertex quotas provisioned at 5x peak + Judge AUA certified (`PASS`) → set <code>phase: 3</code> in <code>STATE.md</code>.</span>
-      </div>
-    </section>
-
-    <!-- SECTION 4: PHASE 3 CLOSEOUT & ROI (WEEKS 11-12) -->
-    <section class="phase-section" data-phase="phase3">
-      <div class="phase-header red">
-        <div class="phase-title-group">
-          <h2>Phase 3: Final Read-Out, Measured ROI & Closeout (Weeks 11–12)</h2>
-          <p>Compare measured production telemetry against the frozen Week 1 baseline, deliver the Executive Closeout Deck, and run the FDE Blameless Retro.</p>
-        </div>
-        <span class="phase-badge">Weeks 11–12 · Gate 3</span>
-      </div>
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s4-1" />
-              <span>4.1 Calculate Measured Post-Launch ROI vs. Frozen Baseline (`calculate_roi.py`)</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">ai-value-sizing</span>
-              <span class="badge badge-output">docs/VALUE_SIZING.md</span>
-            </div>
-          </div>
-          <p class="step-desc">Computes 3-year NPV, ROI %, payback months, and net annual value across Base, Bull, and Bear scenarios.</p>
-          <div class="code-box">
-            <div class="code-kind">Terminal Command</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>python3 ~/.gemini/config/plugins/tdl-user-guide/ai-value-sizing/scripts/calculate_roi.py \
-  --tam-units 50000 --sam-share 0.80 --adoption-rate 0.50 --tech-compat 0.90 \
-  --hours-saved 0.55 --hourly-rate 68.0 --capex 200000 --annual-opex 55000 \
-  --vcr 0.60 --scdf 0.85 --wacc 0.10</pre>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-top">
-            <label class="step-check-label">
-              <input type="checkbox" class="step-check" data-step="s4-2" />
-              <span>4.2 Deliver Executive Closeout Deck, TDD Hand-Over & FDE Blameless Retro</span>
-            </label>
-            <div class="badges">
-              <span class="badge badge-skill">tdl-field-guide</span>
-              <span class="badge badge-toolbox">Toolbox #08 & #09</span>
-              <span class="badge badge-output">STATE.md + Closeout & Retro</span>
-            </div>
-          </div>
-          <p class="step-desc">Generates the Closeout Deck (`The Challenge | The Vision | The Experience | The Architecture | The Value`), finalizes the `docs/TDD.md` runbook, and harvests reusable patterns.</p>
-          <div class="code-box">
-            <div class="code-kind">Prompt to Your Coding Agent</div>
-            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            <pre>Use tdl-field-guide to compile our Ford Executive Closeout Deck outline from docs/VALUE_SIZING.md and docs/PRD.md, close out the dual RAID logs in STATE.md, and draft our FDE Blameless Retrospective notes.</pre>
-          </div>
-        </div>
-      </div>
-      <div class="gate-banner">
-        <strong>Gate 3 Exit Criteria (Week 12 Close):</strong>
-        <span>Agent live in Ford production with monitoring + Executive Read-Out delivered with measured KPIs + Runbook signed off.</span>
-      </div>
-    </section>
-
-    <!-- SECTION 5: COMPANION SKILLS MATRIX -->
-    <section class="phase-section" data-phase="companions">
-      <div class="phase-header blue">
-        <div class="phase-title-group">
-          <h2>Companion Skills Pairing Matrix (`tool-tdl-user-guide` + `skills.sh`)</h2>
-          <p>How the 14 TDL-exclusive skills in this repo pair with the top-trending upstream skills on `skills.sh`.</p>
-        </div>
-        <span class="phase-badge">Ecosystem Pairing</span>
-      </div>
-      <div class="steps-grid">
-        <table class="companion-table">
-          <thead>
-            <tr>
-              <th>Engagement Task</th>
-              <th>Use From This Repo (`tool-tdl-user-guide`)</th>
-              <th>Pair With Companion Skill (`npx skills add`)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Discovery & Scope Stress-Testing</strong></td>
-              <td><code>workshop-intake</code>, <code>create-delta-ucc</code>, <code>cuj-architect</code>, <code>business-process-redesign</code></td>
-              <td><code>mattpocock/skills/grill-me</code> (1.4M) & <code>grill-with-docs</code> (1.2M)</td>
-            </tr>
-            <tr>
-              <td><strong>Agentic PRD, Tech Spec & Tickets</strong></td>
-              <td><code>product-md</code> (Toolbox #05), <code>specification-engineer</code> (Toolbox #14)</td>
-              <td><code>mattpocock/skills/to-tickets</code> & <code>domain-modeling</code></td>
-            </tr>
-            <tr>
-              <td><strong>Stitch Prototyping & Web UI</strong></td>
-              <td><code>stitch-design</code> (TDL Prototyping Guide #15 + Delta Brand #13)</td>
-              <td><code>leonxlnx/taste-skill/stitch-design-taste</code>, <code>anthropics/skills/frontend-design</code>, <code>vercel-labs/agent-skills</code></td>
-            </tr>
-            <tr>
-              <td><strong>ADK Agent Implementation & TDD</strong></td>
-              <td><code>gcp-agent-architecture-advisor</code>, <code>claude-agent-harness</code></td>
-              <td><code>google/agents-cli</code> (<code>adk-code</code>, <code>scaffold</code>, <code>deploy</code>), <code>mattpocock/skills/tdd</code></td>
-            </tr>
-            <tr>
-              <td><strong>Browser E2E & Load/Judge Certification</strong></td>
-              <td><code>agent-load-testing</code> (Toolbox #16), <code>agent-eval-statistical-auditing</code> (Toolbox #17–18)</td>
-              <td><code>vercel-labs/agent-browser</code> (1.1M), <code>google-agents-cli-eval</code> & <code>observability</code></td>
-            </tr>
-            <tr>
-              <td><strong>Executive Slide Decks & Workbooks</strong></td>
-              <td><code>tdl-field-guide</code> (Kickoff/Demo/Closeout/Retro + 7-tab Program Tracker)</td>
-              <td><code>anthropics/skills/pptx</code> & <code>anthropics/skills/xlsx</code></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+    </div>
   </div>
 
   <script>
-    // Copy button handler
-    function copyCode(btn) {
-      const pre = btn.parentElement.querySelector('pre');
-      navigator.clipboard.writeText(pre.innerText).then(() => {
-        const orig = btn.innerText;
-        btn.innerText = 'Copied!';
-        btn.classList.add('copied');
-        setTimeout(() => {
-          btn.innerText = orig;
-          btn.classList.remove('copied');
-        }, 1600);
+    const STEPS = [
+      // DAY 1 SETUP
+      {
+        id: "step-1",
+        phase: "day1",
+        phaseTitle: "Day 1 Setup",
+        phaseSubtitle: "Before talking to Ford.",
+        phaseGate: "15-Minute Laptop Setup",
+        eyebrow: "Step 01 · Install",
+        title: "Install the 14 TDL Skills.",
+        shortDesc: "Clone the TDL User Guide into your agent workspace so Claude Code, Gemini CLI, or Cursor knows the 12-week Delta methodology.",
+        span: "span-6",
+        dark: true,
+        skill: "All 14 TDL Skills",
+        toolboxAsset: "TDL Field Guide + 18 Toolbox Assets",
+        artifacts: ["~/.gemini/skills/tool-tdl-user-guide"],
+        promptLabel: "Terminal Command (Run Once)",
+        prompt: `# Clone the TDL User Guide into your AI agent's skill directory
+git clone https://github.com/delta-fde/tool-tdl-user-guide.git ~/.gemini/skills/tool-tdl-user-guide
+
+# Verify all 14 skills and calculators pass integrity checks
+cd ~/.gemini/skills/tool-tdl-user-guide
+python3 -B scripts/validate_skills.py`,
+        cli: ""
+      },
+      {
+        id: "step-2",
+        phase: "day1",
+        phaseTitle: "Day 1 Setup",
+        phaseSubtitle: "Before talking to Ford.",
+        phaseGate: "15-Minute Laptop Setup",
+        eyebrow: "Step 02 · Companion Ecosystem",
+        title: "Add Upstream ADK & UI Skills.",
+        shortDesc: "Pair the 14 TDL governance skills with official Google ADK, TDD, and React UI skills from skills.sh.",
+        span: "span-6",
+        dark: false,
+        skill: "skills.sh + google/agents-cli",
+        toolboxAsset: "Companion Engineering Stack",
+        artifacts: ["google/agents-cli", "mattpocock/skills", "vercel-labs/agent-browser"],
+        promptLabel: "One-Line Companion Installs",
+        prompt: `# 1. Official Google Cloud ADK Scaffold, Eval & Deploy
+npx skills add google/agents-cli
+
+# 2. Spec grilling, TDD & architecture design
+npx skills add mattpocock/skills --skill grill-me --skill tdd --skill codebase-design
+
+# 3. Frontend UI taste & headless browser verification
+npx skills add leonxlnx/taste-skill
+npx skills add vercel-labs/agent-browser`,
+        cli: ""
+      },
+      {
+        id: "step-3",
+        phase: "day1",
+        phaseTitle: "Day 1 Setup",
+        phaseSubtitle: "Before talking to Ford.",
+        phaseGate: "15-Minute Laptop Setup",
+        eyebrow: "Step 03 · Workspace Init",
+        title: "Bootstrap the Ford Repo & STATE.md.",
+        shortDesc: "Enforce clean repo layout, .env separation across dev/staging/prod, and initialize STATE.md as your single source of truth.",
+        span: "span-12",
+        dark: false,
+        skill: "ecc-repo-conventions + codebase-onboarding-and-mapping",
+        toolboxAsset: "Asset #11 · Delivery Guide",
+        artifacts: ["STATE.md", "docs/ONBOARDING.md"],
+        promptLabel: "What to tell your AI Agent inside ford-agent-engagement/",
+        prompt: `Use the ecc-repo-conventions and tdl-field-guide skills to initialize this repository for the 12-week Ford engagement. Create STATE.md at Prelude (Week 0) and set up our docs/ folder structure. If Ford provided an existing repository, also run codebase-onboarding-and-mapping to generate docs/ONBOARDING.md.`,
+        cli: ""
+      },
+
+      // PRELUDE (WEEK 0)
+      {
+        id: "step-4",
+        phase: "prelude",
+        phaseTitle: "Prelude · Week 0",
+        phaseSubtitle: "Select and size the right Ford use case.",
+        phaseGate: "Gate 0 · Signed Use Case Alignment Summary",
+        eyebrow: "Step 04 · Triage & Value Sizing",
+        title: "Score Ford’s Candidate Use Cases.",
+        shortDesc: "Filter candidate ideas through the 5 Hard Qualifiers and run the deterministic 3-Scenario ROI calculator.",
+        span: "span-6",
+        dark: false,
+        skill: "ai-value-sizing",
+        toolboxAsset: "Assets #4 & #10 · Use Case Selection & Alignment",
+        artifacts: ["docs/USE_CASE_SCORECARD.md", "docs/VALUE_SIZING.md"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use the ai-value-sizing skill. Here are Ford's 3 candidate use cases from our intake call:
+1. Dealer Warranty Claims Triage Agent
+2. Connected Vehicle Diagnostic Log Summarizer
+3. Supplier Contract Compliance Checker
+
+Score them against the 5 Hard Qualifiers, build the 100-point rubric in docs/USE_CASE_SCORECARD.md, and draft the 1-page Use Case Alignment Summary for the winning use case.`,
+        cli: `python3 ~/.gemini/skills/tool-tdl-user-guide/product-management/ai-value-sizing/scripts/calculate_value.py \\
+  --volume 250000 --handle-time-min 18 --hourly-rate 68 \\
+  --error-rate 0.11 --cost-per-error 320 --annual-platform-cost 140000`
+      },
+      {
+        id: "step-5",
+        phase: "prelude",
+        phaseTitle: "Prelude · Week 0",
+        phaseSubtitle: "Select and size the right Ford use case.",
+        phaseGate: "Gate 0 · Signed Use Case Alignment Summary",
+        eyebrow: "Step 05 · Kickoff Readiness",
+        title: "Verify Tooling & Draft Kickoff Deck.",
+        shortDesc: "Audit your workspace capability slots and generate the slide-by-slide Ford Kickoff Deck with co-branded rules.",
+        span: "span-6",
+        dark: false,
+        skill: "skill-stocktake + exec-readout-generator",
+        toolboxAsset: "Asset #6 · Example Kickoff Deck",
+        artifacts: ["docs/KICKOFF_DECK.md"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Run skill-stocktake to verify our workspace has all capabilities for Phase 1, then use exec-readout-generator to create docs/KICKOFF_DECK.md for our Ford Dealer Warranty Claims Triage engagement.`,
+        cli: ""
+      },
+
+      // PHASE 1: FOUNDATIONS (WEEKS 1-2)
+      {
+        id: "step-6",
+        phase: "phase1",
+        phaseTitle: "Phase 1 · Foundations",
+        phaseSubtitle: "Weeks 1–2 · Onsite Discovery, PRD, Baseline & Architecture.",
+        phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
+        eyebrow: "Step 06 · Onsite Workshop",
+        title: "Run Discovery & Map Critical User Journeys.",
+        shortDesc: "Deconstruct Ford's legacy dealer workflow into atomic tasks and classify each as Automate, Augment, or Human-Only.",
+        span: "span-6",
+        dark: false,
+        skill: "cuj-to-eval-pipeline",
+        toolboxAsset: "Assets #1, #2 & #3 · Workshop, Process Reimagine & CUJ Templates",
+        artifacts: ["docs/CUJ_SPEC.md"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use the cuj-to-eval-pipeline skill. Based on our Ford Onsite Discovery notes, deconstruct the Dealer Warranty Claims workflow into atomic tasks, classify each as Automate / Augment / Human-Only, and write docs/CUJ_SPEC.md with 10-column CUJ tables and latency/accuracy targets.`,
+        cli: ""
+      },
+      {
+        id: "step-7",
+        phase: "phase1",
+        phaseTitle: "Phase 1 · Foundations",
+        phaseSubtitle: "Weeks 1–2 · Onsite Discovery, PRD, Baseline & Architecture.",
+        phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
+        eyebrow: "Step 07 · Product Spec",
+        title: "Draft the Agent PRD & Golden Eval Seeds.",
+        shortDesc: "Generate the 10-section AI Agent PRD (modeled on Intel Ask IT) and convert CUJs into golden eval cases.",
+        span: "span-6",
+        dark: false,
+        skill: "agent-prd-template",
+        toolboxAsset: "Asset #5 · PRD Example (Intel Ask IT)",
+        artifacts: ["docs/PRD.md", "evals/golden_dataset.json"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use the agent-prd-template skill to turn docs/CUJ_SPEC.md into a 10-section AI Agent PRD at docs/PRD.md for Ford. Include the human-in-the-loop escalation matrix for warranty claims over $2,500 and generate evals/golden_dataset.json.`,
+        cli: ""
+      },
+      {
+        id: "step-8",
+        phase: "phase1",
+        phaseTitle: "Phase 1 · Foundations",
+        phaseSubtitle: "Weeks 1–2 · Onsite Discovery, PRD, Baseline & Architecture.",
+        phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
+        eyebrow: "Step 08 · Pre-Build Benchmark",
+        title: "Freeze the 50-Sample Baseline KPIs.",
+        shortDesc: "Audit 50 historical Ford warranty tickets to lock P50/P90 handle times and unit cost before writing any agent code.",
+        span: "span-6",
+        dark: true,
+        skill: "synthetic-baseline-protocol",
+        toolboxAsset: "Asset #11 · Baseline Governance Rule",
+        artifacts: ["docs/baseline_kpis.json"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use the synthetic-baseline-protocol skill to audit data/ford_50_historical_claims.csv and freeze docs/baseline_kpis.json so we have an immutable pre-AI benchmark for our Week 12 ROI readout.`,
+        cli: `python3 ~/.gemini/skills/tool-tdl-user-guide/product-management/synthetic-baseline-protocol/scripts/calculate_baseline.py \\
+  --input data/ford_50_historical_claims.csv \\
+  --hourly-rate 68 \\
+  --output docs/baseline_kpis.json`
+      },
+      {
+        id: "step-9",
+        phase: "phase1",
+        phaseTitle: "Phase 1 · Foundations",
+        phaseSubtitle: "Weeks 1–2 · Onsite Discovery, PRD, Baseline & Architecture.",
+        phaseGate: "Gate 1 · PRD Sign-off + 50-Sample Baseline Frozen",
+        eyebrow: "Step 09 · GCP Platform Tier",
+        title: "Select the Google Cloud Agent Architecture.",
+        shortDesc: "Compare Gemini Enterprise (no-code), ADK on Managed Agent Runtime, and ADK on Cloud Run/GKE with live GA/Preview verification.",
+        span: "span-6",
+        dark: false,
+        skill: "gcp-agent-architecture-advisor",
+        toolboxAsset: "Asset #11 + Model Economics Config",
+        artifacts: ["docs/ARCHITECTURE_RECOMMENDATION.md"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use the gcp-agent-architecture-advisor skill to recommend a Google Cloud architecture for Ford in docs/ARCHITECTURE_RECOMMENDATION.md based on docs/PRD.md. Compare Gemini Enterprise, ADK on Agent Runtime, and ADK on Cloud Run, and include token cost estimates.`,
+        cli: ""
+      },
+
+      // PHASE 2: CORE BUILD & SPRINTS (WEEKS 3-10)
+      {
+        id: "step-10",
+        phase: "phase2",
+        phaseTitle: "Phase 2 · Core Build & Sprints",
+        phaseSubtitle: "Weeks 3–10 · Prototype, Spec, Build, Eval & Load Test.",
+        phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
+        eyebrow: "Step 10 · 48-Hour UI Prototype",
+        title: "Build the Co-Branded Prototype in 48 Hours.",
+        shortDesc: "Validate UX flows with Ford dealers using Google Cloud Delta Brand palette (#4285F4, Google Sans) before backend investment.",
+        span: "span-4",
+        dark: false,
+        skill: "stitch-design",
+        toolboxAsset: "Assets #13 & #15 · Delta Brand & TDL Prototyping Guide",
+        artifacts: ["docs/UI_SPEC.md"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use the stitch-design skill to generate a Google Cloud Delta × Ford co-branded dealer triage console spec in docs/UI_SPEC.md, following the 48-hour TDL Prototyping Guide and Delta Brand palette.`,
+        cli: ""
+      },
+      {
+        id: "step-11",
+        phase: "phase2",
+        phaseTitle: "Phase 2 · Core Build & Sprints",
+        phaseSubtitle: "Weeks 3–10 · Prototype, Spec, Build, Eval & Load Test.",
+        phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
+        eyebrow: "Step 11 · Technical Blueprint",
+        title: "Author the 9-Section Agent Technical Spec.",
+        shortDesc: "Lock orchestration topology, MCP tool schemas, Vertex AI grounding, IAM guardrails, and OTel tracing.",
+        span: "span-8",
+        dark: false,
+        skill: "agent-technical-spec",
+        toolboxAsset: "Asset #14 · Agent Technical Specifications",
+        artifacts: ["docs/AGENT_SPEC.md"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use the agent-technical-spec skill to write docs/AGENT_SPEC.md from docs/PRD.md and docs/ARCHITECTURE_RECOMMENDATION.md. Define the coordinator/specialist topology, MCP warranty lookup tool schemas, Model Armor guardrails, and Cloud Trace instrumentation.`,
+        cli: ""
+      },
+      {
+        id: "step-12",
+        phase: "phase2",
+        phaseTitle: "Phase 2 · Core Build & Sprints",
+        phaseSubtitle: "Weeks 3–10 · Prototype, Spec, Build, Eval & Load Test.",
+        phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
+        eyebrow: "Step 12 · Autonomous Build Loop",
+        title: "Scaffold ADK & Run the Goal Contract Loop.",
+        shortDesc: "Combine google/agents-cli with claude-agent-harness and agentic-engineering to iterate until pytest and ruff pass 100%.",
+        span: "span-6",
+        dark: true,
+        skill: "claude-agent-harness + agentic-engineering",
+        toolboxAsset: "Asset #12 · Weekly Program Tracker",
+        artifacts: ["src/", "tests/", "STATE.md"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use google-agents-cli-scaffold and claude-agent-harness to implement the Ford Warranty Triage Agent defined in docs/AGENT_SPEC.md. Run the goal contract verification loop until pytest -q and ruff check pass with zero errors, and update our weekly RAG status in STATE.md.`,
+        cli: `python3 ~/.gemini/skills/tool-tdl-user-guide/ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \\
+  --project "$VERTEX_PROJECT_ID" --goal-contract docs/goal_contract.json --workspace .`
+      },
+      {
+        id: "step-13",
+        phase: "phase2",
+        phaseTitle: "Phase 2 · Core Build & Sprints",
+        phaseSubtitle: "Weeks 3–10 · Prototype, Spec, Build, Eval & Load Test.",
+        phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
+        eyebrow: "Step 13 · Statistical Quality Gate",
+        title: "Calibrate the LLM Judge (Rogan-Gladen CI).",
+        shortDesc: "Run linguistic quality rubric checks and compute bias-corrected Rogan-Gladen accuracy with 95% bootstrap confidence intervals.",
+        span: "span-6",
+        dark: false,
+        skill: "llm-judge-statistical-audit",
+        toolboxAsset: "Assets #17 & #18 · Linguistic Quality & Statistical Auditing",
+        artifacts: ["evals/judge_audit_report.json"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use the llm-judge-statistical-audit skill to audit our LLM-as-a-Judge results against Ford SME human labels. Verify our judge meets q0 + q1 - 1 >= 0.60 and compute the Rogan-Gladen corrected pass rate in evals/judge_audit_report.json.`,
+        cli: `python3 ~/.gemini/skills/tool-tdl-user-guide/evals/llm-judge-statistical-audit/scripts/evaluate_judge.py \\
+  --calibration evals/human_vs_judge_calibration.csv \\
+  --production evals/production_judge_outcomes.csv \\
+  --output evals/judge_audit_report.json`
+      },
+      {
+        id: "step-14",
+        phase: "phase2",
+        phaseTitle: "Phase 2 · Core Build & Sprints",
+        phaseSubtitle: "Weeks 3–10 · Prototype, Spec, Build, Eval & Load Test.",
+        phaseGate: "Gate 2 · ≥85% Golden Eval Pass Rate + Load Test SLA",
+        eyebrow: "Step 14 · Concurrency & Rate Limits",
+        title: "Stress-Test Under Peak Dealer Load.",
+        shortDesc: "Run Locust traffic profiles across Baseline, 2x Peak, Soak, and Burst to catch HTTP 429 Vertex AI quota bottlenecks.",
+        span: "span-12",
+        dark: false,
+        skill: "agent-load-testing",
+        toolboxAsset: "Asset #16 · Load Testing Guide",
+        artifacts: ["docs/LOAD_TEST_REPORT.md"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use the agent-load-testing skill to generate a Locust load test suite simulating 150 concurrent Ford dealership service advisors. Run the 4 traffic profiles and write the TTFT, E2E p95/p99 latency, and token throughput results to docs/LOAD_TEST_REPORT.md.`,
+        cli: ""
+      },
+
+      // PHASE 3: CLOSEOUT & ROI (WEEKS 11-12)
+      {
+        id: "step-15",
+        phase: "phase3",
+        phaseTitle: "Phase 3 · Closeout & Launch",
+        phaseSubtitle: "Weeks 11–12 · Executive Readout, Production Cutover & Retro.",
+        phaseGate: "Gate 3 · Executive Sign-off & Client Handoff",
+        eyebrow: "Step 15 · Executive Readout & Retro",
+        title: "Deliver the Final ROI Readout & FDE Retro.",
+        shortDesc: "Generate the Demo Frame-Up Deck, Before/After Executive Closeout Deck from frozen baseline KPIs, and internal FDE Retro.",
+        span: "span-12",
+        dark: true,
+        skill: "exec-readout-generator + e2e-delivery-workflow",
+        toolboxAsset: "Assets #7, #8 & #9 · Demo Frame-Up, Closeout & FDE Retro Decks",
+        artifacts: ["docs/DEMO_FRAMEUP_DECK.md", "docs/EXEC_READOUT_DECK.md", "docs/FDE_RETRO.md"],
+        promptLabel: "What to tell your AI Agent",
+        prompt: `Use the exec-readout-generator skill to produce our final Ford deliverables from docs/baseline_kpis.json, evals/judge_audit_report.json, and docs/LOAD_TEST_REPORT.md:
+1. docs/DEMO_FRAMEUP_DECK.md (live demo script & backup plan)
+2. docs/EXEC_READOUT_DECK.md (Before/After KPI table, 3-scenario realized ROI, and Ford ops runbook handoff)
+3. docs/FDE_RETRO.md (internal Google Cloud FDE retrospective & reusable asset extraction)`,
+        cli: ""
+      }
+    ];
+
+    const STORAGE_KEY = "tdl_ford_apple_completed_v1";
+    const THEME_KEY = "tdl_ford_apple_theme_v1";
+    let completedSteps = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+    let activeStepIndex = 0;
+
+    function saveCompleted() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...completedSteps]));
+      updateProgressUI();
+    }
+
+    function updateProgressUI() {
+      const total = STEPS.length;
+      const done = completedSteps.size;
+      document.getElementById("progressText").textContent = `${done} of ${total} completed`;
+      document.getElementById("progressBar").style.width = `${Math.round((done / total) * 100)}%`;
+
+      document.querySelectorAll(".bento-card").forEach(card => {
+        const stepId = card.getAttribute("data-step-id");
+        if (completedSteps.has(stepId)) {
+          card.classList.add("completed");
+        } else {
+          card.classList.remove("completed");
+        }
       });
     }
 
-    // Filter tabs
-    const tabs = document.querySelectorAll('.tab-btn');
-    const sections = document.querySelectorAll('.phase-section');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const filter = tab.getAttribute('data-filter');
-        sections.forEach(sec => {
-          if (filter === 'all' || sec.getAttribute('data-phase') === filter) {
-            sec.classList.remove('hidden');
+    function renderSections() {
+      const container = document.getElementById("sectionsContainer");
+      container.innerHTML = "";
+
+      const phasesOrder = ["day1", "prelude", "phase1", "phase2", "phase3"];
+      phasesOrder.forEach(phaseKey => {
+        const phaseSteps = STEPS.filter(s => s.phase === phaseKey);
+        if (!phaseSteps.length) return;
+
+        const first = phaseSteps[0];
+        const section = document.createElement("section");
+        section.className = "phase-section";
+        section.setAttribute("data-phase", phaseKey);
+
+        section.innerHTML = `
+          <div class="phase-header">
+            <h2 class="phase-title">${first.phaseTitle}. <span>${first.phaseSubtitle}</span></h2>
+            <div class="phase-gate-badge">${first.phaseGate}</div>
+          </div>
+          <div class="bento-grid">
+            ${phaseSteps.map(step => `
+              <article class="bento-card ${step.span} ${step.dark ? 'dark-card' : ''} ${completedSteps.has(step.id) ? 'completed' : ''}" data-step-id="${step.id}">
+                <div>
+                  <div class="card-top">
+                    <span class="card-eyebrow">${step.eyebrow}</span>
+                    <div class="status-dot" title="Completed status">✓</div>
+                  </div>
+                  <h3 class="card-headline">${step.title}</h3>
+                  <p class="card-desc">${step.shortDesc}</p>
+                </div>
+                <div class="card-footer">
+                  <div class="card-tags">
+                    ${step.artifacts.map(a => `<span class="artifact-chip">${a}</span>`).join("")}
+                  </div>
+                  <div class="plus-btn" aria-label="View step details">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                  </div>
+                </div>
+              </article>
+            `).join("")}
+          </div>
+        `;
+        container.appendChild(section);
+      });
+
+      document.querySelectorAll(".bento-card").forEach(card => {
+        card.addEventListener("click", () => {
+          const stepId = card.getAttribute("data-step-id");
+          openModalByStepId(stepId);
+        });
+      });
+
+      updateProgressUI();
+    }
+
+    function openModalByStepId(stepId) {
+      const idx = STEPS.findIndex(s => s.id === stepId);
+      if (idx === -1) return;
+      activeStepIndex = idx;
+      populateModal(STEPS[idx]);
+      const backdrop = document.getElementById("modalBackdrop");
+      backdrop.classList.add("open");
+      backdrop.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      const backdrop = document.getElementById("modalBackdrop");
+      backdrop.classList.remove("open");
+      backdrop.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    function populateModal(step) {
+      document.getElementById("modalEyebrow").textContent = `${step.phaseTitle} · ${step.eyebrow}`;
+      document.getElementById("modalTitle").textContent = step.title;
+      document.getElementById("modalSummary").textContent = step.shortDesc;
+
+      document.getElementById("modalMetaGrid").innerHTML = `
+        <div class="meta-box">
+          <div class="meta-box-label">Active Skill</div>
+          <div class="meta-box-value">${step.skill}</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-box-label">TDL Toolbox Asset</div>
+          <div class="meta-box-value">${step.toolboxAsset}</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-box-label">Output Contract</div>
+          <div class="meta-box-value">${step.artifacts.join(", ")}</div>
+        </div>
+      `;
+
+      document.getElementById("modalPromptLabel").textContent = step.promptLabel;
+      document.getElementById("modalPromptCode").textContent = step.prompt;
+
+      const cliSection = document.getElementById("modalCliSection");
+      if (step.cli) {
+        cliSection.style.display = "block";
+        document.getElementById("modalCliCode").textContent = step.cli;
+      } else {
+        cliSection.style.display = "none";
+      }
+
+      const completeBtn = document.getElementById("modalCompleteBtn");
+      const isDone = completedSteps.has(step.id);
+      completeBtn.className = `complete-toggle-btn ${isDone ? "is-done" : ""}`;
+      completeBtn.textContent = isDone ? "✓ Completed (Tap to Undo)" : "Mark Step Complete";
+
+      document.getElementById("prevStepBtn").disabled = activeStepIndex === 0;
+      document.getElementById("nextStepBtn").disabled = activeStepIndex === STEPS.length - 1;
+    }
+
+    // Copy buttons
+    function setupCopyButton(btnId, codeId, defaultLabel) {
+      const btn = document.getElementById(btnId);
+      btn.addEventListener("click", () => {
+        const text = document.getElementById(codeId).textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          btn.textContent = "Copied ✓";
+          btn.classList.add("copied");
+          setTimeout(() => {
+            btn.textContent = defaultLabel;
+            btn.classList.remove("copied");
+          }, 1600);
+        });
+      });
+    }
+
+    setupCopyButton("copyPromptBtn", "modalPromptCode", "Copy Prompt");
+    setupCopyButton("copyCliBtn", "modalCliCode", "Copy Command");
+
+    // Modal Actions
+    document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
+    document.getElementById("modalBackdrop").addEventListener("click", (e) => {
+      if (e.target.id === "modalBackdrop") closeModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      const isOpen = document.getElementById("modalBackdrop").classList.contains("open");
+      if (!isOpen) return;
+      if (e.key === "Escape") closeModal();
+      if (e.key === "ArrowRight" && activeStepIndex < STEPS.length - 1) {
+        activeStepIndex++;
+        populateModal(STEPS[activeStepIndex]);
+      }
+      if (e.key === "ArrowLeft" && activeStepIndex > 0) {
+        activeStepIndex--;
+        populateModal(STEPS[activeStepIndex]);
+      }
+    });
+
+    document.getElementById("prevStepBtn").addEventListener("click", () => {
+      if (activeStepIndex > 0) {
+        activeStepIndex--;
+        populateModal(STEPS[activeStepIndex]);
+      }
+    });
+
+    document.getElementById("nextStepBtn").addEventListener("click", () => {
+      if (activeStepIndex < STEPS.length - 1) {
+        activeStepIndex++;
+        populateModal(STEPS[activeStepIndex]);
+      }
+    });
+
+    document.getElementById("modalCompleteBtn").addEventListener("click", () => {
+      const step = STEPS[activeStepIndex];
+      if (completedSteps.has(step.id)) {
+        completedSteps.delete(step.id);
+      } else {
+        completedSteps.add(step.id);
+      }
+      saveCompleted();
+      populateModal(step);
+    });
+
+    // Segmented Filter
+    document.querySelectorAll("#phaseFilter .seg-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#phaseFilter .seg-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const filter = btn.getAttribute("data-filter");
+        document.querySelectorAll(".phase-section").forEach(sec => {
+          if (filter === "all" || sec.getAttribute("data-phase") === filter) {
+            sec.classList.remove("hidden");
           } else {
-            sec.classList.add('hidden');
+            sec.classList.add("hidden");
           }
         });
       });
     });
 
-    // Checklist state persistence in localStorage
-    const checks = document.querySelectorAll('.step-check');
-    const doneEl = document.getElementById('done-count');
-    const totalEl = document.getElementById('total-count');
-    const barEl = document.getElementById('progress-bar');
-    const STORAGE_KEY = 'tdl_ford_onboarding_checks_v1';
-
-    function loadChecks() {
-      totalEl.textContent = checks.length;
-      let saved = {};
-      try {
-        saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      } catch (e) {}
-      checks.forEach(ch => {
-        const id = ch.getAttribute('data-step');
-        if (saved[id]) {
-          ch.checked = true;
-          ch.closest('.step-card').classList.add('completed');
-        }
+    // Artifact Flow Ribbon Clicks
+    document.querySelectorAll(".flow-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        const stepId = pill.getAttribute("data-open-step");
+        openModalByStepId(stepId);
       });
-      updateProgress();
+    });
+
+    // Reset & Theme Toggle
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      completedSteps.clear();
+      saveCompleted();
+    });
+
+    const themeBtn = document.getElementById("themeBtn");
+    function applyTheme(theme) {
+      if (theme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        themeBtn.textContent = "Light Mode";
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+        themeBtn.textContent = "Dark Mode";
+      }
+      localStorage.setItem(THEME_KEY, theme);
     }
 
-    function updateProgress() {
-      let done = 0;
-      const saved = {};
-      checks.forEach(ch => {
-        const id = ch.getAttribute('data-step');
-        const card = ch.closest('.step-card');
-        if (ch.checked) {
-          done++;
-          saved[id] = true;
-          card.classList.add('completed');
-        } else {
-          card.classList.remove('completed');
-        }
-      });
-      doneEl.textContent = done;
-      const pct = checks.length ? Math.round((done / checks.length) * 100) : 0;
-      barEl.style.width = pct + '%';
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
-      } catch (e) {}
-    }
+    applyTheme(localStorage.getItem(THEME_KEY) || "light");
+    themeBtn.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      applyTheme(current === "dark" ? "light" : "dark");
+    });
 
-    checks.forEach(ch => ch.addEventListener('change', updateProgress));
-    loadChecks();
+    renderSections();
   </script>
 </body>
 </html>
