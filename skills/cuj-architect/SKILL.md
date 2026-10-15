@@ -21,11 +21,10 @@ This skill maps legacy and future-state workflows across the five-level hierarch
 
 | Attribute | Specification |
 | :--- | :--- |
-| **Engagement Phase & Timebox** | **Phase 1 Foundations (Weeks 1–2):** 3.5-hour 4-tab CUJ mapping & touchpoint prioritization workshop |
-| **Time-to-Market (TTM) Compression** | **24.0h manual $\rightarrow$ 3.5h skill-guided (`85.4%` faster L1–L5 journey & touchpoint prioritization)** |
+| **Engagement Phase & Timebox** | **Prelude (Weeks -4 to 0, per Reimagine Business Processes asset #2):** 4-tab CUJ mapping & touchpoint prioritization workshop |
 | **Reads (Inputs)** | `docs/as_is_report.md`, `docs/to_be_designs.md` |
 | **Writes (Outputs)** | `docs/CUJ_MAP.md` (following [`references/output-template.md`](references/output-template.md) and [`references/schema.json`](references/schema.json)) |
-| **Value Realization Linkage** | Ranks AI touchpoints by $\text{Overall Score} = 0.60 \times \text{Value Score} + 0.40 \times \text{Feasibility Score}$ so Sprint 1 builds highest-ROI `P0` touchpoints first |
+| **Value Realization Linkage** | Ranks AI touchpoints by $\text{Overall Score} = 0.60 \times \text{Value Score} + 0.40 \times \text{Feasibility Score}$ |
 
 ---
 
@@ -37,8 +36,8 @@ Every complete `docs/CUJ_MAP.md` deliverable follows the 4-stage methodology in 
 | :--- | :--- | :--- |
 | **1. Process Ethnography** | Capture As-Is ground truth & swivel-chair waste | `Step ID` · `Actor` · `System/App` · `Context-Switch (Y/N)` · `Friction Category` (`Data Retrieval`, `System Latency`, `Munging/Transform`, `Quality Checks`) · `Latency (min)` · `Verbatim Quote` |
 | **2. L1–L5 CUJ Hierarchy** | Deconstruct workflow into tool-agnostic goals | `L1 Business Outcome` $\rightarrow$ `L2 Stage` $\rightarrow$ `L3 Goal ("As a result of completing these tasks, I will have/get [X]")` $\rightarrow$ `L4 Task (Verb + Noun)` $\rightarrow$ `L5 Step` |
-| **3. Future State & AI Taxonomy** | Bind AI capabilities & HITL governance to L4/L5 steps | `AI Core Effect` (`Replace`, `Augment`, `Remove`, `Add to`, `Integrate with`) · `AI Intent` (`Retrieve`, `Execute`, `Transform`, `Analyze`, `Answer`, `Summarize`, `Route`, `Monitor`) · `HITL Role` (`Reviewer`, `Prompt Curator`, `Approver`) |
-| **4. Prioritization Matrix** | Rank touchpoints (`TP-1..TP-n`) for sprint backlog | $\text{Value Score} = \frac{\text{Pain} + \text{Efficiency} + \text{Alignment}}{3}$ · $\text{Feasibility Score} = \frac{\text{Data} + \text{Tech}}{2}$ · $\text{Overall} = 0.60 \times \text{Value} + 0.40 \times \text{Feasibility}$ (`P0`, `P1`, `P2`) |
+| **3. Future State & AI Taxonomy** | Bind AI capabilities & HITL governance to L4/L5 steps | `AI Core Effect` (`Replace`, `Augment`, `Remove`, `Add to`, `Integrate with`) · `AI Intent` (`Answer`, `Retrieve`, `Get insights`, `Visualize`, `Route`, `Execute`, `Analyze`, `Diagnose`, `Prioritize`, `Guide`, `Transform`, `Summarize`, `Create`, `Plan`) · `HITL Role` (`Reviewer`, `Prompt Curator`, `Approver`) |
+| **4. Prioritization Matrix** | Rank touchpoints (`TP-1..TP-n`) for sprint backlog | $\text{Value Score} = \frac{\text{Pain} + \text{Efficiency} + \text{Alignment}}{3}$ · $\text{Feasibility Score} = \frac{\text{Data} + \text{Tech}}{2}$ · $\text{Overall} = 0.60 \times \text{Value} + 0.40 \times \text{Feasibility}$ (`P0` ≥ 4 · `P1` ≥ 3 · `P2` ≥ 2 · `P3` < 2) |
 
 ---
 
@@ -48,16 +47,6 @@ Every complete `docs/CUJ_MAP.md` deliverable follows the 4-stage methodology in 
 2. **Build L1–L5 CUJ Hierarchy (Template 2):** Reframe all Level 3 goals using *"As a result of completing these tasks, I will have/get [X]."*
 3. **Design Future-State AI Touchpoints & HITL Governance (Template 3):** Assign each step its `AI Core Effect`, `Standardized AI Intent`, `Capabilities & Dependencies`, and `HITL Role` (`Reviewer`, `Prompt Curator`, `Approver`).
 4. **Score & Prioritize Touchpoints (Template 4) & Validate JSON:** Compute the $0.60 \times \text{Value Score} + 0.40 \times \text{Feasibility Score}$ weighted scores and write `docs/CUJ_MAP.md` following [output-template.md](references/output-template.md) and [schema.json](references/schema.json).
-
----
-
-## Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **Ethnography Grounding** | Every AI touchpoint traces back to an observed Template 1 friction point with measured latency in minutes and system hops. | Proposes "bolt-on" chatbot features untethered from observed workflow bottlenecks. |
-| **L3 Result Framing & HITL Role** | Every L3 goal uses *"As a result of completing these tasks, I will have/get [X]"* and every touchpoint assigns `Reviewer`, `Prompt Curator`, or `Approver`. | Writes L3 goals as software feature descriptions or omits human governance roles. |
-| **Deterministic `0.60V + 0.40F` Math** | Template 4 computes exact `Value Score`, `Feasibility Score`, and `0.60 * Value + 0.40 * Feasibility` priority bands (`P0`, `P1`, `P2`). | Uses subjective "High/Medium/Low" labels without computing the weighted 1–5 scores. |
 
 ---
 

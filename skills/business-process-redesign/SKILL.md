@@ -24,8 +24,7 @@ This skill maps and reimagines legacy operational workflows using the official *
 
 | Attribute | Specification |
 | :--- | :--- |
-| **Engagement Phase & Timebox** | **Phase 1 Foundations (Weeks 1–2):** 45-minute Process Owner deep-dives + live ethnographic shadowing |
-| **Time-to-Market (TTM) Compression** | **32.0h manual $\rightarrow$ 5.0h skill-guided (`84.4%` faster process deconstruction & To-Be swimlane design)** |
+| **Engagement Phase & Timebox** | **Prelude (Weeks -4 to 0, per Reimagine Business Processes asset #2):** 45-minute deep-dive sessions + live ethnographic observation (see §4) |
 | **Reads (Inputs)** | `docs/WORKSHOP_INTAKE.md`, `docs/USE_CASE_CANVAS.md` |
 | **Writes (Outputs)** | `docs/as_is_report.md`, `docs/to_be_designs.md`, `docs/human_agent_roles.md` |
 | **Value Realization Linkage** | Quantifies **Annual Labor Cost** + **Annual Rework Cost** baseline and maps L2/L3 automation hours saved for `ai-value-sizing` |
@@ -53,7 +52,7 @@ Always anchor where the engagement is operating across the three altitudes befor
 
 ---
 
-## 3. Autonomy Spectrum & Defensible Math Rules
+## 3. Autonomy Spectrum & Defensible Math Rules (repo convention, not in the method guide)
 
 1. **Autonomy Spectrum (`L1` / `L2` / `L3`):**
    - **L1 (Human-Only):** High-empathy, subjective, or irreversible legal/strategic sign-offs.
@@ -82,16 +81,6 @@ Always anchor where the engagement is operating across the three altitudes befor
 ### Phase 3: 2-Day Process Reimagination Workshop & PDR Gate (Week 0)
 1. **Day 1:** Validate goals, review As-Is ethnographic friction points (with dot-voting), and iterate on the To-Be CUJ & AI Intent Taxonomy.
 2. **Day 2:** Prioritize AI Building Blocks for the 12-week FDE build, verify all deliverables against [process-design-review.md](references/process-design-review.md), and feed directly into `docs/PRD.md`.
-
----
-
-## Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **Altitude & Task Decomposition** | Anchors Altitude 1/2/3 and decomposes sequential tasks (`T1..Tn`) with cycle time, error rate, and `L1/L2/L3` autonomy. | Automates a broken manual process as-is without applying `Remove`, `Replace`, or `Augment` core effects. |
-| **Labor + Rework Cost Baseline** | Computes both **Annual Labor Cost** and **Annual Rework Cost** using explicit volume, cycle time, error rate, and hourly rate. | Reports percentage efficiency claims without dollarized baseline labor and rework math. |
-| **HITL Safety & Role Matrix** | Every L2/L3 task defines an explicit confidence/dollar escalation threshold and maps human roles (`Reviewer`, `Prompt Curator`, `Approver`). | Grants L3 autonomous write access to systems of record without a confidence threshold or fallback path. |
 
 ---
 

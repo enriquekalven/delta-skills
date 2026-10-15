@@ -6,13 +6,16 @@ Run: python3 -m unittest discover -s ai-coding/claude-agent-harness/scripts -p '
 from __future__ import annotations
 
 import io
+import json
 import os
 import sys
 import tempfile
+import types
 import unittest
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
 from types import SimpleNamespace
 from typing import Any
+from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -285,6 +288,63 @@ class CliTests(unittest.TestCase):
             )
         self.assertEqual(code, 1)
         self.assertIn("--verify", err.getvalue())
+
+    def test_dry_run_does_not_claim_goal_met(self) -> None:
+        with (
+            tempfile.TemporaryDirectory() as root,
+            redirect_stdout(io.StringIO()) as out,
+        ):
+            spec = os.path.join(root, "PRD.md")
+            with open(spec, "w", encoding="utf-8") as handle:
+                handle.write("# Spec\nadd(a, b) returns a + b\n")
+            code = harness.main(
+                [
+                    "--spec",
+                    spec,
+                    "--workspace",
+                    root,
+                    "--project",
+                    "p",
+                    "--verify",
+                    CHECK_ADD,
+                    "--dry-run",
+                ]
+            )
+        self.assertEqual(code, 0)
+        report = json.loads(out.getvalue())
+        self.assertEqual(report["status"], "dry_run_ok")
+        self.assertFalse(report["goal_met"])
+        self.assertEqual(report["verify_commands"], [CHECK_ADD])
+
+    def test_report_creates_missing_parent_dir_in_both_modes(self) -> None:
+        base = ["--goal", "build calc", "--project", "p", "--verify", CHECK_ADD]
+        with tempfile.TemporaryDirectory() as root:
+            dry_path = os.path.join(root, ".harness", "last_run_report.json")
+            with redirect_stdout(io.StringIO()):
+                code = harness.main(
+                    base + ["--workspace", root, "--dry-run", "--report", dry_path]
+                )
+            self.assertEqual(code, 0)
+            with open(dry_path, encoding="utf-8") as handle:
+                self.assertEqual(json.load(handle)["status"], "dry_run_ok")
+
+            live_path = os.path.join(root, "out", "live", "last_run_report.json")
+            fake_anthropic = types.ModuleType("anthropic")
+            fake_anthropic.AnthropicVertex = lambda **_kw: FakeClient(  # type: ignore[attr-defined]
+                [
+                    reply(tool("write_file", "t1", path="calc.py", content=FIXED)),
+                    reply(tool("declare_goal_complete", "t2", summary="done")),
+                ]
+            )
+            with (
+                mock.patch.dict(sys.modules, {"anthropic": fake_anthropic}),
+                redirect_stdout(io.StringIO()),
+                redirect_stderr(io.StringIO()),
+            ):
+                code = harness.main(base + ["--workspace", root, "--report", live_path])
+            self.assertEqual(code, 0)
+            with open(live_path, encoding="utf-8") as handle:
+                self.assertTrue(json.load(handle)["goal_met"])
 
     def test_review_target_must_be_inside_workspace(self) -> None:
         with (

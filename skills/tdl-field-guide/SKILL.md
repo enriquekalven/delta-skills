@@ -26,10 +26,8 @@ This skill sequences the engagement and enforces gates; specialist work is deleg
 | Attribute | Specification |
 | :--- | :--- |
 | **Engagement Phase & Timebox** | **All Phases (Weeks 0–12):** Continuous phase-gate orchestration, bi-weekly demo frame-ups & RAID governance |
-| **Time-to-Market (TTM) Compression** | **40.0h manual $\rightarrow$ 6.0h skill-guided (`85.0%` faster program tracking, demo frame-up & closeout synthesis)** |
 | **Reads (Inputs)** | `docs/WORKSHOP_INTAKE.md`, `docs/PRD.md`, `docs/TDD.md`, `docs/LOAD_TEST_REPORT.md`, `docs/EVAL_AUDIT_REPORT.md`, `docs/VALUE_SIZING.md` |
 | **Writes (Outputs)** | `STATE.md` (gates, 1-in/1-out scope log, dual RAID logs) and `docs/DEMO_FRAME_UP.md` |
-| **Value Realization Linkage** | Protects the 12-week delivery date against scope creep via **1-in / 1-out RICE swaps**, enforces **Golden Dataset baseline before build**, and locks Week 12 executive closeout sign-off |
 
 ---
 
@@ -160,16 +158,6 @@ Frame-up table columns: `Pillar | Feature (ID from the PRD backlog, e.g. AI-HR-0
 
 ---
 
-## 5. Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **Phase Gates & Named Sign-Offs** | `STATE.md` records named human sign-offs for Gate 0 (Clearance), Gate 1 (PRD/TDD/Golden Dataset), Gate 2 (Demos/Load/Judge Audit), and Gate 3 (Closeout). | Advances phases without signed upstream artifacts or starts Week 1 before Part III Developer Clearance. |
-| **1-In / 1-Out Scope Governance** | Every mid-sprint feature addition in `scope_log` removes an existing feature of equal or higher RICE score with sponsor approval. | Accepts mid-sprint feature additions without swapping out equal RICE scope. |
-| **Dual RAID & Demo Frame-Up** | Populates both `Use Case RAID` and `Program RAID` using the official Program Tracker columns and maps committed PRD features across Demos 1–3. | Uses generic status prose without RAID owner/status columns or milestone Demo 1–3 feature mapping. |
-
----
-
-## 6. Worked example
+## 5. Worked example
 
 - [examples/engagement-state-and-gate-review.md](examples/engagement-state-and-gate-review.md) — an **illustrative** (fictional) Acme P&C commercial-auto FNOL engagement: `STATE.md` at a week-7 rollback and at week-12 close, a demo frame-up table, and both RAID logs in the tracker's columns.

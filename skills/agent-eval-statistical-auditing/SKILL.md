@@ -22,11 +22,9 @@ Sources: TDL Toolbox decks *Linguistic Output Quality Evaluation Framework* and 
 
 | Attribute | Specification |
 | :--- | :--- |
-| **Engagement Phase & Timebox** | **Phase 1 (Golden Dataset Rubric Setup) & Phase 2 Sprints 3–4 (Weeks 7–10):** 4.0-hour CLA rubric & AUA judge certification |
-| **Time-to-Market (TTM) Compression** | **32.0h manual $\rightarrow$ 4.0h skill-guided (`87.5%` faster statistical judge calibration & AUA sign-off)** |
+| **Engagement Phase & Timebox** | **Phase 1 (Golden Dataset Rubric Setup) & Phase 2 Sprints 3–4 (Weeks 7–10), repo convention:** CLA rubric & AUA judge certification |
 | **Reads (Inputs)** | `docs/PRD.md` (persona, register, business risk), `docs/TDD.md` (Part IV Golden Dataset), paired human SME + LLM judge scores |
 | **Writes (Outputs)** | `docs/EVAL_AUDIT_REPORT.md` (AUA certification report + chosen CLA criteria + isolated judge prompts) |
-| **Value Realization Linkage** | Eliminates the "Illusion of Accuracy" (catches scale compression & leniency bias before go-live) and routes low-confidence (`<0.75`) items to HITL review |
 | **Primary CLI Command** | `python3 skills/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --demo` |
 
 ---
@@ -58,9 +56,9 @@ Humans design the rubric (Role 1); the LLM judge scales it (Role 2); a **determi
 
 | Pipeline | When | Metrics | Gates |
 |---|---|---|---|
-| **1. Development calibration — human vs. LLM judge** | Before trusting a judge; Golden Dataset double-scored by 2 human SMEs (deck report: N = 30) | PRMSE, disattenuated correlation d.R (strips human noise), Pearson r, exact & adjacent agreement, QWK, Wilcoxon signed-rank W (severity bias), scale compression SD ratio | d.R ≥ 0.80 **(deck)** · QWK ≥ 0.60 **(deck)** · SD ratio ≥ 0.80 **(deck)** · PRMSE > 0 **(repo)** · Wilcoxon p > 0.05 **(repo)** |
+| **1. Development calibration — human vs. LLM judge** | Before trusting a judge; Golden Dataset double-scored by 2 human SMEs (deck report: N = 30) | PRMSE, disattenuated correlation d.R (strips human noise), Pearson r, exact & adjacent agreement, QWK, Wilcoxon signed-rank W (severity bias), scale compression SD ratio | d.R ≥ 0.80 **(deck)** · QWK ≥ 0.60 **(deck)** · SD ratio ≥ 0.80 **(deck)** · PRMSE > 0 **(deck)** · Wilcoxon p > 0.05 **(repo)** |
 | **2. Live production, option A — intra-rater** | No human ground truth; one judge, same text **5 passes at T > 0** | Cronbach's α, SEM, 95% CI (= ± 2 SEM) | α ≥ 0.80 **(deck)** |
-| **3. Live production, option B — inter-model double marking** | Two model families (e.g. Gemini + Sonnet), **1 pass each at T = 0.0**, scores averaged | ICC(3,k), Pearson r, Spearman ρ, exact & adjacent agreement, QWK, Wilcoxon W, per-item confidence → HITL queue | ICC(3,k) ≥ 0.80 **(repo; deck's reference report passes at 0.857)** · per-criterion ρ ≥ 0.70 & QWK ≥ 0.60 flags **(deck)** |
+| **3. Live production, option B — inter-model double marking** | Two model families (e.g. Gemini + Sonnet), **1 pass each at T = 0.0**, scores averaged | ICC(3,k), Pearson r, Spearman ρ, exact & adjacent agreement, QWK, Wilcoxon W, per-item confidence → HITL queue | ICC(3,k) ≥ 0.80 **(deck's AUA report pass rule; its reference report passes at 0.857)** · per-criterion ρ ≥ 0.70 & QWK ≥ 0.60 flags **(deck)** |
 
 Known blind spots (deck): Pipeline 2 cannot see severity bias or compression (a consistently biased judge gets a perfect α); Pipeline 3 cannot see two models being wrong together (agreement–accuracy paradox). Pipeline 1 is therefore mandatory once per rubric version.
 
@@ -72,7 +70,7 @@ python3 skills/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --demo
 python3 skills/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --input ratings.json --json
 ```
 
-`d.R` divides r by √(human inter-rater r × judge reliability). The script uses Pipeline 2's α as judge reliability when `passes` are supplied, otherwise **1.0 (conservative)**; override with `--llm-reliability`. There are no hidden constants.
+`d.R` divides r by √(human inter-rater r × judge reliability). The script uses Pipeline 2's α as judge reliability when `passes` are supplied, otherwise **1.0 (conservative)**; override with `--llm-reliability`. The HITL routing count (confidence < 0.75) is a repo convention exposed as `--hitl-threshold`. There are no hidden constants.
 
 ---
 
@@ -87,17 +85,7 @@ python3 skills/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --inpu
 
 ---
 
-## 5. Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **Isolated Per-Criterion Judges** | Selects 3–5 CLA criteria with behavioral 1–5 anchors and runs **one isolated LLM judge per criterion** (preventing halo-effect contamination). | Uses a single monolithic prompt asking an LLM to score 10 dimensions at once without behavioral anchors. |
-| **Pipeline 1 Human Calibration** | Passes all Pipeline 1 gates on double-scored SME data (`d.R >= 0.80`, `QWK >= 0.60`, `SD ratio >= 0.80`, `PRMSE > 0`, `Wilcoxon p > 0.05`). | Trusts an uncalibrated LLM judge or ignores scale compression (`SD ratio < 0.80`) because intra-rater Cronbach's $\alpha$ looks high. |
-| **Production Routing (`<0.75` HITL)** | Certifies Pipeline 2 ($\alpha \ge 0.80$) or Pipeline 3 (`ICC(3,k) >= 0.80`) and routes items with confidence `< 0.75` to human review. | Deploys automated LLM evaluation to production without a low-confidence human escalation queue. |
-
----
-
-## 6. References & worked example
+## 5. References & worked example
 
 - [scripts/audit_llm_judge.py](scripts/audit_llm_judge.py) — stdlib auditor; unit-tested; `--demo` runs the bundled fixtures.
 - [examples/fixtures/calibrated_judge.json](examples/fixtures/calibrated_judge.json), [examples/fixtures/compressed_lenient_judge.json](examples/fixtures/compressed_lenient_judge.json) — synthetic, seeded inputs (generator documented in the `_note` field).

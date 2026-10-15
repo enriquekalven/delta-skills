@@ -70,7 +70,7 @@ python3 delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --de
   Pearson r                  : 0.8855   (human inter-rater r 0.9001, LLM reliability 0.9786)
   Disattenuated d.R          : 0.9435   gate >= 0.80
   QWK                        : 0.8592   gate >= 0.60
-  PRMSE                      : 0.8234   gate > 0 (repo convention)
+  PRMSE                      : 0.8234   gate > 0
   Wilcoxon W / p             : 55.0 / 0.5014   bias flag if p <= 0.05
   Scale compression SD ratio : 0.9777   gate >= 0.80  (SD LLM 1.2341 / SD human 1.2622)
   Verdict                    : PASS
@@ -81,7 +81,7 @@ python3 delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --de
   Verdict                    : PASS
 
 [Pipeline 3] Inter-model double marking (N=30)
-  ICC(3,k)                   : 0.9138   gate >= 0.80 (repo convention)
+  ICC(3,k)                   : 0.9138   gate >= 0.80
   Pearson r / Spearman rho   : 0.8459 / 0.8433
   QWK                        : 0.8382
   Exact / adjacent agreement : 56.7% / 100.0%
@@ -104,7 +104,7 @@ python3 delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --de
   Pearson r                  : 0.7277   (human inter-rater r 0.6182, LLM reliability 0.8853)
   Disattenuated d.R          : 0.9837   gate >= 0.80
   QWK                        : 0.4275   gate >= 0.60
-  PRMSE                      : -0.3201   gate > 0 (repo convention)
+  PRMSE                      : -0.3201   gate > 0
   Wilcoxon W / p             : 4.0 / <0.0001   bias flag if p <= 0.05
   Scale compression SD ratio : 0.4943   gate >= 0.80  (SD LLM 0.4983 / SD human 1.008)
   Verdict                    : FAIL -> recalibrate rubric / few-shot anchors
@@ -115,7 +115,7 @@ python3 delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --de
   Verdict                    : PASS
 
 [Pipeline 3] Inter-model double marking (N=30)
-  ICC(3,k)                   : 0.6064   gate >= 0.80 (repo convention)
+  ICC(3,k)                   : 0.6064   gate >= 0.80
   Pearson r / Spearman rho   : 0.4742 / 0.4793
   QWK                        : 0.3312
   Exact / adjacent agreement : 50.0% / 93.3%
@@ -146,4 +146,4 @@ What the failing run teaches (and matches the deck's warnings):
 
 - Criteria: Vocabulary, Syntax, Textual Knowledge, Functional Knowledge (one anchored 1–5 judge each).
 - Pipeline 1 verdict on the current rubric version: **PASS** (calibrated fixture) / **FAIL → re-anchor** (compressed fixture).
-- Production monitoring: option B (Gemini + Sonnet at T = 0); auto-approve when confidence ≥ 0.75, otherwise HITL queue; re-run Pipeline 1 on every rubric or model change.
+- Production monitoring: option B (Gemini + Sonnet at T = 0); auto-approve when confidence ≥ 0.75 (repo convention, `--hitl-threshold`), otherwise HITL queue; re-run Pipeline 1 on every rubric or model change.

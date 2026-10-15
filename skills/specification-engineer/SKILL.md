@@ -24,11 +24,9 @@ This skill translates a Product Requirements Document (`docs/PRD.md`) and Archit
 
 | Attribute | Specification |
 | :--- | :--- |
-| **Engagement Phase & Timebox** | **Prelude (Part III Clearance) & Phase 1 Foundations (Weeks 1–2):** 7.0-hour 4-Part / 4-Pillar specification lock |
-| **Time-to-Market (TTM) Compression** | **48.0h manual $\rightarrow$ 7.0h skill-guided (`85.4%` faster technical specification & Golden Dataset eval baseline)** |
+| **Engagement Phase & Timebox** | **Phase 1 Foundations (Weeks 1–2):** 4-Part / 4-Pillar specification |
 | **Reads (Inputs)** | `docs/PRD.md`, `docs/ARCHITECTURE_RECOMMENDATION.md` |
 | **Writes (Outputs)** | `docs/TDD.md` (following [`references/tdd-spec-template.md`](references/tdd-spec-template.md)) |
-| **Value Realization Linkage** | Locks Part III Developer Clearance before Week 1, enforces ADK Context Caching & token caps (Pillar 2), and establishes **Golden Dataset Baseline Evaluation Metrics** (Pillar 4) |
 
 ---
 
@@ -44,7 +42,7 @@ Every generated `docs/TDD.md` must cover all four parts from [`references/tdd-sp
 | **Part IV — Pillar 1: BUILD** | Topology, Prompts & Tools | Agent topology (`ReAct`, `RAG`, `Graph-Coordinator`, `A2A`), system instructions, Pydantic v2 / TypeScript tool schemas, timeout/retry matrix, `/a2a/app/run_rpc` routes |
 | **Part IV — Pillar 2: SCALE** | Concurrency, State & Cost | Peak QPS/concurrency, typed `session.state` keys, `Firestore` vs. `In-Memory` persistence, Memory Bank TTL, and `ADK Context Caching TTL` + daily token caps |
 | **Part IV — Pillar 3: GOVERN** | Identity, Security & SGP | `SPIFFE Principal` / Service Account + IAP JWT, `VPC-SC` perimeter, `Model Armor` + Semantic Governance Policies (`SGP`), PII/PHI redaction, canned fallback envelopes |
-| **Part IV — Pillar 4: OPTIMIZE** | Golden Dataset & Evals | **Curated Golden Dataset (`N >= 30–50+`) & Baseline Evaluation Metrics**, `agents-cli eval run` config, executable `pytest -q` matrix, OpenTelemetry + `BigQueryAgentAnalyticsPlugin` |
+| **Part IV — Pillar 4: OPTIMIZE** | Golden Dataset & Evals | **Curated Golden Dataset (50+ real-world CUJ test cases) & Baseline Evaluation Metrics**, `agents-cli eval run` config, executable `pytest -q` matrix, OpenTelemetry + `BigQueryAgentAnalyticsPlugin` |
 
 ---
 
@@ -58,16 +56,6 @@ Define the exact agent topology (`LlmAgent` coordinator vs. sub-agents), verbati
 
 ### Step 3: Specify Pillar 3 (GOVERN) & Pillar 4 (OPTIMIZE)
 Document SPIFFE/Service Account principals, IAP/VPC-SC network perimeters, Model Armor & Semantic Governance Policies (SGP), PII/PHI log sanitization rules, OpenTelemetry tracing, `BigQueryAgentAnalyticsPlugin` schema, and the **Golden Dataset Baseline Evaluation Metrics** + executable acceptance test matrix (`pytest -q`, `agents-cli eval run`), then write the complete specification to `docs/TDD.md`.
-
----
-
-## Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **Part III Developer Clearance** | Lists concrete `Dev / Staging / Prod` GCP Project IDs, least-privilege IAM roles, and `*.googleapis.com` API enablement justifications. | Starts Sprint 1 coding before Part III Developer Clearance and Golden Dataset access are verified. |
-| **Typed Tool & State Contracts** | Every tool boundary and `session.state` key has an explicit Pydantic `BaseModel` / TypeScript `interface` plus timeout, retry, and fallback rules. | Describes tools in prose without typed schemas, timeout thresholds, or deterministic error fallbacks. |
-| **Golden Dataset Baseline (Pillar 4)** | Establishes baseline evaluation metrics on the curated Golden Dataset alongside Model Armor / SGP guardrails and `BigQueryAgentAnalyticsPlugin`. | Omits Golden Dataset baseline metrics or leaves prompt-injection / PII redaction policies unspecified. |
 
 ---
 

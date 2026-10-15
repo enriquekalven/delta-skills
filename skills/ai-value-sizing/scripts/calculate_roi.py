@@ -35,12 +35,8 @@ def compute_sizing_and_roi(
     vcr: float,
     scdf: float,
     wacc: float = 0.10,
-    llm_calls_per_unit: float = 0.0,
-    tokens_per_call: float = 0.0,
-    cost_per_1m_tokens_usd: float = 1.25,
-    cache_hit_ratio: float = 0.60,
 ) -> dict[str, object]:
-    """Calculate SOM (Q), Gross/Net Annual Value, 3-Year TCO, 3-Year ROI %, 3-Year NPV, and Project Worth Verdict."""
+    """Calculate SOM (Q), Gross/Net Annual Value, 3-Year TCO, 3-Year ROI %, and 3-Year NPV."""
     if not (0.0 < sam_share <= 1.0):
         raise ValueError("sam_share must be in (0, 1]")
     if not (0.0 < adoption_rate <= 1.0):
@@ -55,29 +51,19 @@ def compute_sizing_and_roi(
     sam_units = tam_units * sam_share
     som_units = sam_units * adoption_rate * tech_compat
     gross_annual_value = som_units * hours_saved_per_unit * hourly_rate_usd
-
-    # Optional dynamic LLM token inference cost modeling (with context caching)
-    effective_token_mult = max(0.0, 1.0 - (cache_hit_ratio * 0.75))
-    annual_tokens = som_units * llm_calls_per_unit * tokens_per_call
-    annual_token_opex_usd = (annual_tokens / 1_000_000.0) * cost_per_1m_tokens_usd * effective_token_mult
-    effective_annual_opex = annual_opex_usd + annual_token_opex_usd
-
-    total_3yr_tco = capex_usd + (3.0 * effective_annual_opex)
+    total_3yr_tco = capex_usd + (3.0 * annual_opex_usd)
     if total_3yr_tco <= 0:
         raise ValueError("Total 3-year TCO must be > 0")
 
-    def scenario_metrics(scen_vcr: float, scen_scdf: float, custom_capex: float | None = None, custom_opex: float | None = None) -> dict[str, float]:
-        c_capex = capex_usd if custom_capex is None else custom_capex
-        c_opex = effective_annual_opex if custom_opex is None else custom_opex
-        c_tco = c_capex + (3.0 * c_opex)
+    def scenario_metrics(scen_vcr: float, scen_scdf: float) -> dict[str, float]:
         net_annual = gross_annual_value * scen_vcr * scen_scdf
         net_3yr_value = 3.0 * net_annual
-        roi_pct = ((net_3yr_value - c_tco) / c_tco) * 100.0 if c_tco > 0 else 0.0
-        npv = -c_capex + sum(
-            (net_annual - c_opex) / ((1.0 + wacc) ** yr) for yr in (1, 2, 3)
+        roi_pct = ((net_3yr_value - total_3yr_tco) / total_3yr_tco) * 100.0
+        npv = -capex_usd + sum(
+            (net_annual - annual_opex_usd) / ((1.0 + wacc) ** yr) for yr in (1, 2, 3)
         )
-        monthly_net = (net_annual - c_opex) / 12.0
-        payback_months = (c_capex / monthly_net) if monthly_net > 0 else float("inf")
+        monthly_net = (net_annual - annual_opex_usd) / 12.0
+        payback_months = (capex_usd / monthly_net) if monthly_net > 0 else float("inf")
         return {
             "vcr": round(scen_vcr, 4),
             "scdf": round(scen_scdf, 4),
@@ -87,24 +73,6 @@ def compute_sizing_and_roi(
             "npv_3yr_usd": round(npv, 2),
             "payback_months": round(payback_months, 1) if payback_months != float("inf") else -1.0,
         }
-
-    base_sc = scenario_metrics(vcr, scdf)
-    bull_sc = scenario_metrics(min(1.0, vcr * 1.5), min(1.2, scdf * 1.2))
-    bear_sc = scenario_metrics(vcr, 0.40)
-
-    # Evaluate Fast-Track 5-Skill Lite Mode (15% CapEx, 15% OpEx matching 18.5h Tier-1/2 lean sprint vs 12-week squad)
-    lite_base_sc = scenario_metrics(vcr, scdf, custom_capex=capex_usd * 0.15, custom_opex=effective_annual_opex * 0.15)
-    lite_bear_sc = scenario_metrics(vcr, 0.40, custom_capex=capex_usd * 0.15, custom_opex=effective_annual_opex * 0.15)
-
-    if base_sc["npv_3yr_usd"] > 0 and bear_sc["npv_3yr_usd"] > 0 and base_sc["payback_months"] <= 18.0:
-        verdict = "WORTH_IT_FULL_13_SKILL"
-        recommended_mode = "Full 13-Skill 12-Week Delta Mode (73.5h skill-guided effort)"
-    elif lite_base_sc["npv_3yr_usd"] > 0 and lite_bear_sc["npv_3yr_usd"] > 0:
-        verdict = "WORTH_IT_FAST_TRACK_5_SKILL"
-        recommended_mode = "Fast-Track 5-Skill Lite Mode (18.5h effort; 2-week Tier 1/2 lean build to protect Bear NPV)"
-    else:
-        verdict = "KILL_OR_RE_SCOPE_AT_GATE_0"
-        recommended_mode = "STOP at Prelude Gate 0: Re-scope volume/CapEx or fix Data Readiness (SCDF) before coding"
 
     return {
         "funnel": {
@@ -117,23 +85,15 @@ def compute_sizing_and_roi(
         },
         "tco": {
             "year0_capex_usd": round(capex_usd, 2),
-            "annual_opex_usd": round(effective_annual_opex, 2),
-            "annual_token_opex_usd": round(annual_token_opex_usd, 2),
+            "annual_opex_usd": round(annual_opex_usd, 2),
             "total_3yr_tco_usd": round(total_3yr_tco, 2),
         },
         "gross_annual_value_usd": round(gross_annual_value, 2),
         "wacc": wacc,
         "scenarios": {
-            "base": base_sc,
-            "bull": bull_sc,
-            "bear": bear_sc,
-        },
-        "project_worth_verdict": {
-            "verdict": verdict,
-            "recommended_mode": recommended_mode,
-            "base_npv_lite_mode_usd": lite_base_sc["npv_3yr_usd"],
-            "bear_npv_full_mode_usd": bear_sc["npv_3yr_usd"],
-            "bear_npv_lite_mode_usd": lite_bear_sc["npv_3yr_usd"],
+            "base": scenario_metrics(vcr, scdf),
+            "bull": scenario_metrics(min(1.0, vcr * 1.5), min(1.2, scdf * 1.2)),
+            "bear": scenario_metrics(vcr, 0.40),
         },
     }
 

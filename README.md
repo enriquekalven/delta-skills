@@ -69,11 +69,10 @@ npx skills add leonxlnx/taste-skill
 # Option A: Install directly as a native Antigravity plugin (auto-registers all 13 skills via plugin.json + skills/)
 git clone https://github.com/delta-fde/tool-tdl-user-guide.git ~/.gemini/config/plugins/tool-tdl-user-guide
 
-# Option B: Clone locally into your workspace & verify 100% pass across all 13 skills and 200 iterations
+# Option B: Clone locally into your workspace & run the repository validator
 git clone https://github.com/delta-fde/tool-tdl-user-guide.git tool-tdl-user-guide
 cd tool-tdl-user-guide
 python3 scripts/validate_skills.py
-python3 scripts/evaluate_200x_skills.py --strict
 ```
 
 - **With `skills` CLI:** `npx skills add delta-fde/tool-tdl-user-guide`
@@ -86,7 +85,7 @@ Skills communicate through explicit markdown and JSON artifacts in the customer 
 customer-engagement-repo/
 ├── STATE.md                              # Written & updated by tdl-field-guide (gates, sprints, dual RAID logs)
 ├── docs/
-│   ├── WORKSHOP_INTAKE.md                # Written by workshop-intake (33 Starter Qs + 6-Dim Data Yardstick)
+│   ├── WORKSHOP_INTAKE.md                # Written by workshop-intake (32 Starter Qs + Available/Usable/Quality Data Yardstick)
 │   ├── USE_CASE_CANVAS.md                # Written by create-delta-ucc (4-Tab UCC + MVP Alignment Summary)
 │   ├── as_is_report.md                   # Written by business-process-redesign (Task decomposition + operational baseline)
 │   ├── to_be_designs.md                  # Written by business-process-redesign (L1/L2/L3 agent workflow)
@@ -99,7 +98,7 @@ customer-engagement-repo/
 │   ├── DEMO_FRAME_UP.md                  # Written by tdl-field-guide (Pillar / Feature ID / Demo 1-2-3 matrix)
 │   ├── LOAD_TEST_REPORT.md               # Written by agent-load-testing (fan-out math, 5x quota, Locust SSE)
 │   ├── EVAL_AUDIT_REPORT.md              # Written by agent-eval-statistical-auditing (27 CLA + 3 AUA pipelines)
-│   └── VALUE_SIZING.md                   # Written by ai-value-sizing (post-launch ROI vs. Phase 1 baseline)
+│   └── VALUE_SIZING.md                   # Written by ai-value-sizing (Phase 1 projection & Phase 3 measured ROI vs. baseline)
 └── .harness/
     └── last_run_report.json              # Written by claude-agent-harness goal loop
 ```
@@ -115,15 +114,15 @@ Before committing a squad or starting the 12-week clock, qualify the candidate u
 
 1. **Capture Discovery Notes & Score the Data Yardstick (`workshop-intake`):**
    - **Read:** [`workshop-intake/SKILL.md`](workshop-intake/SKILL.md)
-   - **Action:** Run the **33 Starter Questions** and score the **6-Dimension Data Yardstick** (`Data Availability`, `Accessibility`, `Quality`, `Coverage`, `Privacy/Security`, `Latency`).
+   - **Action:** Run the **32 Starter Questions** across the 5 official buckets and score the **Data Readiness Yardstick** (`Available`, `Usable`, `Quality`).
    - **Output:** `docs/WORKSHOP_INTAKE.md` (see example: [`acme-financial-workshop-intake.md`](workshop-intake/examples/acme-financial-workshop-intake.md)).
-2. **Prioritize Use Cases & Lock the 1-Page MVP Alignment Summary (`create-delta-ucc`):**
+2. **Prioritize Use Cases & Lock the MVP Alignment Summary (`create-delta-ucc`):**
    - **Read:** [`usecase-canvas/create-delta-ucc/SKILL.md`](usecase-canvas/create-delta-ucc/SKILL.md)
-   - **Action:** Score candidate initiatives across the 4-Tab Use Case Canvas and produce the **1-Page Use Case Alignment Summary** (`Problem Statement`, `Target Users`, `MVP Scope`, `Out of Scope`, `Success Metrics`, `Key Dependencies`).
+   - **Action:** Score candidate initiatives across the 4-Tab Use Case Canvas and produce the **Use Case Alignment Summary Document** (`Must-Haves vs. Okay for Slippage`, `Before/After CUJ Flowchart`, `Eval Round 1 vs. Round 2 Scope`, `Solution Inputs/Outputs`, `Evaluation Approach`).
    - **Output:** `docs/USE_CASE_CANVAS.md` (see example: [`customer-onboarding-ucc.md`](usecase-canvas/create-delta-ucc/examples/customer-onboarding-ucc.md)).
 3. **Initialize Engagement Governance (`tdl-field-guide`):**
    - **Read:** [`delivery/tdl-field-guide/SKILL.md`](delivery/tdl-field-guide/SKILL.md)
-   - **Action:** Initialize `STATE.md` with the 7-tab Program Tracker structure (`Timeline`, `Use Cases`, `Staffing`, `Use Case RAID`, `Program RAID`, `Meetings`, `OOO`) and confirm Prelude exit criteria (Part III Developer Clearance signed, Golden Dataset reachable).
+   - **Action:** Initialize `STATE.md` with the Program Tracker structure (`Timeline`, `Use Cases`, `Staffing`, `Use Case RAID`, `Program RAID`, `Meetings`, `OOO`) and confirm Prelude exit criteria (Part III Developer Clearance signed, Golden Dataset reachable).
 
 ---
 
@@ -135,43 +134,43 @@ Deconstruct the current manual workflow, establish baseline evaluation metrics o
    - **Output:** `docs/as_is_report.md`, `docs/to_be_designs.md`, and `docs/human_agent_roles.md` (see examples: [`as_is_report.md`](business-process-redesign/examples/as_is_report.md), [`to_be_designs.md`](business-process-redesign/examples/to_be_designs.md), [`human_agent_roles.md`](business-process-redesign/examples/human_agent_roles.md)).
 2. **Map L1–L5 Critical User Journeys & AI Touchpoints (`cuj-architect`):**
    - **Read:** [`cuj-architect/SKILL.md`](cuj-architect/SKILL.md)
-   - **Action:** Complete the 4-tab CUJ workbook structure (Ethnography $\rightarrow$ Pain Points $\rightarrow$ L1–L5 Journey Steps $\rightarrow$ AI Touchpoint Matrix scored by `Priority = 0.6 × Value + 0.4 × Feasibility`).
+   - **Action:** Complete the 4-tab CUJ workbook structure (Ethnography $\rightarrow$ L1–L5 Journey Hierarchy $\rightarrow$ Future-State AI Touchpoint Taxonomy $\rightarrow$ Prioritization Matrix scored by `Priority = 0.6 × Value + 0.4 × Feasibility`).
    - **Output:** `docs/CUJ_MAP.md` (see examples: [`supplier-rate-audit-cuj.md`](cuj-architect/examples/supplier-rate-audit-cuj.md), [`cloud-support-triage-cuj.md`](cuj-architect/examples/cloud-support-triage-cuj.md)).
-3. **Author the 8-Section Agentic PRD (`product-md`):**
-   - **Read:** [`product-management/product-md/SKILL.md`](product-management/product-md/SKILL.md)
-   - **Output:** `docs/PRD.md` following `go/delta-prd-template` including System Prompt Architecture and Evaluation Rubrics (see examples: [`ask-it-service-desk-prd.md`](product-management/product-md/examples/ask-it-service-desk-prd.md), [`enterprise-claims-agent-prd.md`](product-management/product-md/examples/enterprise-claims-agent-prd.md)).
+3. **Author the 8-Section Agentic PRD & Phase 1 ROI Projection (`product-md` + `ai-value-sizing`):**
+   - **Read:** [`product-management/product-md/SKILL.md`](product-management/product-md/SKILL.md) and [`ai-value-sizing/SKILL.md`](ai-value-sizing/SKILL.md)
+   - **Output:** `docs/PRD.md` following `go/delta-prd-template` and `docs/VALUE_SIZING.md` Phase 1 projection (see examples: [`ask-it-service-desk-prd.md`](product-management/product-md/examples/ask-it-service-desk-prd.md), [`enterprise-claims-agent-prd.md`](product-management/product-md/examples/enterprise-claims-agent-prd.md), [`claims-triage-value-sizing.md`](ai-value-sizing/examples/claims-triage-value-sizing.md)).
 4. **Select the GCP Agent Architecture Tier (`gcp-agent-architecture-advisor`):**
    - **Read:** [`delivery/gcp-agent-architecture-advisor/SKILL.md`](delivery/gcp-agent-architecture-advisor/SKILL.md)
    - **Action:** Compare Tier 1 (Gemini Enterprise no-code), Tier 2 (ADK on Agent Runtime), and Tier 3 (ADK self-hosted on Cloud Run / GKE), verifying current GCP launch stages (`GA` vs. `Preview`) and grounding token economics in [`model-economics-config.json`](delivery/gcp-agent-architecture-advisor/references/model-economics-config.json).
    - **Output:** `docs/ARCHITECTURE_RECOMMENDATION.md` (see example: [`architecture-recommendation-example.md`](delivery/gcp-agent-architecture-advisor/examples/architecture-recommendation-example.md)).
-5. **Write the 4-Part Agent Technical Specification & Establish Golden Dataset Baseline Metrics (`specification-engineer`):**
+5. **Rapid UI Prototyping & Brand Alignment (`stitch-design`):**
+   - **Read:** [`prototyping/stitch-design/SKILL.md`](prototyping/stitch-design/SKILL.md)
+   - **Action:** Execute the 3-stage prototyping workflow (7-step hypothesis-to-mini-eval loop + Stitch MCP screen generation) using Delta Brand & Material 3 tokens (`Toolbox #13`: `#4285F4`, `#34A853`, `#FBBC04`, `#EA4335`, Google Sans / Roboto / Roboto Mono) and audit against [`ui-review-checklist.md`](prototyping/stitch-design/references/ui-review-checklist.md).
+   - **Output:** `docs/STITCH_PROTOTYPE.md` (see examples: [`stitch-claims-portal-walkthrough.md`](prototyping/stitch-design/examples/stitch-claims-portal-walkthrough.md), [`agent-ops-console-prototype.md`](prototyping/stitch-design/examples/agent-ops-console-prototype.md)).
+6. **Write the 4-Part Agent Technical Specification & Establish Golden Dataset Baseline Metrics (`specification-engineer`):**
    - **Read:** [`utils/specification-engineer/SKILL.md`](utils/specification-engineer/SKILL.md)
-   - **Action:** Document Parts I–IV (`System Overview`, `Agent Architecture & Orchestration`, `Developer Access & Tools`, `Evaluation & Operations`) and the 4 Pillars per `go/delta-squad-agent-specs`, establishing the baseline evaluation metrics on the curated Golden Dataset (`Part IV`) as the north star for all implementation sprints.
+   - **Action:** Document Parts I–IV (`Project Context`, `Use Case Specification`, `Platform Infrastructure & Developer Clearance`, `Deep-Dive Agent Technical Specifications`) and the 4 Pillars per `go/delta-squad-agent-specs`, establishing the baseline evaluation metrics on the curated Golden Dataset (`Part IV`) as the north star for all implementation sprints.
    - **Output:** `docs/TDD.md` (see examples: [`broadcast-asset-buddy-agent-specs.md`](utils/specification-engineer/examples/broadcast-asset-buddy-agent-specs.md), [`claims-extraction-service-tdd.md`](utils/specification-engineer/examples/claims-extraction-service-tdd.md)).
-6. **Pass Phase Gate 1 (`tdl-field-guide`):** Verify all Phase 1 exit artifacts (`docs/PRD.md`, `docs/TDD.md`, Golden Dataset baseline metrics) are signed off in `STATE.md` before starting Sprint 1.
+7. **Pass Phase Gate 1 (`tdl-field-guide`):** Verify all Phase 1 exit artifacts (`docs/PRD.md`, `docs/TDD.md`, Golden Dataset baseline metrics) are signed off in `STATE.md` before starting Sprint 1.
 
 ---
 
 ### Phase 2: Core Build & Bi-Weekly Demo Sprints (Weeks 3–10 — Four 2-Week Sprints)
 Execute four 2-week sprints (**Sprint 1 [W3–4]**, **Sprint 2 [W5–6]**, **Sprint 3 [W7–8]**, **Sprint 4 [W9–10]**) with three customer-facing milestone demos (**Demo 1 [W4]**, **Demo 2 [W6]**, **Demo 3 [W8/W10]**).
 
-1. **Rapid UI Prototyping & Brand Alignment (`stitch-design`):**
-   - **Read:** [`prototyping/stitch-design/SKILL.md`](prototyping/stitch-design/SKILL.md)
-   - **Action:** Execute the 3-stage prototyping workflow (7-step hypothesis-to-mini-eval loop + Stitch MCP screen generation) using Delta Brand & Material 3 tokens (`Toolbox #13`: `#4285F4`, `#34A853`, `#FBBC04`, `#EA4335`, Google Sans / Roboto / Roboto Mono) and audit against [`ui-review-checklist.md`](prototyping/stitch-design/references/ui-review-checklist.md).
-   - **Output:** `docs/STITCH_PROTOTYPE.md` (see examples: [`stitch-claims-portal-walkthrough.md`](prototyping/stitch-design/examples/stitch-claims-portal-walkthrough.md), [`agent-ops-console-prototype.md`](prototyping/stitch-design/examples/agent-ops-console-prototype.md)).
-2. **Run Goal-Driven Implementation Loops (`claude-agent-harness`):**
+1. **Run Goal-Driven Implementation Loops (`claude-agent-harness`):**
    - **Read:** [`ai-coding/claude-agent-harness/SKILL.md`](ai-coding/claude-agent-harness/SKILL.md)
    - **Action:** Run [`call_opus_model_garden.py`](ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py) against `docs/PRD.md` and `docs/TDD.md` with deterministic `--verify` acceptance gates (unit tests, linter, typecheck) until all commands exit `0`.
    - **Output:** Verified `src/`, `tests/`, and `.harness/last_run_report.json`.
-3. **Sprints 3–4 Production Load Testing & Quota Sizing (`agent-load-testing`):**
+2. **Sprints 3–4 Production Load Testing & Quota Sizing (`agent-load-testing`):**
    - **Read:** [`delivery/agent-load-testing/SKILL.md`](delivery/agent-load-testing/SKILL.md)
    - **Action:** Run [`calculate_agent_quotas.py`](delivery/agent-load-testing/scripts/calculate_agent_quotas.py) to calculate recursive fan-out calls per turn (`1 safety + 1 decomp + Qt·Cq chunked + 1 final = 27 calls/turn` for `Qt=6, Cq=4`), peak RPM/TPM, and **5x safety-margin Vertex AI quota requests**, then execute Locust SSE streaming load tests and apply context/payload optimizations.
    - **Output:** `docs/LOAD_TEST_REPORT.md` (see example: [`clinical-search-load-test-report.md`](delivery/agent-load-testing/examples/clinical-search-load-test-report.md)).
-4. **Sprints 3–4 Linguistic Quality (CLA) & Statistical Judge Auditing (`agent-eval-statistical-auditing`):**
+3. **Sprints 3–4 Linguistic Quality (CLA) & Statistical Judge Auditing (`agent-eval-statistical-auditing`):**
    - **Read:** [`delivery/agent-eval-statistical-auditing/SKILL.md`](delivery/agent-eval-statistical-auditing/SKILL.md)
    - **Action:** Evaluate agent outputs against the **27 Communication & Linguistic Assessment (CLA) criteria** and audit your LLM-as-a-Judge against human SME consensus across all 3 pipelines using [`audit_llm_judge.py`](delivery/agent-eval-statistical-auditing/scripts/audit_llm_judge.py) (`Disattenuated d_r ≥ 0.80`, `QWK ≥ 0.60`, `PRMSE > 0`, `Wilcoxon Signed-Rank p > 0.05`, `SD Ratio ≥ 0.80`, `Cronbach's α ≥ 0.80`, `ICC(3,k) ≥ 0.80`).
    - **Output:** `docs/EVAL_AUDIT_REPORT.md` (see example: [`enterprise-analyst-aua-certification.md`](delivery/agent-eval-statistical-auditing/examples/enterprise-analyst-aua-certification.md)).
-5. **Pass Phase Gate 2 (`tdl-field-guide`):** Frame up each bi-weekly demo in `docs/DEMO_FRAME_UP.md` (`Pillar / Feature ID / Demo 1-2-3 / Status`) and enforce the **1-in-1-out scope swap rule** in `STATE.md`.
+4. **Pass Phase Gate 2 (`tdl-field-guide`):** Frame up each bi-weekly demo in `docs/DEMO_FRAME_UP.md` (`Pillar / Feature ID / Demo 1-2-3 / Status`) and enforce the **1-in-1-out scope swap rule** in `STATE.md`.
 
 ---
 
@@ -266,7 +265,7 @@ python3 ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
 | **07** | Demo Frame-Up Deck (Intel AskHR, 3 demos, 39 features) | M. Ammar | [`tdl-field-guide`](delivery/tdl-field-guide/SKILL.md) | [`engagement-state-and-gate-review.md`](delivery/tdl-field-guide/examples/engagement-state-and-gate-review.md) |
 | **08** | Closeout Slide Deck Template | E. Markman | [`tdl-field-guide`](delivery/tdl-field-guide/SKILL.md) | [`engagement-state-and-gate-review.md`](delivery/tdl-field-guide/examples/engagement-state-and-gate-review.md) |
 | **09** | FDE Blameless Retro Slides | E. Markman | [`tdl-field-guide`](delivery/tdl-field-guide/SKILL.md) | [`engagement-state-and-gate-review.md`](delivery/tdl-field-guide/examples/engagement-state-and-gate-review.md) |
-| **10** | Use Case Selection Guidelines (33 Starter Qs + 6-Dim Data Yardstick) | J. Pashutinski | [`workshop-intake`](workshop-intake/SKILL.md), [`create-delta-ucc`](usecase-canvas/create-delta-ucc/SKILL.md) | [`intake-template.md`](workshop-intake/references/intake-template.md) · [`ucc-template.md`](usecase-canvas/create-delta-ucc/references/ucc-template.md) |
+| **10** | Use Case Selection Guidelines (32 Starter Qs + Available/Usable/Quality Yardstick) | J. Pashutinski | [`workshop-intake`](workshop-intake/SKILL.md), [`create-delta-ucc`](usecase-canvas/create-delta-ucc/SKILL.md) | [`intake-template.md`](workshop-intake/references/intake-template.md) · [`ucc-template.md`](usecase-canvas/create-delta-ucc/references/ucc-template.md) |
 | **11** | 12-Week Delivery Guide (`go/delta-delivery-guide`) | J. Pashutinski | [`tdl-field-guide`](delivery/tdl-field-guide/SKILL.md) | [`engagement-state-and-gate-review.md`](delivery/tdl-field-guide/examples/engagement-state-and-gate-review.md) |
 | **12** | Program Tracker (7 tabs: Timeline, Use Cases, Staffing, Use Case RAID, Program RAID, Meetings, OOO) | E. Markman | [`tdl-field-guide`](delivery/tdl-field-guide/SKILL.md) | [`engagement-state-and-gate-review.md`](delivery/tdl-field-guide/examples/engagement-state-and-gate-review.md) |
 | **13** | Delta Brand & UI Guidelines (Google colors, typography, co-branding) | Delta Design | [`stitch-design`](prototyping/stitch-design/SKILL.md) | [`ui-review-checklist.md`](prototyping/stitch-design/references/ui-review-checklist.md) · [`agent-ops-console-prototype.md`](prototyping/stitch-design/examples/agent-ops-console-prototype.md) |
@@ -293,20 +292,14 @@ python3 ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py \
 - **Real Deck Report + Deterministic Bundled Fixtures (1 example):** [`enterprise-analyst-aua-certification.md`](delivery/agent-eval-statistical-auditing/examples/enterprise-analyst-aua-certification.md) (`Toolbox #18` + [`calibrated_judge.json`](delivery/agent-eval-statistical-auditing/examples/fixtures/calibrated_judge.json) & [`compressed_lenient_judge.json`](delivery/agent-eval-statistical-auditing/examples/fixtures/compressed_lenient_judge.json)).
 - **Unified Illustrative Scenario (Remaining Examples):** Uses one consistent *fictional* thread (**Acme P&C — Commercial Auto Claims FNOL**) so every artifact references upstream and downstream files across all 12 weeks.
 
-### Run the Repository Validator, 200x Skill Benchmark & Unit Test Suites
+### Run the Repository Validator & Unit Test Suites
 ```bash
 # 1. Validate all SKILL.md frontmatter, links, JSON files, code fences, and orphan/duplicate rules
 python3 scripts/validate_skills.py
 
-# 2. Run the 200-iteration (10 Enterprise Use Cases × 20 Operational Perturbation Profiles = 2,600 skill runs) benchmark
-python3 scripts/evaluate_200x_skills.py --strict
-
-# 3. Run the 1,000-iteration (50 Enterprise Use Cases × 20 Customer Stakeholder Personas = 13,000 skill runs) portfolio benchmark
-python3 scripts/evaluate_1000x_personas.py --strict
-
-# 4. Run repository validator unit tests + example-to-script stdout drift guards
+# 2. Run repository validator unit tests + example-to-script stdout drift guards
 python3 -m unittest discover -s scripts -p 'test_*.py'
 
-# 5. Run Claude Agent Harness unit tests (25 tests)
+# 3. Run Claude Agent Harness unit tests
 python3 -m unittest discover -s ai-coding/claude-agent-harness/scripts -p 'test_*.py'
 ```

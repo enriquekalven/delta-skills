@@ -12,7 +12,7 @@ metadata:
 
 # AI Value Realization: Sizing & Financials (`ai-value-sizing`)
 
-This skill maps a proposed AI use case to measurable value pillars, narrows the addressable volume (`TAM → SAM → SOM`), applies mandatory Value Capture Rate (`VCR`) and Systemic Capability Discount Factor (`SCDF`) haircuts, and computes a verified 3-year ROI and NPV schedule in `docs/VALUE_SIZING.md`.
+This skill maps a proposed AI use case to measurable value pillars, narrows the addressable volume (`TAM → SAM → SOM`), applies mandatory Value Capture Rate (`VCR`) and Systemic Capability Discount Factor (`SCDF`) haircuts, and computes a 3-year ROI and NPV schedule in `docs/VALUE_SIZING.md`.
 
 ---
 
@@ -20,9 +20,8 @@ This skill maps a proposed AI use case to measurable value pillars, narrows the 
 
 | Attribute | Specification |
 | :--- | :--- |
-| **Engagement Phase & Timebox** | **Phase 1 Projection (Weeks 1–2) & Phase 3 Measured Closeout (Weeks 11–12):** 2.5-hour CFO-ready ROI & NPV model |
-| **Time-to-Market (TTM) Compression** | **20.0h manual $\rightarrow$ 2.5h skill-guided (`87.5%` faster 3-scenario financial modeling & sensitivity verification)** |
-| **Reads (Inputs)** | `docs/as_is_report.md`, `docs/USE_CASE_CANVAS.md` (plus token OpEx from `docs/ARCHITECTURE_RECOMMENDATION.md`) |
+| **Engagement Phase & Timebox** | **Phase 1 Projection (Weeks 1–2) & Phase 3 Measured Closeout (Weeks 11–12)** |
+| **Reads (Inputs)** | `docs/as_is_report.md`, `docs/USE_CASE_CANVAS.md` (fold token OpEx from `docs/ARCHITECTURE_RECOMMENDATION.md` into `--annual-opex`) |
 | **Writes (Outputs)** | `docs/VALUE_SIZING.md` |
 | **Value Realization Linkage** | Computes `SOM (Q)`, `3-Year TCO`, `Net Annual Value`, `3-Year ROI %`, `3-Year NPV`, and `Payback Months` across **Base / Bull / Bear** scenarios with explicit `VCR` and `SCDF` haircuts |
 | **Primary CLI Command** | `python3 skills/ai-value-sizing/scripts/calculate_roi.py --demo` (or `--markdown` for a ready-to-paste Markdown table) |
@@ -73,16 +72,6 @@ This skill maps a proposed AI use case to measurable value pillars, narrows the 
      --wacc 0.10
    ```
 3. Write `docs/VALUE_SIZING.md` containing the Sizing Funnel, TCO Breakdown, Haircut Justifications, and Base/Bull/Bear Scenario Table.
-
----
-
-## Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **Defensible Funnel (`TAM -> SAM -> SOM`)** | Every `TAM` and `SAM` figure cites `docs/as_is_report.md` or an internal report, and Year-1 `adoption_rate <= 0.30`. | Assumes 100% Year-1 adoption across the entire enterprise on Day 1. |
-| **Explicit `VCR` & `SCDF` Haircuts** | Applies and justifies both `VCR` (avoiding the 1-to-1 time trap) and `SCDF` across Base, Bull, and Bear scenarios. | Claims 100% of soft employee time saved as hard P&L cash savings (`VCR = 1.0` without contract/HC takeout). |
-| **Script-Verified 3-Year TCO & NPV** | Includes full Year 0 CapEx + 3-Year Annual OpEx and matches the exact JSON/Markdown output of `scripts/calculate_roi.py`. | Computes ROI or NPV by hand in prose or omits ongoing token/maintenance OpEx. |
 
 ---
 

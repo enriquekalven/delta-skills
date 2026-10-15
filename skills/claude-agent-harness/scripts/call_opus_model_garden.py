@@ -760,6 +760,13 @@ def build_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _write_report(path: str, rendered: str) -> None:
+    """Write the JSON report, creating its parent directory (e.g. `.harness/`)."""
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write(rendered + "\n")
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_arg_parser().parse_args(argv)
     try:
@@ -785,7 +792,9 @@ def main(argv: list[str] | None = None) -> int:
         spec_list = [args.spec] if isinstance(args.spec, str) else list(args.spec)
         dry_report = {
             "status": "dry_run_ok",
-            "goal_met": True,
+            "goal_met": False,
+            "note": "dry run: inputs validated; no model calls made and no "
+            "--verify commands executed",
             "project": project_id or "dry-run-project",
             "region": args.region,
             "model": args.model,
@@ -797,8 +806,7 @@ def main(argv: list[str] | None = None) -> int:
         rendered = json.dumps(dry_report, indent=2)
         print(rendered)
         if args.report:
-            with open(args.report, "w", encoding="utf-8") as handle:
-                handle.write(rendered + "\n")
+            _write_report(args.report, rendered)
         return 0
 
     if not project_id:
@@ -841,8 +849,7 @@ def main(argv: list[str] | None = None) -> int:
     rendered = json.dumps(report, indent=2)
     print(rendered)
     if args.report:
-        with open(args.report, "w", encoding="utf-8") as handle:
-            handle.write(rendered + "\n")
+        _write_report(args.report, rendered)
     if report["goal_met"]:
         return 0
     return 1 if report["status"] == "api_error" else 2

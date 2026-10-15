@@ -22,11 +22,9 @@ This skill guides the user through a 4-part discovery worksheet and compiles a f
 
 | Attribute | Specification |
 | :--- | :--- |
-| **Engagement Phase & Timebox** | **Prelude (Week 0):** 2-hour MVP scope lock session immediately following `workshop-intake` |
-| **Time-to-Market (TTM) Compression** | **14.0h manual $\rightarrow$ 2.0h skill-guided (`85.7%` faster executive MVP scope lock)** |
-| **Reads (Inputs)** | `docs/WORKSHOP_INTAKE.md` (33 Starter Questions & Data Readiness Yardstick) |
+| **Engagement Phase & Timebox** | **Prelude (Week 0):** MVP scope lock session immediately following `workshop-intake` |
+| **Reads (Inputs)** | `docs/WORKSHOP_INTAKE.md` (32 Starter Questions & Data Readiness Yardstick) |
 | **Writes (Outputs)** | `docs/USE_CASE_CANVAS.md` (using [`references/ucc-template.md`](references/ucc-template.md)) |
-| **Value Realization Linkage** | Locks `Baseline -> Target` operational KPIs, enforces single-use-case focus, and separates **Non-Negotiable Must-Haves** from **Okay for Slippage** |
 
 ---
 
@@ -34,6 +32,8 @@ This skill guides the user through a 4-part discovery worksheet and compiles a f
 
 ### Phase 1: The 4-Worksheet Discovery & `/forward` Yardstick Loop
 Guide the user through the four worksheets one at a time (or extract answers from `docs/WORKSHOP_INTAKE.md` if provided). Do not invent features without user confirmation; when proposing refinements, offer 3 concrete options grounded in Google Cloud patterns so the user can choose.
+
+Commit strictly to one high-priority use case per 12-week timeline ([`go/delta-delivery-guide`](https://goto.google.com/delta-delivery-guide)); park other ideas under `(Future) Phase 2+ Scope`.
 
 | Worksheet | Core Discovery Questions | Required Output in `docs/USE_CASE_CANVAS.md` |
 | :--- | :--- | :--- |
@@ -44,16 +44,6 @@ Guide the user through the four worksheets one at a time (or extract answers fro
 
 ### Phase 2: Canvas & MVP Alignment Doc Generation
 Once the four worksheets are complete, write `docs/USE_CASE_CANVAS.md` using the combined template in [ucc-template.md](references/ucc-template.md).
-
----
-
-## Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **Single Use-Case Commitment** | Commits strictly to **one high-priority use case** for the 12-week timeline; secondary ideas are parked in `(Future) Phase 2+ Scope`. | Bundles multiple unrelated use cases into a single 12-week squad charter. |
-| **Must-Haves vs. Slippage Split** | Explicitly separates **Non-Negotiable Must-Haves** from **Okay for Slippage** and splits MVP features into **Eval Round 1**, **Eval Round 2**, and **Not In Focus**. | Lists a flat feature wishlist with no slippage buffer or evaluation staging. |
-| **Inputs/Outputs & UAT Contract** | Maps every data source (`Data Source | Access Method | Features Enabled`) and states `UAT Required: Yes/No` with tentative evaluation metrics. | Leaves upstream APIs, Golden Dataset needs, or UAT ownership unstated. |
 
 ---
 

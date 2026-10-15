@@ -2,7 +2,7 @@
 name: workshop-intake
 description: >
   Conduct a structured customer discovery and onsite workshop intake interview using the official
-  TDL Toolbox 33 Starter Questions, the Data Readiness Yardstick (Available / Usable / Quality),
+  TDL Toolbox 32 Starter Questions, the Data Readiness Yardstick (Available / Usable / Quality),
   the 6 /forward Delivery Considerations, and the 3-Pillar Onsite Pod Breakout & 30-60-90 Day
   Execution Plan, writing docs/WORKSHOP_INTAKE.md. Trigger when asked to start a workshop intake,
   plan an onsite discovery workshop, qualify a use case, or gather customer engagement requirements.
@@ -14,7 +14,7 @@ metadata:
 
 # Workshop Discovery, Use Case Qualification & Onsite Intake (`workshop-intake`)
 
-This skill guides a customer discovery or onsite workshop intake session using the official **TDL Toolbox Use Case Selection Guidelines (33 Starter Questions + Data Readiness Yardstick)** and **Onsite Discovery Workshop Pod Playbook**, producing a complete intake brief at `docs/WORKSHOP_INTAKE.md` (used directly by [tdl-field-guide](../tdl-field-guide/SKILL.md), [create-delta-ucc](../create-delta-ucc/SKILL.md), and [gcp-agent-architecture-advisor](../gcp-agent-architecture-advisor/SKILL.md)).
+This skill guides a customer discovery or onsite workshop intake session using the official **TDL Toolbox Use Case Selection Guidelines (32 Starter Questions + Data Readiness Yardstick)** and **Onsite Discovery Workshop Pod Playbook**, producing a complete intake brief at `docs/WORKSHOP_INTAKE.md` (used directly by [tdl-field-guide](../tdl-field-guide/SKILL.md), [create-delta-ucc](../create-delta-ucc/SKILL.md), and [gcp-agent-architecture-advisor](../gcp-agent-architecture-advisor/SKILL.md)).
 
 ---
 
@@ -22,17 +22,15 @@ This skill guides a customer discovery or onsite workshop intake session using t
 
 | Attribute | Specification |
 | :--- | :--- |
-| **Engagement Phase & Timebox** | **Prelude (Week 0):** 90-minute customer qualification session or 2-day onsite discovery pod |
-| **Time-to-Market (TTM) Compression** | **16.0h manual $\rightarrow$ 2.5h skill-guided (`84.4%` faster qualification & intake sign-off)** |
+| **Engagement Phase & Timebox** | **Prelude (Week 0):** customer qualification or 2-day onsite discovery pod |
 | **Reads (Inputs)** | Raw stakeholder interview notes, legacy SOPs, or live interactive discovery answers |
 | **Writes (Outputs)** | `docs/WORKSHOP_INTAKE.md` (using [`references/intake-template.md`](references/intake-template.md)) |
-| **Value Realization Linkage** | Eliminates unqualified use cases before Week 1 and anchors quantifiable numerical KPI targets (`hours/case`, `annual volume`, `CSAT lift`) |
 
 ---
 
 ## Execution Rules
 
-1. **Sequential Discovery Across the 3 Workshop Pillars:** Ask questions in logical groups (**Pillar 1: Business Objectives [Product Strategy]** $\rightarrow$ **Pillar 2: Technical Planning & Data Readiness [Platform Architecture]** $\rightarrow$ **Pillar 3: `/forward` Delivery Considerations & 30-60-90 Day Execution Plan**). Wait for the user's responses rather than dumping all 33 questions at once.
+1. **Sequential Discovery Across the 3 Workshop Pillars:** Ask questions in logical groups (**Pillar 1: Business Objectives [Product Strategy]** $\rightarrow$ **Pillar 2: Technical Planning & Data Readiness [Platform Architecture]** $\rightarrow$ **Pillar 3: `/forward` Delivery Considerations & 30-60-90 Day Execution Plan**). Wait for the user's responses rather than dumping every question at once.
 2. **Never Invent Client Facts:** If a field is unknown during intake, record `TBD — Owner: <Role>, Due: <Date>` so gaps are visible before the workshop starts.
 3. **Evaluate the Data Readiness Yardstick (`Available / Usable / Quality`):**
 
@@ -42,12 +40,12 @@ This skill guides a customer discovery or onsite workshop intake session using t
 | **2. Usable** | Is data centralized, owned by a responsive steward, cataloged, and AI-accessible? | Named data owner; API/Warehouse export or clean PDFs | Trapped in illegible paper scans or unowned local spreadsheets |
 | **3. Quality** | Is data accurate, consistently formatted, and aligned with batch/real-time latency needs? | Schema documented; minimal manual cleansing needed | High missing-value rate requiring months of ETL before Week 1 |
 
-4. **Enforce the 6 `/forward` Delivery Considerations:** Verify security/PII clarity, isolated non-prod GCP project/VPC, active weekly customer tech collaboration, assigned business SMEs, clear co-development boundaries, and baseline evaluation metrics + Golden Dataset commitment.
+4. **Enforce the 6 `/forward` Delivery Considerations:** Verify security/PII clarity, isolated non-prod GCP project/VPC, active weekly customer tech collaboration, assigned business SMEs, clear co-development boundaries, and baseline analytics or time/motion data (or a baseline end-user survey) so value can be measured.
 5. **Standard Output Path:** Save the finalized brief to `docs/WORKSHOP_INTAKE.md` using [intake-template.md](references/intake-template.md).
 
 ---
 
-## The 33 Official TDL Toolbox Starter Questions (By Category)
+## The 32 Official TDL Toolbox Starter Questions (By Category)
 
 ### 1. Business Impact (5 Questions)
 - **Revenue Impact:** Will this use case create a new product/service, enhance existing features, or reduce time-to-market?
@@ -79,7 +77,7 @@ This skill guides a customer discovery or onsite workshop intake session using t
 - **Data Handling:** Are there documented strict security requirements or specialized data handling needs (PII, PHI, PCI, CMEK, VPC-SC)?
 - **Technical Debt:** Is there existing technical debt that must be addressed before or during development?
 
-### 5. Business Viability & 30-60-90 Day Planning (11 Questions)
+### 5. Business Viability & 30-60-90 Day Planning (10 Questions + 1 from the Onsite Discovery Workshop deck)
 - **Stakeholder Alignment:** Are key decision-makers (`CxO` or `CxO-1`) supportive and ready to provide resources?
 - **Timelines:** What is the preferred timeline for solution development (`Next 30 Days`, `Days 31–60`, `Days 61–90`)?
 - **Urgency:** Is there a specific business milestone (product launch, offsite, earnings, renewal cycle) acting as a catalyst?
@@ -90,17 +88,7 @@ This skill guides a customer discovery or onsite workshop intake session using t
 - **Infrastructure Investment:** Is there clarity on expenditures required for licenses, infrastructure, or hardware?
 - **Operational Investment (FinOps):** Have ongoing operational costs for token compute, monitoring, and support been budgeted?
 - **Enablement:** Has time/investment for workforce enablement and training been accounted for?
-- **Tangible Breakout Goal:** What tangible artifact (live ADK spike, wireframe, architecture diagram, or synthetic eval) will the pod build during Onsite Breakout Sessions 2 & 3 to test Day 1 assumptions?
-
----
-
-## Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **33 Starter Questions & Pillars** | All 5 question categories and 3 Workshop Pillars are answered or marked `TBD — Owner: <Role>, Due: <Date>`. | Unanswered sections are silently omitted or filled with fabricated client facts. |
-| **Data Readiness Yardstick** | `Available`, `Usable`, and `Quality` are explicitly scored (`1–5`) with named data owners and access paths. | Data readiness is described only as "good" without checking permissions, centralization, or format quality. |
-| **Quantified Business Target** | Business impact states exact baseline volume and target time/cost savings per unit. | Goals use vague phrases like *"improve productivity"* without numerical baselines. |
+- **Tangible Breakout Goal** *(Onsite Discovery Workshop deck, not one of the 32 Starter Questions)*: What tangible artifact (live ADK spike, wireframe, architecture diagram, or synthetic eval) will the pod build during Onsite Breakout Sessions 2 & 3 to test Day 1 assumptions?
 
 ---
 

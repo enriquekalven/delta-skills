@@ -22,11 +22,9 @@ Source: TDL Toolbox *Executive Consulting Guide: Load Testing Design, Multi-Tier
 
 | Attribute | Specification |
 | :--- | :--- |
-| **Engagement Phase & Timebox** | **Phase 2 Sprints 3–4 (Weeks 7–10):** 4.5-hour quota sizing, Locust SSE execution & bottleneck tuning |
-| **Time-to-Market (TTM) Compression** | **36.0h manual $\rightarrow$ 4.5h skill-guided (`87.5%` faster fan-out quota sizing & load test certification)** |
+| **Engagement Phase & Timebox** | **Phase 2 Sprints 3–4 (Weeks 7–10, repo convention):** quota sizing, Locust SSE execution & bottleneck tuning |
 | **Reads (Inputs)** | `docs/TDD.md` (agent DAG, tools, models), `docs/PRD.md` (user concurrency targets) |
 | **Writes (Outputs)** | `docs/LOAD_TEST_REPORT.md` |
-| **Value Realization Linkage** | Prevents production HTTP 429 retry amplification cascades, cuts prompt token costs by **50–70%** via context caching & payload compression, and sizes Vertex AI quotas at **5× peak** |
 | **Primary CLI Command** | `python3 skills/agent-load-testing/scripts/calculate_agent_quotas.py --qt 6 --cq 4 --tokens-per-call 20000 --peak-turns-per-min 10 --safety-multiplier 5.0` |
 
 ---
@@ -116,17 +114,7 @@ All parameters are explicit CLI flags (`--sub-questions` / `--qt`, `--chunks-per
 
 ---
 
-## 7. Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **Recursive Fan-Out & 5× Quota Math** | Embeds the exact JSON/table output from `calculate_agent_quotas.py` showing `1 + 1 + (Qt * Cq) + 1` calls/turn and **5× peak** Vertex RPM/TPM quota requests. | Sizes Vertex AI quotas at 1 request = 1 user turn (`1:1`), ignoring multi-agent fan-out amplification. |
-| **E2E SSE vs. Model Latency Split** | Separates client-observed Locust SSE streaming latency (`p50/p95/p99`) from single-call Vertex model prefill/decode telemetry. | Reports single-call model latency as if it were end-to-end user turn latency. |
-| **429 Cascade & Pool Mitigations** | Documents gRPC pool sizing (`8 -> 128`), context caching (`50–70%` token reduction), and traffic-queue admission caps with measured before/after numbers. | Leaves default 8-channel gRPC pools or uncached system prompts in place under concurrent load. |
-
----
-
-## 8. References & worked example
+## 7. References & worked example
 
 - [scripts/calculate_agent_quotas.py](scripts/calculate_agent_quotas.py) — deterministic fan-out / quota calculator (stdlib only, unit-tested).
 - [references/load-testing-and-quota-playbook.md](references/load-testing-and-quota-playbook.md) — Locust SSE harness pattern (`ClinicalSearchUser`, `OIDCTokenManager`, landmark timers), report metrics catalog, component quota checklist.

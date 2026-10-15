@@ -23,10 +23,8 @@ Every run is bound by a **Goal Contract**: an objective plus executable acceptan
 | Attribute | Specification |
 | :--- | :--- |
 | **Engagement Phase & Timebox** | **Phase 2 Core Build & Sprints 1–4 (Weeks 3–10):** Autonomous goal-loop build per feature ticket |
-| **Time-to-Market (TTM) Compression** | **120.0h manual $\rightarrow$ 24.0h goal-harness assisted (`80.0%` faster verified feature implementation across 4 sprints)** |
 | **Reads (Inputs)** | `docs/PRD.md`, `docs/TDD.md` (passed via repeatable `--spec` flags) |
 | **Writes (Outputs)** | Verified `src/`, `tests/`, and `.harness/last_run_report.json` (`status: "goal_met"`) |
-| **Value Realization Linkage** | Compresses Sprint 1–4 engineering cycle time and prevents unfinished `TODO`/placeholder code from reaching customer milestone Demos 1–3 |
 | **Primary CLI Command** | `python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --spec docs/PRD.md --spec docs/TDD.md --workspace . --verify "python3 -m pytest -q" --dry-run` |
 
 ---
@@ -83,7 +81,7 @@ python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py \
 Other entry points:
 - `--goal "<objective>"`: prompt-driven goal instead of or alongside `--spec`.
 - `--review src/module.py --goal "Harden for input validation and timeouts"`: harden a workspace file in place until acceptance passes.
-- `--dry-run`: validate the Goal Contract, spec files, and `--verify` command parsing offline before invoking Vertex AI.
+- `--dry-run`: validate the Goal Contract, spec files, and `--verify` command parsing offline before invoking Vertex AI. It reports `status: "dry_run_ok"` with `goal_met: false`, because no model call is made and no acceptance command is executed.
 - `--model` (default `claude-sonnet-5-5` or `CLAUDE_MODEL_NAME`), `--region` (default `global` or `CLOUD_ML_REGION`), `--project`, `--max-turns`, `--token-budget`, `--max-tokens`, `--verify-timeout`, `--temperature`.
 
 ---
@@ -101,16 +99,6 @@ The script prints a JSON report to stdout and uses these exit codes:
 1. **Re-verify independently.** Run every acceptance command yourself.
 2. **Review the diff** (`git diff`) for weakened or deleted tests, scope creep, and hardcoded secrets.
 3. **If the goal wasn't met:** re-run the harness with a narrower objective that names the failing checks, or fix the remaining issues directly.
-
----
-
-## Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **4-Tier `--verify` Contract** | Every run passes independent syntax, lint, typecheck, and unit/eval test commands (`exit 0`, `status: "goal_met"`). | Runs without `--verify` flags, uses shell pipes (`&&`), or ends on a partial/unverified result. |
-| **Zero Placeholder Code** | Modified files pass anti-placeholder scanning (`TODO`, `FIXME`, `NotImplementedError`, `pass # stub` all absent) and preserve test integrity. | Weakens existing unit tests or leaves stubbed methods in `src/`. |
-| **Vertex Data Governance** | Runs via `AnthropicVertex` inside the approved GCP project/region and logs `.harness/last_run_report.json`. | Claims unverified compliance certifications on the model's word instead of citing `pso-compliance-matrix.md`. |
 
 ---
 

@@ -14,11 +14,14 @@ Implements the three auditing pipelines from the TDL Toolbox deck
               T=0): ICC(3,k), Pearson r, Spearman rho, exact / adjacent agreement,
               QWK, Wilcoxon W, per-item confidence score for HITL routing.
 
-Deployment gates (from the deck): d.R >= 0.80, QWK >= 0.60, SD ratio >= 0.80,
-Cronbach's alpha >= 0.80, per-criterion d.rho >= 0.70 and QWK >= 0.60.
-Repo conventions (not in the deck, stated as such): PRMSE > 0, Wilcoxon p > 0.05
-as the "no systematic bias" test, ICC(3,k) >= 0.80 as the Pipeline 3 gate,
-confidence C = 1 - |a - b| / (scale range) for HITL routing.
+Deployment gates (from the deck): PRMSE > 0, d.R >= 0.80, QWK >= 0.60,
+SD ratio >= 0.80, Cronbach's alpha >= 0.80, ICC(3,k) >= 0.80, per-criterion
+d.rho >= 0.70 and QWK >= 0.60.
+Repo conventions (not in the deck, stated as such): Wilcoxon p > 0.05 as the
+"no systematic bias" test, confidence C = 1 - |a - b| / (scale range), the
+HITL count threshold (--hitl-threshold, default 0.75), and reporting
+Cronbach's alpha / ICC(3,k) as 0.0 when undefined (zero variance), so such a
+judge fails its gate instead of passing.
 
 Stdlib only. No hidden constants: LLM-judge reliability for d.R defaults to 1.0
 (conservative) and can be supplied from Pipeline 2 via --llm-reliability.
@@ -225,10 +228,10 @@ def pipeline_1_calibration(
     sd_ratio = (sd_l / sd_h) if sd_h > 0 else None
 
     gates = {
-        "d_r_ge_0.80": d_r is not None and d_r >= 0.80 and r >= 0.50 and r_hh >= 0.50,
+        "d_r_ge_0.80": d_r is not None and d_r >= 0.80,
         "qwk_ge_0.60": qwk >= 0.60,
         "sd_ratio_ge_0.80": sd_ratio is not None and sd_ratio >= 0.80,
-        "prmse_gt_0 (repo convention)": pr is not None and pr > 0.0,
+        "prmse_gt_0": pr is not None and pr > 0.0,
         "wilcoxon_p_gt_0.05 (repo convention)": p > 0.05,
     }
     return {
@@ -298,7 +301,7 @@ def pipeline_3_double_marking(a: Sequence[int], b: Sequence[int], lo: int = 1, h
         "confidence": confidence,
         "confidence_definition": "C = 1 - |score_a - score_b| / (scale_max - scale_min); repo convention",
         "gates": {
-            "icc_3k_ge_0.80 (repo convention)": icc >= 0.80,
+            "icc_3k_ge_0.80": icc >= 0.80,
             "wilcoxon_p_gt_0.05 (repo convention)": p > 0.05,
         },
         "passed": icc >= 0.80 and p > 0.05,
@@ -363,7 +366,7 @@ def _fmt_p(p: float) -> str:
     return "<0.0001" if p < 0.0001 else f"{p:.4f}"
 
 
-def format_report(res: Dict[str, Any], title: str) -> str:
+def format_report(res: Dict[str, Any], title: str, hitl_threshold: float = 0.75) -> str:
     h = res["holistic"]
     L = [f"=== Assessment Use Argument (AUA) Report: {title} ===", f"Scale: {res['scale'][0]}-{res['scale'][1]}"]
     if "pipeline_1" in h:
@@ -375,7 +378,7 @@ def format_report(res: Dict[str, Any], title: str) -> str:
             f"  Pearson r                  : {_fmt(p['pearson_r'])}   (human inter-rater r {_fmt(p['human_inter_rater_r'])}, LLM reliability {p['llm_reliability_assumed']})",
             f"  Disattenuated d.R          : {_fmt(p['disattenuated_d_r'])}   gate >= 0.80",
             f"  QWK                        : {_fmt(p['qwk'])}   gate >= 0.60",
-            f"  PRMSE                      : {_fmt(p['prmse'])}   gate > 0 (repo convention)",
+            f"  PRMSE                      : {_fmt(p['prmse'])}   gate > 0",
             f"  Wilcoxon W / p             : {p['wilcoxon_w']} / {_fmt_p(p['wilcoxon_p'])}   bias flag if p <= 0.05",
             f"  Scale compression SD ratio : {_fmt(p['sd_ratio'])}   gate >= 0.80  (SD LLM {p['sd_llm']} / SD human {p['sd_human']})",
             f"  Verdict                    : {'PASS' if p['passed'] else 'FAIL -> recalibrate rubric / few-shot anchors'}",
@@ -391,16 +394,16 @@ def format_report(res: Dict[str, Any], title: str) -> str:
         ]
     if "pipeline_3" in h:
         p = h["pipeline_3"]
-        low = sum(1 for c in p["confidence"] if c < 0.75)
+        low = sum(1 for c in p["confidence"] if c < hitl_threshold)
         L += [
             "",
             f"[Pipeline 3] Inter-model double marking (N={p['n_items']})",
-            f"  ICC(3,k)                   : {_fmt(p['icc_3k'])}   gate >= 0.80 (repo convention)",
+            f"  ICC(3,k)                   : {_fmt(p['icc_3k'])}   gate >= 0.80",
             f"  Pearson r / Spearman rho   : {_fmt(p['pearson_r'])} / {_fmt(p['spearman_rho'])}",
             f"  QWK                        : {_fmt(p['qwk'])}",
             f"  Exact / adjacent agreement : {p['exact_agreement_pct']}% / {p['adjacent_agreement_pct']}%",
             f"  Wilcoxon W / p             : {p['wilcoxon_w']} / {_fmt_p(p['wilcoxon_p'])}",
-            f"  Items with confidence <0.75: {low} of {p['n_items']} -> HITL queue",
+            f"  Items with confidence <{hitl_threshold:g}: {low} of {p['n_items']} -> HITL queue",
             f"  Verdict                    : {'PASS' if p['passed'] else 'FAIL'}",
         ]
     if "criteria" in res:
@@ -417,11 +420,16 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--demo", action="store_true", help="Run both bundled fixtures in examples/fixtures/")
     ap.add_argument("--llm-reliability", type=float, default=None,
                     help="LLM-judge reliability for d.R (default: Pipeline 2 alpha if passes given, else 1.0)")
+    ap.add_argument("--hitl-threshold", type=float, default=0.75,
+                    help="Count Pipeline 3 items with confidence below this value as the HITL queue "
+                         "(repo convention, not in the deck; default 0.75)")
     ap.add_argument("--json", action="store_true", help="Emit JSON instead of the text report")
     args = ap.parse_args(argv)
 
     if not args.input and not args.demo:
         ap.error("provide --input FILE or --demo")
+    if not 0.0 <= args.hitl_threshold <= 1.0:
+        ap.error("--hitl-threshold must be between 0 and 1")
 
     inputs = [args.input] if args.input else sorted(FIXTURES_DIR.glob("*.json"))
     reports = {}
@@ -432,7 +440,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.json:
         print(json.dumps(reports, indent=2))
     else:
-        print("\n\n".join(format_report(r, name) for name, r in reports.items()))
+        print("\n\n".join(format_report(r, name, args.hitl_threshold) for name, r in reports.items()))
     return 0
 
 

@@ -244,6 +244,7 @@ svg { display: block; }
   text-overflow: ellipsis;
 }
 .ppb-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-050); }
+.ppb-note { font-size: 11px; color: var(--muted); margin: 0; line-height: 1.4; }
 .prompt-param {
   background: var(--accent-050); color: var(--accent-ink); padding: 1px 6px;
   border-radius: 4px; font-weight: 700; border: 1px dashed var(--accent-border);
@@ -284,10 +285,24 @@ svg { display: block; }
 .callout.warn { background: var(--yellow-050); border-color: var(--yellow-100); color: var(--ink-2); }
 .callout.good { background: var(--green-050); border-color: var(--green-100); color: var(--ink-2); }
 
+/* ---- Calculator previews (ROI, quota, AUA reference output) ---- */
+.card.preview-card { margin-bottom: 18px; background: #f8fafc; border-color: #cbd5e1; }
+.preview-intro { font-size: 12.5px; color: #475569; margin: 0 0 10px; }
+.preview-note { font-size: 12px; color: var(--muted); margin: 10px 0 0; }
+.preview-table { margin-bottom: 0; }
+.preview-table td.strong { font-weight: 600; color: var(--ink); }
+table.log td.verdict-pass { color: #137333; font-weight: 700; }
+table.log td.verdict-fail { color: #b91c1c; font-weight: 700; }
+
+/* ---- Reference matrix rows (click or Enter to jump) ---- */
+.jump-row { cursor: pointer; }
+.jump-row:hover td { background: var(--surface-2); }
+.jump-row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
 /* ---- Checklist ---- */
 .checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
 .checklist li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--ink-2); }
-.checklist .cbox { width: 20px; height: 20px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; flex: 0 0 auto; font-size: 11px; font-weight: 700; margin-top: 2px; }
+.checklist .cbox { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--accent); background: var(--surface); flex: 0 0 auto; margin-top: 7px; }
 
 /* ---- Table (Cloud Console style) ---- */
 .table-wrap { border: 1px solid var(--border-2); border-radius: var(--radius); overflow-x: auto; background: var(--surface); margin-bottom: 18px; max-width: 100%; }
@@ -299,9 +314,9 @@ table.log tr:last-child td, table.log tr:last-child th { border-bottom: none; }
 table.log .mono { font-family: var(--mono); font-size: 12px; color: var(--accent-ink); font-weight: 600; }
 
 /* ---- Right Rail: Trophy Shelf & Scoreboard ---- */
-.trophy-card, .score-card { background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--radius); box-shadow: var(--elev-1); padding: 16px; }
+.trophy-card { background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--radius); box-shadow: var(--elev-1); padding: 16px; }
 .trophy-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
-.trophy-head h3, .score-card h3 { font-size: 14px; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.trophy-head h3 { font-size: 14px; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px; }
 .badge-count { font-size: 11px; font-weight: 700; color: var(--muted); background: var(--surface-2); border-radius: 999px; padding: 3px 9px; }
 .medal-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
 .medallion { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px; border: 1px solid var(--border-2); border-radius: var(--radius-sm); background: var(--surface-2); text-align: center; cursor: pointer; transition: all .2s; }
@@ -326,12 +341,7 @@ table.log .mono { font-family: var(--mono); font-size: 12px; color: var(--accent
 .grand-badge .gb-name { font-size: 12.5px; font-weight: 700; color: var(--ink); }
 .grand-badge .gb-blurb { font-size: 11px; color: var(--muted); }
 
-/* ---- Right Rail: Telemetry Scoreboard ---- */
-.score-status { font-size: 12px; color: var(--muted); margin: 8px 0 14px; padding: 8px 11px; border-radius: var(--radius-sm); background: var(--surface-2); border-left: 3px solid var(--accent); }
-.axis { margin-bottom: 13px; }
-.axis-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; font-size: 12px; font-weight: 600; color: var(--ink-2); }
-.axis-track { height: 7px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
-.axis-fill { height: 100%; width: 0%; border-radius: 99px; transition: width .6s cubic-bezier(.2,.7,.2,1); }
+.rail-note { font-size: 11.5px; color: var(--muted); margin: 10px 2px 0; }
 
 /* ---- Footer nav (Back / Complete & Next / Reset) ---- */
 .main-footer { display: flex; align-items: center; gap: 12px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border-2); flex-wrap: wrap; }
@@ -403,7 +413,7 @@ table.log .mono { font-family: var(--mono); font-size: 12px; color: var(--accent
 .confetti-canvas { position: fixed; inset: 0; z-index: 120; pointer-events: none; }
 .confetti-canvas[hidden] { display: none; }
 
-/* ---- Google Workspace (@google.com) Zero-Trust SSO Gate ---- */
+/* ---- @google.com sign-in gate (client-side only: see the TODO(security) note in the markup) ---- */
 body.sso-locked { overflow: hidden; }
 body.sso-locked .topbar,
 body.sso-locked .app { display: none !important; }
@@ -430,7 +440,7 @@ body.sso-locked .sso-gate { display: flex; }
 .sso-btn {
   width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   padding: 12px 18px; border-radius: 999px; border: 1px solid #dadce0;
-  background: #1a73e8; color: #ffffff; font-family: var(--font-sans);
+  background: #1a73e8; color: #ffffff; font-family: var(--font);
   font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s ease;
   box-shadow: 0 2px 6px rgba(26,115,232,0.3);
 }
@@ -439,10 +449,6 @@ body.sso-locked .sso-gate { display: flex; }
   margin-top: 14px; padding: 10px 12px; border-radius: 8px;
   background: #fce8e6; border: 1px solid #fad2cf; color: #c5221f;
   font-size: 12.5px; font-weight: 500; display: none;
-}
-.sso-meta {
-  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
-  font-size: 11.5px; color: var(--subtle); display: flex; flex-direction: column; gap: 4px;
 }
 .sso-top-badge {
   display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px;
@@ -485,12 +491,15 @@ body.sso-locked .sso-gate { display: flex; }
 </head>
 <body>
 
-<!-- GOOGLE WORKSPACE (@google.com ONLY) SSO GATE OVERLAY -->
+<!-- @google.com sign-in gate overlay.
+     TODO(security): this gate runs in the browser only. The page itself is served to anyone who requests it,
+     so the gate hides the UI but does not protect the content. Enforce access server-side (for example IAP or
+     an authenticated backend) before this page carries anything sensitive. -->
 <div class="sso-gate" id="googleSsoGate" role="dialog" aria-modal="true" aria-labelledby="ssoGateTitle">
   <div class="sso-card">
     <div class="sso-logo">🚀</div>
-    <h1 class="sso-title" id="ssoGateTitle">TDL User Guide · Google SSO</h1>
-    <p class="sso-sub">This console is restricted to authorized <strong>@google.com</strong> Workspace accounts.</p>
+    <h1 class="sso-title" id="ssoGateTitle">TDL User Guide</h1>
+    <p class="sso-sub">Sign in with your <strong>@google.com</strong> account to continue.</p>
     <button type="button" class="sso-btn" id="googleSsoBtn">
       <span>🔐 Sign in with Google (@google.com)</span>
     </button>
@@ -505,7 +514,7 @@ body.sso-locked .sso-gate { display: flex; }
     <span class="logo">🚀</span>
     <div class="brand-text">
       <div class="title">TDL User Guide · Mission to Mars</div>
-      <div class="sub">12-Week Forward Deployed Engineering Console &amp; Flight Playbook</div>
+      <div class="sub">12-week delivery companion to the TDL Toolbox</div>
     </div>
   </div>
   <div class="spacer"></div>
@@ -547,7 +556,7 @@ body.sso-locked .sso-gate { display: flex; }
   <aside class="rail-left">
     <nav class="nav-card" aria-label="Mission steps">
       <div class="nav-head">
-        <div class="kicker" id="navKicker">Stage 1 · Day 1</div>
+        <div class="kicker" id="navKicker">Stage 1 · Setup</div>
         <div class="h" id="navSub">Hangar Prep</div>
       </div>
       <div class="progress-wrap">
@@ -557,34 +566,36 @@ body.sso-locked .sso-gate { display: flex; }
       <ul class="steps" id="stepsList"></ul>
     </nav>
 
-    <!-- Live Prompt Parameters Card in Left Rail -->
+    <!-- Prompt & CLI parameters card in the left rail -->
     <div class="nav-card">
       <div class="nav-head" style="padding-bottom:8px;">
-        <div class="kicker">Live Prompt &amp; CLI Customizer</div>
-        <div class="h" style="font-size:13.5px;">13 Skills &amp; 50 Customer Presets</div>
+        <div class="kicker">Prompt &amp; CLI Parameters</div>
+        <div class="h" style="font-size:13.5px;">13 Skills &amp; 50 Example Scenarios</div>
       </div>
       <div class="ppb-fields" style="grid-template-columns:minmax(0, 1fr);">
         <div class="ppb-field">
-          <label class="ppb-label" for="skillJumpSelect">Jump to TDL Skill (All 13 Skills)</label>
+          <label class="ppb-label" for="skillJumpSelect">Jump to a skill</label>
           <select class="ppb-input" id="skillJumpSelect" style="cursor:pointer;">
-            <option value="step-3">1. tdl-field-guide (Wk 0–12 Governance)</option>
-            <option value="step-4">2. workshop-intake (33 Qs &amp; Yardstick)</option>
-            <option value="step-4">3. create-delta-ucc (1-Page MVP Alignment)</option>
-            <option value="step-4">4. ai-value-sizing (3-Scenario ROI &amp; NPV)</option>
-            <option value="step-6">5. business-process-redesign (As-Is/To-Be)</option>
-            <option value="step-6">6. cuj-architect (4-Tab L1–L5 CUJ Map)</option>
-            <option value="step-7">7. product-md (8-Section Agentic PRD)</option>
+            <option value="" selected disabled>Choose one of the 13 skills…</option>
+            <option value="step-3">1. tdl-field-guide (STATE.md &amp; 12-week phases)</option>
+            <option value="step-4">2. workshop-intake (32 Starter Qs · Available/Usable/Quality)</option>
+            <option value="step-4">3. create-delta-ucc (Use Case Alignment Summary)</option>
+            <option value="step-5">4. business-process-redesign (As-Is / To-Be)</option>
+            <option value="step-5">5. cuj-architect (4-tab L1–L5 CUJ map)</option>
+            <option value="step-7">6. product-md (8-section agentic PRD)</option>
+            <option value="step-7">7. ai-value-sizing (Base/Bull/Bear ROI &amp; NPV)</option>
             <option value="step-8">8. gcp-agent-architecture-advisor (Tier 1–3)</option>
-            <option value="step-11">9. specification-engineer (4-Part TDD Spec)</option>
-            <option value="step-10">10. stitch-design (3-Stage UI Prototype)</option>
-            <option value="step-12">11. claude-agent-harness (--verify Goal Loop)</option>
-            <option value="step-13">12. agent-eval-statistical-auditing (AUA/CLA)</option>
-            <option value="step-14">13. agent-load-testing (5× Quota &amp; Locust)</option>
+            <option value="step-10">9. stitch-design (prototype &amp; mini-eval)</option>
+            <option value="step-11">10. specification-engineer (4-part TDD)</option>
+            <option value="step-12">11. claude-agent-harness (--verify goal loop)</option>
+            <option value="step-13">12. agent-eval-statistical-auditing (CLA &amp; AUA)</option>
+            <option value="step-14">13. agent-load-testing (5× quotas &amp; Locust)</option>
           </select>
         </div>
         <div class="ppb-field">
-          <label class="ppb-label" for="paramPreset">Customer Use Case Preset</label>
-          <select class="ppb-input" id="paramPreset" style="cursor:pointer;"></select>
+          <label class="ppb-label" for="paramPreset">Example scenario (fictional)</label>
+          <select class="ppb-input" id="paramPreset" aria-describedby="presetNote" style="cursor:pointer;"></select>
+          <p class="ppb-note" id="presetNote">Fictional sample data for visualization only. Replace it with your customer's real numbers.</p>
         </div>
         <div class="ppb-field">
           <label class="ppb-label" for="paramUseCase">Use Case Name</label>
@@ -592,11 +603,11 @@ body.sso-locked .sso-gate { display: flex; }
         </div>
         <div style="display:grid;grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);gap:8px;min-width:0;">
           <div class="ppb-field">
-            <label class="ppb-label" for="paramVolume">Annual Volume</label>
+            <label class="ppb-label" for="paramVolume">Annual volume (TAM units)</label>
             <input class="ppb-input" id="paramVolume" type="number" min="100" step="1000" value="250000" />
           </div>
           <div class="ppb-field">
-            <label class="ppb-label" for="paramRate">Hourly Rate ($)</label>
+            <label class="ppb-label" for="paramRate">Loaded hourly rate ($)</label>
             <input class="ppb-input" id="paramRate" type="number" min="10" step="1" value="68" />
           </div>
         </div>
@@ -623,7 +634,7 @@ body.sso-locked .sso-gate { display: flex; }
     <div class="viewbar-top">
       <div class="viewtabs" role="tablist">
         <button class="vtab active" id="tabBtnPlaybook" data-view="playbook">📋 Step Instructions &amp; Prompts</button>
-        <button class="vtab" id="tabBtnContracts" data-view="contracts">🗂 All 13 Skills &amp; File Contracts</button>
+        <button class="vtab" id="tabBtnContracts" data-view="contracts">🗂 All Steps · Reads &amp; Writes</button>
       </div>
       <button class="btn" id="resetProgressBtn" style="padding:6px 13px;font-size:12px;">↺ Reset Mission Checkmarks</button>
     </div>
@@ -632,7 +643,7 @@ body.sso-locked .sso-gate { display: flex; }
     <section id="mainContracts" hidden></section>
   </div>
 
-  <!-- RIGHT RAIL: TROPHY SHELF & TELEMETRY SCOREBOARD -->
+  <!-- RIGHT RAIL: STEP BADGES & MISSION PATCHES -->
   <aside class="rail-right">
     <div class="trophy-card">
       <div class="trophy-head">
@@ -655,12 +666,7 @@ body.sso-locked .sso-gate { display: flex; }
           <div class="gb-blurb">Complete all 15 steps from Hangar Prep to Mars Touchdown.</div>
         </div>
       </div>
-    </div>
-
-    <div class="score-card">
-      <h3>📡 Mission Flight Telemetry</h3>
-      <div class="score-status" id="scoreStatus">Flight computer online. Complete steps to power up telemetry axes.</div>
-      <div id="telemetryAxes"></div>
+      <p class="rail-note">Checkmarks and XP are saved in this browser only.</p>
     </div>
   </aside>
 </div>
@@ -671,7 +677,7 @@ body.sso-locked .sso-gate { display: flex; }
   <div>
     <div class="bp-kick" id="bpKick">Mission Milestone Unlocked</div>
     <div class="bp-name" id="bpName">Step Completed</div>
-    <div class="bp-cheer" id="bpCheer">Telemetry updated</div>
+    <div class="bp-cheer" id="bpCheer">Step complete</div>
   </div>
 </div>
 <div class="toast" id="toast">✓ Copied to clipboard</div>
@@ -692,77 +698,79 @@ body.sso-locked .sso-gate { display: flex; }
 <script>
 "use strict";
 
+// Example scenarios: FICTIONAL sample data for visualization only. Industries, use cases, volumes, rates,
+// hours saved, peak turns and project IDs are invented; they are not customer data, benchmarks or
+// recommendations. The left rail labels them "Example scenario (fictional)".
 var CUSTOMER_PRESETS = [
-  // Featured Top 10 Presets (1–10)
-  { industry: "P&C Insurance", useCase: "Commercial Auto FNOL Triage Agent", volume: 250000, rate: 68, hours: 0.30, peakTurns: 12, project: "insure-fnol-prod-01", archetype: "FULL_13_SKILL" },
-  { industry: "Retail Banking", useCase: "AML SAR Narrative Investigation Agent", volume: 75000, rate: 95, hours: 0.75, peakTurns: 8, project: "bank-aml-sar-prod", archetype: "FULL_13_SKILL" },
-  { industry: "Healthcare Provider", useCase: "Prior Authorization Clinical Packet Reviewer", volume: 180000, rate: 82, hours: 0.40, peakTurns: 15, project: "health-prior-auth-01", archetype: "FULL_13_SKILL" },
-  { industry: "Enterprise IT", useCase: "AskIT Tier-2 Ticket Resolution & IAM Provisioner", volume: 600000, rate: 58, hours: 0.20, peakTurns: 25, project: "corp-askit-agent-prod", archetype: "FULL_13_SKILL" },
-  { industry: "Automotive Mfg", useCase: "Supplier Warranty Chargeback & Part Defect Auditor", volume: 150000, rate: 74, hours: 0.45, peakTurns: 10, project: "auto-warranty-audit-01", archetype: "FULL_13_SKILL" },
-  { industry: "Telecommunications", useCase: "B2B Fiber Order Fallout & Circuit Dispatch Agent", volume: 320000, rate: 64, hours: 0.25, peakTurns: 20, project: "telco-fiber-fallout-01", archetype: "FULL_13_SKILL" },
-  { industry: "Global Logistics", useCase: "Customs Tariff Classification & Broker Hold Resolver", volume: 410000, rate: 62, hours: 0.22, peakTurns: 18, project: "freight-customs-agent", archetype: "FULL_13_SKILL" },
-  { industry: "Pharmaceutical R&D", useCase: "FDA CMC Regulatory Submission Cross-Check Agent", volume: 32000, rate: 135, hours: 1.25, peakTurns: 6, project: "pharma-cmc-reg-prod", archetype: "FULL_13_SKILL" },
-  { industry: "Commercial Aviation", useCase: "IROPS Crew Re-Pairing & Maintenance MEL Advisor", volume: 95000, rate: 110, hours: 0.50, peakTurns: 14, project: "air-irops-recovery-01", archetype: "FULL_13_SKILL" },
-  { industry: "B2B SaaS Legal Ops", useCase: "Enterprise DPA & Vendor Security Addendum Redliner", volume: 42000, rate: 145, hours: 0.85, peakTurns: 8, project: "saas-dpa-redline-01", archetype: "FULL_13_SKILL" },
+  // 1–10: mixed industries
+  { industry: "P&C Insurance", useCase: "Commercial Auto FNOL Triage Agent", volume: 250000, rate: 68, hours: 0.30, peakTurns: 12, project: "insure-fnol-prod-01" },
+  { industry: "Retail Banking", useCase: "AML SAR Narrative Investigation Agent", volume: 75000, rate: 95, hours: 0.75, peakTurns: 8, project: "bank-aml-sar-prod" },
+  { industry: "Healthcare Provider", useCase: "Prior Authorization Clinical Packet Reviewer", volume: 180000, rate: 82, hours: 0.40, peakTurns: 15, project: "health-prior-auth-01" },
+  { industry: "Enterprise IT", useCase: "IT Service Desk Tier-2 Ticket Resolution & IAM Provisioner", volume: 600000, rate: 58, hours: 0.20, peakTurns: 25, project: "corp-itsd-agent-prod" },
+  { industry: "Automotive Mfg", useCase: "Supplier Warranty Chargeback & Part Defect Auditor", volume: 150000, rate: 74, hours: 0.45, peakTurns: 10, project: "auto-warranty-audit-01" },
+  { industry: "Telecommunications", useCase: "B2B Fiber Order Fallout & Circuit Dispatch Agent", volume: 320000, rate: 64, hours: 0.25, peakTurns: 20, project: "telco-fiber-fallout-01" },
+  { industry: "Global Logistics", useCase: "Customs Tariff Classification & Broker Hold Resolver", volume: 410000, rate: 62, hours: 0.22, peakTurns: 18, project: "freight-customs-agent" },
+  { industry: "Pharmaceutical R&D", useCase: "FDA CMC Regulatory Submission Cross-Check Agent", volume: 32000, rate: 135, hours: 1.25, peakTurns: 6, project: "pharma-cmc-reg-prod" },
+  { industry: "Commercial Aviation", useCase: "IROPS Crew Re-Pairing & Maintenance MEL Advisor", volume: 95000, rate: 110, hours: 0.50, peakTurns: 14, project: "air-irops-recovery-01" },
+  { industry: "B2B SaaS Legal Ops", useCase: "Enterprise DPA & Vendor Security Addendum Redliner", volume: 42000, rate: 145, hours: 0.85, peakTurns: 8, project: "saas-dpa-redline-01" },
   // Financial Services & Insurance (11–18)
-  { industry: "Financial Services", useCase: "Commercial KYC Entity Onboarding & UBO Verification", volume: 85000, rate: 90, hours: 0.75, peakTurns: 10, project: "fin-kyc-ubo-prod", archetype: "FULL_13_SKILL" },
-  { industry: "Financial Services", useCase: "Residential Mortgage Income & Tax Return Underwriter", volume: 110000, rate: 85, hours: 0.65, peakTurns: 12, project: "fin-mortgage-uw-01", archetype: "FULL_13_SKILL" },
-  { industry: "Financial Services", useCase: "Private Wealth Advisor Pre-Meeting Portfolio Synthesizer", volume: 95000, rate: 115, hours: 0.50, peakTurns: 15, project: "fin-wealth-brief-01", archetype: "FULL_13_SKILL" },
-  { industry: "Financial Services", useCase: "Small Regional Branch Policy Lookup Bot (Lite Mode)", volume: 18000, rate: 72, hours: 0.45, peakTurns: 3, project: "fin-branch-faq-lite", archetype: "FAST_TRACK_5_SKILL" },
-  { industry: "Insurance", useCase: "Property Subrogation Demand Package Recovery Agent", volume: 72000, rate: 82, hours: 0.80, peakTurns: 9, project: "ins-prop-subro-01", archetype: "FULL_13_SKILL" },
-  { industry: "Insurance", useCase: "Excess & Surplus (E&S) Broker Submission Intake Triage", volume: 90000, rate: 88, hours: 0.65, peakTurns: 11, project: "ins-es-broker-01", archetype: "FULL_13_SKILL" },
-  { industry: "Insurance", useCase: "Workers Comp Medical Bill Chronology Summarizer", volume: 68000, rate: 78, hours: 0.75, peakTurns: 10, project: "ins-workers-comp-01", archetype: "FULL_13_SKILL" },
-  { industry: "Insurance", useCase: "Departmental Reinsurance Treaty Clause Search (Lite Mode)", volume: 16000, rate: 85, hours: 0.50, peakTurns: 3, project: "ins-treaty-search-lite", archetype: "FAST_TRACK_5_SKILL" },
+  { industry: "Financial Services", useCase: "Commercial KYC Entity Onboarding & UBO Verification", volume: 85000, rate: 90, hours: 0.75, peakTurns: 10, project: "fin-kyc-ubo-prod" },
+  { industry: "Financial Services", useCase: "Residential Mortgage Income & Tax Return Underwriter", volume: 110000, rate: 85, hours: 0.65, peakTurns: 12, project: "fin-mortgage-uw-01" },
+  { industry: "Financial Services", useCase: "Private Wealth Advisor Pre-Meeting Portfolio Synthesizer", volume: 95000, rate: 115, hours: 0.50, peakTurns: 15, project: "fin-wealth-brief-01" },
+  { industry: "Financial Services", useCase: "Small Regional Branch Policy Lookup Bot", volume: 18000, rate: 72, hours: 0.45, peakTurns: 3, project: "fin-branch-faq-lite" },
+  { industry: "Insurance", useCase: "Property Subrogation Demand Package Recovery Agent", volume: 72000, rate: 82, hours: 0.80, peakTurns: 9, project: "ins-prop-subro-01" },
+  { industry: "Insurance", useCase: "Excess & Surplus (E&S) Broker Submission Intake Triage", volume: 90000, rate: 88, hours: 0.65, peakTurns: 11, project: "ins-es-broker-01" },
+  { industry: "Insurance", useCase: "Workers Comp Medical Bill Chronology Summarizer", volume: 68000, rate: 78, hours: 0.75, peakTurns: 10, project: "ins-workers-comp-01" },
+  { industry: "Insurance", useCase: "Departmental Reinsurance Treaty Clause Search", volume: 16000, rate: 85, hours: 0.50, peakTurns: 3, project: "ins-treaty-search-lite" },
   // Healthcare, Life Sciences & Telecom/Media (19–26)
-  { industry: "Healthcare & Life Sciences", useCase: "Inpatient Clinical Documentation Integrity (CDI) DRG Auditor", volume: 120000, rate: 84, hours: 0.55, peakTurns: 14, project: "hlt-cdi-drg-prod", archetype: "FULL_13_SKILL" },
-  { industry: "Healthcare & Life Sciences", useCase: "BioPharma FDA CMC Module 3 Regulatory Dossier Drafter", volume: 55000, rate: 110, hours: 0.95, peakTurns: 8, project: "hlt-cmc-dossier-01", archetype: "FULL_13_SKILL" },
-  { industry: "Healthcare & Life Sciences", useCase: "Adverse Event Case Intake & MedDRA Coding Agent", volume: 105000, rate: 86, hours: 0.60, peakTurns: 12, project: "hlt-meddra-pv-01", archetype: "FULL_13_SKILL" },
-  { industry: "Telecom & Media", useCase: "Autonomous 5G NOC Alarm Correlation & Dispatch Agent", volume: 220000, rate: 82, hours: 0.35, peakTurns: 20, project: "tel-5g-noc-triage", archetype: "FULL_13_SKILL" },
-  { industry: "Telecom & Media", useCase: "Multi-Modal Archive Rights & Clip Discovery ('Asset Buddy')", volume: 125000, rate: 80, hours: 0.50, peakTurns: 16, project: "med-asset-buddy-01", archetype: "FULL_13_SKILL" },
-  { industry: "Telecom & Media", useCase: "Enterprise Fiber & SD-WAN Solution Architecture RFP Responder", volume: 65000, rate: 92, hours: 0.85, peakTurns: 9, project: "tel-sdwan-rfp-01", archetype: "FULL_13_SKILL" },
-  { industry: "Telecom & Media", useCase: "Broadcast Commercial Clearance & Regional Ad Compliance Agent", volume: 88000, rate: 78, hours: 0.60, peakTurns: 11, project: "med-ad-clearance-01", archetype: "FULL_13_SKILL" },
-  { industry: "Telecom & Media", useCase: "Internal PR Team Press Mention Digest (Lite Mode)", volume: 15000, rate: 75, hours: 0.50, peakTurns: 2, project: "med-pr-digest-lite", archetype: "FAST_TRACK_5_SKILL" },
+  { industry: "Healthcare & Life Sciences", useCase: "Inpatient Clinical Documentation Integrity (CDI) DRG Auditor", volume: 120000, rate: 84, hours: 0.55, peakTurns: 14, project: "hlt-cdi-drg-prod" },
+  { industry: "Healthcare & Life Sciences", useCase: "BioPharma FDA CMC Module 3 Regulatory Dossier Drafter", volume: 55000, rate: 110, hours: 0.95, peakTurns: 8, project: "hlt-cmc-dossier-01" },
+  { industry: "Healthcare & Life Sciences", useCase: "Adverse Event Case Intake & MedDRA Coding Agent", volume: 105000, rate: 86, hours: 0.60, peakTurns: 12, project: "hlt-meddra-pv-01" },
+  { industry: "Telecom & Media", useCase: "Autonomous 5G NOC Alarm Correlation & Dispatch Agent", volume: 220000, rate: 82, hours: 0.35, peakTurns: 20, project: "tel-5g-noc-triage" },
+  { industry: "Telecom & Media", useCase: "Multi-Modal Archive Rights & Clip Discovery Agent", volume: 125000, rate: 80, hours: 0.50, peakTurns: 16, project: "med-archive-clips-01" },
+  { industry: "Telecom & Media", useCase: "Enterprise Fiber & SD-WAN Solution Architecture RFP Responder", volume: 65000, rate: 92, hours: 0.85, peakTurns: 9, project: "tel-sdwan-rfp-01" },
+  { industry: "Telecom & Media", useCase: "Broadcast Commercial Clearance & Regional Ad Compliance Agent", volume: 88000, rate: 78, hours: 0.60, peakTurns: 11, project: "med-ad-clearance-01" },
+  { industry: "Telecom & Media", useCase: "Internal PR Team Press Mention Digest", volume: 15000, rate: 75, hours: 0.50, peakTurns: 2, project: "med-pr-digest-lite" },
   // Manufacturing, Retail/CPG & Energy/Utilities (27–38)
-  { industry: "Manufacturing & Auto", useCase: "Supplier Rate Variance Audit & Part Shortage Recovery", volume: 64000, rate: 78, hours: 0.85, peakTurns: 8, project: "mfg-supplier-var-01", archetype: "FULL_13_SKILL" },
-  { industry: "Manufacturing & Auto", useCase: "Aerospace MRO Airworthiness Directive & Fault Isolation Co-Pilot", volume: 70000, rate: 94, hours: 0.80, peakTurns: 10, project: "mfg-aero-mro-01", archetype: "FULL_13_SKILL" },
-  { industry: "Manufacturing & Auto", useCase: "Dealer Warranty Claim Telemetry & Technician Notes Triage", volume: 135000, rate: 76, hours: 0.50, peakTurns: 14, project: "mfg-warranty-tel-01", archetype: "FULL_13_SKILL" },
-  { industry: "Manufacturing & Auto", useCase: "Plant EHS Safety Incident CAPA Investigation Drafter", volume: 62000, rate: 84, hours: 0.85, peakTurns: 8, project: "mfg-ehs-capa-01", archetype: "FULL_13_SKILL" },
-  { industry: "Retail & CPG", useCase: "Promotional Margin & Vendor Co-Op Audit Agent", volume: 110000, rate: 74, hours: 0.55, peakTurns: 12, project: "ret-promo-coop-01", archetype: "FULL_13_SKILL" },
-  { industry: "Retail & CPG", useCase: "Omni-Channel Category Assortment & Localized Planogram Agent", volume: 95000, rate: 78, hours: 0.65, peakTurns: 11, project: "ret-planogram-opt-01", archetype: "FULL_13_SKILL" },
-  { industry: "Retail & CPG", useCase: "Private-Label Supplier Food Safety & GS1 Spec Validator", volume: 78000, rate: 76, hours: 0.70, peakTurns: 9, project: "ret-gs1-safety-01", archetype: "FULL_13_SKILL" },
-  { industry: "Retail & CPG", useCase: "CPG Retailer OTIF Deduction & Chargeback Dispute Resolver", volume: 115000, rate: 72, hours: 0.55, peakTurns: 13, project: "ret-otif-dispute-01", archetype: "FULL_13_SKILL" },
-  { industry: "Retail & CPG", useCase: "Regional Store Manager Dress-Code & Shift Policy Search (Lite Mode)", volume: 20000, rate: 68, hours: 0.40, peakTurns: 3, project: "ret-store-hr-lite", archetype: "FAST_TRACK_5_SKILL" },
-  { industry: "Energy & Utilities", useCase: "Substation Work-Order & NERC CIP Compliance Triage", volume: 52000, rate: 92, hours: 0.90, peakTurns: 9, project: "ene-nerc-cip-01", archetype: "FULL_13_SKILL" },
-  { industry: "Energy & Utilities", useCase: "Solar/Battery Grid Interconnection Study Packet Reviewer", volume: 58000, rate: 98, hours: 0.95, peakTurns: 8, project: "ene-ferc-grid-01", archetype: "FULL_13_SKILL" },
-  { industry: "Energy & Utilities", useCase: "Severe Weather Vegetation & Transformer Outage Triage Agent", volume: 92000, rate: 88, hours: 0.65, peakTurns: 14, project: "ene-outage-triage-01", archetype: "FULL_13_SKILL" },
-  // Energy, Public Sector, Cloud/SaaS & Logistics (39–46)
-  { industry: "Energy & Utilities", useCase: "PHMSA Inline Inspection (ILI) Anomaly Corrosion Analyst", volume: 60000, rate: 96, hours: 0.85, peakTurns: 8, project: "ene-phmsa-ili-01", archetype: "FULL_13_SKILL" },
-  { industry: "Energy & Utilities", useCase: "Utility Fleet EV Charging Etiquette FAQ Bot (Lite Mode)", volume: 14000, rate: 78, hours: 0.50, peakTurns: 2, project: "ene-fleet-faq-lite", archetype: "FAST_TRACK_5_SKILL" },
-  { industry: "Public Sector", useCase: "Medicaid & SNAP Eligibility Renewal Verification Co-Pilot", volume: 180000, rate: 68, hours: 0.50, peakTurns: 15, project: "pub-medicaid-snap-01", archetype: "FULL_13_SKILL" },
-  { industry: "Public Sector", useCase: "FOIA / Public Records Request Discovery & PII Redaction Agent", volume: 95000, rate: 74, hours: 0.70, peakTurns: 11, project: "pub-foia-redact-01", archetype: "FULL_13_SKILL" },
-  { industry: "Public Sector", useCase: "Federal Infrastructure Grant Sub-Recipient Audit Co-Pilot", volume: 68000, rate: 80, hours: 0.80, peakTurns: 9, project: "pub-grant-audit-01", archetype: "FULL_13_SKILL" },
-  { industry: "Public Sector", useCase: "Municipal Commercial Building Permit & Zoning Code Reviewer", volume: 82000, rate: 76, hours: 0.70, peakTurns: 10, project: "pub-permit-zoning-01", archetype: "FULL_13_SKILL" },
-  { industry: "Cloud & B2B SaaS", useCase: "SecOps CVE Reachability & Customer Security Questionnaire Agent", volume: 75000, rate: 110, hours: 0.65, peakTurns: 11, project: "tech-secops-cve-01", archetype: "FULL_13_SKILL" },
-  { industry: "Cloud & B2B SaaS", useCase: "Cloud Infrastructure L3 Escalation Log & Trace RCA Agent", volume: 88000, rate: 115, hours: 0.70, peakTurns: 12, project: "tech-l3-rca-prod", archetype: "FULL_13_SKILL" },
-  // Cloud/SaaS, Global Ops & Gate-0 Data Traps (47–50)
-  { industry: "Cloud & B2B SaaS", useCase: "Multi-Cloud FinOps CUD & Idle GKE Node Rightsizing Advisor", volume: 64000, rate: 105, hours: 0.75, peakTurns: 9, project: "tech-finops-cud-01", archetype: "FULL_13_SKILL" },
-  { industry: "Cloud & B2B SaaS", useCase: "Single-Team Frontend Styleguide Search Assistant (Lite Mode)", volume: 14000, rate: 95, hours: 0.45, peakTurns: 2, project: "tech-wiki-lite-01", archetype: "FAST_TRACK_5_SKILL" },
-  { industry: "Logistics & Legal Ops", useCase: "Global AskHR Leave, Mobility & Total Rewards Case Agent", volume: 155000, rate: 75, hours: 0.45, peakTurns: 16, project: "hr-global-askhr-01", archetype: "FULL_13_SKILL" },
-  { industry: "Logistics & Legal Ops", useCase: "Cold-Chain Excursion IoT Alert & Carrier Claim Recovery Agent", volume: 74000, rate: 84, hours: 0.75, peakTurns: 10, project: "log-coldchain-sla-01", archetype: "FULL_13_SKILL" }
+  { industry: "Manufacturing & Auto", useCase: "Supplier Rate Variance Audit & Part Shortage Recovery", volume: 64000, rate: 78, hours: 0.85, peakTurns: 8, project: "mfg-supplier-var-01" },
+  { industry: "Manufacturing & Auto", useCase: "Aerospace MRO Airworthiness Directive & Fault Isolation Co-Pilot", volume: 70000, rate: 94, hours: 0.80, peakTurns: 10, project: "mfg-aero-mro-01" },
+  { industry: "Manufacturing & Auto", useCase: "Dealer Warranty Claim Telemetry & Technician Notes Triage", volume: 135000, rate: 76, hours: 0.50, peakTurns: 14, project: "mfg-warranty-tel-01" },
+  { industry: "Manufacturing & Auto", useCase: "Plant EHS Safety Incident CAPA Investigation Drafter", volume: 62000, rate: 84, hours: 0.85, peakTurns: 8, project: "mfg-ehs-capa-01" },
+  { industry: "Retail & CPG", useCase: "Promotional Margin & Vendor Co-Op Audit Agent", volume: 110000, rate: 74, hours: 0.55, peakTurns: 12, project: "ret-promo-coop-01" },
+  { industry: "Retail & CPG", useCase: "Omni-Channel Category Assortment & Localized Planogram Agent", volume: 95000, rate: 78, hours: 0.65, peakTurns: 11, project: "ret-planogram-opt-01" },
+  { industry: "Retail & CPG", useCase: "Private-Label Supplier Food Safety & GS1 Spec Validator", volume: 78000, rate: 76, hours: 0.70, peakTurns: 9, project: "ret-gs1-safety-01" },
+  { industry: "Retail & CPG", useCase: "CPG Retailer OTIF Deduction & Chargeback Dispute Resolver", volume: 115000, rate: 72, hours: 0.55, peakTurns: 13, project: "ret-otif-dispute-01" },
+  { industry: "Retail & CPG", useCase: "Regional Store Manager Dress-Code & Shift Policy Search", volume: 20000, rate: 68, hours: 0.40, peakTurns: 3, project: "ret-store-hr-lite" },
+  { industry: "Energy & Utilities", useCase: "Substation Work-Order & NERC CIP Compliance Triage", volume: 52000, rate: 92, hours: 0.90, peakTurns: 9, project: "ene-nerc-cip-01" },
+  { industry: "Energy & Utilities", useCase: "Solar/Battery Grid Interconnection Study Packet Reviewer", volume: 58000, rate: 98, hours: 0.95, peakTurns: 8, project: "ene-ferc-grid-01" },
+  { industry: "Energy & Utilities", useCase: "Severe Weather Vegetation & Transformer Outage Triage Agent", volume: 92000, rate: 88, hours: 0.65, peakTurns: 14, project: "ene-outage-triage-01" },
+  // Energy, Public Sector & Cloud/SaaS (39–46)
+  { industry: "Energy & Utilities", useCase: "PHMSA Inline Inspection (ILI) Anomaly Corrosion Analyst", volume: 60000, rate: 96, hours: 0.85, peakTurns: 8, project: "ene-phmsa-ili-01" },
+  { industry: "Energy & Utilities", useCase: "Utility Fleet EV Charging Etiquette FAQ Bot", volume: 14000, rate: 78, hours: 0.50, peakTurns: 2, project: "ene-fleet-faq-lite" },
+  { industry: "Public Sector", useCase: "Medicaid & SNAP Eligibility Renewal Verification Co-Pilot", volume: 180000, rate: 68, hours: 0.50, peakTurns: 15, project: "pub-medicaid-snap-01" },
+  { industry: "Public Sector", useCase: "FOIA / Public Records Request Discovery & PII Redaction Agent", volume: 95000, rate: 74, hours: 0.70, peakTurns: 11, project: "pub-foia-redact-01" },
+  { industry: "Public Sector", useCase: "Federal Infrastructure Grant Sub-Recipient Audit Co-Pilot", volume: 68000, rate: 80, hours: 0.80, peakTurns: 9, project: "pub-grant-audit-01" },
+  { industry: "Public Sector", useCase: "Municipal Commercial Building Permit & Zoning Code Reviewer", volume: 82000, rate: 76, hours: 0.70, peakTurns: 10, project: "pub-permit-zoning-01" },
+  { industry: "Cloud & B2B SaaS", useCase: "SecOps CVE Reachability & Customer Security Questionnaire Agent", volume: 75000, rate: 110, hours: 0.65, peakTurns: 11, project: "tech-secops-cve-01" },
+  { industry: "Cloud & B2B SaaS", useCase: "Cloud Infrastructure L3 Escalation Log & Trace RCA Agent", volume: 88000, rate: 115, hours: 0.70, peakTurns: 12, project: "tech-l3-rca-prod" },
+  // Cloud/SaaS, HR & logistics (47–50)
+  { industry: "Cloud & B2B SaaS", useCase: "Multi-Cloud FinOps CUD & Idle GKE Node Rightsizing Advisor", volume: 64000, rate: 105, hours: 0.75, peakTurns: 9, project: "tech-finops-cud-01" },
+  { industry: "Cloud & B2B SaaS", useCase: "Single-Team Frontend Styleguide Search Assistant", volume: 14000, rate: 95, hours: 0.45, peakTurns: 2, project: "tech-wiki-lite-01" },
+  { industry: "Human Resources", useCase: "Global HR Leave, Mobility & Total Rewards Case Agent", volume: 155000, rate: 75, hours: 0.45, peakTurns: 16, project: "hr-global-cases-01" },
+  { industry: "Global Logistics", useCase: "Cold-Chain Excursion IoT Alert & Carrier Claim Recovery Agent", volume: 74000, rate: 84, hours: 0.75, peakTurns: 10, project: "log-coldchain-sla-01" }
 ];
 
 var STAGES = [
   {
     id: "day1",
-    shortTab: "🛠 M1 · Hangar Prep",
-    kicker: "Stage 1 · Day 1 Setup",
+    shortTab: "🛠 M1 · Hangar Prep (Setup)",
+    kicker: "Stage 1 · Setup",
     name: "Hangar Prep",
-    chip: "Stage 1 · Hangar Prep (Day 1)",
     icon: "🛠",
     accent: "#1a73e8", accentInk: "#1967d2", accent050: "#e8f0fe", accentBorder: "#d2e3fc",
     heroTitle: "Suit Up & Assemble Your Flight Computer",
-    heroSub: "Install the 13 TDL skills and companion ADK/UI packages on your laptop before initializing STATE.md.",
-    gate: "Gate: 15-Minute Laptop & Repo Readiness Check",
+    heroSub: "Install the 13 TDL skills and the companion skills on your laptop, then create STATE.md.",
+    gate: "Setup check: validate_skills.py and the unit tests exit 0",
     bannerImg: "ui/images/setup.jpg",
     steps: [
       {
@@ -770,440 +778,355 @@ var STAGES = [
         badgeName: "Skills Loaded",
         title: "Install the 13 TDL Skills (Antigravity Plugin)",
         sub: "plugin.json + validate_skills.py",
-        skill: "tdl-user-guide (All 13 Skills)",
-        toolbox: "TDL Field Guide + 18 Assets",
-        reads: "None (Fresh Laptop Setup)",
+        skill: "tool-tdl-user-guide plugin (all 13 skills)",
+        toolbox: "None (repo setup)",
+        reads: "None (fresh laptop setup)",
         output: "~/.gemini/config/plugins/tool-tdl-user-guide",
         image: "ui/images/setup.jpg",
-        lede: "Clone the TDL User Guide into your Antigravity plugins directory (or install via npx skills add) so Antigravity, Gemini CLI, and Claude Code auto-discover all 13 skills via plugin.json and skills/<skill-name>/SKILL.md.",
-        whyItMatters: "Without these 13 skills installed, your coding agent will write generic boilerplate instead of enforcing the 12-week cap, Golden Dataset baseline evaluation metrics, and statistical LLM-judge evaluation gates.",
+        lede: "Clone the TDL User Guide into your Antigravity plugins directory so Antigravity discovers all 13 skills via plugin.json and skills/<skill-name>/SKILL.md. The repo is private: you need access to the delta-fde GitHub org.",
         promptType: "Terminal Command (Run Once on Your Laptop)",
-        promptTemplate: "# Option A: Install natively as an Antigravity (Jetski) Plugin\ngit clone https://github.com/delta-fde/tool-tdl-user-guide.git ~/.gemini/config/plugins/tool-tdl-user-guide\n\n# Option B: Install via AgentSkills CLI\nnpx skills add delta-fde/tool-tdl-user-guide\n\n# Verify all 13 skills and calculators\ncd ~/.gemini/config/plugins/tool-tdl-user-guide\npython3 -B scripts/validate_skills.py",
+        promptTemplate: "# Private repo: requires access to the delta-fde GitHub org (SSH)\ngit clone git@github.com:delta-fde/tool-tdl-user-guide.git ~/.gemini/config/plugins/tool-tdl-user-guide\ncd ~/.gemini/config/plugins/tool-tdl-user-guide",
         cliTemplate: "python3 -B scripts/validate_skills.py && python3 -B -m unittest discover -s scripts -p 'test_*.py'",
         checks: [
           "Repository cloned into ~/.gemini/config/plugins/tool-tdl-user-guide with root plugin.json and skills/<skill-name>/SKILL.md",
-          "python3 -B scripts/validate_skills.py passes with zero errors"
-        ],
-        customerPersona: "FDE Tech Lead",
-        customerApprove: "All 13 SKILL.md files, plugin.json manifest, and 4 deterministic Python calculators pass validation with exit code 0.",
-        rejectIf: "Broken markdown links, missing plugin.json / skills/ directories, or unverified third-party pip dependencies.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 10, baseline: 0, arch: 5, eval: 0, prod: 5 }
+          "python3 -B scripts/validate_skills.py and the unit tests exit 0"
+        ]
       },
       {
         id: "step-2",
         badgeName: "Boosters Attached",
-        title: "Add Companion ADK & UI Skills",
+        title: "Add Companion Skills (ADK, TDD, Browser Automation)",
         sub: "npx skills add",
-        skill: "skills.sh + google/agents-cli",
-        toolbox: "Companion Engineering Stack",
-        reads: "~/.gemini/config/plugins/tool-tdl-user-guide",
-        output: "google/agents-cli, mattpocock/skills",
+        skill: "skills CLI (npm: skills) + google/agents-cli",
+        toolbox: "None (public third-party skills)",
+        reads: "None",
+        output: "Companion skills installed by the skills CLI",
         image: "ui/images/setup.jpg",
-        lede: "Pair the 13 TDL governance skills with best-in-class upstream skills for Google Cloud ADK scaffolding, TDD, React UI polish, and headless browser testing.",
-        whyItMatters: "The TDL User Guide governs what to deliver at each phase gate; upstream companion skills govern how to write idiomatic ADK Python and test UI components.",
+        lede: "Pair the 13 TDL skills with public companion skills: google/agents-cli (ADK scaffold, eval and deploy), mattpocock/skills (grill-me, tdd, codebase-design) and vercel-labs/agent-browser (browser automation; needs the agent-browser binary). The skills CLI asks which agent to install for.",
+        whyItMatters: "The TDL skills cover what to deliver at each phase; the companion skills cover how to scaffold, test and verify the code.",
         promptType: "Terminal Command (One-Line Companion Installs)",
-        promptTemplate: "# 1. Official Google Cloud ADK Scaffold, Eval & Deploy\nnpx skills add google/agents-cli\n\n# 2. Spec grilling, TDD & deep-module architecture\nnpx skills add mattpocock/skills --skill grill-me --skill tdd --skill codebase-design\n\n# 3. Frontend UI taste & headless browser verification\nnpx skills add leonxlnx/taste-skill\nnpx skills add vercel-labs/agent-browser",
+        promptTemplate: "# 1. Google Agents CLI skills (ADK scaffold, eval & deploy)\nnpx skills add google/agents-cli\n\n# 2. Spec grilling, TDD & module design\nnpx skills add mattpocock/skills --skill grill-me --skill tdd --skill codebase-design\n\n# 3. Browser automation (requires the agent-browser binary)\nnpx skills add vercel-labs/agent-browser",
         cliTemplate: "",
         checks: [
-          "google/agents-cli installed for ADK scaffolding & Vertex Agent Runtime deploy",
-          "mattpocock/skills and vercel-labs/agent-browser available in workspace"
-        ],
-        customerPersona: "Customer Principal Engineer",
-        customerApprove: "Official Google Cloud ADK CLI (agents-cli) and TDD workflow skills are active so generated code follows Google ADK conventions.",
-        rejectIf: "Custom homemade agent loops when official ADK LlmAgent / SequentialAgent patterns exist.",
-        rubricScores: { value: 4, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 10, baseline: 0, arch: 10, eval: 5, prod: 0 }
+          "google/agents-cli skills installed (scaffold, eval, deploy)",
+          "mattpocock/skills (grill-me, tdd, codebase-design) and vercel-labs/agent-browser installed"
+        ]
       },
       {
         id: "step-3",
         badgeName: "Flight Log Live",
-        title: "Bootstrap Project Repo & STATE.md",
+        title: "Bootstrap STATE.md",
         sub: "STATE.md",
         skill: "tdl-field-guide",
-        toolbox: "Asset #11 & #12 · Delivery Guide & Program Tracker",
-        reads: "Customer Onboarding Scope",
-        output: "STATE.md, .env.example",
+        toolbox: "Assets #11 & #12 · Delivery Guide & Example Program Tracker",
+        reads: "None",
+        output: "STATE.md",
         image: "ui/images/setup.jpg",
-        lede: "Initialize your engagement repository with strict environment separation (dev/staging/prod) and create STATE.md as the single source of truth.",
-        whyItMatters: "Every TDL skill reads and updates STATE.md so any engineer or subagent joining mid-flight knows the current phase gate, RAID status, and artifact links.",
+        lede: "Create STATE.md at the engagement repo root from the tdl-field-guide template. STATE.md is this repo's convention for tracking phase and RAID; it is not an official TDL Toolbox artifact.",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use the tdl-field-guide skill to initialize this repository for our 12-week {{USE_CASE}} engagement in GCP project {{PROJECT}}. Create STATE.md at Prelude (Week 0) with the 7-tab Program Tracker structure (Timeline, Use Cases, Staffing, Use Case RAID, Program RAID, Meetings, OOO) and set up our docs/, evals/, src/, and tests/ folder structure.",
+        promptTemplate: "Use the tdl-field-guide skill to create STATE.md for our 12-week {{USE_CASE}} engagement in GCP project {{PROJECT}} from its template: phase 0 (Prelude), plus Use Case RAID and Program RAID tables with the Example Program Tracker RAID columns.",
         cliTemplate: "",
         checks: [
-          "STATE.md created at repo root with Phase = Prelude (Week 0) & Dual RAID tables",
-          "docs/, evals/, src/, and tests/ directories structured with .env.example"
-        ],
-        customerPersona: "Customer Technical Program Manager (TPM)",
-        customerApprove: "STATE.md contains named owners, 7-tab Program Tracker tables, Dual RAID logs (Use Case RAID + Program RAID), and strict dev/staging/prod separation.",
-        rejectIf: "Generic project README with no RAID log, no named DRI owners, or no phase-gate exit criteria.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 10, baseline: 5, arch: 5, eval: 0, prod: 5 }
+          "STATE.md created at the repo root with phase = 0 (Prelude)",
+          "Use Case RAID and Program RAID tables use the Example Program Tracker RAID columns"
+        ]
       }
     ]
   },
   {
     id: "prelude",
-    shortTab: "🌍 M2 · Earth Pad (Wk 0)",
-    kicker: "Stage 2 · Week 0 Prelude",
+    shortTab: "🌍 M2 · Earth Pad (Prelude)",
+    kicker: "Stage 2 · Prelude (before Week 1)",
     name: "Pre-Launch on Earth",
-    chip: "Stage 2 · Pre-Launch Pad (Week 0)",
     icon: "🌍",
     accent: "#d97706", accentInk: "#b45309", accent050: "#fef3c7", accentBorder: "#fde68a",
-    heroTitle: "Roll to the Launchpad & Lock Coordinates",
-    heroSub: "Qualify candidate ideas with the 33 Starter Questions & Data Yardstick, lock the 1-Page MVP Alignment Summary, and size 3-Scenario ROI.",
-    gate: "Gate 0 · Signed 1-Page Use Case Alignment Summary + Golden Dataset Access",
+    heroTitle: "Roll to the Launchpad",
+    heroSub: "Qualify the use case, reimagine the process and map CUJs (Weeks −4 to 0), and secure access, including the benchmark golden dataset, before the 12-week engagement starts.",
+    gate: "Prelude gate: technical & business feasibility assessment; access (incl. the benchmark golden dataset) secured before Week 1",
     bannerImg: "ui/images/prelude.jpg",
     steps: [
       {
         id: "step-4",
-        badgeName: "ROI Sized",
-        title: "Qualify Use Cases & Size 3-Scenario ROI",
-        sub: "calculate_roi.py",
-        skill: "workshop-intake + create-delta-ucc + ai-value-sizing",
-        toolbox: "Assets #1, #4 & #10 · Qualification & Alignment",
-        reads: "STATE.md",
-        output: "docs/WORKSHOP_INTAKE.md, docs/USE_CASE_CANVAS.md, docs/VALUE_SIZING.md",
+        badgeName: "Use Case Qualified",
+        title: "Qualify the Use Case & Draft the Alignment Summary",
+        sub: "WORKSHOP_INTAKE.md",
+        skill: "workshop-intake + create-delta-ucc",
+        toolbox: "Assets #1, #4 & #10 · Onsite Discovery Workshop, Use Case Alignment Summary & Use Case Selection Guidelines",
+        reads: "Stakeholder interview notes and SOPs",
+        output: "docs/WORKSHOP_INTAKE.md, docs/USE_CASE_CANVAS.md",
         image: "ui/images/prelude.jpg",
-        lede: "Qualify candidate use cases with the 6-Dimension Data Yardstick, lock the 1-Page Use Case Alignment Summary, and run the deterministic Python ROI calculator.",
-        whyItMatters: "Prevents wasting 12 weeks on a science project with no data access, no executive sponsor, or negative net annual impact.",
+        lede: "Qualify the candidate use case with the 32 Starter Questions and the Available / Usable / Quality data criteria from the Use Case Selection Guidelines, then draft the Use Case Alignment Summary.",
+        whyItMatters: "Delivery Guide: “Before dedicating engineering resources to a 12-week sprint, the opportunity must undergo a structured assessment to determine technical and business feasibility.”",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use workshop-intake, create-delta-ucc, and ai-value-sizing to evaluate our candidate use cases, starting with {{USE_CASE}} ({{VOLUME}} annual cases, ${{RATE}}/hr loaded rate, {{HOURS_SAVED}} hrs saved/case). Score the 6-Dimension Data Yardstick in docs/WORKSHOP_INTAKE.md, draft the 1-page Use Case Alignment Summary in docs/USE_CASE_CANVAS.md, and compute Base/Bull/Bear ROI in docs/VALUE_SIZING.md.",
-        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --vcr 0.50 --scdf 0.85 --wacc 0.10",
-        livePreview: "roi",
+        promptTemplate: "Use workshop-intake and create-delta-ucc to qualify {{USE_CASE}}. Answer the 32 Starter Questions, score data readiness (Available / Usable / Quality) in docs/WORKSHOP_INTAKE.md, and draft the Use Case Alignment Summary in docs/USE_CASE_CANVAS.md.",
+        cliTemplate: "",
         checks: [
-          "Data Yardstick (Available / Accessible / Quality / Coverage / Privacy / Latency) & 1-Page Alignment Summary signed",
-          "3-Scenario ROI table generated via calculate_roi.py and saved to docs/VALUE_SIZING.md"
-        ],
-        customerPersona: "Customer CFO & Executive Sponsor",
-        customerApprove: "Conservative TAM→SAM→SOM funnel (capped at 30% Year-1 adoption), explicit CapEx/OpEx TCO, WACC discounting (10%), and Bear-case sensitivity included.",
-        rejectIf: "Unadjusted '100% adoption × 100% time saved' fantasy ROI numbers with no CapEx/OpEx or risk discount factor (SCDF).",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 10, baseline: 15, arch: 0, eval: 0, prod: 5 }
+          "32 Starter Questions answered (or marked TBD with an owner) and data readiness scored in docs/WORKSHOP_INTAKE.md",
+          "Use Case Alignment Summary drafted in docs/USE_CASE_CANVAS.md"
+        ]
       },
       {
         id: "step-5",
-        badgeName: "Countdown Ready",
-        title: "Confirm Access Clearance & Kickoff Deck",
-        sub: "KICKOFF_DECK.md",
-        skill: "tdl-field-guide + specification-engineer",
-        toolbox: "Asset #6 & #14 (Part III) · Kickoff & Clearance",
-        reads: "docs/WORKSHOP_INTAKE.md, docs/USE_CASE_CANVAS.md, STATE.md",
-        output: "docs/KICKOFF_DECK.md, STATE.md (Gate 0 Passed)",
+        badgeName: "CUJs Mapped",
+        title: "Reimagine the Process & Map L1–L5 CUJs",
+        sub: "CUJ_MAP.md",
+        skill: "business-process-redesign + cuj-architect",
+        toolbox: "Assets #2 & #3 · Reimagine Business Processes & CUJ Definition Templates",
+        reads: "docs/WORKSHOP_INTAKE.md, docs/USE_CASE_CANVAS.md",
+        output: "docs/as_is_report.md, docs/to_be_designs.md, docs/human_agent_roles.md, docs/CUJ_MAP.md",
         image: "ui/images/prelude.jpg",
-        lede: "Secure Part III Developer Access Clearance and Golden Dataset reachability before starting the 12-week clock, and prepare the Kickoff Deck.",
-        whyItMatters: "Aligns stakeholders on the 12-week single-use-case focus, 1-in-1-out scope governance, and bi-weekly demo cadence before Week 1 kickoff.",
+        lede: "In Weeks −4 to 0 (Reimagine Business Processes guide), capture the As-Is process, break it into discrete steps, abstract them into L1–L5 CUJs, identify AI touchpoints, and prioritize them with 0.6 × Value + 0.4 × Feasibility.",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use tdl-field-guide and specification-engineer (Part III) to verify our developer access clearance checklist and Golden Dataset reachability for {{USE_CASE}} in project {{PROJECT}}, generate docs/KICKOFF_DECK.md, and mark Gate 0 complete in STATE.md.",
+        promptTemplate: "Use business-process-redesign and cuj-architect for {{USE_CASE}} (reading docs/WORKSHOP_INTAKE.md and docs/USE_CASE_CANVAS.md). Write the As-Is and To-Be designs to docs/as_is_report.md, docs/to_be_designs.md and docs/human_agent_roles.md, and generate the 4-tab L1–L5 CUJ map in docs/CUJ_MAP.md.",
         cliTemplate: "",
         checks: [
-          "Part III Developer Access Clearance & Golden Dataset reachability verified before Week 1",
-          "docs/KICKOFF_DECK.md prepared with squad RACI, 12-week timeline & bi-weekly demo dates"
-        ],
-        customerPersona: "Customer CISO & VP of Engineering",
-        customerApprove: "IAM service accounts, VPC perimeter rules, and sanitized Golden Dataset access are provisioned before the 12-week sprint clock starts.",
-        rejectIf: "Starting Week 1 with FDE engineers blocked waiting 3 weeks for laptop/VPC/dataset credentials.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 10, baseline: 5, arch: 0, eval: 0, prod: 5 }
+          "As-Is process documented in docs/as_is_report.md",
+          "4-tab CUJ map (1. Process Ethnography, 2. CUJ Map Hierarchy, 3. Future State CUJ, 4. AI Prioritization) in docs/CUJ_MAP.md"
+        ]
+      },
+      {
+        id: "step-6",
+        badgeName: "Countdown Ready",
+        title: "Confirm Access Clearance & Kickoff Deck",
+        sub: "Part III clearance",
+        skill: "tdl-field-guide + specification-engineer",
+        toolbox: "Assets #6 & #14 (Part III) · Example Kickoff Deck & Agent Technical Specifications",
+        reads: "docs/WORKSHOP_INTAKE.md, STATE.md",
+        output: "STATE.md (Gate 0, repo convention)",
+        image: "ui/images/prelude.jpg",
+        lede: "Secure device, system and dataset access, including the benchmark golden dataset, before the 12-week engagement starts, using the Part III Platform Infrastructure & Developer Clearance checklist, and prepare the kickoff deck.",
+        whyItMatters: "Delivery Guide: commit “strictly to one high-priority use case per 12-week timeline.”",
+        promptType: "What to Paste into Your AI Agent",
+        promptTemplate: "Use tdl-field-guide and specification-engineer (Part III) to verify our developer access clearance checklist and golden dataset access for {{USE_CASE}} in project {{PROJECT}}, and record Gate 0 in STATE.md.",
+        cliTemplate: "",
+        checks: [
+          "Part III Developer Clearance checklist complete and benchmark golden dataset access secured before Week 1",
+          "Kickoff deck drafted with the Example Kickoff Deck sections (The Team and Intros, Our Understanding, Engagement Plan, Next Steps and Q&A)"
+        ]
       }
     ]
   },
   {
     id: "phase1",
     shortTab: "🚀 M3 · Liftoff (Wk 1–2)",
-    kicker: "Stage 3 · Weeks 1–2 Foundations",
+    kicker: "Stage 3 · Phase 1 Foundations (Weeks 1–2)",
     name: "Liftoff from Earth",
-    chip: "Stage 3 · Liftoff from Earth (Wk 1–2)",
     icon: "🚀",
     accent: "#4f46e5", accentInk: "#4338ca", accent050: "#e0e7ff", accentBorder: "#c7d2fe",
-    heroTitle: "Clear the Tower & Lock Orbital Telemetry",
-    heroSub: "Deconstruct the As-Is workflow, author the 8-section Agentic PRD, select your GCP architecture tier, and establish Baseline Evaluation Metrics on the Golden Dataset.",
-    gate: "Gate 1 · PRD Sign-off + Architecture Tier + Golden Dataset Baseline Eval Metrics",
+    heroTitle: "Clear the Tower",
+    heroSub: "Delivery Guide objective: “Align the expanded group of stakeholders on the precise product requirements document, scope of the AI system, and establish baseline performance metrics.”",
+    gate: "Phase 1 artifact outcomes: PRD · Golden Evaluation Dataset · Technical Architecture",
     bannerImg: "ui/images/foundations.jpg",
     steps: [
       {
-        id: "step-6",
-        badgeName: "CUJs Mapped",
-        title: "Deconstruct Workflow & Map L1–L5 CUJs",
-        sub: "CUJ_MAP.md",
-        skill: "business-process-redesign + cuj-architect",
-        toolbox: "Assets #2 & #3 · Process Redesign & CUJ Workbook",
-        reads: "docs/WORKSHOP_INTAKE.md, docs/USE_CASE_CANVAS.md",
-        output: "docs/as_is_report.md, docs/to_be_designs.md, docs/human_agent_roles.md, docs/CUJ_MAP.md",
-        image: "ui/images/foundations.jpg",
-        lede: "Deconstruct the legacy business process into atomic tasks, document the As-Is operational baseline, and score AI touchpoints via 0.6×Value + 0.4×Feasibility.",
-        whyItMatters: "Replaces vague 'AI assistant' wishes with a concrete 4-tab CUJ map defining L1–L5 steps, HITL roles, and measurable operational baselines.",
-        promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use business-process-redesign and cuj-architect for {{USE_CASE}} (reading docs/WORKSHOP_INTAKE.md and docs/USE_CASE_CANVAS.md). Deconstruct the legacy workflow into docs/as_is_report.md, docs/to_be_designs.md, and docs/human_agent_roles.md, and generate the 4-tab L1–L5 journey map in docs/CUJ_MAP.md.",
-        cliTemplate: "",
-        checks: [
-          "As-Is workflow & operational baseline documented in docs/as_is_report.md",
-          "4-tab CUJ workbook (Ethnography, Pain Points, L1-L5 Steps, 0.6V+0.4F Matrix) in docs/CUJ_MAP.md"
-        ],
-        customerPersona: "Customer Head of Operations / Business Unit Lead",
-        customerApprove: "Every L1–L5 workflow step names the exact system of record, failure mode, human-in-the-loop authority boundary, and Priority = 0.6×Value + 0.4×Feasibility score.",
-        rejectIf: "High-level 'the AI will automate workflows' prose that ignores exception paths or human approval thresholds.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 10, baseline: 5, arch: 5, eval: 10, prod: 0 }
-      },
-      {
         id: "step-7",
         badgeName: "PRD Locked",
-        title: "Author the 8-Section Agentic PRD",
-        sub: "PRD.md",
-        skill: "product-md",
-        toolbox: "Asset #5 · Agentic PRD Template (go/delta-prd-template)",
-        reads: "docs/CUJ_MAP.md, docs/as_is_report.md, docs/to_be_designs.md",
-        output: "docs/PRD.md",
+        title: "Author the 8-Section Agentic PRD & Project Value",
+        sub: "PRD.md + VALUE_SIZING.md",
+        skill: "product-md + ai-value-sizing",
+        toolbox: "Asset #5 · PRD Example (Intel Ask IT); the ROI method is a repo skill with no toolbox source",
+        reads: "docs/WORKSHOP_INTAKE.md, docs/USE_CASE_CANVAS.md, docs/CUJ_MAP.md, docs/as_is_report.md",
+        output: "docs/PRD.md, docs/VALUE_SIZING.md",
         image: "ui/images/foundations.jpg",
-        lede: "Author the official 8-section Agentic PRD (Blocker vs. Friction pain points, Reactive vs. Proactive CUJs, DAG design, RICE backlog, and scope exclusions).",
-        whyItMatters: "Locks P0/P1 RICE-prioritized scope and mandatory human-in-the-loop (HITL) checkpoints by the end of Week 2.",
+        lede: "Author the 8-section agentic PRD following the toolbox PRD Example (Blocker vs. Friction pain points, reactive → proactive CUJs, information architecture & DAG design, prioritized requirements, hypotheses to test, scope exclusions), then project ROI with calculate_roi.py.",
+        whyItMatters: "Delivery Guide: “This document should be completed by the end of week 2 with the customer.”",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use the product-md skill to generate the 8-section Delta Agentic PRD at docs/PRD.md for {{USE_CASE}} from docs/CUJ_MAP.md and docs/as_is_report.md. Include Blocker vs. Friction pain points, DAG logic gates, System Prompt Architecture, Evaluation Rubrics, and a RICE-prioritized feature backlog.",
-        cliTemplate: "",
+        promptTemplate: "Use product-md to write the 8-section agentic PRD at docs/PRD.md for {{USE_CASE}} from docs/CUJ_MAP.md and docs/as_is_report.md, with Blocker vs. Friction pain points, DAG logic gates, mandatory HITL checkpoints and a RICE-prioritized backlog (repo convention). Then use ai-value-sizing to project Base/Bull/Bear ROI in docs/VALUE_SIZING.md ({{VOLUME}} annual cases, ${{RATE}}/hr loaded rate, {{HOURS_SAVED}} hrs saved/case).",
+        cliTemplate: "# Illustrative example values: shares, CapEx and OpEx from the ai-value-sizing worked example; VCR 0.50 and SCDF 0.85 are its haircut tiers. Replace them with your engagement's numbers.\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --vcr 0.50 --scdf 0.85 --wacc 0.10",
+        livePreview: "roi",
         checks: [
-          "8-section Agentic PRD saved to docs/PRD.md with RICE-scored feature backlog",
-          "Reactive vs. Proactive CUJs, System Prompt Architecture, and mandatory HITL logic gates defined"
-        ],
-        customerPersona: "Customer VP of Product & Business Owner",
-        customerApprove: "Explicit P0/P1/P2 RICE table, explicit Out-of-Scope exclusions, deterministic vs. probabilistic DAG boundary, and evaluation acceptance criteria.",
-        rejectIf: "Traditional software PRD that lacks prompt architecture, hallucination guardrails, or HITL escalation rules.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 10, baseline: 5, arch: 5, eval: 15, prod: 5 }
+          "8-section PRD saved to docs/PRD.md with reactive vs. proactive CUJs and mandatory HITL checkpoints",
+          "Base/Bull/Bear projection from calculate_roi.py saved to docs/VALUE_SIZING.md"
+        ]
       },
       {
         id: "step-8",
         badgeName: "Propulsion Picked",
-        title: "Select Google Cloud Agent Architecture",
-        sub: "ARCHITECTURE.md",
+        title: "Select the Google Cloud Agent Architecture",
+        sub: "ARCHITECTURE_RECOMMENDATION.md",
         skill: "gcp-agent-architecture-advisor",
-        toolbox: "Asset #11 + Model Economics Config",
+        toolbox: "Asset #11 · Delivery Guide (Phase 1: technical alignment workshop → Technical Architecture)",
         reads: "docs/PRD.md, docs/WORKSHOP_INTAKE.md",
         output: "docs/ARCHITECTURE_RECOMMENDATION.md",
         image: "ui/images/foundations.jpg",
-        lede: "Compare Gemini Enterprise (no-code), ADK on Managed Agent Runtime, and ADK on Cloud Run/GKE with live GA/Preview verification and token cost modeling.",
-        whyItMatters: "Matches platform complexity and token economics to actual PRD requirements before locking the technical spec and eval harness.",
+        lede: "Compare Gemini Enterprise (no-code), ADK on the managed Agent Runtime, and ADK on Cloud Run or GKE, and verify each component's launch stage (GA / Preview) from official docs.",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use the gcp-agent-architecture-advisor skill to recommend a Google Cloud architecture in docs/ARCHITECTURE_RECOMMENDATION.md for {{USE_CASE}} (project {{PROJECT}}, {{VOLUME}} annual cases) based on docs/PRD.md and docs/WORKSHOP_INTAKE.md. Compare Tier 1 (Gemini Enterprise), Tier 2 (ADK on Agent Runtime), and Tier 3 (ADK on Cloud Run/GKE), and include token cost estimates from model-economics-config.json.",
+        promptTemplate: "Use the gcp-agent-architecture-advisor skill to recommend a Google Cloud architecture in docs/ARCHITECTURE_RECOMMENDATION.md for {{USE_CASE}} (project {{PROJECT}}) based on docs/PRD.md and docs/WORKSHOP_INTAKE.md. Compare Tier 1 (Gemini Enterprise), Tier 2 (ADK on Agent Runtime) and Tier 3 (ADK on Cloud Run/GKE), and record each component's verified launch stage with its official doc URL.",
         cliTemplate: "",
         checks: [
-          "3-tier comparison matrix completed in docs/ARCHITECTURE_RECOMMENDATION.md",
-          "Model economics ($/1M input/output tokens) and launch stages (GA vs Preview) verified"
-        ],
-        customerPersona: "Customer Chief Enterprise Architect",
-        customerApprove: "Clear trade-off matrix across Tier 1/2/3, verified GCP service GA vs. Preview status, VPC-SC/CMEK compliance check, and per-1,000-turn token cost math.",
-        rejectIf: "Recommending GKE microservices for a simple RAG assistant, or citing deprecated model IDs and unverified Preview features.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 5, baseline: 0, arch: 30, eval: 0, prod: 10 }
+          "3-tier comparison in docs/ARCHITECTURE_RECOMMENDATION.md",
+          "Each component's launch stage (GA / Preview / UNVERIFIED) recorded with its official doc URL and the date checked"
+        ]
       },
       {
         id: "step-9",
         badgeName: "Eval Baseline Set",
         title: "Establish Baseline Eval Metrics & Golden Dataset",
-        sub: "golden_dataset.json",
+        sub: "TDD.md · Pillar 4",
         skill: "specification-engineer + agent-eval-statistical-auditing",
-        toolbox: "Asset #11 (Phase 1 #5) & #14 · Golden Dataset & Eval Metrics",
-        reads: "docs/PRD.md, docs/CUJ_MAP.md, docs/ARCHITECTURE_RECOMMENDATION.md",
-        output: "evals/golden_dataset.json, tests/eval/eval_config.yaml",
+        toolbox: "Assets #11 & #14 · Delivery Guide (Phase 1, action 5) & Agent Technical Specifications (Pillar 4: OPTIMIZE)",
+        reads: "docs/PRD.md, docs/ARCHITECTURE_RECOMMENDATION.md",
+        output: "docs/TDD.md (Part IV · Pillar 4: golden dataset & baseline metrics)",
         image: "ui/images/baseline.jpg",
-        lede: "Curate the Golden Dataset of real-world test cases and establish baseline evaluation metrics (task success, factual grounding, tool trajectory, latency) as the north star for all build sprints.",
-        whyItMatters: "Per the official Delivery Guide (Phase 1, Action #5): defining baseline evaluation metrics on the curated Golden Dataset in Week 2 serves as the north star guiding every subsequent agentic implementation cycle.",
+        lede: "Curate the golden dataset of real-world test cases (the Agent Technical Specifications call for 50+ CUJ test cases) and establish baseline evaluation metrics on it.",
+        whyItMatters: "Delivery Guide: “Defining these success metrics early is vital, as they serve as the north star for guiding all subsequent agentic implementation cycles.”",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use specification-engineer (Part IV) and agent-eval-statistical-auditing to curate our Golden Dataset at evals/golden_dataset.json for {{USE_CASE}} from docs/PRD.md and docs/CUJ_MAP.md, and lock our baseline evaluation metrics and target thresholds (multi_turn_task_success, multi_turn_tool_use_quality, hallucination, safety, and p95 latency) in tests/eval/eval_config.yaml.",
-        cliTemplate: "# Verify the statistical judge calibration pipeline on the bundled reference fixtures\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --demo",
+        promptTemplate: "Use specification-engineer (Part IV, Pillar 4) and agent-eval-statistical-auditing for {{USE_CASE}}: from docs/PRD.md and docs/ARCHITECTURE_RECOMMENDATION.md, specify the golden dataset (50+ real-world CUJ test cases) and the baseline metrics (Multi-turn Task Success, Multi-turn Tool Use Quality, Hallucination, Safety and a latency threshold) in docs/TDD.md Pillar 4.",
+        cliTemplate: "# Run the judge auditor on its two bundled synthetic fixtures (calibrated + compressed/lenient judge)\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-eval-statistical-auditing/scripts/audit_llm_judge.py --demo",
         livePreview: "aua",
         checks: [
-          "Curated Golden Dataset of real-world test cases committed at evals/golden_dataset.json",
-          "Baseline evaluation metrics & north-star target thresholds locked in tests/eval/eval_config.yaml"
-        ],
-        customerPersona: "Customer QA Lead & Domain SME Lead",
-        customerApprove: "Stratified real-world Golden Dataset (happy path, edge cases, adversarial prompts) with SME ground-truth reference answers and locked metric thresholds.",
-        rejectIf: "Starting Sprint 1 coding with no Golden Dataset, or evaluating only on 5 synthetic toy prompts written by the developer.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 0, baseline: 50, arch: 0, eval: 10, prod: 5 }
+          "Golden dataset (curated real-world test cases) specified in docs/TDD.md Pillar 4",
+          "Baseline evaluation metrics established on the golden dataset"
+        ]
+      },
+      {
+        id: "step-10",
+        badgeName: "Rapid Prototype",
+        title: "Build the Stitch Prototype",
+        sub: "STITCH_PROTOTYPE.md",
+        skill: "stitch-design",
+        toolbox: "Assets #13 & #15 · delta Brand Guidelines & TDL Prototyping Guide",
+        reads: "docs/PRD.md, docs/CUJ_MAP.md",
+        output: "docs/STITCH_PROTOTYPE.md",
+        image: "ui/images/prototype.jpg",
+        lede: "Prototype before full-scale development, per the TDL Prototyping Guide (feasibility studies run up to two weeks on actual customer data), using the delta Brand Guidelines (primary blue #4285F4, Google Sans). The Stitch MCP server must be configured first.",
+        promptType: "What to Paste into Your AI Agent",
+        promptTemplate: "Use the stitch-design skill to prototype the agent console for {{USE_CASE}} from docs/PRD.md and docs/CUJ_MAP.md following the TDL Prototyping Guide and the delta Brand Guidelines, and record the hypothesis, the mini-eval results and the throwaway-vs-graduate decision in docs/STITCH_PROTOTYPE.md.",
+        cliTemplate: "",
+        checks: [
+          "Hypothesis, 10–30 example mini-eval and throwaway-vs-graduate decision recorded in docs/STITCH_PROTOTYPE.md",
+          "Prototype reviewed against the 8-point references/ui-review-checklist.md"
+        ]
+      },
+      {
+        id: "step-11",
+        badgeName: "Schematics Locked",
+        title: "Author the 4-Part Agent Technical Spec",
+        sub: "TDD.md",
+        skill: "specification-engineer",
+        toolbox: "Asset #14 · Agent Technical Specifications (go/delta-squad-agent-specs)",
+        reads: "docs/PRD.md, docs/ARCHITECTURE_RECOMMENDATION.md",
+        output: "docs/TDD.md",
+        image: "ui/images/build.jpg",
+        lede: "Complete Parts I–IV (Project Context; Use case Specification; Platform Infrastructure & Developer Clearance; Deep-Dive Agent Technical Specifications across Pillar 1 BUILD, Pillar 2 SCALE, Pillar 3 GOVERN and Pillar 4 OPTIMIZE).",
+        promptType: "What to Paste into Your AI Agent",
+        promptTemplate: "Use the specification-engineer skill to write docs/TDD.md for {{USE_CASE}} from docs/PRD.md and docs/ARCHITECTURE_RECOMMENDATION.md. Complete Parts I–IV, including typed tool schemas with the MCP authentication model and timeout thresholds, Model Armor policies and OpenTelemetry instrumentation.",
+        cliTemplate: "",
+        checks: [
+          "Parts I–IV completed in docs/TDD.md",
+          "Typed tool schemas with MCP timeout thresholds, IAM roles checklist, Model Armor policies and golden dataset baseline metrics defined"
+        ]
       }
     ]
   },
   {
     id: "phase2",
     shortTab: "🪐 M4 · Deep Space (Wk 3–10)",
-    kicker: "Stage 4 · Weeks 3–10 Core Build",
+    kicker: "Stage 4 · Phase 2 Core Build & Demo Sprints (Weeks 3–10)",
     name: "Deep Space Transit",
-    chip: "Stage 4 · Deep Space Transit (Wk 3–10)",
     icon: "🪐",
     accent: "#7b2cbf", accentInk: "#6b21a8", accent050: "#f3e8fd", accentBorder: "#e9d5ff",
-    heroTitle: "Cruise Toward Mars: Prototype, Spec, Build, Eval & Stress-Test",
-    heroSub: "Ship a rapid Stitch UI prototype, lock the 4-Part Technical Spec, run the autonomous ADK build loop across 4 bi-weekly demo sprints, audit your LLM Judge, and load test.",
-    gate: "Gate 2 · Demo 3 Accepted + AUA Judge Audit Pass + 5× Peak Quota Sizing",
+    heroTitle: "Cruise Toward Mars: Build, Evaluate & Load-Test",
+    heroSub: "Four 2-week sprints with bi-weekly demos of working functionality; audit the LLM judge and load test before drafting the next-phase plan around Week 10.",
+    gate: "Phase 2 artifact outcomes: Functional Agent · Example Agent Demos · Feature backlog · Iterative Hill Climb Evaluation Results",
     bannerImg: "ui/images/build.jpg",
     steps: [
       {
-        id: "step-10",
-        badgeName: "Rapid Prototype",
-        title: "Build Interactive Stitch Prototype",
-        sub: "STITCH_PROTOTYPE.md",
-        skill: "stitch-design",
-        toolbox: "Assets #13 & #15 · Delta Brand & Prototyping Guide",
-        reads: "docs/PRD.md, docs/CUJ_MAP.md",
-        output: "docs/STITCH_PROTOTYPE.md",
-        image: "ui/images/prototype.jpg",
-        lede: "Validate UX flows with end users using the 3-stage TDL Prototyping Guide and Google Cloud Delta Brand palette (#4285F4, Google Sans) before deep backend investment.",
-        whyItMatters: "Catches missing human-in-the-loop controls and citation UX gaps in Sprint 1 rather than Week 10.",
-        promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use the stitch-design skill to generate an interactive agent console specification in docs/STITCH_PROTOTYPE.md for {{USE_CASE}} from docs/PRD.md and docs/CUJ_MAP.md, following the 3-stage TDL Prototyping Guide and Delta Brand palette.",
-        cliTemplate: "",
-        checks: [
-          "Co-branded UI prototype reviewed with end-user SMEs in Sprint 1",
-          "Citation badges, confidence indicators, and HITL escalation controls validated against ui-review-checklist.md"
-        ],
-        customerPersona: "Customer UX Director & Frontline Supervisor",
-        customerApprove: "Interactive screens show inline source citations, confidence badges, one-click human override/escalation, and pass the UI review checklist.",
-        rejectIf: "A generic chat box with no source citations, no reasoning trace visibility, and no way for an operator to edit or reject an action.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 10, baseline: 0, arch: 5, eval: 0, prod: 5 }
-      },
-      {
-        id: "step-11",
-        badgeName: "Schematics Locked",
-        title: "Author 4-Part Agent Technical Spec",
-        sub: "TDD.md",
-        skill: "specification-engineer",
-        toolbox: "Asset #14 · Agent Technical Specifications (go/delta-squad-agent-specs)",
-        reads: "docs/PRD.md, docs/ARCHITECTURE_RECOMMENDATION.md, docs/STITCH_PROTOTYPE.md, evals/golden_dataset.json",
-        output: "docs/TDD.md",
-        image: "ui/images/build.jpg",
-        lede: "Lock Parts I–IV (System Overview, Agent Architecture & Orchestration, Developer Access & Tools, Evaluation & Operations) and the 4 Architectural Pillars.",
-        whyItMatters: "Serves as the exact engineering blueprint for your autonomous coding harness and security review.",
-        promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use the specification-engineer skill to write docs/TDD.md for {{USE_CASE}} from docs/PRD.md, docs/ARCHITECTURE_RECOMMENDATION.md, docs/STITCH_PROTOTYPE.md, and evals/golden_dataset.json. Define Parts I–IV, MCP tool JSON schemas, Model Armor guardrails, and Cloud Trace instrumentation.",
-        cliTemplate: "",
-        checks: [
-          "4-Part Agent Technical Spec saved to docs/TDD.md",
-          "MCP tool JSON schemas, IAM least-privilege roles, Model Armor policies, and Golden Dataset eval gates defined"
-        ],
-        customerPersona: "Customer Principal Engineer & Security Architect",
-        customerApprove: "Exact JSON Schemas for every MCP tool, explicit retry/timeout/idempotency contracts, IAM service account bindings, and Model Armor DLP filters.",
-        rejectIf: "Hand-wavy architecture boxes that omit tool payload schemas, error handling, or authentication boundaries.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 5, baseline: 0, arch: 25, eval: 5, prod: 10 }
-      },
-      {
         id: "step-12",
         badgeName: "ADK Built",
-        title: "Scaffold ADK & Run Goal Contract Loop",
+        title: "Build in Bi-weekly Sprints with the Goal Contract Loop",
         sub: "call_opus_model_garden.py",
         skill: "claude-agent-harness + tdl-field-guide",
-        toolbox: "Asset #7 & #12 · Demo Frame-Up & Program Tracker",
-        reads: "docs/PRD.md, docs/TDD.md, evals/golden_dataset.json",
+        toolbox: "Assets #7 & #12 · Demo Frame-Up Deck & Example Program Tracker",
+        reads: "docs/PRD.md, docs/TDD.md",
         output: "src/, tests/, .harness/last_run_report.json, docs/DEMO_FRAME_UP.md, STATE.md",
         image: "ui/images/build.jpg",
-        lede: "Combine google/agents-cli with claude-agent-harness across four 2-week sprints (Demos 1–3) to iterate until unit tests, linters, and ADK evals pass 100%.",
-        whyItMatters: "Runs a deterministic verification loop where code is only accepted when all unit tests and linters pass, tracking Demo 1/2/3 feature completion.",
+        lede: "Across four 2-week sprints with bi-weekly demos (Delivery Guide), use google/agents-cli with claude-agent-harness; the harness iterates until every --verify acceptance command exits 0.",
+        whyItMatters: "The harness re-runs verification itself before it accepts completion, and rejects completions whose files contain placeholder markers.",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use google-agents-cli-scaffold and claude-agent-harness to implement {{USE_CASE}} defined in docs/PRD.md and docs/TDD.md for GCP project {{PROJECT}}. Run the goal verification loop until unit tests pass with zero errors, run agents-cli eval against evals/golden_dataset.json, and update docs/DEMO_FRAME_UP.md and STATE.md.",
-        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/claude-agent-harness/scripts/call_opus_model_garden.py \\\n  --project \"{{PROJECT}}\" --workspace . --goal \"Implement {{USE_CASE}} per docs/TDD.md\" \\\n  --spec docs/PRD.md --spec docs/TDD.md --verify \"python3 -m unittest discover -s tests -p 'test_*.py'\" --dry-run",
+        promptTemplate: "Use google-agents-cli-scaffold and claude-agent-harness to implement {{USE_CASE}} defined in docs/PRD.md and docs/TDD.md for GCP project {{PROJECT}}. Run the goal loop until the unit tests pass, run `agents-cli eval run` against the golden dataset, and update docs/DEMO_FRAME_UP.md and STATE.md.",
+        cliTemplate: "# Optional first run: append --dry-run to validate specs, the workspace and --verify commands without calling Vertex AI\nmkdir -p .harness\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/claude-agent-harness/scripts/call_opus_model_garden.py \\\n  --project \"{{PROJECT}}\" --workspace . --goal \"Implement {{USE_CASE}} per docs/TDD.md\" \\\n  --spec docs/PRD.md --spec docs/TDD.md --verify \"python3 -m unittest discover -s tests -p 'test_*.py'\" \\\n  --report .harness/last_run_report.json",
         checks: [
-          "ADK agent and MCP tools implemented with 100% passing test suite & zero TODO/FIXME stubs",
-          "Bi-weekly Demo 1/2/3 Frame-Up and RAID logs updated in docs/DEMO_FRAME_UP.md & STATE.md"
-        ],
-        customerPersona: "Customer VP of Engineering",
-        customerApprove: "Zero TODO/FIXME placeholders, 100% passing unit/integration test suite, and working live Demo 1/2/3 feature progression tracked in docs/DEMO_FRAME_UP.md.",
-        rejectIf: "Slideware demos backed by hardcoded mock responses or failing unit tests.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 10, baseline: 0, arch: 10, eval: 10, prod: 15 }
+          "Harness report (.harness/last_run_report.json) shows \"goal_met\": true, meaning every --verify command exited 0 and no placeholder markers were found",
+          "Bi-weekly demo frame-ups and RAID logs updated in docs/DEMO_FRAME_UP.md and STATE.md"
+        ]
       },
       {
         id: "step-13",
         badgeName: "Judge Audited",
-        title: "Audit LLM Judge (27 CLA + 3 AUA Pipelines)",
+        title: "Audit the LLM Judge (CLA Criteria + AUA Pipelines)",
         sub: "audit_llm_judge.py",
         skill: "agent-eval-statistical-auditing",
-        toolbox: "Assets #17 & #18 · CLA Rubric & Statistical Auditing",
-        reads: "evals/golden_dataset.json, docs/TDD.md",
+        toolbox: "Assets #17 & #18 · Linguistic Output Quality Evaluation Framework & Statistical Auditing for LLM-as-a-Judge",
+        reads: "docs/PRD.md, docs/TDD.md, paired human SME + LLM judge scores",
         output: "docs/EVAL_AUDIT_REPORT.md",
         image: "ui/images/eval.jpg",
-        lede: "Evaluate linguistic quality across the 27 CLA criteria and certify your LLM-as-a-Judge across all 3 AUA statistical pipelines (Calibration, Intra-Rater Stability, Inter-Model Double Marking).",
-        whyItMatters: "Detects scale compression and leniency bias (the 'illusion of accuracy') using disattenuated correlation (d_r), Quadratic Weighted Kappa (QWK), PRMSE, Cronbach's alpha, ICC(3,k), and Wilcoxon tests.",
+        lede: "Pick 3–5 criteria from the 27-criterion CLA menu, then certify the LLM judge with Pipeline 1 (calibration) plus Pipeline 2 (intra-rater stability) or Pipeline 3 (double marking).",
+        whyItMatters: "Detects scale compression and severity bias using disattenuated correlation (d.R), Quadratic Weighted Kappa (QWK), PRMSE, Cronbach's alpha, ICC(3,k) and Wilcoxon tests.",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use the agent-eval-statistical-auditing skill to evaluate {{USE_CASE}} against the 27 CLA criteria and run audit_llm_judge.py on our paired human SME vs. LLM judge ratings to generate docs/EVAL_AUDIT_REPORT.md.",
-        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-eval-statistical-auditing/scripts/audit_llm_judge.py \\\n  --input ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-eval-statistical-auditing/examples/fixtures/calibrated_judge.json",
+        promptTemplate: "Use the agent-eval-statistical-auditing skill to evaluate {{USE_CASE}} on 3–5 criteria selected from the 27-criterion CLA menu, and run audit_llm_judge.py on our paired human SME vs. LLM judge ratings to write docs/EVAL_AUDIT_REPORT.md.",
+        cliTemplate: "# Example run on a bundled synthetic fixture; point --input at your paired ratings JSON\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-eval-statistical-auditing/scripts/audit_llm_judge.py \\\n  --input ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-eval-statistical-auditing/examples/fixtures/calibrated_judge.json",
         livePreview: "aua",
         checks: [
-          "Pipeline 1 (d_r >= 0.80, QWK >= 0.60, SD ratio >= 0.80, PRMSE > 0, Wilcoxon p > 0.05) and Pipelines 2/3 passed",
-          "Full CLA & AUA statistical certification saved to docs/EVAL_AUDIT_REPORT.md"
-        ],
-        customerPersona: "Customer Chief Risk Officer / Model Risk Management (MRM)",
-        customerApprove: "Statistical proof that the automated LLM Judge agrees with human domain SMEs beyond chance (d_r >= 0.80, QWK >= 0.60) without scale compression (SD ratio >= 0.80).",
-        rejectIf: "Claiming '95% accuracy' based on an uncalibrated LLM grading its own outputs with 85% raw agreement caused by clustering at 4/5.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 0, baseline: 0, arch: 0, eval: 45, prod: 10 }
+          "Pipeline 1: PRMSE > 0, d.R ≥ 0.80, QWK ≥ 0.60 and SD ratio ≥ 0.80 (deck) plus Wilcoxon p > 0.05 (repo convention); then Pipeline 2 (α ≥ 0.80, deck) or Pipeline 3 (ICC(3,k) ≥ 0.80, deck, plus Wilcoxon p > 0.05, repo convention)",
+          "CLA criteria, judge configs and AUA report saved to docs/EVAL_AUDIT_REPORT.md"
+        ]
       },
       {
         id: "step-14",
-        badgeName: "Load Verified",
-        title: "Size 5× Quotas & Stress-Test Under Load",
+        badgeName: "Load Tested",
+        title: "Size 5× Quotas & Load Test",
         sub: "calculate_agent_quotas.py",
         skill: "agent-load-testing",
-        toolbox: "Asset #16 · Load Testing, Parallelism & Quotas Guide",
-        reads: "docs/TDD.md, docs/ARCHITECTURE_RECOMMENDATION.md",
+        toolbox: "Asset #16 · Load Testing Guide",
+        reads: "docs/TDD.md, docs/PRD.md",
         output: "docs/LOAD_TEST_REPORT.md",
         image: "ui/images/eval.jpg",
-        lede: "Compute recursive multi-agent fan-out calls per turn (1 safety + 1 decomp + Qt×Cq chunked + 1 final = 27 calls/turn) and 5× safety-margin Vertex AI quotas, then execute Locust SSE load tests.",
-        whyItMatters: "Multi-step agents amplify token RPM/TPM by 20–30× per user turn; sizing quotas at 5× peak and tuning gRPC pools (8 -> 128 channels) prevents HTTP 429 outages.",
+        lede: "Compute LLM calls per turn (1 safety + 1 decomposition + Qt × Cq chunked synthesis + 1 final; 27 at Qt = 6, Cq = 4), size quotas with a 5× peak multiplier, then run Locust SSE load tests.",
+        whyItMatters: "Load Testing Guide: one user turn “can generate 20 to 30+ simultaneous LLM API calls and 60+ vector queries.” In the guide's engagement, raising the gRPC pool from 8 to 128 removed client-side queuing, and the Traffic Queue eliminated 429 quota exhaustion.",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use the agent-load-testing skill to run calculate_agent_quotas.py for {{USE_CASE}} at {{PEAK_TURNS}} peak turns/min, generate a Locust SSE streaming load test suite, and write the fan-out math, 5x quota table, and p50/p95 latency results to docs/LOAD_TEST_REPORT.md.",
+        promptTemplate: "Use the agent-load-testing skill to run calculate_agent_quotas.py for {{USE_CASE}} at {{PEAK_TURNS}} peak turns/min, generate a Locust SSE load test suite, and write the fan-out math, the 5× quota table and the latency results to docs/LOAD_TEST_REPORT.md.",
         cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-load-testing/scripts/calculate_agent_quotas.py \\\n  --sub-questions 6 --chunks-per-subquestion 4 --tokens-per-call 20000 \\\n  --peak-turns-per-min {{PEAK_TURNS}} --peak-multiplier 5.0",
         livePreview: "quota",
         checks: [
-          "Recursive fan-out RPM/TPM (27 calls/turn) and 5× safety-margin Vertex AI quotas calculated",
-          "Locust SSE streaming load test & gRPC/context-cache optimizations recorded in docs/LOAD_TEST_REPORT.md"
-        ],
-        customerPersona: "Customer VP of Infrastructure / Platform SRE",
-        customerApprove: "Explicit per-turn fan-out multiplication (27 LLM calls/turn, 60 vector gRPC calls/turn), 5× Vertex AI quota request table, and Locust p50/p95 SSE streaming benchmark.",
-        rejectIf: "Sizing Vertex AI quotas assuming 1 user query = 1 LLM call, leading to instant HTTP 429 ResourceExhausted under 10 concurrent users.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 0, baseline: 0, arch: 5, eval: 5, prod: 20 }
+          "Fan-out RPM/TPM and 5× peak-multiplier quotas calculated with calculate_agent_quotas.py",
+          "Locust SSE load test results and gRPC/context-cache optimizations recorded in docs/LOAD_TEST_REPORT.md"
+        ]
       }
     ]
   },
   {
     id: "phase3",
     shortTab: "🔴 M5 · Mars Touchdown (Wk 11–12)",
-    kicker: "Stage 5 · Weeks 11–12 Launch & Closeout",
+    kicker: "Stage 5 · Phase 3 Final Read-Out & Close (Weeks 11–12)",
     name: "Touchdown on Mars",
-    chip: "Stage 5 · Mars Touchdown (Wk 11–12)",
     icon: "🔴",
     accent: "#34a853", accentInk: "#137333", accent050: "#e6f4ea", accentBorder: "#b7e1c2",
     heroTitle: "Land on the Red Planet & Hand Over Mission Control",
-    heroSub: "Prove measured ROI & Golden Dataset quality lift against your Phase 1 baseline in the Executive Closeout Deck, hand over the TDD runbook, and run the blameless FDE Retro.",
-    gate: "Gate 3 · Executive Sign-off & Production Operations Handoff",
+    heroSub: "Sign off the next-phase scope, deliver the read-out against the baseline, hand over the final golden-dataset metrics and the technical design document, and hold the delivery retrospective.",
+    gate: "Phase 3: next-phase scope sign-off · close-out read-out · final measured evaluation metrics · technical design document · delivery retrospective",
     bannerImg: "ui/images/launch.jpg",
     steps: [
       {
         id: "step-15",
         badgeName: "Mars Landed",
-        title: "Deliver Final Closeout Readout & FDE Retro",
+        title: "Deliver the Final Read-Out & FDE Retro",
         sub: "VALUE_SIZING.md",
         skill: "ai-value-sizing + tdl-field-guide",
-        toolbox: "Assets #8 & #9 · Closeout Slide Deck & FDE Blameless Retro",
+        toolbox: "Assets #8 & #9 · Example Closeout Slide Deck & Example FDE Retro Slides",
         reads: "docs/as_is_report.md, docs/EVAL_AUDIT_REPORT.md, docs/LOAD_TEST_REPORT.md, docs/VALUE_SIZING.md",
-        output: "docs/VALUE_SIZING.md, docs/CLOSEOUT_DECK.md, STATE.md (Gate 3 Closed)",
+        output: "docs/VALUE_SIZING.md, STATE.md",
         image: "ui/images/launch.jpg",
-        lede: "Compute measured post-launch ROI against your Phase 1 baseline, compile the Closeout Deck (Challenge/Vision/Experience → Architecture/Tech → Value/Future), and run the FDE Retro.",
-        whyItMatters: "Proves measured latency, quality lift on the Golden Dataset, and dollar savings side-by-side against your Phase 1 baseline and transitions ownership cleanly.",
+        lede: "Align on the baseline set at the start, show results with measured metrics, and structure the read-out like the Example Closeout Slide Deck (The Challenge | The Vision | The Experience → The Architecture | The Tech → The Value | The Future); then run the FDE retro.",
+        whyItMatters: "Delivery Guide: “We hand over final measured evaluation metrics against a golden dataset for the agreed on metrics at the start of the engagement.”",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use ai-value-sizing and tdl-field-guide to produce our final closeout deliverables for {{USE_CASE}} from docs/as_is_report.md, docs/EVAL_AUDIT_REPORT.md, and docs/LOAD_TEST_REPORT.md:\n1. Updated docs/VALUE_SIZING.md with measured post-launch KPIs\n2. Executive Closeout Deck in docs/CLOSEOUT_DECK.md (The Challenge/Vision/Experience, The Architecture/Tech, The Value/Future)\n3. Final STATE.md Gate 3 sign-off and FDE Blameless Retro notes",
-        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --vcr 0.50 --scdf 0.85 --wacc 0.10",
+        promptTemplate: "Use ai-value-sizing and tdl-field-guide to prepare the final read-out for {{USE_CASE}} from docs/as_is_report.md, docs/EVAL_AUDIT_REPORT.md and docs/LOAD_TEST_REPORT.md:\n1. Update docs/VALUE_SIZING.md with measured KPIs in place of the projected inputs\n2. Outline the read-out with the Example Closeout Slide Deck sections (The Challenge | The Vision | The Experience, The Architecture | The Tech, The Value | The Future)\n3. Record the next-phase scope sign-off and the FDE retro notes in STATE.md",
+        cliTemplate: "# Re-run with your measured values in place of these illustrative example values\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --vcr 0.50 --scdf 0.85 --wacc 0.10",
         livePreview: "roi",
         checks: [
-          "docs/CLOSEOUT_DECK.md & docs/VALUE_SIZING.md signed off by Executive Sponsor with measured KPIs",
-          "Final docs/TDD.md + production runbook handed over and FDE Blameless Retro completed in STATE.md"
-        ],
-        customerPersona: "Customer Executive Sponsor, CFO & VP of Engineering",
-        customerApprove: "Side-by-side Phase 1 Baseline vs. Week 12 Measured Telemetry (Golden Dataset accuracy lift, p95 latency, 3-Year NPV), closed RAID logs, and signed operations handoff.",
-        rejectIf: "Leaving at Week 12 without comparing against Phase 1 baseline metrics or leaving open P0 RAID blockers without a customer owner.",
-        rubricScores: { value: 5, determinism: 5, lineage: 5, quality: 5, sre: 5 },
-        axesBoost: { velocity: 10, baseline: 15, arch: 0, eval: 0, prod: 15 }
+          "Read-out delivered with measured (not projected) KPIs in docs/VALUE_SIZING.md; next-phase scope signed off",
+          "Final technical design document and knowledge transfer handed over; FDE retrospective held"
+        ]
       }
     ]
   }
@@ -1233,21 +1156,21 @@ function saveProgress() {
 // clears that stage's gate for a bonus. RANKS' top threshold must equal the max
 // attainable XP (enforced by scripts/test_validate_skills.py).
 var XP_TABLE = {
-  day1:    { perStep: 50,  gateBonus: 100, gateName: "Readiness Gate" },
-  prelude: { perStep: 100, gateBonus: 200, gateName: "Gate 0" },
-  phase1:  { perStep: 150, gateBonus: 300, gateName: "Gate 1" },
-  phase2:  { perStep: 200, gateBonus: 400, gateName: "Gate 2" },
-  phase3:  { perStep: 300, gateBonus: 500, gateName: "Gate 3" }
+  day1:    { perStep: 50,  gateBonus: 100, gateName: "Setup" },
+  prelude: { perStep: 100, gateBonus: 200, gateName: "Prelude" },
+  phase1:  { perStep: 150, gateBonus: 300, gateName: "Phase 1" },
+  phase2:  { perStep: 200, gateBonus: 400, gateName: "Phase 2" },
+  phase3:  { perStep: 300, gateBonus: 500, gateName: "Phase 3" }
 };
 
 var RANKS = [
   { level: 1, title: "Cadet", icon: "🧑‍🚀", minXp: 0 },
   { level: 2, title: "Launch Technician", icon: "🔧", minXp: 100 },
   { level: 3, title: "Flight Engineer", icon: "🧰", minXp: 350 },
-  { level: 4, title: "Mission Specialist", icon: "🛰️", minXp: 800 },
-  { level: 5, title: "Pilot", icon: "🕹️", minXp: 1550 },
-  { level: 6, title: "Flight Commander", icon: "🎖️", minXp: 2350 },
-  { level: 7, title: "Mars Mission Commander", icon: "🔴", minXp: 3750 }
+  { level: 4, title: "Mission Specialist", icon: "🛰️", minXp: 750 },
+  { level: 5, title: "Pilot", icon: "🕹️", minXp: 1350 },
+  { level: 6, title: "Flight Commander", icon: "🎖️", minXp: 2200 },
+  { level: 7, title: "Mars Mission Commander", icon: "🔴", minXp: 3600 }
 ];
 
 function formatXp(n) {
@@ -1343,7 +1266,7 @@ function renderXpHowList() {
     var li = makeEl("li");
     li.append(
       makeEl("span", "", st.icon + " " + st.name),
-      makeEl("span", "x", "+" + cfg.perStep + "/step · +" + cfg.gateBonus + " " + cfg.gateName)
+      makeEl("span", "x", "+" + cfg.perStep + "/step · +" + cfg.gateBonus + " stage bonus")
     );
     how.appendChild(li);
   });
@@ -1477,6 +1400,9 @@ function getParams() {
   return { useCase: useCase, volume: volume, rate: rate, hours: hours, peakTurns: peakTurns, project: project };
 }
 
+// Same formulas as skills/ai-value-sizing/scripts/calculate_roi.py (bull = min(1, 1.5 x VCR) x min(1.2, 1.2 x SCDF),
+// bear = VCR x 0.40). Fixed illustrative example values: shares, CapEx and OpEx from the skill's worked example;
+// VCR 0.50 and SCDF 0.85 are its haircut tiers; WACC 10%.
 function computeRoiPreview(volume, rate, hours) {
   var sam = volume * 0.625;
   var som = sam * 0.30 * 0.80;
@@ -1492,7 +1418,7 @@ function computeRoiPreview(volume, rate, hours) {
     var npv = -capex + ((netAnn - opex) / 1.10) + ((netAnn - opex) / Math.pow(1.10, 2)) + ((netAnn - opex) / Math.pow(1.10, 3));
     var mo = (netAnn - opex) / 12;
     var payback = mo > 0 ? (capex / mo).toFixed(1) + " mo" : "Never";
-    return { netAnn: Math.round(netAnn), npv: Math.round(npv), roiPct: Math.round(roiPct), payback: payback };
+    return { netAnn: Math.round(netAnn), npv: Math.round(npv), roiPct: Math.round(roiPct * 10) / 10, payback: payback };
   }
   return {
     som: Math.round(som),
@@ -1504,6 +1430,7 @@ function computeRoiPreview(volume, rate, hours) {
   };
 }
 
+// Same formulas and defaults as skills/agent-load-testing/scripts/calculate_agent_quotas.py.
 function computeQuotaPreview(peakTurns) {
   var qt = 6, cq = 4, tok = 20000, mult = 5;
   var callsPerTurn = 1 + 1 + (qt * cq) + 1; // 27
@@ -1518,76 +1445,138 @@ function computeQuotaPreview(peakTurns) {
     peakTpm: peakTpm,
     quotaRpm: quotaRpm,
     quotaTpm: quotaTpm,
-    grpcReqs: grpcReqs
+    grpcReqs: grpcReqs,
+    grpcWaves: Math.ceil(grpcReqs / 8) // script default --grpc-pool-size 8
   };
 }
 
-function renderLivePreviewWidget(step) {
-  var p = getParams();
-  if (step.livePreview === "roi") {
-    var r = computeRoiPreview(p.volume, p.rate, p.hours);
-    return (
-      '<div class="card" style="margin-bottom:18px;background:#f8fafc;border-color:#cbd5e1;">' +
-        '<h3>📊 Live Deterministic ROI Telemetry (calculate_roi.py Math for ' + escapeHtml(p.useCase) + ')</h3>' +
-        '<p style="font-size:12.5px;color:#475569;margin:0 0 10px;">Computed live from your Left-Rail parameters: <strong>' + p.volume.toLocaleString() + '</strong> TAM units → <strong>' + r.som.toLocaleString() + '</strong> Year-1 SOM units (62.5% SAM × 30% Adoption × 80% Tech Compat) × <strong>' + p.hours + ' hrs</strong> × <strong>$' + p.rate + '/hr</strong> = <strong>$' + r.gross.toLocaleString() + '/yr</strong> Gross Value (3-Yr TCO: $' + r.tco3.toLocaleString() + ').</p>' +
-        '<div class="table-wrap" style="margin-bottom:0;">' +
-          '<table class="log">' +
-            '<thead><tr><th>Scenario</th><th>VCR × SCDF</th><th>Net Annual Benefit</th><th>3-Year NPV (10% WACC)</th><th>3-Year ROI %</th><th>Payback</th><th>CFO Gate</th></tr></thead>' +
-            '<tbody>' +
-              '<tr><td><strong>Base Case</strong></td><td class="mono">0.50 × 0.85</td><td class="mono"><strong>$' + r.base.netAnn.toLocaleString() + '/yr</strong></td><td class="mono"><strong>$' + r.base.npv.toLocaleString() + '</strong></td><td class="mono">' + r.base.roiPct + '%</td><td class="mono">' + r.base.payback + '</td><td>' + (r.base.npv > 0 ? '✅ CFO Approved' : '⚠️ Tune Scope/Vol') + '</td></tr>' +
-              '<tr><td><strong>Bull Case</strong></td><td class="mono">0.75 × 1.02</td><td class="mono">$' + r.bull.netAnn.toLocaleString() + '/yr</td><td class="mono">$' + r.bull.npv.toLocaleString() + '</td><td class="mono">' + r.bull.roiPct + '%</td><td class="mono">' + r.bull.payback + '</td><td>✅ Upside</td></tr>' +
-              '<tr><td><strong>Bear Case</strong></td><td class="mono">0.50 × 0.40</td><td class="mono">$' + r.bear.netAnn.toLocaleString() + '/yr</td><td class="mono">$' + r.bear.npv.toLocaleString() + '</td><td class="mono">' + r.bear.roiPct + '%</td><td class="mono">' + r.bear.payback + '</td><td>' + (r.bear.npv > 0 ? '✅ Downside Safe' : 'ℹ️ OpEx Sensitivity') + '</td></tr>' +
-            '</tbody>' +
-          '</table>' +
-        '</div>' +
-      '</div>'
-    );
-  }
-  if (step.livePreview === "quota") {
-    var q = computeQuotaPreview(p.peakTurns);
-    return (
-      '<div class="card" style="margin-bottom:18px;background:#f8fafc;border-color:#cbd5e1;">' +
-        '<h3>⚡ Live Vertex AI 5× Quota Telemetry (calculate_agent_quotas.py Math at ' + p.peakTurns + ' Peak Turns/Min)</h3>' +
-        '<div class="table-wrap" style="margin-bottom:0;">' +
-          '<table class="log">' +
-            '<thead><tr><th>Metric</th><th>Formula</th><th>Calculated Value</th><th>SRE Verdict</th></tr></thead>' +
-            '<tbody>' +
-              '<tr><td><strong>LLM Calls / Turn</strong></td><td class="mono">1 safety + 1 decomp + (6×4 chunked) + 1 final</td><td class="mono"><strong>' + q.callsPerTurn + ' calls/turn</strong></td><td>✅ Multi-Agent Fan-Out</td></tr>' +
-              '<tr><td><strong>Peak LLM RPM / TPM</strong></td><td class="mono">' + p.peakTurns + ' turns/min × 27 calls × 20K tokens</td><td class="mono">' + q.peakRpm.toLocaleString() + ' RPM / ' + q.peakTpm.toLocaleString() + ' TPM</td><td>ℹ️ Unbuffered Peak</td></tr>' +
-              '<tr><td><strong>5× Quota Request</strong></td><td class="mono">5.0 × Peak RPM &amp; TPM</td><td class="mono"><strong>' + q.quotaRpm.toLocaleString() + ' RPM / ' + q.quotaTpm.toLocaleString() + ' TPM</strong></td><td>✅ Prevents HTTP 429</td></tr>' +
-              '<tr><td><strong>Concurrent Vector gRPC</strong></td><td class="mono">' + p.peakTurns + ' turns × 30 queries × 2 modes</td><td class="mono">' + q.grpcReqs.toLocaleString() + ' concurrent reqs</td><td>✅ Pool 8 → 128 channels</td></tr>' +
-            '</tbody>' +
-          '</table>' +
-        '</div>' +
-      '</div>'
-    );
-  }
-  if (step.livePreview === "aua") {
-    return (
-      '<div class="card" style="margin-bottom:18px;background:#f8fafc;border-color:#cbd5e1;">' +
-        '<h3>🎯 Reference AUA Statistical Certification Gates (audit_llm_judge.py Output)</h3>' +
-        '<div class="table-wrap" style="margin-bottom:0;">' +
-          '<table class="log">' +
-            '<thead><tr><th>Pipeline</th><th>Statistical Metric</th><th>Pass Threshold</th><th>Calibrated Fixture</th><th>Compressed Judge Fixture</th></tr></thead>' +
-            '<tbody>' +
-              '<tr><td><strong>P1 · Calibration</strong></td><td>Disattenuated Correlation (<code>d_r</code>)</td><td class="mono">&gt;= 0.80</td><td class="mono" style="color:#137333;"><strong>1.0000 (PASS)</strong></td><td class="mono" style="color:#b91c1c;">0.5798 (FAIL)</td></tr>' +
-              '<tr><td><strong>P1 · Ordinal Agreement</strong></td><td>Quadratic Weighted Kappa (<code>QWK</code>)</td><td class="mono">&gt;= 0.60</td><td class="mono" style="color:#137333;"><strong>0.9277 (PASS)</strong></td><td class="mono" style="color:#b91c1c;">0.3713 (FAIL)</td></tr>' +
-              '<tr><td><strong>P1 · Scale Spread</strong></td><td>Scale Compression Ratio (<code>SD_LLM / SD_Human</code>)</td><td class="mono">&gt;= 0.80</td><td class="mono" style="color:#137333;"><strong>0.9571 (PASS)</strong></td><td class="mono" style="color:#b91c1c;">0.4832 (FAIL)</td></tr>' +
-              '<tr><td><strong>P2 · Intra-Rater</strong></td><td>Cronbach\'s Alpha across k=3 Passes</td><td class="mono">&gt;= 0.80</td><td class="mono" style="color:#137333;"><strong>0.9856 (PASS)</strong></td><td class="mono" style="color:#b91c1c;">0.6591 (FAIL)</td></tr>' +
-              '<tr><td><strong>P3 · Double Marking</strong></td><td>Inter-Model ICC(3,k) &amp; Wilcoxon Bias</td><td class="mono">ICC &gt;= 0.80, p &gt; 0.05</td><td class="mono" style="color:#137333;"><strong>0.9613 / p=0.3173 (PASS)</strong></td><td class="mono" style="color:#b91c1c;">p=0.0020 Leniency Bias (FAIL)</td></tr>' +
-            '</tbody>' +
-          '</table>' +
-        '</div>' +
-      '</div>'
-    );
-  }
-  return "";
+function formatUsd(n) {
+  return (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString("en-US");
+}
+
+function buildTable(headers, rows) {
+  var wrap = makeEl("div", "table-wrap preview-table");
+  var table = makeEl("table", "log");
+  var thead = makeEl("thead");
+  var headRow = makeEl("tr");
+  headers.forEach(function(h) {
+    var th = makeEl("th", "", h);
+    th.scope = "col";
+    headRow.appendChild(th);
+  });
+  thead.appendChild(headRow);
+  var tbody = makeEl("tbody");
+  rows.forEach(function(cells) {
+    var tr = makeEl("tr");
+    cells.forEach(function(c) {
+      var cell = typeof c === "string" ? { text: c } : c;
+      tr.appendChild(makeEl("td", cell.cls || "", cell.text));
+    });
+    tbody.appendChild(tr);
+  });
+  table.append(thead, tbody);
+  wrap.appendChild(table);
+  return wrap;
+}
+
+function buildRoiPreview(p) {
+  var r = computeRoiPreview(p.volume, p.rate, p.hours);
+  var card = makeEl("div", "card preview-card");
+  card.appendChild(makeEl("h3", "", "📊 ROI projection (illustrative example; same formulas as calculate_roi.py)"));
+  card.appendChild(makeEl("p", "preview-intro",
+    "Left-rail inputs: " + p.volume.toLocaleString("en-US") + " TAM units, " + p.hours + " hrs saved per case, $" + p.rate + "/hr. " +
+    "Fixed example values: SAM share 0.625, adoption 0.30, tech compatibility 0.80, CapEx $180,000 and annual OpEx $68,000 " +
+    "(ai-value-sizing worked example); VCR 0.50 and SCDF 0.85 (its haircut tiers); WACC 10%."));
+  card.appendChild(makeEl("p", "preview-intro",
+    "Year-1 SOM (TAM × 0.625 × 0.30 × 0.80): " + r.som.toLocaleString("en-US") + " cases · " +
+    "Gross annual value (SOM × hrs × rate): " + formatUsd(r.gross) + " · " +
+    "3-year TCO (CapEx + 3 × OpEx): " + formatUsd(r.tco3)));
+  var rows = [["Base", "0.50 × 0.85", r.base], ["Bull", "0.75 × 1.02", r.bull], ["Bear", "0.50 × 0.40", r.bear]].map(function(s) {
+    var m = s[2];
+    return [
+      { text: s[0], cls: "strong" },
+      { text: s[1], cls: "mono" },
+      { text: formatUsd(m.netAnn) + "/yr", cls: "mono" },
+      { text: formatUsd(m.npv), cls: "mono" },
+      { text: m.roiPct.toFixed(1) + "%", cls: "mono" },
+      { text: m.payback, cls: "mono" }
+    ];
+  });
+  card.appendChild(buildTable(["Scenario", "VCR × SCDF", "Net annual benefit", "3-year NPV (10% WACC)", "3-year ROI", "Payback"], rows));
+  return card;
+}
+
+function buildQuotaPreview(p) {
+  var q = computeQuotaPreview(p.peakTurns);
+  var turns = p.peakTurns.toLocaleString("en-US");
+  var card = makeEl("div", "card preview-card");
+  card.appendChild(makeEl("h3", "", "⚡ Vertex AI quota sizing (same formulas as calculate_agent_quotas.py)"));
+  card.appendChild(makeEl("p", "preview-intro",
+    "Script defaults based on the Load Testing Guide: Qt = 6 sub-questions, Cq = 4 chunks per sub-question, " +
+    "20,000 input tokens per call and a 5× peak multiplier, at " + turns + " peak turns/min from the left rail."));
+  card.appendChild(buildTable(["Metric", "Formula", "Value"], [
+    ["LLM calls per turn", { text: "1 safety + 1 decomposition + (6 × 4 chunked synthesis) + 1 final", cls: "mono" },
+      { text: q.callsPerTurn + " calls", cls: "mono" }],
+    ["Peak LLM RPM / TPM", { text: turns + " turns/min × " + q.callsPerTurn + " calls; × 20,000 tokens per call", cls: "mono" },
+      { text: q.peakRpm.toLocaleString("en-US") + " RPM / " + q.peakTpm.toLocaleString("en-US") + " TPM", cls: "mono" }],
+    ["Quota request (5× peak)", { text: "5 × peak RPM and TPM", cls: "mono" },
+      { text: q.quotaRpm.toLocaleString("en-US") + " RPM / " + q.quotaTpm.toLocaleString("en-US") + " TPM", cls: "mono" }],
+    ["Concurrent vector gRPC requests", { text: turns + " turns × 30 semantic queries (script default; guide: 18–60) × 2 (dense + sparse)", cls: "mono" },
+      { text: q.grpcReqs.toLocaleString("en-US"), cls: "mono" }],
+    ["gRPC queue waves at pool size 8", { text: "⌈" + q.grpcReqs.toLocaleString("en-US") + " ÷ 8⌉", cls: "mono" },
+      { text: q.grpcWaves.toLocaleString("en-US") + " waves", cls: "mono" }]
+  ]));
+  card.appendChild(makeEl("p", "preview-note",
+    "Pool size 8 is the script default. In the guide's engagement, raising the gRPC pool from 8 to 128 removed client-side queuing."));
+  return card;
+}
+
+// Recorded output of `audit_llm_judge.py --demo` on its two bundled synthetic fixtures
+// (examples/fixtures/calibrated_judge.json and compressed_lenient_judge.json). Not customer data.
+// Columns: pipeline, metric, threshold, calibrated value, calibrated pass, compressed value, compressed pass.
+var AUA_REFERENCE_ROWS = [
+  ["P1 · Calibration", "Disattenuated correlation (d.R)", "≥ 0.80 (deck)", "0.9435", true, "0.9837", true],
+  ["P1 · Calibration", "Quadratic weighted kappa (QWK)", "≥ 0.60 (deck)", "0.8592", true, "0.4275", false],
+  ["P1 · Calibration", "PRMSE", "> 0 (deck)", "0.8234", true, "-0.3201", false],
+  ["P1 · Calibration", "Wilcoxon p (human vs. judge severity)", "> 0.05 (repo convention)", "0.5014", true, "< 0.0001", false],
+  ["P1 · Calibration", "SD ratio (judge ÷ human)", "≥ 0.80 (deck)", "0.9777", true, "0.4943", false],
+  ["P2 · Intra-rater", "Cronbach's α across 5 passes", "≥ 0.80 (deck)", "0.9786", true, "0.8853", true],
+  ["P3 · Double marking", "ICC(3,k)", "≥ 0.80 (deck)", "0.9138", true, "0.6064", false],
+  ["P3 · Double marking", "Wilcoxon p (model vs. model severity)", "> 0.05 (repo convention)", "0.4631", true, "0.0026", false]
+];
+
+function buildAuaPreview() {
+  var card = makeEl("div", "card preview-card");
+  card.appendChild(makeEl("h3", "", "🎯 Reference output: audit_llm_judge.py --demo on its two bundled synthetic fixtures"));
+  card.appendChild(makeEl("p", "preview-intro",
+    "Synthetic fixtures, not customer data. The CLI command above reproduces these numbers."));
+  var rows = AUA_REFERENCE_ROWS.map(function(r) {
+    return [
+      { text: r[0], cls: "strong" },
+      r[1],
+      { text: r[2], cls: "mono" },
+      { text: r[3] + " · " + (r[4] ? "PASS" : "FAIL"), cls: "mono " + (r[4] ? "verdict-pass" : "verdict-fail") },
+      { text: r[5] + " · " + (r[6] ? "PASS" : "FAIL"), cls: "mono " + (r[6] ? "verdict-pass" : "verdict-fail") }
+    ];
+  });
+  card.appendChild(buildTable(["Pipeline", "Metric", "Threshold", "Calibrated judge", "Compressed (lenient) judge"], rows));
+  card.appendChild(makeEl("p", "preview-note",
+    "Verdicts: the calibrated judge passes P1, P2 and P3. The compressed judge has a high d.R and passes P2, " +
+    "but fails P1 (QWK, PRMSE, Wilcoxon and SD ratio) and P3."));
+  return card;
+}
+
+function buildLivePreviewWidget(step) {
+  if (step.livePreview === "roi") return buildRoiPreview(getParams());
+  if (step.livePreview === "quota") return buildQuotaPreview(getParams());
+  if (step.livePreview === "aua") return buildAuaPreview();
+  return null;
 }
 
 function formatWithParams(tpl) {
   if (!tpl) return "";
   var p = getParams();
-  return tpl
+  return escapeHtml(tpl)
     .replace(/\{\{USE_CASE\}\}/g, '<span class="prompt-param">' + escapeHtml(p.useCase) + '</span>')
     .replace(/\{\{VOLUME\}\}/g, '<span class="prompt-param">' + escapeHtml(p.volume) + '</span>')
     .replace(/\{\{RATE\}\}/g, '<span class="prompt-param">' + escapeHtml(p.rate) + '</span>')
@@ -1609,7 +1598,8 @@ function rawWithParams(tpl) {
 }
 
 function escapeHtml(s) {
-  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
 function renderTopSwitcher() {
@@ -1657,8 +1647,8 @@ function renderLeftStepper() {
       '<li class="step ' + (isActive ? 'active ' : '') + (isDone ? 'done' : '') + '" data-step-idx="' + idx + '">' +
         '<span class="marker">' + (isDone ? '✓' : globalNum) + '</span>' +
         '<span class="label">' +
-          '<span class="t">' + step.title + '</span>' +
-          '<span class="s">' + step.sub + '</span>' +
+          '<span class="t">' + escapeHtml(step.title) + '</span>' +
+          '<span class="s">' + escapeHtml(step.sub) + '</span>' +
         '</span>' +
       '</li>'
     );
@@ -1702,109 +1692,97 @@ function renderCenterPlaybook() {
   var step = stage.steps[activeStepIdx];
   var globalNum = step.id.replace("step-", "");
   var isDone = completedSet.has(step.id);
+  function paramTag(tpl) {
+    return tpl && tpl.indexOf("{{") !== -1 ? '<span>Uses your parameters</span>' : '';
+  }
 
   var cliBlockHtml = "";
   if (step.cliTemplate) {
     cliBlockHtml =
       '<div class="prompt-lead" style="margin-top:16px;">' +
         '<div class="lead-label">' +
-          '<span>⚡ Deterministic Python Calculator / CLI Verification</span>' +
-          '<span>Exit Code 0 Verified</span>' +
+          '<span>⚡ CLI command</span>' +
+          paramTag(step.cliTemplate) +
         '</div>' +
         '<div class="prompt-card">' +
           '<div class="prompt-text" id="cliTextDisplay">' + formatWithParams(step.cliTemplate) + '</div>' +
-          '<button class="copy-btn" id="copyCliBtn" title="Copy CLI Command">📋</button>' +
+          '<button class="copy-btn" id="copyCliBtn" title="Copy CLI command" aria-label="Copy CLI command">📋</button>' +
         '</div>' +
       '</div>';
   }
 
+  var whyHtml = step.whyItMatters
+    ? '<div class="callout info">' +
+        '<div style="font-size:18px;" aria-hidden="true">💡</div>' +
+        '<div><strong>Why it matters:</strong> ' + escapeHtml(step.whyItMatters) + '</div>' +
+      '</div>'
+    : '';
+
   var html =
     '<div class="section-card">' +
-      '<!-- Cartoon Mission to Mars Banner -->' +
       '<div class="mars-hero-card">' +
         '<div class="mars-hero-text">' +
-          '<div class="mars-hero-kicker">' + stage.icon + ' ' + stage.kicker + '</div>' +
-          '<div class="mars-hero-title">' + stage.heroTitle + '</div>' +
-          '<div class="mars-hero-sub">' + stage.heroSub + '</div>' +
-          '<div class="mars-gate-pill">🛡 ' + stage.gate + '</div>' +
+          '<div class="mars-hero-kicker">' + escapeHtml(stage.icon + ' ' + stage.kicker) + '</div>' +
+          '<div class="mars-hero-title">' + escapeHtml(stage.heroTitle) + '</div>' +
+          '<div class="mars-hero-sub">' + escapeHtml(stage.heroSub) + '</div>' +
+          '<div class="mars-gate-pill">🛡 ' + escapeHtml(stage.gate) + '</div>' +
         '</div>' +
         '<div class="mars-hero-img">' +
-          '<img src="' + (step.image || stage.bannerImg) + '" alt="' + stage.name + '" />' +
+          '<img src="' + escapeHtml(step.image || stage.bannerImg) + '" alt="' + escapeHtml(stage.name) + '" />' +
         '</div>' +
       '</div>' +
 
-      '<!-- Step Header -->' +
       '<div class="sec-head">' +
         '<div class="eyebrow-row">' +
           '<span class="eyebrow">Step ' + globalNum + ' of 15</span>' +
-          '<span class="skill-chip">Skill: ' + step.skill + '</span>' +
-          '<span class="skill-chip">Writes: ' + step.output + '</span>' +
+          '<span class="skill-chip">Skill: ' + escapeHtml(step.skill) + '</span>' +
+          '<span class="skill-chip">Writes: ' + escapeHtml(step.output) + '</span>' +
         '</div>' +
-        '<h2>' + step.title + '</h2>' +
-        '<p class="lede">' + step.lede + '</p>' +
+        '<h2>' + escapeHtml(step.title) + '</h2>' +
+        '<p class="lede">' + escapeHtml(step.lede) + '</p>' +
       '</div>' +
 
-      '<!-- Why it matters callout -->' +
-      '<div class="callout info">' +
-        '<div style="font-size:18px;">💡</div>' +
-        '<div><strong>Why this mission step matters:</strong> ' + step.whyItMatters + '</div>' +
-      '</div>' +
+      whyHtml +
 
-      '<!-- Copyable AI Agent Prompt -->' +
       '<div class="prompt-lead">' +
         '<div class="lead-label">' +
-          '<span>🤖 ' + step.promptType + '</span>' +
-          '<span>Live Parameterized</span>' +
+          '<span>🤖 ' + escapeHtml(step.promptType) + '</span>' +
+          paramTag(step.promptTemplate) +
         '</div>' +
         '<div class="prompt-card">' +
           '<div class="prompt-text" id="promptTextDisplay">' + formatWithParams(step.promptTemplate) + '</div>' +
-          '<button class="copy-btn" id="copyPromptBtn" title="Copy Prompt">📋</button>' +
+          '<button class="copy-btn" id="copyPromptBtn" title="Copy prompt" aria-label="Copy prompt">📋</button>' +
         '</div>' +
       '</div>' +
 
       cliBlockHtml +
 
-      renderLivePreviewWidget(step) +
+      '<div id="livePreviewSlot"></div>' +
 
-      '<!-- Two-column Metadata & Exit Criteria Checklist -->' +
       '<div class="grid-2">' +
         '<div class="card">' +
-          '<h3>📦 File Contract &amp; DAG Lineage</h3>' +
+          '<h3>📦 Reads / writes</h3>' +
           '<div class="table-wrap" style="margin-bottom:0;">' +
             '<table class="log">' +
               '<tbody>' +
-                '<tr><th>Active Skill</th><td class="mono">' + step.skill + '</td></tr>' +
-                '<tr><th>TDL Toolbox Asset</th><td>' + step.toolbox + '</td></tr>' +
-                '<tr><th>Reads (Upstream)</th><td class="mono">' + step.reads + '</td></tr>' +
-                '<tr><th>Writes (Contract)</th><td class="mono">' + step.output + '</td></tr>' +
+                '<tr><th scope="row">Skill(s)</th><td class="mono">' + escapeHtml(step.skill) + '</td></tr>' +
+                '<tr><th scope="row">TDL Toolbox source</th><td>' + escapeHtml(step.toolbox) + '</td></tr>' +
+                '<tr><th scope="row">Reads</th><td class="mono">' + escapeHtml(step.reads) + '</td></tr>' +
+                '<tr><th scope="row">Writes</th><td class="mono">' + escapeHtml(step.output) + '</td></tr>' +
               '</tbody>' +
             '</table>' +
           '</div>' +
         '</div>' +
         '<div class="card">' +
-          '<h3>✅ Step Verification Checklist</h3>' +
+          '<h3>🏁 Exit criteria</h3>' +
           '<ul class="checklist">' +
             step.checks.map(function(c) {
-              return '<li><span class="cbox">✓</span><span>' + c + '</span></li>';
+              return '<li><span class="cbox" aria-hidden="true"></span><span>' + escapeHtml(c) + '</span></li>';
             }).join("") +
           '</ul>' +
         '</div>' +
       '</div>' +
 
-      '<!-- Customer Hat Sign-Off vs AI Fluff Rejection Card -->' +
-      '<div class="card" style="background:#fffbeb;border-color:#fde68a;margin-top:4px;">' +
-        '<h3>🎩 Customer Executive Sign-Off Gate (' + step.customerPersona + ')</h3>' +
-        '<div style="display:grid;grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);gap:12px;margin-top:8px;font-size:13px;">' +
-          '<div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:10px 12px;color:#065f46;">' +
-            '<strong>✅ Customer Approves Artifact When:</strong><br/>' + step.customerApprove +
-          '</div>' +
-          '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 12px;color:#991b1b;">' +
-            '<strong>❌ Customer Rejects as "AI Fluff" If:</strong><br/>' + step.rejectIf +
-          '</div>' +
-        '</div>' +
-      '</div>' +
-
-      '<!-- Footer Navigation -->' +
       '<div class="main-footer">' +
         '<button class="btn" id="prevBtn" ' + (activeStageIdx === 0 && activeStepIdx === 0 ? 'disabled' : '') + '>← Previous Step</button>' +
         '<span class="fspacer"></span>' +
@@ -1817,6 +1795,12 @@ function renderCenterPlaybook() {
 
   var container = document.getElementById("mainPlaybook");
   container.innerHTML = html;
+
+  // Calculator / reference-output preview (DOM APIs only)
+  var slot = document.getElementById("livePreviewSlot");
+  var widget = buildLivePreviewWidget(step);
+  if (widget) slot.replaceWith(widget);
+  else slot.remove();
 
   // XP reward chip, gate bonus tag, and Complete-button reward (DOM APIs only)
   decorateStepWithXp(container, stage, step, isDone);
@@ -1885,18 +1869,31 @@ function renderCenterPlaybook() {
   });
 }
 
+function jumpToStep(targetId) {
+  STAGES.forEach(function(st, sIdx) {
+    st.steps.forEach(function(sp, pIdx) {
+      if (sp.id === targetId) {
+        activeStageIdx = sIdx;
+        activeStepIdx = pIdx;
+      }
+    });
+  });
+  switchViewTab("playbook");
+  renderAll();
+}
+
 function renderContractsTab() {
   var allSteps = getAllSteps();
   var rowsHtml = allSteps.map(function(s) {
     var num = s.id.replace("step-", "");
     var done = completedSet.has(s.id);
     return (
-      '<tr style="cursor:pointer;" data-jump-id="' + s.id + '">' +
+      '<tr class="jump-row" tabindex="0" data-jump-id="' + escapeHtml(s.id) + '">' +
         '<td><strong>Step ' + num + '</strong> ' + (done ? '✅' : '') + '</td>' +
-        '<td>' + s.title + '</td>' +
-        '<td class="mono">' + s.skill + '</td>' +
-        '<td class="mono">' + s.reads + '</td>' +
-        '<td class="mono">' + s.output + '</td>' +
+        '<td>' + escapeHtml(s.title) + '</td>' +
+        '<td class="mono">' + escapeHtml(s.skill) + '</td>' +
+        '<td class="mono">' + escapeHtml(s.reads) + '</td>' +
+        '<td class="mono">' + escapeHtml(s.output) + '</td>' +
       '</tr>'
     );
   }).join("");
@@ -1904,14 +1901,14 @@ function renderContractsTab() {
   document.getElementById("mainContracts").innerHTML =
     '<div class="section-card">' +
       '<div class="sec-head">' +
-        '<span class="eyebrow">Complete Reference Matrix</span>' +
-        '<h2>All 15 Mission Steps, 13 TDL Skills &amp; Topological File Contracts</h2>' +
-        '<p class="lede">Every step explicitly declares the upstream artifacts it reads and the downstream file contracts it writes. Click any row to jump to that step.</p>' +
+        '<span class="eyebrow">Reference Matrix</span>' +
+        '<h2>All 15 Steps, 13 TDL Skills &amp; Declared Reads/Writes</h2>' +
+        '<p class="lede">Each step lists the files it reads and writes. Click any row (or press Enter) to jump to that step.</p>' +
       '</div>' +
       '<div class="table-wrap">' +
         '<table class="log">' +
           '<thead>' +
-            '<tr><th>Step</th><th>Mission Action</th><th>Active TDL Skill</th><th>Reads (Upstream Inputs)</th><th>Writes (Output File Contract)</th></tr>' +
+            '<tr><th scope="col">Step</th><th scope="col">Action</th><th scope="col">Skill(s)</th><th scope="col">Reads</th><th scope="col">Writes</th></tr>' +
           '</thead>' +
           '<tbody>' + rowsHtml + '</tbody>' +
         '</table>' +
@@ -1919,18 +1916,13 @@ function renderContractsTab() {
     '</div>';
 
   document.querySelectorAll("[data-jump-id]").forEach(function(tr) {
-    tr.addEventListener("click", function() {
-      var targetId = tr.getAttribute("data-jump-id");
-      STAGES.forEach(function(st, sIdx) {
-        st.steps.forEach(function(sp, pIdx) {
-          if (sp.id === targetId) {
-            activeStageIdx = sIdx;
-            activeStepIdx = pIdx;
-          }
-        });
-      });
-      switchViewTab("playbook");
-      renderAll();
+    function go() { jumpToStep(tr.getAttribute("data-jump-id")); }
+    tr.addEventListener("click", go);
+    tr.addEventListener("keydown", function(e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        go();
+      }
     });
   });
 }
@@ -1944,9 +1936,9 @@ function renderRightRail() {
   medalGrid.innerHTML = stage.steps.map(function(s, idx) {
     var earned = completedSet.has(s.id);
     return (
-      '<div class="medallion ' + (earned ? 'earned' : '') + '" data-medal-idx="' + idx + '" title="' + s.title + '">' +
+      '<div class="medallion ' + (earned ? 'earned' : '') + '" data-medal-idx="' + idx + '" title="' + escapeHtml(s.title) + '">' +
         '<div class="disc">' + (earned ? '🏅' : '🔒') + '</div>' +
-        '<div class="mname">' + s.badgeName + '</div>' +
+        '<div class="mname">' + escapeHtml(s.badgeName) + '</div>' +
       '</div>'
     );
   }).join("");
@@ -1960,14 +1952,15 @@ function renderRightRail() {
 
   // Mission Patches (5 stages)
   var allSteps = getAllSteps();
-  document.getElementById("totalBadgeCount").textContent = completedSet.size + " / " + allSteps.length + " Steps";
+  var doneTotal = allSteps.filter(function(s) { return completedSet.has(s.id); }).length;
+  document.getElementById("totalBadgeCount").textContent = doneTotal + " / " + allSteps.length + " Steps";
 
   var patchShelf = document.getElementById("missionPatchShelf");
   patchShelf.innerHTML = STAGES.map(function(st, sIdx) {
-    var stageComplete = st.steps.every(function(s) { return completedSet.has(s.id); });
+    var stageComplete = isStageCleared(st, completedSet);
     return (
-      '<div class="lab-tile ' + (stageComplete ? 'earned' : '') + '" data-patch-stage="' + sIdx + '" title="' + st.name + '">' +
-        '<div class="lt-disc">' + st.icon + '</div>' +
+      '<div class="lab-tile ' + (stageComplete ? 'earned' : '') + '" data-patch-stage="' + sIdx + '" title="' + escapeHtml(st.name) + '">' +
+        '<div class="lt-disc">' + escapeHtml(st.icon) + '</div>' +
         '<div class="lt-code">M' + (sIdx + 1) + '</div>' +
       '</div>'
     );
@@ -1981,46 +1974,7 @@ function renderRightRail() {
     });
   });
 
-  var grand = document.getElementById("grandMarsBadge");
-  grand.classList.toggle("earned", completedSet.size === allSteps.length);
-
-  // Telemetry Scoreboard Axes
-  var totals = { velocity: 0, baseline: 0, arch: 0, eval: 0, prod: 0 };
-  allSteps.forEach(function(sp) {
-    if (completedSet.has(sp.id)) {
-      totals.velocity = Math.min(100, totals.velocity + sp.axesBoost.velocity);
-      totals.baseline = Math.min(100, totals.baseline + sp.axesBoost.baseline);
-      totals.arch = Math.min(100, totals.arch + sp.axesBoost.arch);
-      totals.eval = Math.min(100, totals.eval + sp.axesBoost.eval);
-      totals.prod = Math.min(100, totals.prod + sp.axesBoost.prod);
-    }
-  });
-
-  var axesConfig = [
-    { label: "🚀 Velocity & Scope Governance", val: totals.velocity, color: "#1a73e8" },
-    { label: "📊 Baseline Eval Metrics & ROI", val: totals.baseline, color: "#f59e0b" },
-    { label: "🏗 GCP Architecture & Security", val: totals.arch, color: "#4f46e5" },
-    { label: "🎯 AUA & CLA Eval Quality", val: totals.eval, color: "#7b2cbf" },
-    { label: "🔴 Mars Production Readiness", val: totals.prod, color: "#34a853" }
-  ];
-
-  document.getElementById("telemetryAxes").innerHTML = axesConfig.map(function(ax) {
-    return (
-      '<div class="axis">' +
-        '<div class="axis-top"><span>' + ax.label + '</span><span>' + ax.val + '%</span></div>' +
-        '<div class="axis-track"><div class="axis-fill" style="width:' + ax.val + '%;background:' + ax.color + ';"></div></div>' +
-      '</div>'
-    );
-  }).join("");
-
-  var statusEl = document.getElementById("scoreStatus");
-  if (completedSet.size === 0) {
-    statusEl.textContent = "Flight computer online. Complete Step 1 to begin Hangar Prep.";
-  } else if (completedSet.size === allSteps.length) {
-    statusEl.textContent = "🎉 Touchdown confirmed! All 15 Mission to Mars steps complete.";
-  } else {
-    statusEl.textContent = completedSet.size + " of 15 mission steps verified. Keep advancing toward Mars!";
-  }
+  document.getElementById("grandMarsBadge").classList.toggle("earned", doneTotal === allSteps.length);
 }
 
 function copyToClipboard(text, btn) {
@@ -2086,16 +2040,9 @@ var skillJumpEl = document.getElementById("skillJumpSelect");
 if (skillJumpEl) {
   skillJumpEl.addEventListener("change", function(e) {
     var targetId = e.target.value;
-    STAGES.forEach(function(st, sIdx) {
-      st.steps.forEach(function(sp, pIdx) {
-        if (sp.id === targetId) {
-          activeStageIdx = sIdx;
-          activeStepIdx = pIdx;
-        }
-      });
-    });
-    switchViewTab("playbook");
-    renderAll();
+    if (!targetId) return;
+    jumpToStep(targetId);
+    e.target.selectedIndex = 0; // back to "Choose…" so the same skill can be picked again
   });
 }
 

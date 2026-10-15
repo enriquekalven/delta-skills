@@ -22,16 +22,17 @@ Rules enforced by `scripts/validate_skills.py`:
 
 ```text
 Prelude & Phase 1: Qualification, Discovery & Foundations (Weeks 0-2)
-  workshop-intake                  -> docs/WORKSHOP_INTAKE.md (33 Starter Qs + 6-Dim Data Yardstick)
+  workshop-intake                  -> docs/WORKSHOP_INTAKE.md (32 Starter Qs + Available/Usable/Quality Data Yardstick)
   create-delta-ucc                 -> docs/USE_CASE_CANVAS.md (4-Tab UCC + MVP Alignment Summary)
   business-process-redesign        -> docs/as_is_report.md, docs/to_be_designs.md, docs/human_agent_roles.md
   cuj-architect                    -> docs/CUJ_MAP.md (4-Tab Ethnography, L1-L5 CUJ & 0.6V+0.4F Matrix)
   product-md                       -> docs/PRD.md (go/delta-prd-template 8-Section Agentic PRD)
+  ai-value-sizing                  -> docs/VALUE_SIZING.md (Phase 1 ROI projection & Phase 3 measured closeout)
   gcp-agent-architecture-advisor   -> docs/ARCHITECTURE_RECOMMENDATION.md (Tier 1/2/3 + Model Economics)
   specification-engineer           -> docs/TDD.md (go/delta-squad-agent-specs Parts I-IV + Golden Dataset Eval Baseline)
+  stitch-design                    -> docs/STITCH_PROTOTYPE.md (3-stage prototyping, Delta Brand #13, Stitch MCP)
 
 Phase 2: Core Build & Bi-Weekly Demo Sprints (Weeks 3-10, four 2-week sprints, Demos 1-3)
-  stitch-design                    -> docs/STITCH_PROTOTYPE.md (3-stage prototyping, Delta Brand #13, Stitch MCP)
   claude-agent-harness             -> verified src/ & tests/ + .harness/last_run_report.json
   agent-load-testing               -> docs/LOAD_TEST_REPORT.md (sprints 3-4: fan-out math, 5x quota, Locust SSE)
   agent-eval-statistical-auditing  -> docs/EVAL_AUDIT_REPORT.md (sprints 3-4: 27 CLA criteria + 3 AUA pipelines)
@@ -73,16 +74,3 @@ Phase 3: Final Read-Out & Close (Weeks 11-12)
 | :--- | :--- | :--- | :--- | :--- |
 | **[stitch-design](prototyping/stitch-design/SKILL.md)** | Toolbox 13·15 | `docs/STITCH_PROTOTYPE.md` | [`stitch-mcp-workflow.md`](prototyping/stitch-design/references/stitch-mcp-workflow.md), [`ui-review-checklist.md`](prototyping/stitch-design/references/ui-review-checklist.md) | [`stitch-claims-portal-walkthrough.md`](prototyping/stitch-design/examples/stitch-claims-portal-walkthrough.md), [`agent-ops-console-prototype.md`](prototyping/stitch-design/examples/agent-ops-console-prototype.md) |
 | **[claude-agent-harness](ai-coding/claude-agent-harness/SKILL.md)** | TDL repo-native | Verified `src/`, `tests/`, `.harness/last_run_report.json` | [`call_opus_model_garden.py`](ai-coding/claude-agent-harness/scripts/call_opus_model_garden.py), [`harness-prompt-template.md`](ai-coding/claude-agent-harness/references/harness-prompt-template.md), [`pso-compliance-matrix.md`](ai-coding/claude-agent-harness/references/pso-compliance-matrix.md) | [`spec-to-production-code.md`](ai-coding/claude-agent-harness/examples/spec-to-production-code.md) |
-
----
-
-## When Is This Worth It? 3-Tier Engagement Sizing Matrix (`scripts/evaluate_1000x_personas.py`)
-
-Validated across **50 Enterprise Use Cases × 20 Customer Stakeholder Personas = 1,000 simulated engagements (`13,000` individual skill evaluations)** (`python3 scripts/evaluate_1000x_personas.py --strict`), `calculate_roi.py` automatically classifies every engagement into one of three execution modes in Week 0 so teams never over-engineer small bots or under-govern core builds:
-
-| Engagement Mode | Qualifying Criteria (`project_worth_verdict`) | Skills to Run | Effort (`Manual` $\rightarrow$ `Skill`) | 50-Use-Case Portfolio Economics |
-| :--- | :--- | :--- | :--- | :--- |
-| **1. Full 13-Skill 12-Week Delta Mode (`WORTH_IT_FULL_13_SKILL`)** | Core Tier 2 / Tier 3 multi-agent build; **Base & Bear 3-Year NPV > `$0`** and **Payback $\le 18$ mos** (`SOM >= 10,000` units/yr or high-value regulated workflows). | **All 13 Skills** (Prelude $\rightarrow$ Phase 1 $\rightarrow$ Phase 2 $\rightarrow$ Phase 3) | `470.0h` $\rightarrow$ **`73.5h`** (`396.5h` saved / `84.4%` TTM compression) | **40 / 50 Use Cases (80%)**: Mean Base 3-Yr NPV **`+$869,390`**, Mean Bear 3-Yr NPV **`+$205,498`**, Mean Payback **`5.7 mos`**, Token OpEx **`$4,855/yr`** (at 60% context cache). |
-| **2. Fast-Track 5-Skill Lite Mode (`WORTH_IT_FAST_TRACK_5_SKILL`)** | Departmental / Tier 1 Gemini Enterprise connector scope (`SOM ~2,500–5,000` units/yr) where a full 12-week `$160k+` CapEx would make Bear NPV negative (`-$228k`), but a **2-week lean sprint (15% CapEx/OpEx)** yields **Lite Base & Bear NPV > `$0`**. | **5 Skills Only:** `workshop-intake` $\rightarrow$ `create-delta-ucc` $\rightarrow$ `gcp-agent-architecture-advisor` (Tier 1) $\rightarrow$ `stitch-design` $\rightarrow$ `ai-value-sizing` | `110.0h` $\rightarrow$ **`18.5h`** (2-week TDL+FDE pair sprint) | **6 / 50 Use Cases (12%)**: Flips Bear-case 3-Yr NPV from **`-$228,092` (CFO Reject)** to **`+$9,985` (CFO Approve)**. |
-| **3. Prelude Gate-0 Stop / Kill (`KILL_OR_RE_SCOPE_AT_GATE_0`)** | Low volume (`SOM < 1,000`/yr) or unindexed/air-gapped data (`SCDF <= 0.20` — e.g., handwritten faxes, unscanned microfiche) where even Lite Mode has negative NPV. | **Stop after 2 Prelude Skills:** `workshop-intake` + `ai-value-sizing` | **`4.5h`** (Fail-fast in Week 0 before writing code) | **4 / 50 Use Cases (8%)**: Catches & kills unviable traps in Week 0, saving **`$230k–$260k` in wasted build CapEx per trap**. |
-

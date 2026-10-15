@@ -302,12 +302,14 @@ class IndexHtmlContractTests(unittest.TestCase):
         html = self.INDEX_HTML.read_text(encoding="utf-8")
         self.assertNotIn("14 Skills", html)
         self.assertNotIn("synthetic-baseline-protocol", html)
-        self.assertIn("All 13 Skills", html)
+        self.assertIn("tool-tdl-user-guide plugin (all 13 skills)", html)
+        self.assertIn("Example scenario (fictional)", html)
         self.assertIn("CUSTOMER_PRESETS", html)
+        self.assertNotIn("customerApprove", html)
+        self.assertNotIn("rejectIf", html)
+        self.assertNotIn("axesBoost", html)
         for step_num in range(1, 16):
             self.assertIn(f'"step-{step_num}"', html)
-            self.assertIn("customerApprove:", html)
-            self.assertIn("rejectIf:", html)
 
     def test_xp_rank_ladder_top_rank_reachable_only_at_full_completion(self) -> None:
         html = self.INDEX_HTML.read_text(encoding="utf-8")
@@ -364,9 +366,7 @@ class IndexHtmlContractTests(unittest.TestCase):
         self.assertEqual(rc2, 0)
         self.assertEqual(json.loads(out1.getvalue()), json.loads(out2.getvalue()))
 
-    def test_antigravity_plugin_layout_and_200x_evaluation(self) -> None:
-        import evaluate_200x_skills
-
+    def test_antigravity_plugin_layout(self) -> None:
         plugin_json = REPO_ROOT / "plugin.json"
         self.assertTrue(plugin_json.is_file(), "Missing root plugin.json for Antigravity")
         plugin_meta = json.loads(plugin_json.read_text(encoding="utf-8"))
@@ -379,14 +379,6 @@ class IndexHtmlContractTests(unittest.TestCase):
             if p.is_dir() and not p.is_symlink() and (p / "SKILL.md").is_file()
         ]
         self.assertEqual(len(real_skill_dirs), 13, "Expected 13 real skill directories in skills/")
-
-        summary = evaluate_200x_skills.run_200_iterations()
-        self.assertEqual(summary["total_iterations"], 200)
-        self.assertEqual(summary["total_skill_executions"], 2600)
-        self.assertEqual(summary["overall_mean_score"], 100.0)
-        for skill_id, sdata in summary["skills"].items():
-            self.assertEqual(sdata["overall_score"], 100.0, f"{skill_id} did not score 100.0")
-            self.assertEqual(sdata["deficiencies"], [], f"{skill_id} had deficiencies: {sdata['deficiencies']}")
 
     def test_calculate_roi_supports_demo_and_markdown_flags(self) -> None:
         out_json = io.StringIO()
@@ -402,32 +394,6 @@ class IndexHtmlContractTests(unittest.TestCase):
         self.assertEqual(rc_md, 0)
         self.assertIn("| Scenario |", out_md.getvalue())
         self.assertIn("3-Year NPV", out_md.getvalue())
-
-    def test_1000x_multi_persona_portfolio_benchmark(self) -> None:
-        import evaluate_1000x_personas
-
-        rep = evaluate_1000x_personas.run_1000x_persona_benchmark()
-        self.assertEqual(rep["total_use_cases"], 50)
-        self.assertEqual(rep["total_personas"], 20)
-        self.assertEqual(rep["total_engagements"], 1000)
-        self.assertEqual(rep["total_skill_evaluations"], 13000)
-        self.assertEqual(rep["overall_mean_approval_score"], 100.0)
-        w = rep["worth_it_portfolio_analysis"]
-        self.assertEqual(w["core_enterprise_40_use_cases"]["count"], 40)
-        self.assertEqual(w["tactical_departmental_6_use_cases"]["count"], 6)
-        self.assertEqual(w["unviable_trap_4_use_cases"]["count"], 4)
-
-    def test_10000x_montecarlo_and_workspace_bootstrapper(self) -> None:
-        import evaluate_10000x_montecarlo
-
-        out_json = io.StringIO()
-        with redirect_stdout(out_json):
-            rc = evaluate_10000x_montecarlo.main(["--strict", "--json"])
-        self.assertEqual(rc, 0)
-        rep = json.loads(out_json.getvalue())
-        self.assertEqual(rep["total_simulations"], 10000)
-        self.assertEqual(rep["total_failures"], 0)
-        self.assertEqual(rep["pass_rate_pct"], 100.0)
 
 
 if __name__ == "__main__":

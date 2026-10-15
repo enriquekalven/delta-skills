@@ -21,11 +21,9 @@ Turns requirements into one defensible tier choice plus the evidence behind it. 
 
 | Attribute | Specification |
 | :--- | :--- |
-| **Engagement Phase & Timebox** | **Phase 1 Foundations (Weeks 1–2):** 3.0-hour architecture tier selection & ARB review |
-| **Time-to-Market (TTM) Compression** | **20.0h manual $\rightarrow$ 3.0h skill-guided (`85.0%` faster architecture decision & launch-stage verification)** |
+| **Engagement Phase & Timebox** | **Phase 1 Foundations (Weeks 1–2)** |
 | **Reads (Inputs)** | `docs/PRD.md`, `docs/WORKSHOP_INTAKE.md` (plus [`references/model-economics-config.json`](references/model-economics-config.json)) |
 | **Writes (Outputs)** | `docs/ARCHITECTURE_RECOMMENDATION.md` |
-| **Value Realization Linkage** | Prevents over-engineering OpEx (picks lowest ops-burden tier meeting hard constraints) and optimizes token unit economics via frontier/flash routing splits |
 
 ---
 
@@ -85,17 +83,7 @@ Include all 7 sections: `1. Recommendation`, `2. Constraints -> decision`, `3. A
 
 ---
 
-## 4. Customer Sign-Off & Quality Gate
-
-| Gate Criterion | Approve When | Reject If |
-| :--- | :--- | :--- |
-| **Constraint-to-Tier Traceability** | Every tier selection (`Tier 1`, `Tier 2`, or `Tier 3`) cites exact lines from `docs/PRD.md` and `docs/WORKSHOP_INTAKE.md`. | Picks Tier 3 "for flexibility" without a documented hard constraint or picks Tier 1 when custom write tools are required. |
-| **Verified Launch Stages** | Every stack component lists its verified launch stage (`GA` / `Preview` / `UNVERIFIED`), official doc URL, date checked, and production suitability. | Assert launch stages from memory without URLs/dates or deploys unapproved Preview components to production. |
-| **Perimeter & Token Economics** | Includes trust-boundary topology (VPC-SC, IAM principals, CMEK) and token cost routing from `model-economics-config.json`. | Omits IAM least-privilege boundaries or ignores per-turn token cost drivers. |
-
----
-
-## 5. References & Worked Example
+## 4. References & Worked Example
 
 - [Model Economics & Routing Reference (`model-economics-config.json`)](references/model-economics-config.json): Per-1M-token pricing, context window, latency, and downsampling split benchmarks across frontier and fast model tiers.
 - [Worked Example: Commercial Auto Claims FNOL Architecture Recommendation](examples/architecture-recommendation-example.md): Complete `docs/ARCHITECTURE_RECOMMENDATION.md` showing constraint-to-tier traceability, Tier 1–3 comparison, verified GA launch stages, VPC-SC Mermaid topology, and least-privilege IAM specification.

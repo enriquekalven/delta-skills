@@ -45,7 +45,7 @@ Maps proposed AI solutions directly to the L1–L5 CUJ Hierarchy from Template 2
 
 | Business Outcome (L1) | Process Stage (L2) | CUJ Goal Shorthand (L3a) | Task (L4 — Verb + Noun) | Step (L5 — User Action) | Proposed AI Touchpoint Description | AI Core Effect | Standardized AI Intent | Capabilities & Dependencies | HITL Role & Governance |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `<Outcome>` | `<Stage>` | `<Goal Shorthand>` | `<Task>` | `<Step>` | `<How AI transforms this step>` | `<Replace \| Augment \| Remove \| Add to \| Integrate with>` | `<Retrieve \| Execute \| Transform \| Analyze \| Answer \| Summarize \| Route \| Monitor>` | `<Required APIs, RAG corpora, ontologies, schemas>` | `<Reviewer \| Prompt Curator \| Approver>` (`<Exact human sign-off check>`) |
+| `<Outcome>` | `<Stage>` | `<Goal Shorthand>` | `<Task>` | `<Step>` | `<How AI transforms this step>` | `<Replace \| Augment \| Remove \| Add to \| Integrate with>` | `<Answer \| Retrieve \| Get insights \| Visualize \| Route \| Execute \| Analyze \| Diagnose \| Prioritize \| Guide \| Transform \| Summarize \| Create \| Plan>` | `<Required APIs, RAG corpora, ontologies, schemas>` | `<Reviewer \| Prompt Curator \| Approver>` (`<Exact human sign-off check>`) |
 
 ---
 
