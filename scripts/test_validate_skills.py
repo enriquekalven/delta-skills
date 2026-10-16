@@ -203,6 +203,38 @@ class CalculateRoiTests(unittest.TestCase):
             payload["scenarios"]["bull"]["npv_3yr_usd"],
         )
 
+    def test_bear_scdf_floor_and_non_labor_benefit_and_ramp(self) -> None:
+        # When Base SCDF is < 0.40 (e.g. 0.25), Bear must not exceed Base
+        low_scdf = calculate_roi.compute_sizing_and_roi(
+            tam_units=10000,
+            sam_share=0.5,
+            adoption_rate=0.3,
+            tech_compat=1.0,
+            hours_saved_per_unit=1.0,
+            hourly_rate_usd=100.0,
+            capex_usd=50000,
+            annual_opex_usd=10000,
+            vcr=0.5,
+            scdf=0.25,
+            annual_non_labor_benefit_usd=50000.0,
+            year1_ramp=0.5,
+        )
+        base_sc = low_scdf["scenarios"]["base"]  # type: ignore[index]
+        bear_sc = low_scdf["scenarios"]["bear"]  # type: ignore[index]
+        self.assertEqual(bear_sc["scdf"], 0.25)
+        self.assertLessEqual(bear_sc["npv_3yr_usd"], base_sc["npv_3yr_usd"])
+        self.assertAlmostEqual(
+            base_sc["annual_net_cashflow_usd"],
+            base_sc["net_annual_value_usd"] - 10000.0,
+            places=2,
+        )
+        # With year1_ramp=0.5, 3-year benefit is 2.5x steady-state annual benefit
+        self.assertAlmostEqual(
+            base_sc["net_3yr_value_usd"],
+            2.5 * base_sc["net_annual_value_usd"],
+            places=2,
+        )
+
 
 class CalculateAgentQuotasTests(unittest.TestCase):
     EXAMPLE = REPO_ROOT / "delivery" / "agent-load-testing" / "examples" / "clinical-search-load-test-report.md"

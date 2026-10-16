@@ -38,9 +38,10 @@ This skill maps a proposed AI use case to measurable value pillars, narrows the 
 | **Value Capture Rate (`VCR`)** | `0.25` (25%) | Task automation where headcount is unchanged and freed time is reallocated | **Base:** user `--vcr` · **Bull:** $\min(1.0, 1.5 \times \text{VCR})$ · **Bear:** user `--vcr` |
 | **Value Capture Rate (`VCR`)** | `0.50` (50%) | Revenue-generating or overflow/TPA/overtime-avoidance workflows | Same as above (or weighted blend, e.g., `0.5912`) |
 | **Value Capture Rate (`VCR`)** | `1.00` (100%) | Hard vendor contract elimination or hard headcount reduction | Capped at `1.00` in Bull scenario |
-| **Systemic Capability Discount (`SCDF`)** | `0.40` / `0.85` / `1.20` | `0.40` low maturity (silos) · `0.85` average enterprise · `1.20` high maturity (CI/CD + MCP primitives) | **Base:** user `--scdf` · **Bull:** $\min(1.2, 1.2 \times \text{SCDF})$ · **Bear:** `0.40` |
+| **Systemic Capability Discount (`SCDF`)** | `0.40` / `0.85` / `1.20` | `0.40` low maturity (silos) · `0.85` average enterprise · `1.20` high maturity (CI/CD + MCP primitives) | **Base:** user `--scdf` · **Bull:** $\min(1.2, 1.2 \times \text{SCDF})$ · **Bear:** $\min(\text{SCDF}, 0.40)$ |
 
-3. **Deterministic Math via Script:** Do not estimate ROI/NPV in prose. Run [`scripts/calculate_roi.py`](scripts/calculate_roi.py) and embed the exact numbers and CLI command in `docs/VALUE_SIZING.md`.
+3. **Distinguish Pre-OpEx Benefit from Post-OpEx Net Cash Flow:** `calculate_roi.py` reports both **Risk-Adjusted Annual Benefit (`net_annual_value_usd`, post-VCR/SCDF, pre-OpEx)** and **Annual Net Cash Flow (`annual_net_cashflow_usd = net_annual_value_usd - annual_opex_usd`)** so CFO tables reconcile cleanly against 3-Year TCO, NPV, and Payback.
+4. **Deterministic Math via Script:** Do not estimate ROI/NPV in prose. Run [`scripts/calculate_roi.py`](scripts/calculate_roi.py) (using `--annual-non-labor-benefit` for rework/error/revenue levers and `--year1-ramp` if Year 1 rollout is partial) and embed the exact numbers and CLI command in `docs/VALUE_SIZING.md`.
 
 ---
 
@@ -57,7 +58,8 @@ This skill maps a proposed AI use case to measurable value pillars, narrows the 
 1. Itemize **Year 0 CapEx** (engineering build, integrations, security/eval setup) and **Annual OpEx** (model tokens/compute, storage, maintenance at >=15% of CapEx).
 2. Run [`scripts/calculate_roi.py`](scripts/calculate_roi.py):
    ```bash
-   # Run with custom engagement parameters (add --markdown for a Markdown table):
+   # Run with custom engagement parameters (add --markdown for a Markdown table,
+   # --annual-non-labor-benefit for error/rework/revenue USD, or --year1-ramp for Year-1 ramp):
    python3 skills/ai-value-sizing/scripts/calculate_roi.py \
      --tam-units 80000 \
      --sam-share 0.625 \
@@ -77,5 +79,5 @@ This skill maps a proposed AI use case to measurable value pillars, narrows the 
 
 ## Scripts & Examples
 
-- [Deterministic ROI & Sizing Calculator](scripts/calculate_roi.py): Zero-dependency Python CLI computing SOM, 3-Year TCO, Net Value, ROI %, NPV, and payback across Base/Bull/Bear scenarios (`--demo` and `--markdown` supported).
+- [Deterministic ROI & Sizing Calculator](scripts/calculate_roi.py): Zero-dependency Python CLI computing SOM, 3-Year TCO, Risk-Adjusted Benefit, Post-OpEx Net Cash Flow, ROI %, NPV, and payback across Base/Bull/Bear scenarios (`--demo`, `--markdown`, `--annual-non-labor-benefit`, and `--year1-ramp` supported).
 - [Worked Example: Commercial Auto Claims Triage Value Sizing](examples/claims-triage-value-sizing.md): Complete `docs/VALUE_SIZING.md` deliverable tied to `docs/as_is_report.md` and verified by `calculate_roi.py`.

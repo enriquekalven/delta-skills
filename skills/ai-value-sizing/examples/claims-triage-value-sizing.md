@@ -40,7 +40,8 @@ Automating commercial auto First Notice of Loss (FNOL) document extraction and a
   - 50% of saved adjuster capacity converts directly into avoided external TPA (Third-Party Administrator) overflow fees during storm surges + reduced subrogation leakage; remaining time is task productivity.
 - **Systemic Capability Discount Factor (SCDF = 0.85):**
   - Standard enterprise maturity (CI/CD and Guidewire APIs exist, 15% friction discount for exception queues).
-- **Net Annual Capturable Value (Base Case):** `$630,000 × 0.5912 × 0.85 = $316,588 / yr` (`$949,763` over 3 years).
+- **Risk-Adjusted Annual Benefit (Base Case, Pre-OpEx):** `$630,000 × 0.5912 × 0.85 = $316,588 / yr` (`$949,763` over 3 years).
+- **Annual Net Cash Flow (Base Case, Post-OpEx):** `$316,588 - $68,000 = $248,588 / yr` (`$565,763` net 3-year benefit after subtracting `$384,000` 3-Year TCO).
 
 ---
 
@@ -49,7 +50,7 @@ Automating commercial auto First Notice of Loss (FNOL) document extraction and a
 Verified with [`scripts/calculate_roi.py`](../scripts/calculate_roi.py):
 
 ```bash
-python3 ai-value-sizing/scripts/calculate_roi.py \
+python3 skills/ai-value-sizing/scripts/calculate_roi.py \
   --tam-units 80000 \
   --sam-share 0.625 \
   --adoption-rate 0.30 \
@@ -63,8 +64,8 @@ python3 ai-value-sizing/scripts/calculate_roi.py \
   --wacc 0.10
 ```
 
-| Scenario | VCR | SCDF | Net Annual Value | 3-Year Net Value | 3-Year TCO | 3-Year ROI % | 3-Year NPV @ 10% | Payback |
-|---|---|---|---|---|---|---|---|---|
-| **Base Case (Target)** | 59.1% | 0.85 | **$316,588** | **$949,763** | $384,000 | **+147.3%** | **$438,201** | **8.7 mos** |
-| **Bull Case (Full TPA Offload)** | 88.7% | 1.02 | **$569,858** | **$1,709,573** | $384,000 | **+345.2%** | **$1,068,046** | **4.3 mos** |
-| **Bear Case (Low Maturity / High Friction)** | 59.1% | 0.40 | **$148,982** | **$446,947** | $384,000 | **+16.4%** | **$21,391** | **26.7 mos** |
+| Scenario | VCR | SCDF | Risk-Adj Annual Benefit (Pre-OpEx) | Annual Net Cash Flow (Post-OpEx) | 3-Year Risk-Adj Benefit | 3-Year TCO | 3-Year ROI % | 3-Year NPV @ 10% | Payback |
+|---|---|---|---|---|---|---|---|---|---|
+| **Base Case (Target)** | 59.1% | 0.85 | **$316,588** | $248,588 | **$949,763** | $384,000 | **+147.3%** | **$438,201** | **8.7 mos** |
+| **Bull Case (Full TPA Offload)** | 88.7% | 1.02 | **$569,858** | $501,858 | **$1,709,573** | $384,000 | **+345.2%** | **$1,068,046** | **4.3 mos** |
+| **Bear Case (Low Maturity / High Friction)** | 59.1% | 0.40 | **$148,982** | $80,982 | **$446,947** | $384,000 | **+16.4%** | **$21,391** | **26.7 mos** |

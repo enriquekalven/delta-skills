@@ -14,7 +14,7 @@ metadata:
 
 You delegate implementation work to Claude on **Vertex AI Model Garden** through a **goal loop**, never through a single API call.
 
-Every run is bound by a **Goal Contract**: an objective plus executable acceptance commands. The harness gives Claude sandboxed tools (`list_files`, `read_file`, `write_file`, `replace_in_file`, `run_verification`, `declare_goal_complete`). Claude keeps iterating until every acceptance command exits `0`. The harness **re-runs verification itself** before it accepts completion, and rejects completions whose files contain placeholder markers.
+Every run is bound by a **Goal Contract**: an objective plus executable acceptance commands. The harness gives Claude sandboxed tools (`list_files`, `read_file` with optional `start_line`/`end_line`, `grep_search`, `write_file`, `replace_in_file`, `run_verification`, `declare_goal_complete`). Claude keeps iterating until every acceptance command exits `0`. The harness **re-runs verification itself** before it accepts completion, rejects completions whose files contain placeholder markers, and enforces cryptographic SHA-256 guards on any `--protect` files (such as test suites).
 
 ---
 
@@ -25,7 +25,7 @@ Every run is bound by a **Goal Contract**: an objective plus executable acceptan
 | **Engagement Phase & Timebox** | **Phase 2 Core Build & Sprints 1–4 (Weeks 3–10):** Autonomous goal-loop build per feature ticket |
 | **Reads (Inputs)** | `docs/PRD.md`, `docs/TDD.md` (passed via repeatable `--spec` flags) |
 | **Writes (Outputs)** | Verified `src/`, `tests/`, and `.harness/last_run_report.json` (`status: "goal_met"`) |
-| **Primary CLI Command** | `python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --spec docs/PRD.md --spec docs/TDD.md --workspace . --verify "python3 -m pytest -q" --dry-run` |
+| **Primary CLI Command** | `python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py --spec docs/PRD.md --spec docs/TDD.md --workspace . --verify "python3 -m pytest -q" --protect "tests/*" --dry-run` |
 
 ---
 
@@ -34,7 +34,7 @@ Every run is bound by a **Goal Contract**: an objective plus executable acceptan
 1. **Always goal mode.** Never call the model once and paste its output. The script has no single-shot mode, so don't build one around it.
 2. **No Goal Contract, no run.** Every run needs at least one `--verify` command. If you can't write an executable acceptance check, clarify the requirement with the user first.
 3. **Don't stop until the goal is met or the budget runs out.** You, the host agent, must not end your turn on a partial result. Re-run or fix directly until acceptance passes, or report honestly why it can't (see Phase 4).
-4. **Trust but verify.** Re-run the acceptance commands yourself after the harness exits, and review the diff. The harness blocks placeholders but can't tell whether a test was weakened.
+4. **Trust but verify.** Protect pre-existing acceptance tests with `--protect "tests/*"` (or `--protect "test_*.py"`), re-run the acceptance commands yourself after the harness exits, and review the diff.
 5. **Long runs:** for multi-hour work, suggest the user start the task with **`/goal`** so the session keeps going until the contract is met.
 
 ---
@@ -48,6 +48,7 @@ Read the spec (`docs/PRD.md`, `docs/TDD.md`, or the user's prompt) and write the
 | **Objective** | One paragraph: what must exist when the goal is met |
 | **Workspace** | The directory Claude may read and write (the sandbox root) |
 | **Acceptance commands** | 2–5 commands mapped to the 4 verification tiers (below). Each is its own `--verify` |
+| **Protected files** | Optional `--protect` globs (e.g., `tests/*`) snapshotted with SHA-256 so tests cannot be weakened |
 | **Budget** | `--max-turns` (default 40) and `--token-budget` (default 2M tokens) |
 
 **Map the 4 verification tiers to the project's stack:**
@@ -60,7 +61,7 @@ Read the spec (`docs/PRD.md`, `docs/TDD.md`, or the user's prompt) and write the
 | 4. Tests | `python3 -m pytest -q` | `npm test --silent` |
 
 > [!IMPORTANT]
-> Acceptance commands run **without a shell**. `&&`, pipes and redirects are rejected. Pass each check as its own `--verify` flag. Acceptance tests should exist **before** the run, written by you or the user from the spec, so Claude can't define its own finish line.
+> Acceptance commands run **without a shell**. `&&`, pipes and redirects are rejected. Pass each check as its own `--verify` flag. Acceptance tests should exist **before** the run, written by you or the user from the spec, and locked with `--protect` so Claude can't redefine its own finish line.
 
 ---
 
@@ -71,6 +72,7 @@ python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py \
   --spec docs/PRD.md \
   --spec docs/TDD.md \
   --workspace . \
+  --protect "tests/*" \
   --verify "python3 -m compileall -q src" \
   --verify "ruff check src tests" \
   --verify "mypy --strict src" \
@@ -81,6 +83,7 @@ python3 skills/claude-agent-harness/scripts/call_opus_model_garden.py \
 Other entry points:
 - `--goal "<objective>"`: prompt-driven goal instead of or alongside `--spec`.
 - `--review src/module.py --goal "Harden for input validation and timeouts"`: harden a workspace file in place until acceptance passes.
+- `--protect "<glob>"`: repeatable file path or glob pattern (e.g. `tests/*` or `test_*.py`) that `write_file`/`replace_in_file` cannot modify and whose SHA-256 hashes are verified before completion is accepted.
 - `--dry-run`: validate the Goal Contract, spec files, and `--verify` command parsing offline before invoking Vertex AI. It reports `status: "dry_run_ok"` with `goal_met: false`, because no model call is made and no acceptance command is executed.
 - `--model` (default `claude-sonnet-5-5` or `CLAUDE_MODEL_NAME`; also supports `claude-opus-5-5` / `claude-opus-5` on Vertex AI Model Garden), `--region` (default `global` or `CLOUD_ML_REGION`), `--project`, `--max-turns`, `--token-budget`, `--max-tokens`, `--verify-timeout`, `--temperature`.
 

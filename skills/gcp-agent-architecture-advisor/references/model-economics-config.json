@@ -1,6 +1,7 @@
 {
   "_meta": {
-    "description": "Google Cloud Vertex AI & Model Garden reference pricing, capabilities, and routing config for TDL architecture sizing (docs/ARCHITECTURE_RECOMMENDATION.md and docs/VALUE_SIZING.md). Always verify live regional rates and publisher model IDs in the GCP Console (Vertex AI -> Model Garden) and cloud.google.com/vertex-ai/generative-ai/pricing before locking a customer TCO table.",
+    "description": "Internal planning baseline for Google Cloud Vertex AI & Model Garden token economics and cascaded routing (used by gcp-agent-architecture-advisor and ai-value-sizing).",
+    "customer_facing_rule": "NEVER copy static rates or internal/unreleased model identifiers (such as argon) into a customer-facing deliverable without first verifying live public SKU availability, launch stage (GA vs. Preview), and regional pricing at cloud.google.com/vertex-ai/generative-ai/pricing.",
     "last_updated": "2026-10-15",
     "update_frequency": "quarterly or on Vertex AI / Model Garden updates",
     "currency": "USD",

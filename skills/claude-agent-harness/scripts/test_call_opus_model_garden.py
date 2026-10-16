@@ -114,6 +114,38 @@ class WorkspaceSandboxTests(unittest.TestCase):
         self.assertEqual(len(findings), 1)
         self.assertTrue(findings[0].startswith("bad.py:2"))
 
+    def test_replace_in_file_on_large_file_over_200kb_does_not_corrupt(self) -> None:
+        padding = "# " + ("x" * 98) + "\n"
+        big_content = (padding * 2100) + "TARGET_VALUE = 1\n"
+        self.assertGreater(len(big_content.encode("utf-8")), harness.MAX_READ_BYTES)
+        self.ws.write_file("large.py", big_content)
+        self.ws.replace_in_file("large.py", "TARGET_VALUE = 1", "TARGET_VALUE = 2")
+        _, full_after = self.ws._read_full_text("large.py")
+        self.assertTrue(full_after.endswith("TARGET_VALUE = 2\n"))
+        self.assertNotIn("truncated", full_after)
+
+    def test_read_file_line_slice_and_grep_search(self) -> None:
+        content = "\n".join(f"line_{i} = {i}" for i in range(1, 21)) + "\n"
+        self.ws.write_file("lines.py", content)
+        sliced = self.ws.read_file("lines.py", start_line=5, end_line=7)
+        self.assertEqual(sliced, "line_5 = 5\nline_6 = 6\nline_7 = 7\n")
+        grep_out = self.ws.grep_search("line_15", rel_path=".")
+        self.assertIn("lines.py:15: line_15 = 15", grep_out)
+
+    def test_protected_files_block_writes_and_detect_tampering(self) -> None:
+        test_path = os.path.join(self.root, "test_calc.py")
+        with open(test_path, "w", encoding="utf-8") as handle:
+            handle.write("assert True\n")
+        protected_ws = harness.Workspace(self.root, protected_globs=("test_*.py",))
+        with self.assertRaises(harness.WorkspaceError):
+            protected_ws.write_file("test_calc.py", "assert True  # weakened\n")
+        with self.assertRaises(harness.WorkspaceError):
+            protected_ws.replace_in_file("test_calc.py", "True", "1 == 1")
+        self.assertEqual(protected_ws.protected_violations(), [])
+        with open(test_path, "w", encoding="utf-8") as handle:
+            handle.write("assert False\n")
+        self.assertEqual(len(protected_ws.protected_violations()), 1)
+
 
 class VerifyCommandTests(unittest.TestCase):
     def test_rejects_shell_operators(self) -> None:
