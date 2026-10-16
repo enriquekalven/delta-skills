@@ -465,6 +465,36 @@ class IndexHtmlContractTests(unittest.TestCase):
         self.assertIn("| Scenario |", out_md.getvalue())
         self.assertIn("3-Year NPV", out_md.getvalue())
 
+    def test_all_50_presets_have_tailored_archetypes_and_valid_step_mappings(self) -> None:
+        html = self.INDEX_HTML.read_text(encoding="utf-8")
+        self.assertIn("var ARCHETYPES = {", html)
+        self.assertIn('id="presetProfileBox"', html)
+        self.assertIn('id="hideSkippedToggle"', html)
+
+        presets_block = html[html.index("var CUSTOMER_PRESETS = ["):html.index("var STAGES = [")]
+        archetypes = re.findall(r'\barchetype:\s*"([^"]+)"', presets_block)
+        compliances = re.findall(r'\bcompliance:\s*"([^"]+)"', presets_block)
+        focuses = re.findall(r'\bfocus:\s*"([^"]+)"', presets_block)
+        qts = [int(x) for x in re.findall(r'\bqt:\s*(\d+)', presets_block)]
+        cqs = [int(x) for x in re.findall(r'\bcq:\s*(\d+)', presets_block)]
+        toks = [int(x) for x in re.findall(r'\btokensPerCall:\s*(\d+)', presets_block)]
+
+        self.assertEqual(len(archetypes), 50, "All 50 presets must declare an archetype")
+        self.assertEqual(len(compliances), 50, "All 50 presets must declare a compliance regime")
+        self.assertEqual(len(focuses), 50, "All 50 presets must declare a tailored domain focus")
+        self.assertEqual(len(qts), 50)
+        self.assertEqual(len(cqs), 50)
+        self.assertEqual(len(toks), 50)
+        self.assertEqual(
+            set(archetypes),
+            {"tier1-nocode", "tier2-headless", "tier2-workbench", "tier3-regulated"},
+        )
+        self.assertEqual(archetypes.count("tier1-nocode"), 6)
+        self.assertEqual(archetypes.count("tier2-headless"), 12)
+        self.assertEqual(archetypes.count("tier2-workbench"), 19)
+        self.assertEqual(archetypes.count("tier3-regulated"), 13)
+
 
 if __name__ == "__main__":
     unittest.main()
+
