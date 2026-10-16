@@ -85,19 +85,19 @@ Skills communicate through explicit markdown and JSON artifacts in the customer 
 customer-engagement-repo/
 ├── STATE.md                              # Written & updated by tdl-field-guide (gates, sprints, dual RAID logs)
 ├── docs/
-│   ├── WORKSHOP_INTAKE.md                # Written by workshop-intake (32 Starter Qs + Available/Usable/Quality Data Yardstick)
-│   ├── USE_CASE_CANVAS.md                # Written by create-delta-ucc (4-Tab UCC + MVP Alignment Summary)
+│   ├── WORKSHOP_INTAKE.md                # Written by workshop-intake (Discovery Qs + Available/Usable/Quality Data Yardstick)
+│   ├── USE_CASE_CANVAS.md                # Written by create-delta-ucc (Use Case Canvas + MVP Alignment Summary)
 │   ├── as_is_report.md                   # Written by business-process-redesign (Task decomposition + operational baseline)
 │   ├── to_be_designs.md                  # Written by business-process-redesign (L1/L2/L3 agent workflow)
 │   ├── human_agent_roles.md              # Written by business-process-redesign (HITL & escalation matrix)
-│   ├── CUJ_MAP.md                        # Written by cuj-architect (4-Tab Ethnography, L1-L5 CUJs, 0.6V+0.4F)
-│   ├── PRD.md                            # Written by product-md (8-section Agentic PRD + prompt/eval specs)
+│   ├── CUJ_MAP.md                        # Written by cuj-architect (Ethnography, L1-L5 CUJs, 0.6V+0.4F)
+│   ├── PRD.md                            # Written by product-md (Agentic PRD + RICE & eval specs)
 │   ├── ARCHITECTURE_RECOMMENDATION.md    # Written by gcp-agent-architecture-advisor (Tier 1/2/3 + model economics)
-│   ├── TDD.md                            # Written by specification-engineer (Parts I-IV + Golden Dataset baseline evals)
-│   ├── STITCH_PROTOTYPE.md               # Written by stitch-design (3-stage prototyping + Delta Brand #13 + Stitch MCP)
+│   ├── TDD.md                            # Written by specification-engineer (Agent Technical Spec + Golden Dataset baseline evals)
+│   ├── STITCH_PROTOTYPE.md               # Written by stitch-design (Rapid prototyping + Delta Brand #13 + Stitch MCP)
 │   ├── DEMO_FRAME_UP.md                  # Written by tdl-field-guide (Pillar / Feature ID / Demo 1-2-3 matrix)
 │   ├── LOAD_TEST_REPORT.md               # Written by agent-load-testing (fan-out math, 5x quota, Locust SSE)
-│   ├── EVAL_AUDIT_REPORT.md              # Written by agent-eval-statistical-auditing (27 CLA + 3 AUA pipelines)
+│   ├── EVAL_AUDIT_REPORT.md              # Written by agent-eval-statistical-auditing (CLA + AUA pipelines)
 │   └── VALUE_SIZING.md                   # Written by ai-value-sizing (Phase 1 projection & Phase 3 measured ROI vs. baseline)
 └── .harness/
     └── last_run_report.json              # Written by claude-agent-harness goal loop
@@ -114,11 +114,11 @@ Before committing a squad or starting the 12-week clock, qualify the candidate u
 
 1. **Capture Discovery Notes & Score the Data Yardstick (`workshop-intake`):**
    - **Read:** [`workshop-intake/SKILL.md`](workshop-intake/SKILL.md)
-   - **Action:** Run the **32 Starter Questions** across the 5 official buckets and score the **Data Readiness Yardstick** (`Available`, `Usable`, `Quality`).
+   - **Action:** Run the discovery starter questions across the 5 official buckets and score the **Data Readiness Yardstick** (`Available`, `Usable`, `Quality`).
    - **Output:** `docs/WORKSHOP_INTAKE.md` (see example: [`acme-financial-workshop-intake.md`](workshop-intake/examples/acme-financial-workshop-intake.md)).
 2. **Prioritize Use Cases & Lock the MVP Alignment Summary (`create-delta-ucc`):**
    - **Read:** [`usecase-canvas/create-delta-ucc/SKILL.md`](usecase-canvas/create-delta-ucc/SKILL.md)
-   - **Action:** Score candidate initiatives across the 4-Tab Use Case Canvas and produce the **Use Case Alignment Summary Document** (`Must-Haves vs. Okay for Slippage`, `Before/After CUJ Flowchart`, `Eval Round 1 vs. Round 2 Scope`, `Solution Inputs/Outputs`, `Evaluation Approach`).
+   - **Action:** Score candidate initiatives across the Use Case Canvas and produce the **Use Case Alignment Summary Document** (`Must-Haves vs. Okay for Slippage`, `Before/After CUJ Flowchart`, `Eval Round 1 vs. Round 2 Scope`, `Solution Inputs/Outputs`, `Evaluation Approach`).
    - **Output:** `docs/USE_CASE_CANVAS.md` (see example: [`customer-onboarding-ucc.md`](usecase-canvas/create-delta-ucc/examples/customer-onboarding-ucc.md)).
 3. **Initialize Engagement Governance (`tdl-field-guide`):**
    - **Read:** [`delivery/tdl-field-guide/SKILL.md`](delivery/tdl-field-guide/SKILL.md)
@@ -127,16 +127,16 @@ Before committing a squad or starting the 12-week clock, qualify the candidate u
 ---
 
 ### Phase 1: Foundations — Ethnography, Golden Dataset Eval Baseline, PRD & Architecture (Weeks 1–2)
-Deconstruct the current manual workflow, establish baseline evaluation metrics on the curated Golden Dataset, lock the Agentic PRD, and complete the 4-part Technical Specification before writing production code.
+Deconstruct the current manual workflow, establish baseline evaluation metrics on the curated Golden Dataset, lock the Agentic PRD, and complete the Technical Specification before writing production code.
 
 1. **Deconstruct the "As-Is" Workflow & Design the "To-Be" Agent Process (`business-process-redesign`):**
    - **Read:** [`business-process-redesign/SKILL.md`](business-process-redesign/SKILL.md)
    - **Output:** `docs/as_is_report.md`, `docs/to_be_designs.md`, and `docs/human_agent_roles.md` (see examples: [`as_is_report.md`](business-process-redesign/examples/as_is_report.md), [`to_be_designs.md`](business-process-redesign/examples/to_be_designs.md), [`human_agent_roles.md`](business-process-redesign/examples/human_agent_roles.md)).
 2. **Map L1–L5 Critical User Journeys & AI Touchpoints (`cuj-architect`):**
    - **Read:** [`cuj-architect/SKILL.md`](cuj-architect/SKILL.md)
-   - **Action:** Complete the 4-tab CUJ workbook structure (Ethnography $\rightarrow$ L1–L5 Journey Hierarchy $\rightarrow$ Future-State AI Touchpoint Taxonomy $\rightarrow$ Prioritization Matrix scored by `Priority = 0.6 × Value + 0.4 × Feasibility`).
+   - **Action:** Complete the CUJ workbook structure (Ethnography $\rightarrow$ L1–L5 Journey Hierarchy $\rightarrow$ Future-State AI Touchpoint Taxonomy $\rightarrow$ Prioritization Matrix scored by `Priority = 0.6 × Value + 0.4 × Feasibility`).
    - **Output:** `docs/CUJ_MAP.md` (see examples: [`supplier-rate-audit-cuj.md`](cuj-architect/examples/supplier-rate-audit-cuj.md), [`cloud-support-triage-cuj.md`](cuj-architect/examples/cloud-support-triage-cuj.md)).
-3. **Author the 8-Section Agentic PRD & Phase 1 ROI Projection (`product-md` + `ai-value-sizing`):**
+3. **Author the Agentic PRD & Phase 1 ROI Projection (`product-md` + `ai-value-sizing`):**
    - **Read:** [`product-management/product-md/SKILL.md`](product-management/product-md/SKILL.md) and [`ai-value-sizing/SKILL.md`](ai-value-sizing/SKILL.md)
    - **Output:** `docs/PRD.md` following `go/delta-prd-template` and `docs/VALUE_SIZING.md` Phase 1 projection (see examples: [`ask-it-service-desk-prd.md`](product-management/product-md/examples/ask-it-service-desk-prd.md), [`enterprise-claims-agent-prd.md`](product-management/product-md/examples/enterprise-claims-agent-prd.md), [`claims-triage-value-sizing.md`](ai-value-sizing/examples/claims-triage-value-sizing.md)).
 4. **Select the GCP Agent Architecture Tier (`gcp-agent-architecture-advisor`):**
@@ -145,11 +145,11 @@ Deconstruct the current manual workflow, establish baseline evaluation metrics o
    - **Output:** `docs/ARCHITECTURE_RECOMMENDATION.md` (see example: [`architecture-recommendation-example.md`](delivery/gcp-agent-architecture-advisor/examples/architecture-recommendation-example.md)).
 5. **Rapid UI Prototyping & Brand Alignment (`stitch-design`):**
    - **Read:** [`prototyping/stitch-design/SKILL.md`](prototyping/stitch-design/SKILL.md)
-   - **Action:** Execute the 3-stage prototyping workflow (7-step hypothesis-to-mini-eval loop + Stitch MCP screen generation) using Delta Brand & Material 3 tokens (`Toolbox #13`: `#4285F4`, `#34A853`, `#FBBC04`, `#EA4335`, Google Sans / Roboto / Roboto Mono) and audit against [`ui-review-checklist.md`](prototyping/stitch-design/references/ui-review-checklist.md).
+   - **Action:** Execute the prototyping workflow (hypothesis-to-mini-eval loop + Stitch MCP screen generation) using Delta Brand & Material 3 tokens (`Toolbox #13`: `#4285F4`, `#34A853`, `#FBBC04`, `#EA4335`, Google Sans / Roboto / Roboto Mono) and audit against [`ui-review-checklist.md`](prototyping/stitch-design/references/ui-review-checklist.md).
    - **Output:** `docs/STITCH_PROTOTYPE.md` (see examples: [`stitch-claims-portal-walkthrough.md`](prototyping/stitch-design/examples/stitch-claims-portal-walkthrough.md), [`agent-ops-console-prototype.md`](prototyping/stitch-design/examples/agent-ops-console-prototype.md)).
-6. **Write the 4-Part Agent Technical Specification & Establish Golden Dataset Baseline Metrics (`specification-engineer`):**
+6. **Write the Agent Technical Specification & Establish Golden Dataset Baseline Metrics (`specification-engineer`):**
    - **Read:** [`utils/specification-engineer/SKILL.md`](utils/specification-engineer/SKILL.md)
-   - **Action:** Document Parts I–IV (`Project Context`, `Use Case Specification`, `Platform Infrastructure & Developer Clearance`, `Deep-Dive Agent Technical Specifications`) and the 4 Pillars per `go/delta-squad-agent-specs`, establishing the baseline evaluation metrics on the curated Golden Dataset (`Part IV`) as the north star for all implementation sprints.
+   - **Action:** Document `Project Context`, `Use Case Specification`, `Platform Infrastructure & Developer Clearance`, and `Deep-Dive Agent Technical Specifications` across BUILD, SCALE, GOVERN, and OPTIMIZE per `go/delta-squad-agent-specs`, establishing the baseline evaluation metrics on the curated Golden Dataset as the north star for all implementation sprints.
    - **Output:** `docs/TDD.md` (see examples: [`broadcast-asset-buddy-agent-specs.md`](utils/specification-engineer/examples/broadcast-asset-buddy-agent-specs.md), [`claims-extraction-service-tdd.md`](utils/specification-engineer/examples/claims-extraction-service-tdd.md)).
 7. **Pass Phase Gate 1 (`tdl-field-guide`):** Verify all Phase 1 exit artifacts (`docs/PRD.md`, `docs/TDD.md`, Golden Dataset baseline metrics) are signed off in `STATE.md` before starting Sprint 1.
 

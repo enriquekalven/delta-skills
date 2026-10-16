@@ -1,6 +1,6 @@
 # Delta Agentic Product Requirements Document Template (`docs/PRD.md`)
 
-Use this official 8-section Delta Agentic PRD template (paired with RICE feature prioritization) to produce `docs/PRD.md`.
+Use this Delta Agentic PRD template (paired with RICE feature prioritization; adapt section depth to the engagement and omit sections that do not apply) to produce `docs/PRD.md`.
 
 ```markdown
 # PRD: [<Client>] <Product / Agent Initiative Name>

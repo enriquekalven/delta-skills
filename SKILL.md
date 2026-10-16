@@ -22,15 +22,15 @@ Rules enforced by `scripts/validate_skills.py`:
 
 ```text
 Prelude & Phase 1: Qualification, Discovery & Foundations (Weeks 0-2)
-  workshop-intake                  -> docs/WORKSHOP_INTAKE.md (32 Starter Qs + Available/Usable/Quality Data Yardstick)
-  create-delta-ucc                 -> docs/USE_CASE_CANVAS.md (4-Tab UCC + MVP Alignment Summary)
+  workshop-intake                  -> docs/WORKSHOP_INTAKE.md (Discovery Starter Qs + Available/Usable/Quality Data Yardstick)
+  create-delta-ucc                 -> docs/USE_CASE_CANVAS.md (Use Case Canvas + MVP Alignment Summary)
   business-process-redesign        -> docs/as_is_report.md, docs/to_be_designs.md, docs/human_agent_roles.md
-  cuj-architect                    -> docs/CUJ_MAP.md (4-Tab Ethnography, L1-L5 CUJ & 0.6V+0.4F Matrix)
-  product-md                       -> docs/PRD.md (go/delta-prd-template 8-Section Agentic PRD)
+  cuj-architect                    -> docs/CUJ_MAP.md (Ethnography, L1-L5 CUJ & 0.6V+0.4F Matrix)
+  product-md                       -> docs/PRD.md (go/delta-prd-template Agentic PRD)
   ai-value-sizing                  -> docs/VALUE_SIZING.md (Phase 1 ROI projection & Phase 3 measured closeout)
   gcp-agent-architecture-advisor   -> docs/ARCHITECTURE_RECOMMENDATION.md (Tier 1/2/3 + Model Economics)
-  specification-engineer           -> docs/TDD.md (go/delta-squad-agent-specs Parts I-IV + Golden Dataset Eval Baseline)
-  stitch-design                    -> docs/STITCH_PROTOTYPE.md (3-stage prototyping, Delta Brand #13, Stitch MCP)
+  specification-engineer           -> docs/TDD.md (go/delta-squad-agent-specs + Golden Dataset Eval Baseline)
+  stitch-design                    -> docs/STITCH_PROTOTYPE.md (Rapid prototyping, Delta Brand #13, Stitch MCP)
 
 Phase 2: Core Build & Bi-Weekly Demo Sprints (Weeks 3-10, four 2-week sprints, Demos 1-3)
   claude-agent-harness             -> verified src/ & tests/ + .harness/last_run_report.json

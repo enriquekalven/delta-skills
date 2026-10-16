@@ -578,15 +578,15 @@ body.sso-locked .sso-gate { display: flex; }
           <select class="ppb-input" id="skillJumpSelect" style="cursor:pointer;">
             <option value="" selected disabled>Choose one of the 13 skills…</option>
             <option value="step-3">1. tdl-field-guide (STATE.md &amp; 12-week phases)</option>
-            <option value="step-4">2. workshop-intake (32 Starter Qs · Available/Usable/Quality)</option>
+            <option value="step-4">2. workshop-intake (Starter Qs · Available/Usable/Quality)</option>
             <option value="step-4">3. create-delta-ucc (Use Case Alignment Summary)</option>
             <option value="step-5">4. business-process-redesign (As-Is / To-Be)</option>
-            <option value="step-5">5. cuj-architect (4-tab L1–L5 CUJ map)</option>
-            <option value="step-7">6. product-md (8-section agentic PRD)</option>
+            <option value="step-5">5. cuj-architect (L1–L5 CUJ map)</option>
+            <option value="step-7">6. product-md (Agentic PRD)</option>
             <option value="step-7">7. ai-value-sizing (Base/Bull/Bear ROI &amp; NPV)</option>
             <option value="step-8">8. gcp-agent-architecture-advisor (Tier 1–3)</option>
             <option value="step-10">9. stitch-design (prototype &amp; mini-eval)</option>
-            <option value="step-11">10. specification-engineer (4-part TDD)</option>
+            <option value="step-11">10. specification-engineer (Agent Technical Spec)</option>
             <option value="step-12">11. claude-agent-harness (--verify goal loop)</option>
             <option value="step-13">12. agent-eval-statistical-auditing (CLA &amp; AUA)</option>
             <option value="step-14">13. agent-load-testing (5× quotas &amp; Locust)</option>
@@ -855,13 +855,13 @@ var STAGES = [
         reads: "Stakeholder interview notes and SOPs",
         output: "docs/WORKSHOP_INTAKE.md, docs/USE_CASE_CANVAS.md",
         image: "ui/images/prelude.jpg",
-        lede: "Qualify the candidate use case with the 32 Starter Questions and the Available / Usable / Quality data criteria from the Use Case Selection Guidelines, then draft the Use Case Alignment Summary.",
+        lede: "Qualify the candidate use case with the Starter Questions and the Available / Usable / Quality data criteria from the Use Case Selection Guidelines, then draft the Use Case Alignment Summary.",
         whyItMatters: "Delivery Guide: “Before dedicating engineering resources to a 12-week sprint, the opportunity must undergo a structured assessment to determine technical and business feasibility.”",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use workshop-intake and create-delta-ucc to qualify {{USE_CASE}}. Answer the 32 Starter Questions, score data readiness (Available / Usable / Quality) in docs/WORKSHOP_INTAKE.md, and draft the Use Case Alignment Summary in docs/USE_CASE_CANVAS.md.",
+        promptTemplate: "Use workshop-intake and create-delta-ucc to qualify {{USE_CASE}}. Answer the Starter Questions, score data readiness (Available / Usable / Quality) in docs/WORKSHOP_INTAKE.md, and draft the Use Case Alignment Summary in docs/USE_CASE_CANVAS.md.",
         cliTemplate: "",
         checks: [
-          "32 Starter Questions answered (or marked TBD with an owner) and data readiness scored in docs/WORKSHOP_INTAKE.md",
+          "Starter Questions answered (or marked TBD with an owner) and data readiness scored in docs/WORKSHOP_INTAKE.md",
           "Use Case Alignment Summary drafted in docs/USE_CASE_CANVAS.md"
         ]
       },
@@ -877,11 +877,11 @@ var STAGES = [
         image: "ui/images/prelude.jpg",
         lede: "In Weeks −4 to 0 (Reimagine Business Processes guide), capture the As-Is process, break it into discrete steps, abstract them into L1–L5 CUJs, identify AI touchpoints, and prioritize them with 0.6 × Value + 0.4 × Feasibility.",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use business-process-redesign and cuj-architect for {{USE_CASE}} (reading docs/WORKSHOP_INTAKE.md and docs/USE_CASE_CANVAS.md). Write the As-Is and To-Be designs to docs/as_is_report.md, docs/to_be_designs.md and docs/human_agent_roles.md, and generate the 4-tab L1–L5 CUJ map in docs/CUJ_MAP.md.",
+        promptTemplate: "Use business-process-redesign and cuj-architect for {{USE_CASE}} (reading docs/WORKSHOP_INTAKE.md and docs/USE_CASE_CANVAS.md). Write the As-Is and To-Be designs to docs/as_is_report.md, docs/to_be_designs.md and docs/human_agent_roles.md, and generate the L1–L5 CUJ map in docs/CUJ_MAP.md.",
         cliTemplate: "",
         checks: [
           "As-Is process documented in docs/as_is_report.md",
-          "4-tab CUJ map (1. Process Ethnography, 2. CUJ Map Hierarchy, 3. Future State CUJ, 4. AI Prioritization) in docs/CUJ_MAP.md"
+          "CUJ map (Process Ethnography, CUJ Map Hierarchy, Future State CUJ, AI Prioritization) in docs/CUJ_MAP.md"
         ]
       },
       {
@@ -921,21 +921,21 @@ var STAGES = [
       {
         id: "step-7",
         badgeName: "PRD Locked",
-        title: "Author the 8-Section Agentic PRD & Project Value",
+        title: "Author the Agentic PRD & Project Value",
         sub: "PRD.md + VALUE_SIZING.md",
         skill: "product-md + ai-value-sizing",
         toolbox: "Asset #5 · PRD Example (Intel Ask IT); the ROI method is a repo skill with no toolbox source",
         reads: "docs/WORKSHOP_INTAKE.md, docs/USE_CASE_CANVAS.md, docs/CUJ_MAP.md, docs/as_is_report.md",
         output: "docs/PRD.md, docs/VALUE_SIZING.md",
         image: "ui/images/foundations.jpg",
-        lede: "Author the 8-section agentic PRD following the toolbox PRD Example (Blocker vs. Friction pain points, reactive → proactive CUJs, information architecture & DAG design, prioritized requirements, hypotheses to test, scope exclusions), then project ROI with calculate_roi.py.",
+        lede: "Author the Agentic PRD adapted to your engagement's scope following the toolbox PRD Example (Blocker vs. Friction pain points, reactive → proactive CUJs, information architecture & DAG design, prioritized requirements, hypotheses to test, scope exclusions), then project ROI with calculate_roi.py.",
         whyItMatters: "Delivery Guide: “This document should be completed by the end of week 2 with the customer.”",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use product-md to write the 8-section agentic PRD at docs/PRD.md for {{USE_CASE}} from docs/CUJ_MAP.md and docs/as_is_report.md, with Blocker vs. Friction pain points, DAG logic gates, mandatory HITL checkpoints and a RICE-prioritized backlog (repo convention). Then use ai-value-sizing to project Base/Bull/Bear ROI in docs/VALUE_SIZING.md ({{VOLUME}} annual cases, ${{RATE}}/hr loaded rate, {{HOURS_SAVED}} hrs saved/case).",
+        promptTemplate: "Use product-md to write the agentic PRD at docs/PRD.md for {{USE_CASE}} from docs/CUJ_MAP.md and docs/as_is_report.md, covering Blocker vs. Friction pain points, DAG logic gates, mandatory HITL checkpoints and a RICE-prioritized backlog (repo convention). Then use ai-value-sizing to project Base/Bull/Bear ROI in docs/VALUE_SIZING.md ({{VOLUME}} annual cases, ${{RATE}}/hr loaded rate, {{HOURS_SAVED}} hrs saved/case).",
         cliTemplate: "# Illustrative example values: shares, CapEx and OpEx from the ai-value-sizing worked example; VCR 0.50 and SCDF 0.85 are its haircut tiers. Replace them with your engagement's numbers.\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --vcr 0.50 --scdf 0.85 --wacc 0.10",
         livePreview: "roi",
         checks: [
-          "8-section PRD saved to docs/PRD.md with reactive vs. proactive CUJs and mandatory HITL checkpoints",
+          "Agentic PRD saved to docs/PRD.md with reactive vs. proactive CUJs and mandatory HITL checkpoints",
           "Base/Bull/Bear projection from calculate_roi.py saved to docs/VALUE_SIZING.md"
         ]
       },
@@ -1001,7 +1001,7 @@ var STAGES = [
       {
         id: "step-11",
         badgeName: "Schematics Locked",
-        title: "Author the 4-Part Agent Technical Spec",
+        title: "Author the Agent Technical Spec",
         sub: "TDD.md",
         skill: "specification-engineer",
         toolbox: "Asset #14 · Agent Technical Specifications (go/delta-squad-agent-specs)",
