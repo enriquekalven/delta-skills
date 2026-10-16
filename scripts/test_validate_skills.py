@@ -234,6 +234,19 @@ class CalculateRoiTests(unittest.TestCase):
             2.5 * base_sc["net_annual_value_usd"],
             places=2,
         )
+        # CLI should also accept --annual-non-labor-benefit without requiring --hours-saved
+        out = io.StringIO()
+        with redirect_stdout(out):
+            rc = calculate_roi.main([
+                "--tam-units", "10000",
+                "--sam-share", "0.5",
+                "--adoption-rate", "0.3",
+                "--annual-non-labor-benefit", "250000",
+                "--year1-ramp", "0.5",
+                "--capex", "50000",
+                "--annual-opex", "10000",
+            ])
+        self.assertEqual(rc, 0)
 
 
 class CalculateAgentQuotasTests(unittest.TestCase):

@@ -77,8 +77,17 @@ def compute_sizing_and_roi(
             ((net_annual * m) - annual_opex_usd) / ((1.0 + wacc) ** yr)
             for yr, m in zip((1, 2, 3), year_multipliers)
         )
-        monthly_net = annual_net_cashflow / 12.0
-        payback_months = (capex_usd / monthly_net) if monthly_net > 0 else float("inf")
+        yr1_net = (net_annual * year1_ramp) - annual_opex_usd
+        steady_monthly_net = annual_net_cashflow / 12.0
+        if capex_usd == 0:
+            payback_months = 0.0
+        elif yr1_net >= capex_usd and yr1_net > 0:
+            payback_months = capex_usd / (yr1_net / 12.0)
+        elif steady_monthly_net > 0:
+            remaining_after_yr1 = capex_usd - yr1_net
+            payback_months = 12.0 + (remaining_after_yr1 / steady_monthly_net)
+        else:
+            payback_months = float("inf")
         return {
             "vcr": round(scen_vcr, 4),
             "scdf": round(scen_scdf, 4),
@@ -167,17 +176,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--wacc", type=float, default=None, help="Discount rate / WACC (default 0.10)")
     args = parser.parse_args(argv)
 
-    required_flags = (
+    base_required = [
         ("tam_units", "--tam-units"),
         ("sam_share", "--sam-share"),
         ("adoption_rate", "--adoption-rate"),
-        ("hours_saved", "--hours-saved"),
-        ("hourly_rate", "--hourly-rate"),
         ("capex", "--capex"),
         ("annual_opex", "--annual-opex"),
-    )
+    ]
+    if not (args.annual_non_labor_benefit and args.annual_non_labor_benefit > 0):
+        base_required.extend([("hours_saved", "--hours-saved"), ("hourly_rate", "--hourly-rate")])
     if not args.demo:
-        missing = [flag for attr, flag in required_flags if getattr(args, attr) is None]
+        missing = [flag for attr, flag in base_required if getattr(args, attr) is None]
         if missing:
             parser.error(f"the following arguments are required (or pass --demo): {', '.join(missing)}")
 
@@ -195,8 +204,8 @@ def main(argv: list[str] | None = None) -> int:
             sam_share=resolve("sam_share", DEMO_DEFAULTS["sam_share"]),
             adoption_rate=resolve("adoption_rate", DEMO_DEFAULTS["adoption_rate"]),
             tech_compat=resolve("tech_compat", 1.0),
-            hours_saved_per_unit=resolve("hours_saved", DEMO_DEFAULTS["hours_saved"]),
-            hourly_rate_usd=resolve("hourly_rate", DEMO_DEFAULTS["hourly_rate"]),
+            hours_saved_per_unit=resolve("hours_saved", 0.0),
+            hourly_rate_usd=resolve("hourly_rate", 0.0),
             capex_usd=resolve("capex", DEMO_DEFAULTS["capex"]),
             annual_opex_usd=resolve("annual_opex", DEMO_DEFAULTS["annual_opex"]),
             vcr=resolve("vcr", 0.25),
