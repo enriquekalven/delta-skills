@@ -118,10 +118,20 @@ def calculate_agent_quotas(
         },
     }
     if admission_cap is not None:
+        admitted_turns = min(peak_turns_per_min, admission_cap)
+        queued_turns = max(0, peak_turns_per_min - admission_cap)
+        admitted_rpm = admitted_turns * llm_calls_per_turn
+        admitted_tpm = admitted_rpm * tokens_per_call
+        admitted_tpm_after_cache = admitted_rpm * effective_tokens_per_call
         result["admission_control"] = {
-            "admitted_turns": min(peak_turns_per_min, admission_cap),
-            "queued_turns": max(0, peak_turns_per_min - admission_cap),
-            "admitted_llm_rpm": min(peak_turns_per_min, admission_cap) * llm_calls_per_turn,
+            "admitted_turns": admitted_turns,
+            "queued_turns": queued_turns,
+            "admitted_llm_rpm": admitted_rpm,
+            "admitted_input_tpm": admitted_tpm,
+            "admitted_input_tpm_after_cache": round(admitted_tpm_after_cache),
+            "recommended_admitted_rpm": math.ceil(admitted_rpm * peak_multiplier),
+            "recommended_admitted_tpm": math.ceil(admitted_tpm * peak_multiplier),
+            "recommended_admitted_tpm_after_cache": math.ceil(admitted_tpm_after_cache * peak_multiplier),
         }
     return result
 
@@ -156,7 +166,7 @@ def _format_report(result: Dict[str, Any]) -> str:
         a = result["admission_control"]
         lines.append(
             f"Admission cap {i['admission_cap']}        : {a['admitted_turns']} admitted / {a['queued_turns']} queued "
-            f"-> admitted LLM RPM {a['admitted_llm_rpm']:,}"
+            f"-> admitted LLM RPM {a['admitted_llm_rpm']:,} (admitted 5x quota: {a['recommended_admitted_rpm']:,} RPM / {a['recommended_admitted_tpm_after_cache']:,} TPM)"
         )
     return "\n".join(lines)
 

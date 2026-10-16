@@ -588,11 +588,21 @@ body.sso-locked .sso-gate { display: flex; }
         <div style="display:grid;grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);gap:8px;min-width:0;">
           <div class="ppb-field">
             <label class="ppb-label" for="paramHours">Hrs Saved / Case</label>
-            <input class="ppb-input" id="paramHours" type="number" min="0.05" step="0.05" value="0.30" />
+            <input class="ppb-input" id="paramHours" type="number" min="0" step="0.05" value="0.30" />
           </div>
           <div class="ppb-field">
             <label class="ppb-label" for="paramPeakTurns">Peak Turns / Min</label>
             <input class="ppb-input" id="paramPeakTurns" type="number" min="1" step="1" value="12" />
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);gap:8px;min-width:0;">
+          <div class="ppb-field">
+            <label class="ppb-label" for="paramCapex">Year-0 CapEx ($)</label>
+            <input class="ppb-input" id="paramCapex" type="number" min="0" step="5000" value="180000" />
+          </div>
+          <div class="ppb-field">
+            <label class="ppb-label" for="paramOpex">Annual OpEx ($)</label>
+            <input class="ppb-input" id="paramOpex" type="number" min="0" step="2000" value="68000" />
           </div>
         </div>
         <div class="ppb-field">
@@ -671,7 +681,7 @@ var ARCHETYPES = {
     readoutInputDocs: "docs/PRD.md and docs/EVAL_AUDIT_REPORT.md",
     skipSteps: ["step-2", "step-5", "step-10", "step-11", "step-12", "step-14"],
     collapseSteps: ["step-4"],
-    skipReason: "Tier 1 Gemini Enterprise (No-Code) uses managed Vertex AI Search data stores and native Workspace UI—custom ADK code scaffolding, multi-agent DAG redesign, Stitch UI prototyping, and custom gRPC load testing are not needed.",
+    skipReason: "Tier 1 Gemini Enterprise (No-Code) uses managed Vertex AI Search data stores and native Workspace UI—custom ADK code scaffolding, multi-agent DAG redesign, Stitch UI prototyping, and custom gRPC load testing are not needed. Note: If Step 8 (gcp-agent-architecture-advisor) disqualifies Tier 1 (e.g., due to VPC-SC, custom write tools, or multi-system orchestration), upgrade to Tier 2/3 and backfill Step 2 and Step 5 before Phase 2.",
     collapseReason: "Single-department FAQ/lookup scope can fold Discovery Intake directly into docs/PRD.md."
   },
   "tier2-headless": {
@@ -988,13 +998,14 @@ var STAGES = [
         artifactClass: "Mandatory Gate Artifact",
         tierScope: "All Tiers (1–3)",
         image: "ui/images/foundations.jpg",
-        lede: "Compare Gemini Enterprise (no-code), ADK on the managed Agent Runtime, and ADK on Cloud Run or GKE, and verify each component's launch stage (GA / Preview) from official docs.",
+        lede: "Compare Gemini Enterprise (no-code), ADK on the managed Agent Runtime, and ADK on Cloud Run or GKE, and verify each component's launch stage (GA / Preview) from official docs. If a Tier 1 engagement is upgraded to Tier 2 or Tier 3 here (e.g., due to VPC-SC, custom write tools, or multi-system orchestration), backfill Step 2 (ADK setup) and Step 5 (As-Is/CUJ Map) before Phase 2.",
         promptType: "What to Paste into Your AI Agent",
         promptTemplate: "Use the gcp-agent-architecture-advisor skill to recommend a Google Cloud architecture in docs/ARCHITECTURE_RECOMMENDATION.md for {{USE_CASE}} (project {{PROJECT}}; target profile: {{TIER_LABEL}}; compliance: {{COMPLIANCE}}) based on docs/PRD.md and docs/WORKSHOP_INTAKE.md. Compare Tier 1 (Gemini Enterprise), Tier 2 (ADK on Agent Runtime) and Tier 3 (ADK on Cloud Run/GKE), and record each component's verified launch stage with its official doc URL.",
         cliTemplate: "",
         checks: [
           "3-tier comparison in docs/ARCHITECTURE_RECOMMENDATION.md",
-          "Each component's launch stage (GA / Preview / UNVERIFIED) recorded with its official doc URL and the date checked"
+          "Each component's launch stage (GA / Preview / UNVERIFIED) recorded with its official doc URL and the date checked",
+          "If upgraded from Tier 1 (No-Code) to Tier 2/3, Step 2 (ADK setup) and Step 5 (CUJ_MAP.md) backfilled before Phase 2"
         ]
       },
       {
@@ -1137,8 +1148,8 @@ var STAGES = [
         lede: "Compute LLM calls per turn (1 safety + 1 decomposition + Qt × Cq chunked synthesis + 1 final; 27 at Qt = 6, Cq = 4), size quotas with a 5× peak multiplier, then run Locust SSE load tests.",
         whyItMatters: "Load Testing Guide: one user turn “can generate 20 to 30+ simultaneous LLM API calls and 60+ vector queries.” In the guide's engagement, raising the gRPC pool from 8 to 128 removed client-side queuing, and the Traffic Queue eliminated 429 quota exhaustion.",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use the agent-load-testing skill to run calculate_agent_quotas.py for {{USE_CASE}} at {{PEAK_TURNS}} peak turns/min (fan-out profile: Qt={{QT}}, Cq={{CQ}}, {{TOKENS_PER_CALL}} tokens/call), generate a Locust SSE load test suite, and write the fan-out math, the 5× quota table and the latency results to docs/LOAD_TEST_REPORT.md.",
-        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-load-testing/scripts/calculate_agent_quotas.py \\\n  --sub-questions {{QT}} --chunks-per-subquestion {{CQ}} --tokens-per-call {{TOKENS_PER_CALL}} \\\n  --peak-turns-per-min {{PEAK_TURNS}} --peak-multiplier 5.0",
+        promptTemplate: "Use the agent-load-testing skill to run calculate_agent_quotas.py for {{USE_CASE}} at {{PEAK_TURNS}} peak turns/min (fan-out profile: Qt={{QT}}, Cq={{CQ}}, {{TOKENS_PER_CALL}} tokens/call, {{SEMANTIC_QUERIES}} semantic queries/turn), generate a Locust SSE load test suite, and write the fan-out math, the 5× quota table and the latency results to docs/LOAD_TEST_REPORT.md.",
+        cliTemplate: "python3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/agent-load-testing/scripts/calculate_agent_quotas.py \\\n  --sub-questions {{QT}} --chunks-per-subquestion {{CQ}} --tokens-per-call {{TOKENS_PER_CALL}} \\\n  --semantic-queries-per-turn {{SEMANTIC_QUERIES}} --peak-turns-per-min {{PEAK_TURNS}} --peak-multiplier 5.0",
         livePreview: "quota",
         checks: [
           "Fan-out RPM/TPM and 5× peak-multiplier quotas calculated with calculate_agent_quotas.py",
@@ -1397,11 +1408,22 @@ function getParams() {
   var preset = getActivePreset();
   var arch = ARCHETYPES[preset.archetype] || ARCHETYPES["tier2-workbench"];
   var useCase = document.getElementById("paramUseCase").value || preset.useCase;
-  var volume = parseFloat(document.getElementById("paramVolume").value) || preset.volume;
-  var rate = parseFloat(document.getElementById("paramRate").value) || preset.rate;
-  var hours = parseFloat(document.getElementById("paramHours").value) || preset.hours;
-  var peakTurns = parseInt(document.getElementById("paramPeakTurns").value, 10) || preset.peakTurns;
+  var rawVol = parseFloat(document.getElementById("paramVolume").value);
+  var volume = (!isNaN(rawVol) && rawVol > 0) ? rawVol : preset.volume;
+  var rawRate = parseFloat(document.getElementById("paramRate").value);
+  var rate = (!isNaN(rawRate) && rawRate >= 0) ? rawRate : preset.rate;
+  var rawHours = parseFloat(document.getElementById("paramHours").value);
+  var hours = (!isNaN(rawHours) && rawHours >= 0) ? rawHours : preset.hours;
+  var rawPeak = parseInt(document.getElementById("paramPeakTurns").value, 10);
+  var peakTurns = (!isNaN(rawPeak) && rawPeak > 0) ? rawPeak : preset.peakTurns;
+  var capexEl = document.getElementById("paramCapex");
+  var rawCapex = capexEl ? parseFloat(capexEl.value) : NaN;
+  var capex = (!isNaN(rawCapex) && rawCapex >= 0) ? rawCapex : (arch.capex || 180000);
+  var opexEl = document.getElementById("paramOpex");
+  var rawOpex = opexEl ? parseFloat(opexEl.value) : NaN;
+  var opex = (!isNaN(rawOpex) && rawOpex >= 0) ? rawOpex : (arch.opex || 68000);
   var project = document.getElementById("paramProject").value || preset.project;
+  var qt = preset.qt || 6;
   return {
     useCase: useCase,
     volume: volume,
@@ -1414,11 +1436,12 @@ function getParams() {
     uiModality: arch.uiModality,
     compliance: preset.compliance,
     focus: preset.focus,
-    qt: preset.qt || 6,
+    qt: qt,
     cq: preset.cq || 4,
     tokensPerCall: preset.tokensPerCall || 20000,
-    capex: arch.capex || 180000,
-    opex: arch.opex || 68000,
+    semanticQueries: qt * 5,
+    capex: capex,
+    opex: opex,
     prdInputDocs: arch.prdInputDocs || "docs/CUJ_MAP.md and docs/as_is_report.md",
     readoutInputDocs: arch.readoutInputDocs || "docs/as_is_report.md, docs/EVAL_AUDIT_REPORT.md and docs/LOAD_TEST_REPORT.md",
     auaFlags: preset.archetype === "tier3-regulated" ? " --strict" : ""
@@ -1432,16 +1455,22 @@ function computeRoiPreview(volume, rate, hours, capex, opex) {
   var sam = volume * 0.625;
   var som = sam * 0.30 * 0.80;
   var gross = som * hours * rate;
-  capex = capex || 180000;
-  opex = opex || 68000;
-  var tco3 = capex + 3 * opex;
+  capex = (!isNaN(capex) && capex >= 0) ? capex : 180000;
+  opex = (!isNaN(opex) && opex >= 0) ? opex : 68000;
+  var tco3 = (capex + 3 * opex) || 1;
   function scen(captureRate, deliveryFactor) {
     var netAnn = gross * captureRate * deliveryFactor;
     var net3 = 3 * netAnn;
     var roiPct = ((net3 - tco3) / tco3) * 100;
     var npv = -capex + ((netAnn - opex) / 1.10) + ((netAnn - opex) / Math.pow(1.10, 2)) + ((netAnn - opex) / Math.pow(1.10, 3));
     var mo = (netAnn - opex) / 12;
-    var payback = mo > 0 ? (capex / mo).toFixed(1) + " mo" : "Never";
+    var payback = "Never";
+    if (capex === 0) {
+      payback = "0.0 mo";
+    } else if (mo > 0) {
+      var mos = capex / mo;
+      payback = mos > 36 ? mos.toFixed(1) + " mo (>3yr)" : mos.toFixed(1) + " mo";
+    }
     return { netAnn: Math.round(netAnn), npv: Math.round(npv), roiPct: Math.round(roiPct * 10) / 10, payback: payback };
   }
   return {
@@ -1462,16 +1491,18 @@ function computeQuotaPreview(peakTurns, qt, cq, tok) {
   cq = cq || 4;
   tok = tok || 20000;
   var mult = 5;
+  var semQueries = qt * 5;
   var callsPerTurn = 1 + 1 + (qt * cq) + 1;
   var peakRpm = peakTurns * callsPerTurn;
   var peakTpm = peakRpm * tok;
   var quotaRpm = peakRpm * mult;
   var quotaTpm = peakTpm * mult;
-  var grpcReqs = peakTurns * 30 * 2;
+  var grpcReqs = peakTurns * semQueries * 2;
   return {
     qt: qt,
     cq: cq,
     tok: tok,
+    semQueries: semQueries,
     callsPerTurn: callsPerTurn,
     peakRpm: peakRpm,
     peakTpm: peakTpm,
@@ -1554,7 +1585,7 @@ function buildQuotaPreview(p) {
       { text: q.peakRpm.toLocaleString("en-US") + " RPM / " + q.peakTpm.toLocaleString("en-US") + " TPM", cls: "mono" }],
     ["Quota request (5× peak)", { text: "5 × peak RPM and TPM", cls: "mono" },
       { text: q.quotaRpm.toLocaleString("en-US") + " RPM / " + q.quotaTpm.toLocaleString("en-US") + " TPM", cls: "mono" }],
-    ["Concurrent vector gRPC requests", { text: turns + " turns × 30 semantic queries (script default; guide: 18–60) × 2 (dense + sparse)", cls: "mono" },
+    ["Concurrent vector gRPC requests", { text: turns + " turns × " + q.semQueries + " semantic queries (5 × Qt; guide: 18–60) × 2 (dense + sparse)", cls: "mono" },
       { text: q.grpcReqs.toLocaleString("en-US"), cls: "mono" }],
     ["gRPC queue waves at pool size 8", { text: "⌈" + q.grpcReqs.toLocaleString("en-US") + " ÷ 8⌉", cls: "mono" },
       { text: q.grpcWaves.toLocaleString("en-US") + " waves", cls: "mono" }]
@@ -1623,6 +1654,7 @@ function formatWithParams(tpl) {
     .replace(/\{\{QT\}\}/g, '<span class="prompt-param">' + escapeHtml(p.qt) + '</span>')
     .replace(/\{\{CQ\}\}/g, '<span class="prompt-param">' + escapeHtml(p.cq) + '</span>')
     .replace(/\{\{TOKENS_PER_CALL\}\}/g, '<span class="prompt-param">' + escapeHtml(p.tokensPerCall) + '</span>')
+    .replace(/\{\{SEMANTIC_QUERIES\}\}/g, '<span class="prompt-param">' + escapeHtml(p.semanticQueries) + '</span>')
     .replace(/\{\{CAPEX\}\}/g, '<span class="prompt-param">' + escapeHtml(p.capex) + '</span>')
     .replace(/\{\{OPEX\}\}/g, '<span class="prompt-param">' + escapeHtml(p.opex) + '</span>')
     .replace(/\{\{PRD_INPUT_DOCS\}\}/g, '<span class="prompt-param">' + escapeHtml(p.prdInputDocs) + '</span>')
@@ -1647,6 +1679,7 @@ function rawWithParams(tpl) {
     .replace(/\{\{QT\}\}/g, String(p.qt))
     .replace(/\{\{CQ\}\}/g, String(p.cq))
     .replace(/\{\{TOKENS_PER_CALL\}\}/g, String(p.tokensPerCall))
+    .replace(/\{\{SEMANTIC_QUERIES\}\}/g, String(p.semanticQueries))
     .replace(/\{\{CAPEX\}\}/g, String(p.capex))
     .replace(/\{\{OPEX\}\}/g, String(p.opex))
     .replace(/\{\{PRD_INPUT_DOCS\}\}/g, p.prdInputDocs)
@@ -2150,12 +2183,17 @@ function populatePresetSelect() {
 function applyPresetIndex(idx) {
   var c = CUSTOMER_PRESETS[idx];
   if (!c) return;
+  var arch = ARCHETYPES[c.archetype] || ARCHETYPES["tier2-workbench"];
   document.getElementById("paramPreset").value = String(idx);
   document.getElementById("paramUseCase").value = c.useCase;
   document.getElementById("paramVolume").value = String(c.volume);
   document.getElementById("paramRate").value = String(c.rate);
   document.getElementById("paramHours").value = String(c.hours);
   document.getElementById("paramPeakTurns").value = String(c.peakTurns);
+  var capexEl = document.getElementById("paramCapex");
+  if (capexEl) capexEl.value = String(arch.capex || 180000);
+  var opexEl = document.getElementById("paramOpex");
+  if (opexEl) opexEl.value = String(arch.opex || 68000);
   document.getElementById("paramProject").value = c.project;
 }
 
@@ -2262,11 +2300,14 @@ if (hideSkippedEl) {
   });
 }
 
-["paramUseCase", "paramVolume", "paramRate", "paramHours", "paramPeakTurns", "paramProject"].forEach(function(id) {
-  document.getElementById(id).addEventListener("input", function() {
-    renderCenterPlaybook();
-    renderContractsTab();
-  });
+["paramUseCase", "paramVolume", "paramRate", "paramHours", "paramPeakTurns", "paramCapex", "paramOpex", "paramProject"].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) {
+    el.addEventListener("input", function() {
+      renderCenterPlaybook();
+      renderContractsTab();
+    });
+  }
 });
 
 function renderAll() {

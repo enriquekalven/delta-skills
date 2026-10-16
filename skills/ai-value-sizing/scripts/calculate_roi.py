@@ -106,6 +106,7 @@ def compute_sizing_and_roi(
             "roi_3yr_percent": round(roi_pct, 2),
             "npv_3yr_usd": round(npv, 2),
             "payback_months": round(payback_months, 1) if payback_months != float("inf") else -1.0,
+            "exceeds_3yr_horizon": payback_months > 36.0,
         }
 
     bear_scdf = min(scdf, 0.40)
@@ -145,7 +146,12 @@ def format_markdown_table(result: dict[str, object]) -> str:
     ]
     for key, label in (("base", "**Base**"), ("bull", "**Bull**"), ("bear", "**Bear**")):
         sc = scenarios[key]  # type: ignore[index]
-        payback = f"{sc['payback_months']:.1f} mos" if sc["payback_months"] > 0 else "Never"
+        if sc["payback_months"] < 0:
+            payback = "Never"
+        elif sc.get("exceeds_3yr_horizon"):
+            payback = f"{sc['payback_months']:.1f} mos (>3yr)"
+        else:
+            payback = f"{sc['payback_months']:.1f} mos"
         lines.append(
             f"| {label} | `{sc['vcr']:.2f}` | `{sc['scdf']:.2f}` | "
             f"`${round(sc['net_annual_value_usd']):,}` | `${round(sc['annual_net_cashflow_usd']):,}` | "

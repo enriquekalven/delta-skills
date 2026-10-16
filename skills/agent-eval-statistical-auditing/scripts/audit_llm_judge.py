@@ -240,12 +240,25 @@ def pipeline_1_calibration(
     sd_ratio = (sd_l / sd_h) if sd_h > 0 else None
 
     gates = {
-        "d_r_ge_0.80": d_r is not None and d_r >= 0.80,
+        "d_r_ge_0.80": d_r is not None and d_r >= 0.80 and r_hh >= 0.50,
         "qwk_ge_0.60": qwk >= 0.60,
         "sd_ratio_ge_0.80": sd_ratio is not None and sd_ratio >= 0.80,
         "prmse_gt_0": pr is not None and pr > 0.0,
         "wilcoxon_p_gt_0.05 (repo convention)": p > 0.05,
     }
+    warnings: List[str] = []
+    if n < 30:
+        warnings.append(
+            f"sample_size_n_lt_30: N={n} is below the recommended N>=30 minimum for Wilcoxon normal approximation and QWK stability"
+        )
+    if r_hh < 0.60:
+        warnings.append(
+            f"low_human_inter_rater_reliability: human_inter_rater_r={r_hh:.4f} < 0.60; disattenuated d.R may be inflated or undefined due to noisy human consensus"
+        )
+    if (hi - lo) == 1 and any(r1 != r2 for r1, r2 in zip(human_r1, human_r2)):
+        warnings.append(
+            "binary_scale_split_tiebreak: round_half_up(0.5) resolves split 0/1 human ratings upward to 1; verify tie-breaking policy"
+        )
     return {
         "n_items": n,
         "exact_agreement_pct": round(exact * 100, 1),
@@ -263,6 +276,7 @@ def pipeline_1_calibration(
         "sd_llm": round(sd_l, 4),
         "sd_ratio": None if sd_ratio is None else round(sd_ratio, 4),
         "gates": gates,
+        "warnings": warnings,
         "passed": all(gates.values()),
     }
 
@@ -273,8 +287,12 @@ def pipeline_2_intra_rater(passes: Sequence[Sequence[float]]) -> Dict[str, Any]:
     sd = _std(item_means)
     sem = sd * math.sqrt(max(0.0, 1.0 - alpha))
     per_item_sd = [round(_std(row), 3) for row in passes]
+    n = len(passes)
+    warnings: List[str] = []
+    if n < 30:
+        warnings.append(f"sample_size_n_lt_30: N={n} is below the recommended N>=30 minimum")
     return {
-        "n_items": len(passes),
+        "n_items": n,
         "k_passes": len(passes[0]),
         "cronbach_alpha": round(alpha, 4),
         "sd_observed": round(sd, 4),
@@ -282,6 +300,7 @@ def pipeline_2_intra_rater(passes: Sequence[Sequence[float]]) -> Dict[str, Any]:
         "ci95_half_width_2sem": round(2.0 * sem, 4),
         "per_item_sd": per_item_sd,
         "gates": {"alpha_ge_0.80": alpha >= 0.80},
+        "warnings": warnings,
         "passed": alpha >= 0.80,
     }
 
@@ -300,6 +319,9 @@ def pipeline_3_double_marking(a: Sequence[int], b: Sequence[int], lo: int = 1, h
     w, z, p = wilcoxon_signed_rank(a, b)
     span = float(hi - lo) or 1.0
     confidence = [round(1.0 - abs(x - y) / span, 3) for x, y in zip(a, b)]
+    warnings: List[str] = []
+    if n < 30:
+        warnings.append(f"sample_size_n_lt_30: N={n} is below the recommended N>=30 minimum")
     return {
         "n_items": n,
         "icc_3k": round(icc, 4),
@@ -318,6 +340,7 @@ def pipeline_3_double_marking(a: Sequence[int], b: Sequence[int], lo: int = 1, h
             "icc_3k_ge_0.80": icc >= 0.80,
             "wilcoxon_p_gt_0.05 (repo convention)": p > 0.05,
         },
+        "warnings": warnings,
         "passed": icc >= 0.80 and p > 0.05,
     }
 
@@ -404,6 +427,8 @@ def format_report(res: Dict[str, Any], title: str, hitl_threshold: float = 0.75)
             f"  Scale compression SD ratio : {_fmt(p['sd_ratio'])}   gate >= 0.80  (SD LLM {p['sd_llm']} / SD human {p['sd_human']})",
             f"  Verdict                    : {'PASS' if p['passed'] else 'FAIL -> recalibrate rubric / few-shot anchors'}",
         ]
+        for w in p.get("warnings", []):
+            L.append(f"  Warning                    : {w}")
     if "pipeline_2" in h:
         p = h["pipeline_2"]
         L += [
@@ -413,6 +438,8 @@ def format_report(res: Dict[str, Any], title: str, hitl_threshold: float = 0.75)
             f"  SEM                        : {_fmt(p['sem'])}   95% CI = observed +/- {p['ci95_half_width_2sem']} (2 SEM)",
             f"  Verdict                    : {'PASS' if p['passed'] else 'FAIL'}",
         ]
+        for w in p.get("warnings", []):
+            L.append(f"  Warning                    : {w}")
     if "pipeline_3" in h:
         p = h["pipeline_3"]
         low = sum(1 for c in p["confidence"] if c < hitl_threshold)
@@ -427,6 +454,8 @@ def format_report(res: Dict[str, Any], title: str, hitl_threshold: float = 0.75)
             f"  Items with confidence <{hitl_threshold:g}: {low} of {p['n_items']} -> HITL queue",
             f"  Verdict                    : {'PASS' if p['passed'] else 'FAIL'}",
         ]
+        for w in p.get("warnings", []):
+            L.append(f"  Warning                    : {w}")
     if "criteria" in res:
         L += ["", "[Per-criterion diagnostics] d.rho >= 0.70 and QWK >= 0.60"]
         for name, block in res["criteria"].items():

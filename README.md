@@ -114,6 +114,8 @@ Not every engagement runs all 13 skills or generates all 14 artifacts. Both the 
 | **`tier2-workbench` · Tier 2 Managed ADK + Custom Stitch UI** | 19 human-in-the-loop analyst, claims, legal & merchandising workbenches (`#1, #5, #10, #13, #15–17, #23–25, #27–28, #30–34, #44, #49`) | **13 / 13 skills · 15 / 15 steps · 8 gate + 6 worksheet artifacts** | All 15 steps | **Steps 4–5** Discovery Worksheets recommended for multi-persona alignment (or collapsible into `PRD.md` if upstream intake is signed off); **Step 10 (`stitch-design`)** required |
 | **`tier3-regulated` · Tier 3 Self-Hosted ADK on Cloud Run / GKE** | 13 regulated HIPAA, FinCEN SAR, FDA 21 CFR Part 11, NERC CIP, FERC & FedRAMP systems (`#2, #3, #8, #11, #12, #19–21, #36, #38, #41–43`) | **13 / 13 skills · 15 / 15 steps · All 14 artifacts mandatory** | All 15 steps (strict gates) | **No steps skipped or collapsed**: full Discovery & CUJ audit trail required, VPC-SC + CMEK + Model Armor enforced in `TDD.md`, and `audit_llm_judge.py --strict` required in Step 13 |
 
+> **Tier Reclassification & Backfill Rule (Step 8 Gate):** If an engagement initially scoped as `tier1-nocode` is upgraded to Tier 2 or Tier 3 during Step 8 (`gcp-agent-architecture-advisor`)—for example, because the customer requires VPC-SC perimeters, custom MCP write tools, or multi-system orchestration—the team must backfill **Step 2** (ADK workstation & `agents-cli` setup) and **Step 5** (`docs/as_is_report.md` and `docs/CUJ_MAP.md`) before entering Phase 2 (`step-10`–`step-14`).
+
 ---
 
 ## 4. How to Run a 12-Week Delta Engagement Step-by-Step

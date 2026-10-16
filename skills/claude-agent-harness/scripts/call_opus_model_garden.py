@@ -50,6 +50,16 @@ IGNORED_DIRS = frozenset(
         ".tox",
     }
 )
+SENSITIVE_FILE_PATTERNS = (
+    ".env",
+    ".env.*",
+    "*.pem",
+    "*.key",
+    "*credentials*.json",
+    "*service-account*.json",
+    "*service_account*.json",
+)
+ALLOWED_ENV_TEMPLATES = frozenset({".env.example", ".env.sample", ".env.template"})
 MAX_READ_BYTES = 200_000
 MAX_WRITE_BYTES = 1_000_000
 MAX_SPEC_BYTES = 400_000
@@ -262,6 +272,13 @@ class Workspace:
                 violations.append(f"{rel}: protected file was modified")
         return violations
 
+    @staticmethod
+    def _is_sensitive_file(rel_path: str) -> bool:
+        base = os.path.basename(rel_path.replace(os.sep, "/")).lower()
+        if base in ALLOWED_ENV_TEMPLATES:
+            return False
+        return any(fnmatch.fnmatch(base, pat) for pat in SENSITIVE_FILE_PATTERNS)
+
     def resolve(self, rel_path: Any) -> str:
         if not isinstance(rel_path, str) or not rel_path.strip() or "\x00" in rel_path:
             raise WorkspaceError("path must be a non-empty string")
@@ -270,8 +287,13 @@ class Workspace:
         candidate = os.path.realpath(os.path.join(self.root, rel_path))
         if candidate != self.root and not candidate.startswith(self.root + os.sep):
             raise WorkspaceError(f"path escapes the workspace: {rel_path}")
-        if ".git" in os.path.relpath(candidate, self.root).split(os.sep):
+        rel = os.path.relpath(candidate, self.root)
+        if ".git" in rel.split(os.sep):
             raise WorkspaceError("access inside .git is not allowed")
+        if candidate != self.root and self._is_sensitive_file(rel):
+            raise WorkspaceError(
+                f"access to sensitive credential/secret file is not allowed: {rel_path}"
+            )
         return candidate
 
     def relative(self, abs_path: str) -> str:
@@ -297,7 +319,10 @@ class Workspace:
                 full = os.path.join(current, name)
                 if not self._is_contained(full):
                     continue
-                entries.append(self.relative(full))
+                rel = self.relative(full)
+                if self._is_sensitive_file(rel):
+                    continue
+                entries.append(rel)
                 if len(entries) >= MAX_LIST_ENTRIES:
                     return (
                         "\n".join(entries)
@@ -374,7 +399,11 @@ class Workspace:
                 )
                 for name in sorted(files):
                     full = os.path.join(current, name)
-                    if self._is_contained(full) and os.path.isfile(full):
+                    if (
+                        self._is_contained(full)
+                        and os.path.isfile(full)
+                        and not self._is_sensitive_file(self.relative(full))
+                    ):
                         files_to_scan.append(full)
         else:
             raise WorkspaceError(f"path not found: {rel_path}")

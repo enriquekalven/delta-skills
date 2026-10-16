@@ -273,7 +273,19 @@ class CalculateAgentQuotasTests(unittest.TestCase):
         fixed = calculate_agent_quotas.calculate_agent_quotas(grpc_pool_size=128, cache_hit_ratio=0.6, admission_cap=8)
         self.assertEqual(fixed["peak_load"]["grpc_pool_waves"], 5)
         self.assertEqual(fixed["peak_load"]["peak_input_tpm_after_cache"], 2_160_000)
-        self.assertEqual(fixed["admission_control"], {"admitted_turns": 8, "queued_turns": 2, "admitted_llm_rpm": 216})
+        self.assertEqual(
+            fixed["admission_control"],
+            {
+                "admitted_turns": 8,
+                "queued_turns": 2,
+                "admitted_llm_rpm": 216,
+                "admitted_input_tpm": 4_320_000,
+                "admitted_input_tpm_after_cache": 1_728_000,
+                "recommended_admitted_rpm": 1_080,
+                "recommended_admitted_tpm": 21_600_000,
+                "recommended_admitted_tpm_after_cache": 8_640_000,
+            },
+        )
 
     def test_rejects_invalid_inputs(self) -> None:
         for kwargs in ({"peak_turns_per_min": 0}, {"cache_hit_ratio": 1.0}, {"peak_multiplier": 0.5}, {"admission_cap": 0}):
@@ -304,6 +316,7 @@ class AuditLlmJudgeTests(unittest.TestCase):
         self.assertGreaterEqual(h["pipeline_1"]["disattenuated_d_r"], 0.80)
         self.assertGreaterEqual(h["pipeline_1"]["qwk"], 0.60)
         self.assertGreaterEqual(h["pipeline_1"]["sd_ratio"], 0.80)
+        self.assertEqual(h["pipeline_1"]["warnings"], [])
         self.assertTrue(h["pipeline_2"]["passed"])
         self.assertTrue(h["pipeline_3"]["passed"])
         self.assertEqual({c["diagnostic"]["flag"] for c in res["criteria"].values()}, {"PASS"})
@@ -364,6 +377,21 @@ class AuditLlmJudgeTests(unittest.TestCase):
         with redirect_stdout(out_fail):
             rc_fail = audit_llm_judge.main(["--input", str(self.FIXTURES / "compressed_lenient_judge.json"), "--strict"])
         self.assertEqual(rc_fail, 2)
+
+    def test_emits_statistical_warnings_on_small_n_low_human_reliability_and_binary_split(self) -> None:
+        p1 = audit_llm_judge.pipeline_1_calibration(
+            [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+            [0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0],
+            [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0],
+            lo=0,
+            hi=1,
+            llm_reliability=0.95,
+        )
+        self.assertFalse(p1["passed"])
+        self.assertEqual(len(p1["warnings"]), 3)
+        self.assertTrue(any("sample_size_n_lt_30" in w for w in p1["warnings"]))
+        self.assertTrue(any("low_human_inter_rater_reliability" in w for w in p1["warnings"]))
+        self.assertTrue(any("binary_scale_split_tiebreak" in w for w in p1["warnings"]))
 
 
 class IndexHtmlContractTests(unittest.TestCase):

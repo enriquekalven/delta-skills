@@ -94,6 +94,23 @@ class WorkspaceSandboxTests(unittest.TestCase):
         with self.assertRaises(harness.WorkspaceError):
             self.ws.write_file(".git/config", "x")
 
+    def test_blocks_sensitive_credential_and_env_files_while_allowing_env_example(self) -> None:
+        for secret_file in (".env", ".env.production", "private.pem", "server.key", "gcp-credentials.json", "service-account-key.json"):
+            full = os.path.join(self.root, secret_file)
+            with open(full, "w", encoding="utf-8") as fh:
+                fh.write("SECRET_TOKEN=supersecret123\n")
+            with self.assertRaises(harness.WorkspaceError):
+                self.ws.read_file(secret_file)
+            with self.assertRaises(harness.WorkspaceError):
+                self.ws.write_file(secret_file, "x")
+        self.ws.write_file(".env.example", "API_KEY=your_key_here\n")
+        self.assertIn("API_KEY=your_key_here", self.ws.read_file(".env.example"))
+        listed = self.ws.list_files(".")
+        self.assertIn(".env.example", listed)
+        self.assertNotIn(".env.production", listed)
+        grep_out = self.ws.grep_search("supersecret123", ".")
+        self.assertEqual(grep_out, "(no matches)")
+
     def test_write_read_replace_round_trip(self) -> None:
         self.ws.write_file("pkg/calc.py", BROKEN)
         self.ws.replace_in_file("pkg/calc.py", "a - b", "a + b")
