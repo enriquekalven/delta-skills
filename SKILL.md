@@ -22,24 +22,24 @@ Rules enforced by `scripts/validate_skills.py`:
 
 ```text
 Prelude & Phase 1: Qualification, Discovery & Foundations (Weeks 0-2)
-  workshop-intake                  -> docs/WORKSHOP_INTAKE.md (Discovery Starter Qs + Available/Usable/Quality Data Yardstick)
-  create-delta-ucc                 -> docs/USE_CASE_CANVAS.md (Use Case Canvas + MVP Alignment Summary)
-  business-process-redesign        -> docs/as_is_report.md, docs/to_be_designs.md, docs/human_agent_roles.md
-  cuj-architect                    -> docs/CUJ_MAP.md (Ethnography, L1-L5 CUJ & 0.6V+0.4F Matrix)
-  product-md                       -> docs/PRD.md (go/delta-prd-template Agentic PRD)
-  ai-value-sizing                  -> docs/VALUE_SIZING.md (Phase 1 ROI projection & Phase 3 measured closeout)
-  gcp-agent-architecture-advisor   -> docs/ARCHITECTURE_RECOMMENDATION.md (Tier 1/2/3 + Model Economics)
-  specification-engineer           -> docs/TDD.md (go/delta-squad-agent-specs + Golden Dataset Eval Baseline)
-  stitch-design                    -> docs/STITCH_PROTOTYPE.md (Rapid prototyping, Delta Brand #13, Stitch MCP)
+  [DISCOVERY WORKSHEET] workshop-intake                  -> docs/WORKSHOP_INTAKE.md (Starter Qs + Available/Usable/Quality Data Yardstick)
+  [DISCOVERY WORKSHEET] create-delta-ucc                 -> docs/USE_CASE_CANVAS.md (Use Case Canvas + MVP Alignment Summary)
+  [DISCOVERY WORKSHEET] business-process-redesign        -> docs/as_is_report.md, docs/to_be_designs.md, docs/human_agent_roles.md
+  [DISCOVERY WORKSHEET] cuj-architect                    -> docs/CUJ_MAP.md (Ethnography, L1-L5 CUJ & 0.6V+0.4F Matrix)
+  [GATE 1 ARTIFACT]     product-md                       -> docs/PRD.md (go/delta-prd-template Agentic PRD; worksheets can collapse here)
+  [GATE 1 & 3 ARTIFACT] ai-value-sizing                  -> docs/VALUE_SIZING.md (Phase 1 ROI projection & Phase 3 measured closeout)
+  [GATE 1 ARTIFACT]     gcp-agent-architecture-advisor   -> docs/ARCHITECTURE_RECOMMENDATION.md (Tier 1 No-Code vs. Tier 2/3 Code-First)
+  [GATE 1 ARTIFACT]     specification-engineer           -> docs/TDD.md (go/delta-squad-agent-specs + Golden Dataset Eval Baseline)
+  [UI WORKSHEET · Opt]  stitch-design                    -> docs/STITCH_PROTOTYPE.md (Custom UI only; skip for headless / Tier 1)
 
 Phase 2: Core Build & Bi-Weekly Demo Sprints (Weeks 3-10, four 2-week sprints, Demos 1-3)
-  claude-agent-harness             -> verified src/ & tests/ + .harness/last_run_report.json
-  agent-load-testing               -> docs/LOAD_TEST_REPORT.md (sprints 3-4: fan-out math, 5x quota, Locust SSE)
-  agent-eval-statistical-auditing  -> docs/EVAL_AUDIT_REPORT.md (sprints 3-4: 27 CLA criteria + 3 AUA pipelines)
+  [BUILD · Tier 2/3]    claude-agent-harness             -> verified src/ & tests/ + .harness/last_run_report.json (skip for Tier 1 No-Code)
+  [GATE 2 · Tier 2/3]   agent-load-testing               -> docs/LOAD_TEST_REPORT.md (sprints 3-4: fan-out math, 5x quota, Locust SSE)
+  [GATE 2 ARTIFACT]     agent-eval-statistical-auditing  -> docs/EVAL_AUDIT_REPORT.md (sprints 3-4: CLA criteria + AUA judge pipelines)
 
 Phase 3: Final Read-Out & Close (Weeks 11-12)
-  ai-value-sizing                  -> docs/VALUE_SIZING.md (measured post-launch KPIs vs. Phase 1 baseline)
-  tdl-field-guide                  -> STATE.md, dual RAID logs, demo frame-up, closeout deck, retro
+  [GATE 3 ARTIFACT]     ai-value-sizing                  -> docs/VALUE_SIZING.md (measured post-launch KPIs vs. Phase 1 baseline)
+  [GATE 0-3 ARTIFACT]   tdl-field-guide                  -> STATE.md, docs/DEMO_FRAME_UP.md, dual RAID logs, closeout deck, retro
 ```
 
 ---

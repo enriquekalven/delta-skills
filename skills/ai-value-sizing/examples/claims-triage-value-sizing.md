@@ -2,7 +2,7 @@
 Date: 2026-08-21 | Baseline Source: `docs/as_is_report.md` (Phase 1 Operational Baseline) | WACC: 10.0%
 
 ## 1. Executive Bottom Line
-Automating commercial auto First Notice of Loss (FNOL) document extraction and adjuster triage across **12,000 obtainable annual claims (SOM)** requires **$180,000 in Year 0 CapEx** and **$68,000 in annual OpEx ($384,000 3-Year TCO)**, generating **$316,588 in risk-adjusted net annual value** (**Base Case 3-Year ROI: +147.3%**, **3-Year NPV @ 10%: $438,201**, **Payback: 8.7 months**).
+Automating commercial auto First Notice of Loss (FNOL) document extraction and adjuster triage across **12,000 obtainable annual claims (SOM)** requires **$180,000 in Year 0 CapEx** and **$68,000 in annual OpEx ($384,000 3-Year TCO)**, generating **$321,300 in risk-adjusted annual benefit** (**Base Case 3-Year ROI: +151.0%**, **3-Year NPV @ 10%: $449,920**, **Payback: 8.5 months**).
 
 ---
 
@@ -36,12 +36,12 @@ Automating commercial auto First Notice of Loss (FNOL) document extraction and a
 - **Baseline Time Saved per Claim:** `45.0 mins (baseline) - 3.0 mins (HITL review) = 42.0 mins (0.70 hours) saved/claim` (from `docs/as_is_report.md`).
 - **Blended Adjuster Hourly Rate:** `$75.00 / hr` (fully loaded).
 - **Gross Annual Labor Value:** `12,000 claims × 0.70 hrs × $75.00/hr = $630,000 / yr`.
-- **Value Capture Rate (VCR = 59.1% blended):**
-  - 50% of saved adjuster capacity converts directly into avoided external TPA (Third-Party Administrator) overflow fees during storm surges + reduced subrogation leakage; remaining time is task productivity.
-- **Systemic Capability Discount Factor (SCDF = 0.85):**
+- **Productivity Capture Rate (`--capture-rate = 0.60` / 60%):**
+  - Saved adjuster capacity during storm surges converts into avoided external TPA (Third-Party Administrator) overflow fees + reduced subrogation leakage; remaining time is task productivity.
+- **Delivery Readiness Factor (`--delivery-factor = 0.85`):**
   - Standard enterprise maturity (CI/CD and Guidewire APIs exist, 15% friction discount for exception queues).
-- **Risk-Adjusted Annual Benefit (Base Case, Pre-OpEx):** `$630,000 × 0.5912 × 0.85 = $316,588 / yr` (`$949,763` over 3 years).
-- **Annual Net Cash Flow (Base Case, Post-OpEx):** `$316,588 - $68,000 = $248,588 / yr` (`$565,763` net 3-year benefit after subtracting `$384,000` 3-Year TCO).
+- **Risk-Adjusted Annual Benefit (Base Case, Pre-OpEx):** `$630,000 × 0.60 × 0.85 = $321,300 / yr` (`$963,900` over 3 years).
+- **Annual Net Cash Flow (Base Case, Post-OpEx):** `$321,300 - $68,000 = $253,300 / yr` (`$579,900` net 3-year benefit after subtracting `$384,000` 3-Year TCO).
 
 ---
 
@@ -59,13 +59,13 @@ python3 skills/ai-value-sizing/scripts/calculate_roi.py \
   --hourly-rate 75.0 \
   --capex 180000 \
   --annual-opex 68000 \
-  --vcr 0.5912 \
-  --scdf 0.85 \
+  --capture-rate 0.60 \
+  --delivery-factor 0.85 \
   --wacc 0.10
 ```
 
-| Scenario | VCR | SCDF | Risk-Adj Annual Benefit (Pre-OpEx) | Annual Net Cash Flow (Post-OpEx) | 3-Year Risk-Adj Benefit | 3-Year TCO | 3-Year ROI % | 3-Year NPV @ 10% | Payback |
+| Scenario | Capture Rate | Delivery Factor | Risk-Adj Annual Benefit (Pre-OpEx) | Annual Net Cash Flow (Post-OpEx) | 3-Year Risk-Adj Benefit | 3-Year TCO | 3-Year ROI % | 3-Year NPV @ 10% | Payback |
 |---|---|---|---|---|---|---|---|---|---|
-| **Base Case (Target)** | 59.1% | 0.85 | **$316,588** | $248,588 | **$949,763** | $384,000 | **+147.3%** | **$438,201** | **8.7 mos** |
-| **Bull Case (Full TPA Offload)** | 88.7% | 1.02 | **$569,858** | $501,858 | **$1,709,573** | $384,000 | **+345.2%** | **$1,068,046** | **4.3 mos** |
-| **Bear Case (Low Maturity / High Friction)** | 59.1% | 0.40 | **$148,982** | $80,982 | **$446,947** | $384,000 | **+16.4%** | **$21,391** | **26.7 mos** |
+| **Base Case (Target)** | 60.0% | 0.85 | **$321,300** | $253,300 | **$963,900** | $384,000 | **+151.0%** | **$449,920** | **8.5 mos** |
+| **Bull Case (Full TPA Offload)** | 90.0% | 1.02 | **$578,340** | $510,340 | **$1,735,020** | $384,000 | **+351.8%** | **$1,089,140** | **4.2 mos** |
+| **Bear Case (Low Maturity / High Friction)** | 60.0% | 0.40 | **$151,200** | $83,200 | **$453,600** | $384,000 | **+18.1%** | **$26,906** | **26.0 mos** |

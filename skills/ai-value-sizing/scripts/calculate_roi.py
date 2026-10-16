@@ -17,7 +17,7 @@ DEMO_DEFAULTS: dict[str, float] = {
     "hourly_rate": 75.0,
     "capex": 180000.0,
     "annual_opex": 68000.0,
-    "vcr": 0.5912,
+    "vcr": 0.60,
     "scdf": 0.85,
     "wacc": 0.10,
 }
@@ -67,7 +67,7 @@ def compute_sizing_and_roi(
     year_multipliers = (year1_ramp, 1.0, 1.0)
 
     def scenario_metrics(scen_vcr: float, scen_scdf: float) -> dict[str, float]:
-        # Steady-state risk-adjusted annual benefit (post-VCR & SCDF haircuts, pre-OpEx)
+        # Steady-state risk-adjusted annual benefit (post capture & delivery-readiness haircuts, pre-OpEx)
         net_annual = gross_annual_value * scen_vcr * scen_scdf
         net_3yr_value = sum(net_annual * m for m in year_multipliers)
         annual_net_cashflow = net_annual - annual_opex_usd
@@ -91,6 +91,8 @@ def compute_sizing_and_roi(
         return {
             "vcr": round(scen_vcr, 4),
             "scdf": round(scen_scdf, 4),
+            "capture_rate": round(scen_vcr, 4),
+            "delivery_factor": round(scen_scdf, 4),
             "net_annual_value_usd": round(net_annual, 2),
             "annual_net_cashflow_usd": round(annual_net_cashflow, 2),
             "net_3yr_value_usd": round(net_3yr_value, 2),
@@ -132,14 +134,14 @@ def format_markdown_table(result: dict[str, object]) -> str:
     """Format the 3-scenario ROI/NPV output as a ready-to-paste Markdown table."""
     scenarios = result["scenarios"]  # type: ignore[index]
     lines = [
-        "| Scenario | VCR | SCDF | Risk-Adj Annual Benefit (Pre-OpEx) | Annual Net Cash Flow (Post-OpEx) | 3-Year Risk-Adj Benefit | 3-Year ROI % | 3-Year NPV | Payback |",
+        "| Scenario | Capture Rate | Delivery Factor | Risk-Adj Annual Benefit (Pre-OpEx) | Annual Net Cash Flow (Post-OpEx) | 3-Year Risk-Adj Benefit | 3-Year ROI % | 3-Year NPV | Payback |",
         "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |",
     ]
     for key, label in (("base", "**Base**"), ("bull", "**Bull**"), ("bear", "**Bear**")):
         sc = scenarios[key]  # type: ignore[index]
         payback = f"{sc['payback_months']:.1f} mos" if sc["payback_months"] > 0 else "Never"
         lines.append(
-            f"| {label} | `{sc['vcr']:.4f}` | `{sc['scdf']:.2f}` | "
+            f"| {label} | `{sc['vcr']:.2f}` | `{sc['scdf']:.2f}` | "
             f"`${round(sc['net_annual_value_usd']):,}` | `${round(sc['annual_net_cashflow_usd']):,}` | "
             f"`${round(sc['net_3yr_value_usd']):,}` | "
             f"`{sc['roi_3yr_percent']:.1f}%` | `${round(sc['npv_3yr_usd']):,}` | `{payback}` |"
@@ -171,8 +173,22 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--capex", type=float, default=None, help="Year 0 build CapEx (USD)")
     parser.add_argument("--annual-opex", type=float, default=None, help="Ongoing annual run OpEx (USD)")
-    parser.add_argument("--vcr", type=float, default=None, help="Value Capture Rate (0.25 task, 0.50 rev, 1.00 hard)")
-    parser.add_argument("--scdf", type=float, default=None, help="Systemic Capability Discount Factor (0.40, 0.85, 1.20)")
+    parser.add_argument(
+        "--capture-rate",
+        "--vcr",
+        dest="vcr",
+        type=float,
+        default=None,
+        help="Productivity capture rate (0.25 task, 0.50-0.60 overflow/revenue, 1.00 hard cost elimination)",
+    )
+    parser.add_argument(
+        "--delivery-factor",
+        "--scdf",
+        dest="scdf",
+        type=float,
+        default=None,
+        help="Delivery readiness factor (0.40 low maturity, 0.85 standard enterprise, 1.20 high maturity)",
+    )
     parser.add_argument("--wacc", type=float, default=None, help="Discount rate / WACC (default 0.10)")
     args = parser.parse_args(argv)
 

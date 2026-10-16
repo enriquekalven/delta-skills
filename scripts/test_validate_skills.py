@@ -153,11 +153,15 @@ class CalculateRoiTests(unittest.TestCase):
             code = calculate_roi.main([
                 "--tam-units", "80000", "--sam-share", "0.625", "--adoption-rate", "0.30",
                 "--tech-compat", "0.80", "--hours-saved", "0.70", "--hourly-rate", "75.0",
-                "--capex", "180000", "--annual-opex", "68000", "--vcr", "0.5912",
-                "--scdf", "0.85", "--wacc", "0.10",
+                "--capex", "180000", "--annual-opex", "68000", "--capture-rate", "0.60",
+                "--delivery-factor", "0.85", "--wacc", "0.10",
             ])
         self.assertEqual(code, 0)
         data = json.loads(out.getvalue())
+        self.assertAlmostEqual(data["scenarios"]["base"]["capture_rate"], 0.60)
+        self.assertAlmostEqual(data["scenarios"]["base"]["delivery_factor"], 0.85)
+        self.assertAlmostEqual(data["scenarios"]["base"]["vcr"], 0.60)
+        self.assertAlmostEqual(data["scenarios"]["base"]["scdf"], 0.85)
         example = self.EXAMPLE.read_text(encoding="utf-8")
         for scen in ("base", "bull", "bear"):
             sc = data["scenarios"][scen]
@@ -356,35 +360,34 @@ class IndexHtmlContractTests(unittest.TestCase):
         for step_num in range(1, 16):
             self.assertIn(f'"step-{step_num}"', html)
 
-    def test_xp_rank_ladder_top_rank_reachable_only_at_full_completion(self) -> None:
+    def test_clean_engineering_terminology_and_artifact_tier_classifications(self) -> None:
         html = self.INDEX_HTML.read_text(encoding="utf-8")
 
-        # Steps per stage: count step ids declared between consecutive stage ids in STAGES.
+        for banned in (
+            "Mars Mission Commander",
+            "Suit Up & Assemble",
+            "Space Cadet",
+            "launchConfetti",
+            "0.5912",
+        ):
+            self.assertNotIn(banned, html, f"Banned gamification/jargon token still in index.html: {banned}")
+
         stages_block = html[html.index("var STAGES = ["):html.index("var STORAGE_KEY")]
-        stage_marks = [(m.group(1), m.start()) for m in re.finditer(r'\bid: "(?!step-)([a-z0-9]+)"', stages_block)]
-        step_counts = {}
-        for i, (stage_id, start) in enumerate(stage_marks):
-            end = stage_marks[i + 1][1] if i + 1 < len(stage_marks) else len(stages_block)
-            step_counts[stage_id] = len(re.findall(r'\bid: "step-\d+"', stages_block[start:end]))
-        self.assertEqual(sum(step_counts.values()), 15)
+        stage_names = re.findall(r'\bname:\s*"([^"]+)"', stages_block)
+        self.assertEqual(
+            stage_names,
+            ["Setup", "Prelude", "Phase 1: Foundations", "Phase 2: Build & Eval", "Phase 3: Launch"],
+        )
 
-        xp_block = html[html.index("var XP_TABLE = {"):html.index("var RANKS = [")]
-        xp_table = {
-            m.group(1): (int(m.group(2)), int(m.group(3)))
-            for m in re.finditer(r"(\w+):\s*\{\s*perStep:\s*(\d+),\s*gateBonus:\s*(\d+)", xp_block)
-        }
-        self.assertEqual(set(xp_table), set(step_counts), "every stage needs an XP_TABLE entry")
+        artifact_classes = re.findall(r'\bartifactClass:\s*"([^"]+)"', stages_block)
+        self.assertEqual(len(artifact_classes), 15, "Every step in STAGES must declare artifactClass")
+        self.assertEqual(
+            set(artifact_classes),
+            {"Mandatory Gate Artifact", "Discovery Worksheet (Collapsible)"},
+        )
 
-        ranks_start = html.index("var RANKS = [")
-        ranks_block = html[ranks_start:html.index("];", ranks_start)]
-        thresholds = [int(x) for x in re.findall(r"minXp:\s*(\d+)", ranks_block)]
-        titles = re.findall(r'title:\s*"([^"]+)"', ranks_block)
-        self.assertEqual(thresholds[0], 0)
-        self.assertEqual(thresholds, sorted(set(thresholds)), "rank thresholds must strictly increase")
-
-        max_xp = sum(count * xp_table[sid][0] + xp_table[sid][1] for sid, count in step_counts.items())
-        self.assertEqual(thresholds[-1], max_xp, "top rank must equal the max attainable XP")
-        self.assertEqual(titles[-1], "Mars Mission Commander")
+        tier_scopes = re.findall(r'\btierScope:\s*"([^"]+)"', stages_block)
+        self.assertEqual(len(tier_scopes), 15, "Every step in STAGES must declare tierScope")
 
     def test_quota_cli_supports_both_canonical_and_short_flags(self) -> None:
         out1 = io.StringIO()

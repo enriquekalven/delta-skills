@@ -78,30 +78,40 @@ python3 scripts/validate_skills.py
 - **With `skills` CLI:** `npx skills add delta-fde/tool-tdl-user-guide`
 - **Native Antigravity Plugin Structure:** Includes root [`plugin.json`](plugin.json) and real skill directories in `skills/<skill-name>/SKILL.md` (with backwards-compatible symlinks at the category paths).
 
-### Shared Workspace File Contracts
-Skills communicate through explicit markdown and JSON artifacts in the customer repository (`docs/` and `STATE.md`). Downstream skills automatically consume the outputs of upstream skills:
+### Shared Workspace File Contracts (Mandatory Gate Artifacts vs. Optional Discovery Worksheets)
+Skills communicate through explicit markdown and JSON artifacts in the customer repository (`docs/` and `STATE.md`). To avoid documentation bloat, artifacts are split into **Mandatory Phase-Gate Artifacts** (required for engineering sign-off) and **Discovery & UI Worksheets** (which can be generated standalone for complex enterprise discovery or collapsed directly into `docs/PRD.md` for leaner engagements):
 
 ```text
 customer-engagement-repo/
-├── STATE.md                              # Written & updated by tdl-field-guide (gates, sprints, dual RAID logs)
+├── STATE.md                              # [GATE ARTIFACT] Written by tdl-field-guide (phase gates, sprints, RAID logs)
 ├── docs/
-│   ├── WORKSHOP_INTAKE.md                # Written by workshop-intake (Discovery Qs + Available/Usable/Quality Data Yardstick)
-│   ├── USE_CASE_CANVAS.md                # Written by create-delta-ucc (Use Case Canvas + MVP Alignment Summary)
-│   ├── as_is_report.md                   # Written by business-process-redesign (Task decomposition + operational baseline)
-│   ├── to_be_designs.md                  # Written by business-process-redesign (L1/L2/L3 agent workflow)
-│   ├── human_agent_roles.md              # Written by business-process-redesign (HITL & escalation matrix)
-│   ├── CUJ_MAP.md                        # Written by cuj-architect (Ethnography, L1-L5 CUJs, 0.6V+0.4F)
-│   ├── PRD.md                            # Written by product-md (Agentic PRD + RICE & eval specs)
-│   ├── ARCHITECTURE_RECOMMENDATION.md    # Written by gcp-agent-architecture-advisor (Tier 1/2/3 + model economics)
-│   ├── TDD.md                            # Written by specification-engineer (Agent Technical Spec + Golden Dataset baseline evals)
-│   ├── STITCH_PROTOTYPE.md               # Written by stitch-design (Rapid prototyping + Delta Brand #13 + Stitch MCP)
-│   ├── DEMO_FRAME_UP.md                  # Written by tdl-field-guide (Pillar / Feature ID / Demo 1-2-3 matrix)
-│   ├── LOAD_TEST_REPORT.md               # Written by agent-load-testing (fan-out math, 5x quota, Locust SSE)
-│   ├── EVAL_AUDIT_REPORT.md              # Written by agent-eval-statistical-auditing (CLA + AUA pipelines)
-│   └── VALUE_SIZING.md                   # Written by ai-value-sizing (Phase 1 projection & Phase 3 measured ROI vs. baseline)
+│   ├── PRD.md                            # [GATE 1 ARTIFACT] Written by product-md (Agentic PRD, CUJs, DAG, RICE, eval targets)
+│   ├── ARCHITECTURE_RECOMMENDATION.md    # [GATE 1 ARTIFACT] Written by gcp-agent-architecture-advisor (Tier 1/2/3 + model economics)
+│   ├── TDD.md                            # [GATE 1 ARTIFACT] Written by specification-engineer (Tech spec + Golden Dataset baseline)
+│   ├── DEMO_FRAME_UP.md                  # [GATE 2 ARTIFACT] Written by tdl-field-guide (Pillar / Feature ID / Demo 1-2-3 matrix)
+│   ├── EVAL_AUDIT_REPORT.md              # [GATE 2 ARTIFACT] Written by agent-eval-statistical-auditing (CLA + AUA judge audit)
+│   ├── LOAD_TEST_REPORT.md               # [GATE 2 ARTIFACT · Tier 2/3] Written by agent-load-testing (fan-out math, 5x quota, Locust)
+│   ├── VALUE_SIZING.md                   # [GATE 1 & 3 ARTIFACT] Written by ai-value-sizing (Phase 1 projection & Phase 3 measured ROI)
+│   │
+│   ├── WORKSHOP_INTAKE.md                # [DISCOVERY WORKSHEET] Written by workshop-intake (Starter Qs + Data Readiness Yardstick)
+│   ├── USE_CASE_CANVAS.md                # [DISCOVERY WORKSHEET] Written by create-delta-ucc (Use Case Canvas + MVP Alignment)
+│   ├── as_is_report.md                   # [DISCOVERY WORKSHEET] Written by business-process-redesign (As-Is task baseline)
+│   ├── to_be_designs.md                  # [DISCOVERY WORKSHEET] Written by business-process-redesign (To-Be L1/L2/L3 workflow)
+│   ├── human_agent_roles.md              # [DISCOVERY WORKSHEET] Written by business-process-redesign (HITL & escalation matrix)
+│   ├── CUJ_MAP.md                        # [DISCOVERY WORKSHEET] Written by cuj-architect (Ethnography & L1-L5 CUJs)
+│   └── STITCH_PROTOTYPE.md               # [UI WORKSHEET · Custom UI Only] Written by stitch-design (Rapid prototype & mini-eval)
 └── .harness/
-    └── last_run_report.json              # Written by claude-agent-harness goal loop
+    └── last_run_report.json              # [BUILD ARTIFACT · Tier 2/3] Written by claude-agent-harness goal loop
 ```
+
+### Architecture Tier Execution Matrix (Which Steps to Run vs. Skip)
+Not every engagement runs all 15 steps. After **Step 8 (`gcp-agent-architecture-advisor`)**, tailor the remaining workflow to the selected platform tier:
+
+| Platform Tier | When Selected | Steps Executed | Steps Skipped / Adapted |
+| :--- | :--- | :--- | :--- |
+| **Tier 1: No-Code (Gemini Enterprise)** | Standard connectors, workspace/intranet search & assistants | Steps 1, 3–9, 13, 15 | **Skip Step 2** (ADK CLI), **Step 10** (`stitch-design`, unless custom UI), **Step 12** (`claude-agent-harness`), and **Step 14** (custom gRPC/Locust tuning; use managed quotas) |
+| **Tier 2: Managed Code-First (ADK on Vertex Agent Engine)** | Multi-agent orchestration, custom Python tools/MCP, managed runtime | All 15 steps (skip Step 10 if headless/backend-only) | Skip **Step 10 (`stitch-design`)** if the agent is headless or embedded in Slack/Teams/Workspace |
+| **Tier 3: Self-Hosted Code-First (ADK on Cloud Run / GKE)** | Strict VPC-SC, custom sidecars, high-throughput streaming | All 15 steps (skip Step 10 if headless/backend-only) | Full execution including **Step 12 (`claude-agent-harness`)** and **Step 14 (`agent-load-testing`)** |
 
 ---
 
@@ -229,8 +239,8 @@ python3 ai-value-sizing/scripts/calculate_roi.py \
   --hourly-rate 75.0 \
   --capex 180000 \
   --annual-opex 68000 \
-  --vcr 0.5912 \
-  --scdf 0.85 \
+  --capture-rate 0.60 \
+  --delivery-factor 0.85 \
   --wacc 0.10
 ```
 
