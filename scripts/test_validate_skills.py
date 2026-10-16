@@ -471,7 +471,16 @@ class IndexHtmlContractTests(unittest.TestCase):
         self.assertIn('id="presetProfileBox"', html)
         self.assertIn('id="hideSkippedToggle"', html)
 
+        arch_block = html[html.index("var ARCHETYPES = {"):html.index("var CUSTOMER_PRESETS = [")]
+        arch_capex = [int(x) for x in re.findall(r'\bcapex:\s*(\d+)', arch_block)]
+        arch_opex = [int(x) for x in re.findall(r'\bopex:\s*(\d+)', arch_block)]
+        self.assertEqual(len(arch_capex), 4)
+        self.assertEqual(len(arch_opex), 4)
+
         presets_block = html[html.index("var CUSTOMER_PRESETS = ["):html.index("var STAGES = [")]
+        volumes = [int(x) for x in re.findall(r'\bvolume:\s*(\d+)', presets_block)]
+        rates = [float(x) for x in re.findall(r'\brate:\s*(\d+(?:\.\d+)?)', presets_block)]
+        hours_list = [float(x) for x in re.findall(r'\bhours:\s*(\d+(?:\.\d+)?)', presets_block)]
         archetypes = re.findall(r'\barchetype:\s*"([^"]+)"', presets_block)
         compliances = re.findall(r'\bcompliance:\s*"([^"]+)"', presets_block)
         focuses = re.findall(r'\bfocus:\s*"([^"]+)"', presets_block)
@@ -493,6 +502,44 @@ class IndexHtmlContractTests(unittest.TestCase):
         self.assertEqual(archetypes.count("tier2-headless"), 12)
         self.assertEqual(archetypes.count("tier2-workbench"), 19)
         self.assertEqual(archetypes.count("tier3-regulated"), 13)
+
+        tier_costs = {
+            "tier1-nocode": (28000, 12000),
+            "tier2-headless": (150000, 54000),
+            "tier2-workbench": (180000, 68000),
+            "tier3-regulated": (240000, 88000),
+        }
+        for idx in range(50):
+            capex, opex = tier_costs[archetypes[idx]]
+            roi = calculate_roi.compute_sizing_and_roi(
+                tam_units=volumes[idx],
+                sam_share=0.625,
+                adoption_rate=0.30,
+                tech_compat=0.80,
+                hours_saved_per_unit=hours_list[idx],
+                hourly_rate_usd=rates[idx],
+                capex_usd=capex,
+                annual_opex_usd=opex,
+                vcr=0.60,
+                scdf=0.85,
+                wacc=0.10,
+            )
+            base_sc = roi["scenarios"]["base"]
+            bull_sc = roi["scenarios"]["bull"]
+            self.assertGreater(base_sc["roi_3yr_percent"], 0.0, f"Preset #{idx+1} Base ROI must be positive")
+            self.assertGreater(bull_sc["roi_3yr_percent"], base_sc["roi_3yr_percent"])
+            self.assertIsNotNone(base_sc["payback_months"], f"Preset #{idx+1} Base payback must not be None")
+
+        stages_block = html[html.index("var STAGES = ["):html.index("var STORAGE_KEY")]
+        used_placeholders = set(re.findall(r"\{\{[A-Z0-9_]+\}\}", stages_block))
+        fn_block = html[html.index("function formatWithParams"):html.index("function escapeHtml")]
+        for token in used_placeholders:
+            escaped = token.replace("{", r"\{").replace("}", r"\}")
+            self.assertEqual(
+                fn_block.count(escaped),
+                2,
+                f"Placeholder {token} must be replaced in both formatWithParams and rawWithParams",
+            )
 
 
 if __name__ == "__main__":

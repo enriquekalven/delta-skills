@@ -104,14 +104,15 @@ customer-engagement-repo/
     └── last_run_report.json              # [BUILD ARTIFACT · Tier 2/3] Written by claude-agent-harness goal loop
 ```
 
-### Architecture Tier Execution Matrix (Which Steps to Run vs. Skip)
-Not every engagement runs all 15 steps. After **Step 8 (`gcp-agent-architecture-advisor`)**, tailor the remaining workflow to the selected platform tier:
+### Architecture Tier & Use-Case Archetype Execution Matrix (Which Skills & Artifacts to Run vs. Skip)
+Not every engagement runs all 13 skills or generates all 14 artifacts. Both the repository workflow and the 50 example scenarios in [`index.html`](index.html) classify every use case into **4 concrete delivery archetypes** that tailor active skills, skipped steps, compliance gates, tier CapEx/OpEx, and fan-out math (`Qt × Cq`):
 
-| Platform Tier | When Selected | Steps Executed | Steps Skipped / Adapted |
-| :--- | :--- | :--- | :--- |
-| **Tier 1: No-Code (Gemini Enterprise)** | Standard connectors, workspace/intranet search & assistants | Steps 1, 3–9, 13, 15 | **Skip Step 2** (ADK CLI), **Step 10** (`stitch-design`, unless custom UI), **Step 12** (`claude-agent-harness`), and **Step 14** (custom gRPC/Locust tuning; use managed quotas) |
-| **Tier 2: Managed Code-First (ADK on Vertex Agent Engine)** | Multi-agent orchestration, custom Python tools/MCP, managed runtime | All 15 steps (skip Step 10 if headless/backend-only) | Skip **Step 10 (`stitch-design`)** if the agent is headless or embedded in Slack/Teams/Workspace |
-| **Tier 3: Self-Hosted Code-First (ADK on Cloud Run / GKE)** | Strict VPC-SC, custom sidecars, high-throughput streaming | All 15 steps (skip Step 10 if headless/backend-only) | Full execution including **Step 12 (`claude-agent-harness`)** and **Step 14 (`agent-load-testing`)** |
+| Use-Case Archetype | Example Scenarios (`index.html`) | Active Scope | Steps Executed | Steps Skipped / Collapsed |
+| :--- | :--- | :--- | :--- | :--- |
+| **`tier1-nocode` · Tier 1 No-Code (Gemini Enterprise)** | 6 departmental FAQ / policy / wiki lookup bots (`-lite` scenarios: `#14, #18, #26, #35, #40, #48`) | **7 / 13 skills · 9 / 15 steps · 6 core artifacts** | Steps 1, 3, 4, 6, 7, 8, 9, 13, 15 | **Skip Steps 2, 5, 10, 11, 12, 14** (no custom ADK scaffold, multi-agent DAG redesign, Stitch UI, full TDD codegen, or Locust gRPC load test); **Step 4** collapsible into `PRD.md` |
+| **`tier2-headless` · Tier 2 Managed ADK (Headless / Event / Ticket)** | 12 automated webhook, NOC, ServiceNow, customs & telemetry agents (`#4, #6, #7, #9, #22, #29, #37, #39, #45, #46, #47, #50`) | **12 / 13 skills · 14 / 15 steps · 8 gate artifacts** | Steps 1–9, 11–15 | **Skip Step 10 (`stitch-design`)** (headless API / webhook / Slack / ServiceNow surface); **Steps 4–5** Discovery Worksheets collapsible into `PRD.md` |
+| **`tier2-workbench` · Tier 2 Managed ADK + Custom Stitch UI** | 19 human-in-the-loop analyst, claims, legal & merchandising workbenches (`#1, #5, #10, #13, #15–17, #23–25, #27–28, #30–34, #44, #49`) | **13 / 13 skills · 15 / 15 steps · 8 gate + 6 worksheet artifacts** | All 15 steps | **Steps 4–5** Discovery Worksheets recommended for multi-persona alignment (or collapsible into `PRD.md` if upstream intake is signed off); **Step 10 (`stitch-design`)** required |
+| **`tier3-regulated` · Tier 3 Self-Hosted ADK on Cloud Run / GKE** | 13 regulated HIPAA, FinCEN SAR, FDA 21 CFR Part 11, NERC CIP, FERC & FedRAMP systems (`#2, #3, #8, #11, #12, #19–21, #36, #38, #41–43`) | **13 / 13 skills · 15 / 15 steps · All 14 artifacts mandatory** | All 15 steps (strict gates) | **No steps skipped or collapsed**: full Discovery & CUJ audit trail required, VPC-SC + CMEK + Model Armor enforced in `TDD.md`, and `audit_llm_judge.py --strict` required in Step 13 |
 
 ---
 

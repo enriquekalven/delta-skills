@@ -665,6 +665,10 @@ var ARCHETYPES = {
     uiModality: "Native Gemini Enterprise Workspace UI",
     activeSkillsCount: 7,
     artifactSummary: "6 Core Artifacts (No TDD codegen, Stitch UI, or Locust load test)",
+    capex: 28000,
+    opex: 12000,
+    prdInputDocs: "docs/WORKSHOP_INTAKE.md and docs/USE_CASE_CANVAS.md",
+    readoutInputDocs: "docs/PRD.md and docs/EVAL_AUDIT_REPORT.md",
     skipSteps: ["step-2", "step-5", "step-10", "step-11", "step-12", "step-14"],
     collapseSteps: ["step-4"],
     skipReason: "Tier 1 Gemini Enterprise (No-Code) uses managed Vertex AI Search data stores and native Workspace UI—custom ADK code scaffolding, multi-agent DAG redesign, Stitch UI prototyping, and custom gRPC load testing are not needed.",
@@ -675,6 +679,10 @@ var ARCHETYPES = {
     uiModality: "Headless API / Event Webhook / Slack / ServiceNow",
     activeSkillsCount: 12,
     artifactSummary: "8 Mandatory Gate Artifacts (Skips custom Stitch UI; collapses Worksheets)",
+    capex: 150000,
+    opex: 54000,
+    prdInputDocs: "docs/CUJ_MAP.md and docs/as_is_report.md",
+    readoutInputDocs: "docs/as_is_report.md, docs/EVAL_AUDIT_REPORT.md and docs/LOAD_TEST_REPORT.md",
     skipSteps: ["step-10"],
     collapseSteps: ["step-4", "step-5"],
     skipReason: "This use case runs headless inside an existing ticketing, NOC, or webhook pipeline (ServiceNow / Slack / PagerDuty / ERP) and does not require a standalone Stitch web UI.",
@@ -685,6 +693,10 @@ var ARCHETYPES = {
     uiModality: "Custom Stitch HITL Workbench UI (Cloud Run + Agent Engine)",
     activeSkillsCount: 13,
     artifactSummary: "8 Gate Artifacts + 6 Discovery/UI Worksheets (14 total)",
+    capex: 180000,
+    opex: 68000,
+    prdInputDocs: "docs/CUJ_MAP.md and docs/as_is_report.md",
+    readoutInputDocs: "docs/as_is_report.md, docs/EVAL_AUDIT_REPORT.md and docs/LOAD_TEST_REPORT.md",
     skipSteps: [],
     collapseSteps: ["step-4", "step-5"],
     skipReason: "",
@@ -695,6 +707,10 @@ var ARCHETYPES = {
     uiModality: "Regulated HITL Review Workbench (VPC-SC + CMEK + Model Armor)",
     activeSkillsCount: 13,
     artifactSummary: "All 14 Artifacts Mandatory (Full Audit Trail + Strict P1/P2/P3 Judge Cert)",
+    capex: 240000,
+    opex: 88000,
+    prdInputDocs: "docs/CUJ_MAP.md and docs/as_is_report.md",
+    readoutInputDocs: "docs/as_is_report.md, docs/EVAL_AUDIT_REPORT.md and docs/LOAD_TEST_REPORT.md",
     skipSteps: [],
     collapseSteps: [],
     skipReason: "",
@@ -952,8 +968,8 @@ var STAGES = [
         lede: "Author the Agentic PRD adapted to your engagement's scope following the toolbox PRD Example (Blocker vs. Friction pain points, reactive → proactive CUJs, information architecture & DAG design, prioritized requirements, hypotheses to test, scope exclusions), then project ROI with calculate_roi.py.",
         whyItMatters: "Delivery Guide: “This document should be completed by the end of week 2 with the customer.”",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use product-md to write the agentic PRD at docs/PRD.md for {{USE_CASE}} ({{TIER_LABEL}}; surface: {{UI_MODALITY}}; domain tools: {{TAILORED_FOCUS}}) from docs/CUJ_MAP.md and docs/as_is_report.md, covering Blocker vs. Friction pain points, DAG logic gates, mandatory HITL checkpoints ({{COMPLIANCE}}) and a RICE-prioritized backlog (repo convention). Then use ai-value-sizing to project Base/Bull/Bear ROI in docs/VALUE_SIZING.md ({{VOLUME}} annual cases, ${{RATE}}/hr loaded rate, {{HOURS_SAVED}} hrs saved/case).",
-        cliTemplate: "# Illustrative example values: shares, CapEx and OpEx from the ai-value-sizing worked example; Capture Rate 0.60 and Delivery Factor 0.85 are round haircut tiers. Replace them with your engagement's numbers.\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --capture-rate 0.60 --delivery-factor 0.85 --wacc 0.10",
+        promptTemplate: "Use product-md to write the agentic PRD at docs/PRD.md for {{USE_CASE}} ({{TIER_LABEL}}; surface: {{UI_MODALITY}}; domain tools: {{TAILORED_FOCUS}}) from {{PRD_INPUT_DOCS}}, covering Blocker vs. Friction pain points, DAG logic gates, mandatory HITL checkpoints ({{COMPLIANCE}}) and a RICE-prioritized backlog (repo convention). Then use ai-value-sizing to project Base/Bull/Bear ROI in docs/VALUE_SIZING.md ({{VOLUME}} annual cases, ${{RATE}}/hr loaded rate, {{HOURS_SAVED}} hrs saved/case).",
+        cliTemplate: "# Illustrative example values: shares from the ai-value-sizing worked example; tier-tailored CapEx ${{CAPEX}} and annual OpEx ${{OPEX}}; Capture Rate 0.60 and Delivery Factor 0.85 are round haircut tiers. Replace them with your engagement's numbers.\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex {{CAPEX}} --annual-opex {{OPEX}} --capture-rate 0.60 --delivery-factor 0.85 --wacc 0.10",
         livePreview: "roi",
         checks: [
           "Agentic PRD saved to docs/PRD.md with reactive vs. proactive CUJs and mandatory HITL checkpoints",
@@ -1159,8 +1175,8 @@ var STAGES = [
         lede: "Align on the baseline set at the start, show results with measured metrics, and structure the read-out like the Example Closeout Slide Deck (The Challenge | The Vision | The Experience → The Architecture | The Tech → The Value | The Future); then run the FDE retro.",
         whyItMatters: "Delivery Guide: “We hand over final measured evaluation metrics against a golden dataset for the agreed on metrics at the start of the engagement.”",
         promptType: "What to Paste into Your AI Agent",
-        promptTemplate: "Use ai-value-sizing and tdl-field-guide to prepare the final read-out for {{USE_CASE}} ({{TIER_LABEL}}) from docs/as_is_report.md, docs/EVAL_AUDIT_REPORT.md and docs/LOAD_TEST_REPORT.md:\n1. Update docs/VALUE_SIZING.md with measured KPIs in place of the projected inputs\n2. Outline the read-out with the Example Closeout Slide Deck sections (The Challenge | The Vision | The Experience, The Architecture | The Tech, The Value | The Future)\n3. Record the next-phase scope sign-off and the FDE retro notes in STATE.md",
-        cliTemplate: "# Re-run with your measured values in place of these illustrative example values\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex 180000 --annual-opex 68000 --capture-rate 0.60 --delivery-factor 0.85 --wacc 0.10",
+        promptTemplate: "Use ai-value-sizing and tdl-field-guide to prepare the final read-out for {{USE_CASE}} ({{TIER_LABEL}}) from {{READOUT_INPUT_DOCS}}:\n1. Update docs/VALUE_SIZING.md with measured KPIs in place of the projected inputs\n2. Outline the read-out with the Example Closeout Slide Deck sections (The Challenge | The Vision | The Experience, The Architecture | The Tech, The Value | The Future)\n3. Record the next-phase scope sign-off and the FDE retro notes in STATE.md",
+        cliTemplate: "# Re-run with your measured values in place of these illustrative example values\npython3 ~/.gemini/config/plugins/tool-tdl-user-guide/skills/ai-value-sizing/scripts/calculate_roi.py \\\n  --tam-units {{VOLUME}} --sam-share 0.625 --adoption-rate 0.30 \\\n  --tech-compat 0.80 --hours-saved {{HOURS_SAVED}} --hourly-rate {{RATE}} \\\n  --capex {{CAPEX}} --annual-opex {{OPEX}} --capture-rate 0.60 --delivery-factor 0.85 --wacc 0.10",
         livePreview: "roi",
         checks: [
           "Read-out delivered with measured (not projected) KPIs in docs/VALUE_SIZING.md; next-phase scope signed off",
@@ -1221,6 +1237,51 @@ function getStepPresetStatus(stepId) {
   };
 }
 
+function isStepSatisfied(step, doneSet) {
+  var set = doneSet || completedSet;
+  return set.has(step.id) || getStepPresetStatus(step.id).code === "skipped";
+}
+
+function ensureVisibleActiveStep() {
+  if (!hideSkippedSteps) return;
+  var curStage = STAGES[activeStageIdx];
+  var curStep = curStage && curStage.steps[activeStepIdx];
+  if (curStep && getStepPresetStatus(curStep.id).code !== "skipped") return;
+
+  // Prefer first non-skipped step in the current stage
+  for (var i = 0; i < curStage.steps.length; i++) {
+    if (getStepPresetStatus(curStage.steps[i].id).code !== "skipped") {
+      activeStepIdx = i;
+      return;
+    }
+  }
+  // Fallback across all stages
+  for (var s = 0; s < STAGES.length; s++) {
+    for (var j = 0; j < STAGES[s].steps.length; j++) {
+      if (getStepPresetStatus(STAGES[s].steps[j].id).code !== "skipped") {
+        activeStageIdx = s;
+        activeStepIdx = j;
+        return;
+      }
+    }
+  }
+}
+
+function renderSkillJumpSelect() {
+  var sel = document.getElementById("skillJumpSelect");
+  if (!sel) return;
+  Array.from(sel.options).forEach(function(opt) {
+    if (!opt.value) return;
+    if (!opt.getAttribute("data-base-label")) {
+      opt.setAttribute("data-base-label", opt.textContent);
+    }
+    var base = opt.getAttribute("data-base-label");
+    var st = getStepPresetStatus(opt.value);
+    var tag = st.code === "skipped" ? " [⚪ Skipped]" : (st.code === "collapsible" ? " [🟡 Collapsible]" : " [🟢 Required]");
+    opt.textContent = base + tag;
+  });
+}
+
 function renderPresetProfileBox() {
   var box = document.getElementById("presetProfileBox");
   if (!box) return;
@@ -1243,7 +1304,7 @@ function saveProgress() {
 
 function isStageCleared(stage, doneSet) {
   return stage.steps.every(function(s) {
-    return doneSet.has(s.id) || getStepPresetStatus(s.id).code === "skipped";
+    return isStepSatisfied(s, doneSet);
   });
 }
 
@@ -1256,7 +1317,7 @@ function makeEl(tag, className, text) {
 
 function renderGateHud() {
   var allSteps = getAllSteps();
-  var doneCount = allSteps.filter(function(s) { return completedSet.has(s.id); }).length;
+  var doneCount = allSteps.filter(function(s) { return isStepSatisfied(s); }).length;
   var clearedStages = STAGES.filter(function(st) { return isStageCleared(st, completedSet); }).length;
   var pct = Math.round((doneCount / allSteps.length) * 100);
   var currentStage = STAGES[activeStageIdx];
@@ -1276,7 +1337,7 @@ function renderGateHud() {
   var list = document.getElementById("xpLadderList");
   list.replaceChildren();
   STAGES.forEach(function(st, i) {
-    var doneInSt = st.steps.filter(function(s) { return completedSet.has(s.id); }).length;
+    var doneInSt = st.steps.filter(function(s) { return isStepSatisfied(s); }).length;
     var cleared = isStageCleared(st, completedSet);
     var state = cleared ? "achieved" : (i === activeStageIdx ? "achieved current" : "locked");
     var li = makeEl("li", "xp-rung " + state);
@@ -1356,19 +1417,23 @@ function getParams() {
     qt: preset.qt || 6,
     cq: preset.cq || 4,
     tokensPerCall: preset.tokensPerCall || 20000,
+    capex: arch.capex || 180000,
+    opex: arch.opex || 68000,
+    prdInputDocs: arch.prdInputDocs || "docs/CUJ_MAP.md and docs/as_is_report.md",
+    readoutInputDocs: arch.readoutInputDocs || "docs/as_is_report.md, docs/EVAL_AUDIT_REPORT.md and docs/LOAD_TEST_REPORT.md",
     auaFlags: preset.archetype === "tier3-regulated" ? " --strict" : ""
   };
 }
 
 // Same formulas as skills/ai-value-sizing/scripts/calculate_roi.py (bull = min(1, 1.5 x Capture) x min(1.2, 1.2 x Delivery),
-// bear = Capture x 0.40). Fixed illustrative example values: shares, CapEx and OpEx from the skill's worked example;
+// bear = Capture x 0.40). Illustrative example values: shares from the skill's worked example; tier-tailored CapEx and OpEx;
 // Capture Rate 0.60 and Delivery Factor 0.85 are round haircut tiers; WACC 10%.
-function computeRoiPreview(volume, rate, hours) {
+function computeRoiPreview(volume, rate, hours, capex, opex) {
   var sam = volume * 0.625;
   var som = sam * 0.30 * 0.80;
   var gross = som * hours * rate;
-  var capex = 180000;
-  var opex = 68000;
+  capex = capex || 180000;
+  opex = opex || 68000;
   var tco3 = capex + 3 * opex;
   function scen(captureRate, deliveryFactor) {
     var netAnn = gross * captureRate * deliveryFactor;
@@ -1382,6 +1447,8 @@ function computeRoiPreview(volume, rate, hours) {
   return {
     som: Math.round(som),
     gross: Math.round(gross),
+    capex: capex,
+    opex: opex,
     tco3: tco3,
     base: scen(0.60, 0.85),
     bull: scen(0.90, 1.02),
@@ -1445,13 +1512,13 @@ function buildTable(headers, rows) {
 }
 
 function buildRoiPreview(p) {
-  var r = computeRoiPreview(p.volume, p.rate, p.hours);
+  var r = computeRoiPreview(p.volume, p.rate, p.hours, p.capex, p.opex);
   var card = makeEl("div", "card preview-card");
   card.appendChild(makeEl("h3", "", "📊 ROI projection (illustrative example; same formulas as calculate_roi.py)"));
   card.appendChild(makeEl("p", "preview-intro",
     "Left-rail inputs: " + p.volume.toLocaleString("en-US") + " TAM units, " + p.hours + " hrs saved per case, $" + p.rate + "/hr. " +
-    "Fixed example values: SAM share 0.625, adoption 0.30, tech compatibility 0.80, CapEx $180,000 and annual OpEx $68,000 " +
-    "(ai-value-sizing worked example); Capture Rate 0.60 and Delivery Factor 0.85 (round haircut tiers); WACC 10%."));
+    "Example values: SAM share 0.625, adoption 0.30, tech compatibility 0.80, tier-tailored CapEx " + formatUsd(r.capex) +
+    " and annual OpEx " + formatUsd(r.opex) + " (" + p.tierLabel.split("·")[0].trim() + "); Capture Rate 0.60 and Delivery Factor 0.85 (round haircut tiers); WACC 10%."));
   card.appendChild(makeEl("p", "preview-intro",
     "Year-1 SOM (TAM × 0.625 × 0.30 × 0.80): " + r.som.toLocaleString("en-US") + " cases · " +
     "Gross annual value (SOM × hrs × rate): " + formatUsd(r.gross) + " · " +
@@ -1556,6 +1623,10 @@ function formatWithParams(tpl) {
     .replace(/\{\{QT\}\}/g, '<span class="prompt-param">' + escapeHtml(p.qt) + '</span>')
     .replace(/\{\{CQ\}\}/g, '<span class="prompt-param">' + escapeHtml(p.cq) + '</span>')
     .replace(/\{\{TOKENS_PER_CALL\}\}/g, '<span class="prompt-param">' + escapeHtml(p.tokensPerCall) + '</span>')
+    .replace(/\{\{CAPEX\}\}/g, '<span class="prompt-param">' + escapeHtml(p.capex) + '</span>')
+    .replace(/\{\{OPEX\}\}/g, '<span class="prompt-param">' + escapeHtml(p.opex) + '</span>')
+    .replace(/\{\{PRD_INPUT_DOCS\}\}/g, '<span class="prompt-param">' + escapeHtml(p.prdInputDocs) + '</span>')
+    .replace(/\{\{READOUT_INPUT_DOCS\}\}/g, '<span class="prompt-param">' + escapeHtml(p.readoutInputDocs) + '</span>')
     .replace(/\{\{AUA_FLAGS\}\}/g, p.auaFlags ? '<span class="prompt-param">' + escapeHtml(p.auaFlags) + '</span>' : '');
 }
 
@@ -1576,6 +1647,10 @@ function rawWithParams(tpl) {
     .replace(/\{\{QT\}\}/g, String(p.qt))
     .replace(/\{\{CQ\}\}/g, String(p.cq))
     .replace(/\{\{TOKENS_PER_CALL\}\}/g, String(p.tokensPerCall))
+    .replace(/\{\{CAPEX\}\}/g, String(p.capex))
+    .replace(/\{\{OPEX\}\}/g, String(p.opex))
+    .replace(/\{\{PRD_INPUT_DOCS\}\}/g, p.prdInputDocs)
+    .replace(/\{\{READOUT_INPUT_DOCS\}\}/g, p.readoutInputDocs)
     .replace(/\{\{AUA_FLAGS\}\}/g, p.auaFlags);
 }
 
@@ -1615,7 +1690,7 @@ function renderLeftStepper() {
   document.getElementById("navSub").textContent = stage.name;
 
   var doneInStage = stage.steps.filter(function(s) {
-    return completedSet.has(s.id) || getStepPresetStatus(s.id).code === "skipped";
+    return isStepSatisfied(s);
   }).length;
   var pct = Math.round((doneInStage / stage.steps.length) * 100);
   document.getElementById("progressPct").textContent = pct + "%";
@@ -1627,7 +1702,7 @@ function renderLeftStepper() {
     var isActive = idx === activeStepIdx;
     var globalNum = step.id.replace("step-", "");
     var stStatus = getStepPresetStatus(step.id);
-    if (hideSkippedSteps && stStatus.code === "skipped" && !isActive) {
+    if (hideSkippedSteps && stStatus.code === "skipped") {
       return "";
     }
     var statusSuffix = stStatus.code === "skipped"
@@ -1673,6 +1748,54 @@ function decorateStepBadges(container, stage, step) {
   }
 }
 
+function getTailoredReads(step, p) {
+  if (p.archetype === "tier1-nocode") {
+    if (step.id === "step-7") {
+      return "docs/WORKSHOP_INTAKE.md, docs/USE_CASE_CANVAS.md (CUJ_MAP.md & as_is_report.md skipped for Tier 1)";
+    }
+    if (step.id === "step-15") {
+      return "docs/PRD.md, docs/EVAL_AUDIT_REPORT.md, docs/VALUE_SIZING.md (as_is_report.md & LOAD_TEST_REPORT.md skipped for Tier 1)";
+    }
+  }
+  return step.reads;
+}
+
+function stepPrevVisible() {
+  var s = activeStageIdx;
+  var p = activeStepIdx;
+  while (s > 0 || p > 0) {
+    if (p > 0) {
+      p--;
+    } else {
+      s--;
+      p = STAGES[s].steps.length - 1;
+    }
+    if (!hideSkippedSteps || getStepPresetStatus(STAGES[s].steps[p].id).code !== "skipped") {
+      activeStageIdx = s;
+      activeStepIdx = p;
+      return;
+    }
+  }
+}
+
+function stepNextVisible() {
+  var s = activeStageIdx;
+  var p = activeStepIdx;
+  while (s < STAGES.length - 1 || p < STAGES[s].steps.length - 1) {
+    if (p < STAGES[s].steps.length - 1) {
+      p++;
+    } else {
+      s++;
+      p = 0;
+    }
+    if (!hideSkippedSteps || getStepPresetStatus(STAGES[s].steps[p].id).code !== "skipped") {
+      activeStageIdx = s;
+      activeStepIdx = p;
+      return;
+    }
+  }
+}
+
 function renderCenterPlaybook() {
   var stage = STAGES[activeStageIdx];
   var step = stage.steps[activeStepIdx];
@@ -1680,6 +1803,7 @@ function renderCenterPlaybook() {
   var isDone = completedSet.has(step.id);
   var p = getParams();
   var stStatus = getStepPresetStatus(step.id);
+  var tailoredReads = getTailoredReads(step, p);
   function paramTag(tpl) {
     return tpl && tpl.indexOf("{{") !== -1 ? '<span>Uses your parameters</span>' : '';
   }
@@ -1777,7 +1901,7 @@ function renderCenterPlaybook() {
                 '<tr><th scope="row">Artifact type</th><td><strong>' + escapeHtml(step.artifactClass) + '</strong></td></tr>' +
                 '<tr><th scope="row">Skill(s)</th><td class="mono">' + escapeHtml(step.skill) + '</td></tr>' +
                 '<tr><th scope="row">TDL Toolbox source</th><td>' + escapeHtml(step.toolbox) + '</td></tr>' +
-                '<tr><th scope="row">Reads</th><td class="mono">' + escapeHtml(step.reads) + '</td></tr>' +
+                '<tr><th scope="row">Reads</th><td class="mono">' + escapeHtml(tailoredReads) + '</td></tr>' +
                 '<tr><th scope="row">Writes</th><td class="mono">' + escapeHtml(step.output) + '</td></tr>' +
               '</tbody>' +
             '</table>' +
@@ -1830,12 +1954,7 @@ function renderCenterPlaybook() {
 
   // Bind Prev / Complete & Next
   document.getElementById("prevBtn").addEventListener("click", function() {
-    if (activeStepIdx > 0) {
-      activeStepIdx--;
-    } else if (activeStageIdx > 0) {
-      activeStageIdx--;
-      activeStepIdx = STAGES[activeStageIdx].steps.length - 1;
-    }
+    stepPrevVisible();
     renderAll();
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
@@ -1845,7 +1964,7 @@ function renderCenterPlaybook() {
     completedSet.add(step.id);
     saveProgress();
     var allSteps = getAllSteps();
-    var allDoneNow = !wasDone && allSteps.every(function(s) { return completedSet.has(s.id); });
+    var allDoneNow = !wasDone && allSteps.every(function(s) { return isStepSatisfied(s); });
     if (!wasDone && !allDoneNow) {
       if (isStageCleared(stage, completedSet)) {
         showBadgeUnlock(stage.name + " Gate Cleared",
@@ -1855,12 +1974,7 @@ function renderCenterPlaybook() {
         showBadgeUnlock(step.badgeName, "Step " + globalNum + " complete");
       }
     }
-    if (activeStepIdx < stage.steps.length - 1) {
-      activeStepIdx++;
-    } else if (activeStageIdx < STAGES.length - 1) {
-      activeStageIdx++;
-      activeStepIdx = 0;
-    }
+    stepNextVisible();
     renderAll();
     window.scrollTo({ top: 0, behavior: "smooth" });
     if (allDoneNow) showMissionFinale();
@@ -1868,6 +1982,11 @@ function renderCenterPlaybook() {
 }
 
 function jumpToStep(targetId) {
+  if (hideSkippedSteps && getStepPresetStatus(targetId).code === "skipped") {
+    hideSkippedSteps = false;
+    var toggle = document.getElementById("hideSkippedToggle");
+    if (toggle) toggle.checked = false;
+  }
   STAGES.forEach(function(st, sIdx) {
     st.steps.forEach(function(sp, pIdx) {
       if (sp.id === targetId) {
@@ -1933,7 +2052,7 @@ function renderContractsTab() {
 function renderRightRail() {
   var stage = STAGES[activeStageIdx];
   var doneInStage = stage.steps.filter(function(s) {
-    return completedSet.has(s.id) || getStepPresetStatus(s.id).code === "skipped";
+    return isStepSatisfied(s);
   }).length;
   document.getElementById("stageBadgeCount").textContent = doneInStage + " / " + stage.steps.length;
 
@@ -1958,7 +2077,7 @@ function renderRightRail() {
 
   // Delivery Phase Gates (5 stages)
   var allSteps = getAllSteps();
-  var doneTotal = allSteps.filter(function(s) { return completedSet.has(s.id); }).length;
+  var doneTotal = allSteps.filter(function(s) { return isStepSatisfied(s); }).length;
   document.getElementById("totalBadgeCount").textContent = doneTotal + " / " + allSteps.length + " Steps";
 
   var patchShelf = document.getElementById("missionPatchShelf");
@@ -2151,8 +2270,10 @@ if (hideSkippedEl) {
 });
 
 function renderAll() {
+  ensureVisibleActiveStep();
   applyAccent(STAGES[activeStageIdx]);
   renderPresetProfileBox();
+  renderSkillJumpSelect();
   renderTopSwitcher();
   renderLeftStepper();
   renderCenterPlaybook();
