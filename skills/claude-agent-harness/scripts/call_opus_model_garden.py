@@ -459,17 +459,20 @@ class VerifyResult:
 
 
 def parse_verify_command(command: str) -> list[str]:
-    """Split an acceptance command into argv. Shell operators are rejected."""
-    argv = shlex.split(command)
+    """Split an acceptance command into argv. Shell operators and subshells are rejected."""
+    lexer = shlex.shlex(command, posix=True, punctuation_chars=True)
+    lexer.whitespace_split = False
+    argv = list(lexer)
     if not argv:
         raise ValueError("empty --verify command")
     operators = SHELL_OPERATORS.intersection(argv)
-    if operators:
+    if operators or "`" in command or "$(" in command:
+        found = sorted(operators | ({op for op in ("`", "$(") if op in command}))
         raise ValueError(
-            f"--verify {command!r} uses shell operators {sorted(operators)}; "
+            f"--verify {command!r} uses shell operators {found}; "
             "pass each command as its own --verify flag"
         )
-    return argv
+    return shlex.split(command)
 
 
 def run_verification(commands: list[str], cwd: str, timeout: int) -> list[VerifyResult]:

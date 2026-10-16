@@ -343,6 +343,28 @@ class AuditLlmJudgeTests(unittest.TestCase):
             if line.strip() and not line.startswith("===") and not line.startswith("Scale:"):
                 self.assertIn(line, example, f"example drifted from script output: {line!r}")
 
+    def test_rejects_ragged_mismatched_or_empty_inputs_and_supports_strict_exit_code(self) -> None:
+        with self.assertRaises(ValueError):
+            audit_llm_judge.cronbach_alpha([[1, 2, 3], [1, 2]])
+        with self.assertRaises(ValueError):
+            audit_llm_judge.icc_3k([[1, 2], [2, 3, 4]])
+        with self.assertRaises(ValueError):
+            audit_llm_judge.pipeline_1_calibration([1, 2, 3], [1, 2, 3], [1, 2])
+        with self.assertRaises(ValueError):
+            audit_llm_judge.pipeline_3_double_marking([1, 2, 3], [1, 2])
+        with self.assertRaises(ValueError):
+            audit_llm_judge.audit({"scale_min": 1, "scale_max": 5, "human_scores": [1, 2], "judge_scores": [1, 2]})
+
+        out_pass = io.StringIO()
+        with redirect_stdout(out_pass):
+            rc_pass = audit_llm_judge.main(["--input", str(self.FIXTURES / "calibrated_judge.json"), "--strict"])
+        self.assertEqual(rc_pass, 0)
+
+        out_fail = io.StringIO()
+        with redirect_stdout(out_fail):
+            rc_fail = audit_llm_judge.main(["--input", str(self.FIXTURES / "compressed_lenient_judge.json"), "--strict"])
+        self.assertEqual(rc_fail, 2)
+
 
 class IndexHtmlContractTests(unittest.TestCase):
     INDEX_HTML = REPO_ROOT / "index.html"

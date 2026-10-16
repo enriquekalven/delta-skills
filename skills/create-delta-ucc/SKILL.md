@@ -14,7 +14,7 @@ metadata:
 
 # Strategic Use Case Canvas & MVP Alignment Summary Generator (`create-delta-ucc`)
 
-This skill guides the user through a 4-part discovery worksheet and compiles a formal **Strategic Use Case Canvas & MVP Alignment Summary Document** (`docs/USE_CASE_CANVAS.md`) aligned with the official **TDL Toolbox Use Case Alignment Summary Document (`MVP Alignment Doc`)** and **Use Case Selection Guidelines**.
+This skill guides the user through a structured discovery worksheet and compiles a formal **Strategic Use Case Canvas & MVP Alignment Summary Document** (`docs/USE_CASE_CANVAS.md`) aligned with the official **TDL Toolbox Use Case Alignment Summary Document (`MVP Alignment Doc`)** and **Use Case Selection Guidelines**.
 
 ---
 
@@ -23,7 +23,7 @@ This skill guides the user through a 4-part discovery worksheet and compiles a f
 | Attribute | Specification |
 | :--- | :--- |
 | **Engagement Phase & Timebox** | **Prelude (Week 0):** MVP scope lock session immediately following `workshop-intake` |
-| **Reads (Inputs)** | `docs/WORKSHOP_INTAKE.md` (32 Starter Questions & Data Readiness Yardstick) |
+| **Reads (Inputs)** | `docs/WORKSHOP_INTAKE.md` (Qualification Question Bank & Data Readiness Yardstick) |
 | **Writes (Outputs)** | `docs/USE_CASE_CANVAS.md` (using [`references/ucc-template.md`](references/ucc-template.md)) |
 
 ---

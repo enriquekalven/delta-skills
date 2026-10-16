@@ -1,6 +1,6 @@
 # Worked Example: Supplier Spend & Rate Variance CUJ Transformation (`docs/CUJ_MAP.md`)
 
-This worked example demonstrates the complete 4-tab **`delta /forward` Agentic Process Transformation & CUJ Mapping** workbook from the TDL Toolbox applied to Enterprise Procurement Supplier Spend & Rate Analysis.
+This worked example demonstrates the complete **`delta /forward` Agentic Process Transformation & CUJ Mapping** workbook from the TDL Toolbox applied to Enterprise Procurement Supplier Spend & Rate Analysis.
 
 ---
 

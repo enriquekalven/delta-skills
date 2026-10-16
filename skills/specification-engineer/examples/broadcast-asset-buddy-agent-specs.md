@@ -157,7 +157,7 @@ No blocking external ARB required for MVP staging deployment; adheres to client 
     2. `broadcast_graphic_generator_agent`: Search-grounded bullet extraction + Imagen 4.0 background + Pillow raster compositor.
     3. `video_generator_agent`: Parallel Veo 3.0 b-roll video clip generation.
 - **✳️ Primary LLM Orchestrator & Model Suite:**
-  - **Orchestrator & Grounding:** `gemini-2.5-flash` / `gemini-2.0-flash-001`
+  - **Orchestrator & Grounding:** `gemini-3-flash` / `gemini-2.5-flash`
   - **Image & Graphic Background Diffusion:** `imagen-4.0-generate-preview-06-06`
   - **Video B-Roll Diffusion:** `veo-3.0-fast-generate-preview`
 

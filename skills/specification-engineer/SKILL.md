@@ -2,10 +2,10 @@
 name: specification-engineer
 description: >
   Write an Enterprise Agent Technical Specification / Technical Design Document (docs/TDD.md) from a
-  PRD and architecture recommendation using the official 4-Part / 4-Pillar TDL Toolbox template
-  (go/delta-squad-agent-specs: Part I Project Context, Part II Use Case Specification, Part III
-  Platform Infrastructure & Developer Clearance Checklist, and Part IV Deep-Dive Agent Technical
-  Specifications across Pillar 1 BUILD, Pillar 2 SCALE, Pillar 3 GOVERN, and Pillar 4 OPTIMIZE).
+  PRD and architecture recommendation using the official TDL Toolbox template
+  (go/delta-squad-agent-specs: Project Context, Use Case Specification,
+  Platform Infrastructure & Developer Clearance Checklist, and Deep-Dive Agent Technical
+  Specifications across BUILD, SCALE, GOVERN, and OPTIMIZE).
   Triggers on "write a TDD", "create technical design doc", "agent technical specifications",
   "go/delta-squad-agent-specs", "specification engineer", "turn PRD into TDD.md". Do NOT use for
   product requirements (use product-md) or initial GCP platform tier selection (use
@@ -24,15 +24,15 @@ This skill translates a Product Requirements Document (`docs/PRD.md`) and Archit
 
 | Attribute | Specification |
 | :--- | :--- |
-| **Engagement Phase & Timebox** | **Phase 1 Foundations (Weeks 1–2):** 4-Part / 4-Pillar specification |
+| **Engagement Phase & Timebox** | **Phase 1 Foundations (Weeks 1–2):** Enterprise Agent Technical Specification (`BUILD / SCALE / GOVERN / OPTIMIZE`) |
 | **Reads (Inputs)** | `docs/PRD.md`, `docs/ARCHITECTURE_RECOMMENDATION.md` |
 | **Writes (Outputs)** | `docs/TDD.md` (following [`references/tdd-spec-template.md`](references/tdd-spec-template.md)) |
 
 ---
 
-## Official 4-Part / 4-Pillar Structure (`go/delta-squad-agent-specs`)
+## Official Specification Structure (`go/delta-squad-agent-specs`)
 
-Every generated `docs/TDD.md` must cover all four parts from [`references/tdd-spec-template.md`](references/tdd-spec-template.md), marking **`✳️ Mandatory`** items (required for squad provisioning) and **`👥 Joint Effort`** items (TDL + FDE Tech Lead):
+Every generated `docs/TDD.md` covers the relevant sections from [`references/tdd-spec-template.md`](references/tdd-spec-template.md) (scaling depth to the selected architecture tier), marking **`✳️ Mandatory`** items (required for squad provisioning) and **`👥 Joint Effort`** items (TDL + FDE Tech Lead):
 
 | Part / Pillar | Scope | Mandatory Deliverables in `docs/TDD.md` |
 | :--- | :--- | :--- |
@@ -61,6 +61,6 @@ Document SPIFFE/Service Account principals, IAP/VPC-SC network perimeters, Model
 
 ## References & Worked Examples
 
-- [`references/tdd-spec-template.md`](references/tdd-spec-template.md): Official 4-Part / 4-Pillar template for `docs/TDD.md`.
-- [`examples/broadcast-asset-buddy-agent-specs.md`](examples/broadcast-asset-buddy-agent-specs.md): Full 4-Part / 4-Pillar TDL Toolbox specification for the **Broadcast News "Asset Buddy" Multi-Agent System**.
+- [`references/tdd-spec-template.md`](references/tdd-spec-template.md): Official template for `docs/TDD.md`.
+- [`examples/broadcast-asset-buddy-agent-specs.md`](examples/broadcast-asset-buddy-agent-specs.md): Full TDL Toolbox specification for the **Broadcast News "Asset Buddy" Multi-Agent System**.
 - [`examples/claims-extraction-service-tdd.md`](examples/claims-extraction-service-tdd.md): Service-level TDD with Pydantic v2 models, BigQuery DDL, and deterministic routing rules for **Commercial Auto FNOL Triage**.

@@ -175,9 +175,13 @@ def prmse(human_r1: Sequence[float], human_r2: Sequence[float], machine: Sequenc
 
 def cronbach_alpha(matrix: Sequence[Sequence[float]]) -> float:
     """Cronbach's alpha over an N x K matrix (N items rated, K passes)."""
+    if not matrix or not matrix[0]:
+        raise ValueError("need >= 2 items and >= 2 passes")
     n, k = len(matrix), len(matrix[0])
     if n < 2 or k < 2:
         raise ValueError("need >= 2 items and >= 2 passes")
+    if any(len(row) != k for row in matrix):
+        raise ValueError("all rows in passes matrix must have equal length")
     cols = [[matrix[i][j] for i in range(n)] for j in range(k)]
     totals = [sum(row) for row in matrix]
     vt = _variance(totals)
@@ -188,7 +192,13 @@ def cronbach_alpha(matrix: Sequence[Sequence[float]]) -> float:
 
 def icc_3k(matrix: Sequence[Sequence[float]]) -> float:
     """Two-way mixed, consistency, average-measures ICC(3,k) (Shrout & Fleiss)."""
+    if not matrix or not matrix[0]:
+        raise ValueError("need >= 2 items and >= 2 raters")
     n, k = len(matrix), len(matrix[0])
+    if n < 2 or k < 2:
+        raise ValueError("need >= 2 items and >= 2 raters")
+    if any(len(row) != k for row in matrix):
+        raise ValueError("all rows in matrix must have equal length")
     grand = sum(sum(r) for r in matrix) / (n * k)
     row_means = [_mean(r) for r in matrix]
     col_means = [_mean([matrix[i][j] for i in range(n)]) for j in range(k)]
@@ -213,6 +223,8 @@ def pipeline_1_calibration(
     llm_reliability: float = 1.0,
 ) -> Dict[str, Any]:
     n = len(llm)
+    if len(human_r1) != n or len(human_r2) != n or n < 2:
+        raise ValueError("human_r1, human_r2 and llm_scores must have equal length >= 2")
     h_mean = [(a + b) / 2.0 for a, b in zip(human_r1, human_r2)]
     h_int = [round_half_up(v) for v in h_mean]
 
@@ -276,6 +288,8 @@ def pipeline_2_intra_rater(passes: Sequence[Sequence[float]]) -> Dict[str, Any]:
 
 def pipeline_3_double_marking(a: Sequence[int], b: Sequence[int], lo: int = 1, hi: int = 5) -> Dict[str, Any]:
     n = len(a)
+    if len(b) != n or n < 2:
+        raise ValueError("llm_scores and judge_b must have equal length >= 2")
     matrix = [[float(x), float(y)] for x, y in zip(a, b)]
     icc = icc_3k(matrix)
     r = pearson_r(a, b)
@@ -331,6 +345,8 @@ def criterion_flags(block: Dict[str, Any]) -> Dict[str, Any]:
 def audit(data: Dict[str, Any], llm_reliability: Optional[float] = None) -> Dict[str, Any]:
     lo = int(data.get("scale_min", 1))
     hi = int(data.get("scale_max", 5))
+    if lo >= hi:
+        raise ValueError("scale_min must be < scale_max")
     out: Dict[str, Any] = {"scale": [lo, hi]}
 
     def run_block(block: Dict[str, Any]) -> Dict[str, Any]:
@@ -346,6 +362,11 @@ def audit(data: Dict[str, Any], llm_reliability: Optional[float] = None) -> Dict
             )
         if "judge_b" in block and "llm_scores" in block:
             res["pipeline_3"] = pipeline_3_double_marking(block["llm_scores"], block["judge_b"], lo, hi)
+        if not res:
+            raise ValueError(
+                "rating block must contain at least one pipeline input: "
+                "('human_r1', 'human_r2', 'llm_scores'), 'passes', or ('llm_scores', 'judge_b')"
+            )
         return res
 
     out["holistic"] = run_block(data)
@@ -424,6 +445,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                     help="Count Pipeline 3 items with confidence below this value as the HITL queue "
                          "(repo convention, not in the deck; default 0.75)")
     ap.add_argument("--json", action="store_true", help="Emit JSON instead of the text report")
+    ap.add_argument("--strict", action="store_true",
+                    help="Exit with code 2 if any executed holistic pipeline or criterion diagnostic fails")
     args = ap.parse_args(argv)
 
     if not args.input and not args.demo:
@@ -441,6 +464,16 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(json.dumps(reports, indent=2))
     else:
         print("\n\n".join(format_report(r, name, args.hitl_threshold) for name, r in reports.items()))
+
+    if args.strict:
+        for r in reports.values():
+            for p in r.get("holistic", {}).values():
+                if isinstance(p, dict) and p.get("passed") is False:
+                    return 2
+            for c in r.get("criteria", {}).values():
+                diag = c.get("diagnostic", {})
+                if diag.get("flag") in ("FAIL", "MIXED"):
+                    return 2
     return 0
 
 

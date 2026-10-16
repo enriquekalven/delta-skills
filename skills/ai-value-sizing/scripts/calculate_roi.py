@@ -47,6 +47,12 @@ def compute_sizing_and_roi(
         raise ValueError("tech_compat must be in (0, 1]")
     if not (0.0 < year1_ramp <= 1.0):
         raise ValueError("year1_ramp must be in (0, 1]")
+    if not (0.0 < vcr <= 1.0):
+        raise ValueError("capture_rate (vcr) must be in (0, 1]")
+    if not (0.0 < scdf <= 1.5):
+        raise ValueError("delivery_factor (scdf) must be in (0, 1.5]")
+    if not (0.0 <= wacc <= 1.0):
+        raise ValueError("wacc must be in [0, 1]")
     if tam_units <= 0:
         raise ValueError("tam_units must be > 0")
     if hours_saved_per_unit < 0 or hourly_rate_usd < 0 or annual_non_labor_benefit_usd < 0:
